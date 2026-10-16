@@ -110,4 +110,4 @@ Android Studio 已打开项目，但 IDE 导入/同步被 `Proxy Authentication:
 
 若官方套餐路由拒绝该应用，不绕过协议；应申请官方支持，或另行批准自有后端保管 API Key 的标准 Responses API 替代方案。不会把开发者 API Key 放入 Android APK。
 
-在 DEVICE_TEST.md 的真实设备清单完成前，暂停扩展单词、阅读、作文和统计模块，第一阶段不宣称完整验收。
+此为 P0 当时的阶段边界。后续 Goal G1.0 明确授权在保留认证链路的前提下按 P1→P2→P3 推进，当前状态以 PROGRESS.md 为准；未测认证场景继续保留，不宣称 P0 完整验收。

@@ -13,6 +13,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import com.example.cet6.ui.StudyViewModel
 
 class MainActivity : ComponentActivity() {
@@ -27,8 +32,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun MainContent(vm: StudyViewModel) {
-    var tab by remember { mutableIntStateOf(0) }
-    val tabs = listOf("连接测试", "单词", "阅读", "作文")
+    var tab by rememberSaveable { mutableIntStateOf(0) }
+    val tabs = listOf("今日", "单词", "阅读", "作文", "连接")
     Scaffold(
         topBar = { Surface(Modifier.fillMaxWidth().statusBarsPadding(), tonalElevation = 2.dp) {
             Text("六级研习室 · CET-6", Modifier.padding(18.dp),
@@ -37,23 +42,79 @@ private fun MainContent(vm: StudyViewModel) {
         bottomBar = { NavigationBar {
             tabs.forEachIndexed { index, name ->
                 NavigationBarItem(selected = tab == index, onClick = { tab = index },
-                    icon = { Text(listOf("◉", "A", "阅", "✎")[index]) }, label = { Text(name) })
+                    icon = { Text(listOf("日", "A", "阅", "✎", "◉")[index]) }, label = { Text(name) })
             }
         } }
     ) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())
+            Modifier.fillMaxSize().padding(padding).verticalScroll(key(tab) { rememberScrollState() })
                 .padding(horizontal = 18.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             when (tab) {
-                0 -> ConnectionScreen(vm)
+                0 -> TodayScreen(vm, onWords = { tab = 1 }, onReading = { tab = 2 }, onWriting = { tab = 3 })
                 1 -> WordScreen(vm)
                 2 -> ReadingScreen(vm)
-                else -> WritingScreen(vm)
+                3 -> WritingScreen(vm)
+                else -> ConnectionScreen(vm)
             }
         }
     }
+}
+
+@Composable
+private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -> Unit, onWriting: () -> Unit) {
+    SectionTitle("今天，从一小步开始", "${vm.today} · 学习数据保存在本机，单词与阅读可离线使用。")
+    val progress = vm.todayProgress
+    val plan = vm.plan
+    val newCount = progress?.newCount ?: 0
+    val reviewCount = progress?.reviewCount ?: 0
+    val newAvailable = vm.words.count { it.dueAt == 0L }
+    val due = vm.words.count { it.dueAt in 1..vm.now }
+    ElevatedCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("今日单词计划", style = MaterialTheme.typography.titleMedium)
+            Text("新词 $newCount / ${plan?.newGoal ?: "…"} · 复习 $reviewCount / ${plan?.reviewGoal ?: "…"}")
+            Text("词库可学新词 $newAvailable 个，当前到期 $due 个")
+            if (plan != null) {
+                val availableNewGoal = minOf(plan.newGoal, newCount + newAvailable)
+                val availableReviewGoal = minOf(plan.reviewGoal, reviewCount + due)
+                val total = availableNewGoal + availableReviewGoal
+                val done = minOf(newCount, availableNewGoal) + minOf(reviewCount, availableReviewGoal)
+                LinearProgressIndicator(progress = { if (total == 0) 1f else done.toFloat() / total },
+                    modifier = Modifier.fillMaxWidth())
+                Text(if (done >= total) "当前可执行的单词任务已完成。" else "优先复习到期词，再学习新词。")
+                if (availableNewGoal < plan.newGoal || availableReviewGoal < plan.reviewGoal)
+                    Text("词量不足或无到期词时，按实际可学数量计算进度。", style = MaterialTheme.typography.bodySmall)
+            }
+            Button(onClick = onWords, modifier = Modifier.fillMaxWidth()) { Text("开始单词学习") }
+        }
+    }
+    var newGoal by rememberSaveable(plan?.date, plan?.newGoal) { mutableStateOf(plan?.newGoal?.toString().orEmpty()) }
+    var reviewGoal by rememberSaveable(plan?.date, plan?.reviewGoal) { mutableStateOf(plan?.reviewGoal?.toString().orEmpty()) }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        OutlinedTextField(value = newGoal, onValueChange = { newGoal = it.take(3) }, label = { Text("每日新词") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.weight(1f), singleLine = true)
+        OutlinedTextField(value = reviewGoal, onValueChange = { reviewGoal = it.take(3) }, label = { Text("每日复习") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.weight(1f), singleLine = true)
+    }
+    OutlinedButton(onClick = { vm.savePlan(newGoal.toInt(), reviewGoal.toInt()) },
+        enabled = plan != null && !vm.savingStudy && newGoal.toIntOrNull() in 1..100 && reviewGoal.toIntOrNull() in 1..200) {
+        Text("保存学习目标")
+    }
+    if (vm.studyStatus.isNotBlank()) Text(vm.studyStatus)
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        OutlinedButton(onClick = onReading) { Text("阅读练习") }
+        OutlinedButton(onClick = onWriting) { Text("作文训练") }
+    }
+    Text("单词学习记录", style = MaterialTheme.typography.titleMedium)
+    Text("累计学习 ${vm.dailyProgress.size} 天 · 累计作答 ${vm.dailyProgress.sumOf { it.totalCount }} 次")
+    val total = vm.dailyProgress.sumOf { it.totalCount }
+    if (total > 0) Text("自评记住率 ${vm.dailyProgress.sumOf { it.rememberedCount } * 100L / total}%（不是考试正确率）")
+    vm.dailyProgress.take(7).forEach { day ->
+        Text("${day.date}：新词 ${day.newCount}，复习 ${day.reviewCount}，记住 ${day.rememberedCount}/${day.totalCount}")
+    }
+    if (total == 0) Text("完成第一张单词卡后，这里会显示真实学习记录。旧版未保存逐次日志，历史不补算。")
 }
 
 @Composable
@@ -134,11 +195,18 @@ private fun StatusCard(vm: StudyViewModel) {
 @Composable
 private fun WordScreen(vm: StudyViewModel) {
     SectionTitle("六级词汇", "离线间隔复习。当前为 8 个原创示例词条。")
-    val now = System.currentTimeMillis()
-    val due = vm.words.filter { it.dueAt <= now }
-    Text("待复习：${due.size} / ${vm.words.size}")
-    if (due.isEmpty()) Text("今天的复习已完成。")
-    due.forEach { word ->
+    val due = vm.words.filter { it.dueAt <= vm.now }.sortedWith(compareBy({ it.dueAt == 0L }, { it.dueAt }, { it.word }))
+    val progress = vm.todayProgress
+    var extra by rememberSaveable(vm.today) { mutableStateOf(false) }
+    val planned = due.filter { word -> extra || vm.plan?.let {
+        if (word.dueAt == 0L) (progress?.newCount ?: 0) < it.newGoal else (progress?.reviewCount ?: 0) < it.reviewGoal
+    } == true }
+    Text("当前到期 ${due.count { it.dueAt > 0 }} · 未学 ${due.count { it.dueAt == 0L }} · 词库 ${vm.words.size}")
+    if (planned.isEmpty()) {
+        Text(if (due.isEmpty()) "当前没有到期单词，可浏览词库或稍后再来。" else "今日计划已完成。")
+        if (due.isNotEmpty()) OutlinedButton(onClick = { extra = true }) { Text("继续额外学习") }
+    }
+    planned.take(1).forEach { word ->
         var reveal by remember(word.word) { mutableStateOf(false) }
         ElevatedCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -149,12 +217,35 @@ private fun WordScreen(vm: StudyViewModel) {
                     Text(word.meaning)
                     Text(word.example, style = MaterialTheme.typography.bodyMedium)
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedButton(onClick = { vm.review(word, false) }) { Text("忘记了") }
-                        Button(onClick = { vm.review(word, true) }) { Text("记住了") }
+                        OutlinedButton(onClick = { vm.review(word, false) }, enabled = !vm.savingStudy) { Text("忘记了") }
+                        Button(onClick = { vm.review(word, true) }, enabled = !vm.savingStudy) { Text("记住了") }
                     }
                 }
             }
         }
+    }
+    if (vm.studyStatus.isNotBlank()) Text(vm.studyStatus)
+    Text("本地学习历史（展示最近 10 次）", style = MaterialTheme.typography.titleMedium)
+    vm.wordReviews.take(10).forEach { review ->
+        Text("${review.word} · ${if (review.remembered) "记住了" else "忘记了"} · ${review.studiedOn}")
+    }
+    var search by rememberSaveable { mutableStateOf("") }
+    var browse by rememberSaveable { mutableStateOf(false) }
+    OutlinedButton(onClick = { browse = !browse }) { Text(if (browse) "收起词库" else "浏览与搜索词库") }
+    if (browse) {
+    OutlinedTextField(value = search, onValueChange = { search = it }, label = { Text("搜索全部词库") },
+        modifier = Modifier.fillMaxWidth(), singleLine = true)
+    vm.words.filter { it.word.contains(search.trim(), true) || it.meaning.contains(search.trim()) }.take(50).forEach { word ->
+        ElevatedCard(Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(word.word, fontWeight = FontWeight.Bold)
+                Text(word.meaning)
+                Text(word.example)
+                Text(if (word.dueAt == 0L) "尚未学习" else "下次复习：${Instant.ofEpochMilli(word.dueAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}",
+                    style = MaterialTheme.typography.bodySmall)
+            }
+        }
+    }
     }
 }
 

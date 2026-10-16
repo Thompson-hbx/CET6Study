@@ -1,0 +1,16 @@
+Date: 2026-10-16 Asia/Shanghai
+Device: vivo V2359A, Android 16/API 36
+Version: 0.2.0-p1.1 (2)
+APK SHA256: DC532E7A4C39149140AAD8A48554E62654782F2D1543446FA8357A8B883CE9C8
+Build: assembleDebug assembleDebugAndroidTest testDebugUnitTest lintDebug PASS, offline Gradle 8.9/JDK 21.
+JVM: 26 tests, 0 failures. Lint: 0 errors, 7 existing warnings.
+Instrumentation: PASS: v1->v2 preserves words/reading/essays; daily plans persist and roll over; duplicate review writes once; history survives reopen.
+UI: airplane mode enabled, Wi-Fi disabled; allocate revealed and remembered; force-stop and cold-start (429 ms); new=1, unseen=7, study days=1, attempts=1.
+Network: restored airplane disabled, wifi_on=0, mobile_data=1 (same as original).
+Final APK: install -r Success; instrumentation PASS again; cold-start 759 ms.
+Plan edited to new=3/review=5; force-stop/cold-start 439 ms; plan persisted, new=1.
+Final word page: ambiguous unrevealed; library collapsed; allocate history present.
+Connection state: logged in=true, plan granted=true, model loaded=true; no inference sent.
+Current-process matching fatal/sqlite/ANR log lines: 0.
+Signing: apksigner PASS v2; zipalign -c -P 16 4 PASS.
+No uninstall, clear-data, token access, sign-out, or authentication source changes.

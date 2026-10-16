@@ -17,6 +17,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.delay
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.Instant
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
@@ -29,6 +33,22 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     private val ai = ResponsesClient(http, auth)
     private val db = StudyDatabase.get(app)
     private val dao = db.dao()
+    private val study = StudyRepository(db)
+
+    var now by androidx.compose.runtime.mutableLongStateOf(System.currentTimeMillis())
+        private set
+    var plan by androidx.compose.runtime.mutableStateOf<DailyPlan?>(null)
+        private set
+    var wordReviews by androidx.compose.runtime.mutableStateOf<List<WordReview>>(emptyList())
+        private set
+    var dailyProgress by androidx.compose.runtime.mutableStateOf<List<DailyWordProgress>>(emptyList())
+        private set
+    var studyStatus by androidx.compose.runtime.mutableStateOf("")
+        private set
+    var savingStudy by androidx.compose.runtime.mutableStateOf(false)
+        private set
+    val today: String get() = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().toString()
+    val todayProgress: DailyWordProgress? get() = dailyProgress.find { it.date == today }
 
     var sessionEmail by androidx.compose.runtime.mutableStateOf(
         auth.session()?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty())
@@ -54,8 +74,16 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         viewModelScope.launch {
-            dao.addWords(starterWords)
-            dao.words().collectLatest { words = it }
+            try {
+                study.initialize()
+                study.words.collectLatest { words = it }
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { studyStatus = "无法读取本地词库，请重启应用；不要卸载或清除数据。" }
+        }
+        viewModelScope.launch { study.wordReviews.collectLatest { wordReviews = it } }
+        viewModelScope.launch { study.dailyProgress.collectLatest { dailyProgress = it } }
+        viewModelScope.launch {
+            while (true) { refreshStudyDay(); delay(30_000) }
         }
         viewModelScope.launch { dao.readingHistory().collectLatest { readingAttempts = it } }
         viewModelScope.launch { dao.essays().collectLatest { essays = it } }
@@ -155,9 +183,43 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun review(word: WordEntity, remember: Boolean) {
+        if (savingStudy) return
+        savingStudy = true
         viewModelScope.launch {
-            val updated = nextReview(word, remember, System.currentTimeMillis())
-            dao.recordReview(word.word, updated.dueAt, updated.repetitions, updated.intervalDays)
+            try {
+                val recorded = study.review(word.word, remember)
+                studyStatus = if (recorded) "已保存：${word.word} · ${if (remember) "记住了" else "忘记了"}" else
+                    "该词已记录或尚未到期，无需重复提交。"
+                refreshStudyDay()
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { studyStatus = "学习记录保存失败，请重试；本次不计入完成数量。"
+            } finally { savingStudy = false }
+        }
+    }
+
+    private suspend fun refreshStudyDay() {
+        now = System.currentTimeMillis()
+        if (plan?.date != today) {
+            try { plan = study.plan(LocalDate.parse(today))
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { studyStatus = "每日计划读取失败，请重启应用重试。" }
+        }
+    }
+
+    fun savePlan(newGoal: Int, reviewGoal: Int) {
+        if (savingStudy) return
+        savingStudy = true
+        viewModelScope.launch {
+            try {
+                refreshStudyDay()
+                val updated = DailyPlan(today, newGoal, reviewGoal)
+                study.savePlan(updated)
+                plan = updated
+                studyStatus = "今日目标已保存，后续日期沿用此目标。"
+            } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) { studyStatus = e.message.orEmpty()
+            } catch (_: Exception) { studyStatus = "目标保存失败，请重试。"
+            } finally { savingStudy = false }
         }
     }
 

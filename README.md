@@ -1,4 +1,6 @@
-# 六级研习室 CET6Study / Android 技术验证版
+# 六级研习室 CET6Study
+
+> Goal G1.0 开发中，当前 P1.1：每日计划、单词日志及首页进度。阶段清单见 [PROGRESS.md](PROGRESS.md)，本轮证据见 [P1_TEST.md](P1_TEST.md)。下面的 P0 记录保留作基线，不能当成 v1.0 验收结果。
 
 > **状态：第一阶段工程验证版，已在 vivo 真机完成真实登录、模型发现与一次 Responses 套餐调用。构建、测试及剩余待测项见 [BUILD_REPORT.md](BUILD_REPORT.md) 与 [PHONE_TEST.md](PHONE_TEST.md)。**
 > 目标：在 Android 真机验证 Sign in with ChatGPT（OAuth + 套餐权限）与流式 Responses API。
