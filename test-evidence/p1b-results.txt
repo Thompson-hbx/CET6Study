@@ -1,0 +1,16 @@
+Date: 2026-10-16 Asia/Shanghai
+Device: vivo V2359A Android 16/API 36
+Version: 0.2.0-p1.2 (3), Room 3
+APK SHA256: 4C7144E88DE076116DFF2881D0740572A6208E1FC907420A219864CD4E4EE389
+Build: offline assembleDebug assembleDebugAndroidTest testDebugUnitTest lintDebug PASS (21s).
+JVM: 30 tests, 0 failures. Lint: 0 errors, 7 warnings.
+Instrumentation: PASS: v1->v3 preserves words/reading/essays; daily plans persist and roll over; duplicate review writes once; history survives reopen; CSV/JSON import preserves existing progress and sources.
+Main APK/test APK install -r: Success. Initial cold-start: 768 ms.
+Initial migrated UI: unseen=79, vocabulary=80, completed new=1, target new=3/review=5, days=1.
+OEM OpenDocument CSV flow: original resilient + duplicate allocate -> added=1/skipped=1.
+Search resilient: original Chinese meaning/example/source present.
+Search allocate: original meaning/example/source and due date 10-17 22:57 preserved.
+Force-stop/cold-start: 448 ms; unseen=80/vocabulary=81, completed new=1, days=1/attempts=1.
+Signing v2 PASS, zipalign 16KiB PASS.
+auth/, ai/, AndroidManifest.xml unchanged from P0 baseline.
+JSON parser/storage tested by on-device instrumentation; JSON OEM picker operation not separately verified.

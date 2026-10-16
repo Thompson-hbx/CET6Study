@@ -21,7 +21,7 @@ class LocalDataInstrumentation : Instrumentation() {
         val results = Bundle()
         try {
             runBlocking { verifyMigrationAndTransactions() }
-            results.putString("stream", "PASS: v1→v2 preserves words/reading/essays; daily plans persist and roll over; duplicate review writes once; history survives reopen.\n")
+            results.putString("stream", "PASS: v1→v3 preserves words/reading/essays; daily plans persist and roll over; duplicate review writes once; history survives reopen; CSV/JSON import preserves existing progress and sources.\n")
             finish(-1, results)
         } catch (e: Throwable) {
             results.putString("stream", "FAIL: ${e.javaClass.simpleName}: ${e.message}\n${e.stackTraceToString()}")
@@ -42,7 +42,7 @@ class LocalDataInstrumentation : Instrumentation() {
             old.version = 1
         }
         fun open() = Room.databaseBuilder(targetContext, StudyDatabase::class.java, file.absolutePath)
-            .addMigrations(StudyDatabase.MIGRATION_1_2).build()
+            .addMigrations(StudyDatabase.MIGRATION_1_2, StudyDatabase.MIGRATION_2_3).build()
         var db = open()
         try {
             check(db.dao().word("legacy") == legacyWord) { "legacy word changed" }
@@ -67,11 +67,24 @@ class LocalDataInstrumentation : Instrumentation() {
             check(repository.review("legacy", false, now))
             check(db.dao().word("legacy")?.repetitions == 0)
             check(db.dao().dailyWordProgress().first().single().reviewCount == 1)
+            val scheduled = db.dao().word("new")!!
+            val imported = VocabularyImport.parse("""[{"word":"new","meaning":"不要覆盖","example":"changed"},{"word":"imported","meaning":"导入词","example":"Original example."}]""", "测试原创授权")
+            check(repository.importWords(imported) == 1)
+            check(db.dao().word("new") == scheduled)
+            check(db.dao().word("imported")!!.source == "测试原创授权")
+            check(repository.importWords(imported) == 0)
+            val bundled = targetContext.assets.open("academic_words.csv").use {
+                VocabularyImport.parse(VocabularyImport.read(it), "项目原创测试")
+            }
+            check(bundled.size == 72)
+            check(repository.importWords(bundled) == 72)
+            check(repository.importWords(bundled) == 0)
             db.close()
             db = open()
             check(db.dao().wordReviewHistory().first().size == 2)
             check(db.dao().word("new")!!.dueAt > now)
             check(db.dao().dailyPlan(date.toString())?.newGoal == 3)
+            check(db.dao().word("imported")!!.source == "测试原创授权")
         } finally { db.close() }
     }
 }

@@ -19,6 +19,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.example.cet6.ui.StudyViewModel
+import com.example.cet6.ui.VocabularyImportCard
 
 class MainActivity : ComponentActivity() {
     private val vm: StudyViewModel by viewModels()
@@ -194,7 +195,7 @@ private fun StatusCard(vm: StudyViewModel) {
 
 @Composable
 private fun WordScreen(vm: StudyViewModel) {
-    SectionTitle("六级词汇", "离线间隔复习。当前为 8 个原创示例词条。")
+    SectionTitle("六级词汇", "离线间隔复习。内置原创学术词汇练习，可导入有权使用的词库；不是完整六级大纲词库。")
     val due = vm.words.filter { it.dueAt <= vm.now }.sortedWith(compareBy({ it.dueAt == 0L }, { it.dueAt }, { it.word }))
     val progress = vm.todayProgress
     var extra by rememberSaveable(vm.today) { mutableStateOf(false) }
@@ -225,6 +226,7 @@ private fun WordScreen(vm: StudyViewModel) {
         }
     }
     if (vm.studyStatus.isNotBlank()) Text(vm.studyStatus)
+    VocabularyImportCard(vm)
     Text("本地学习历史（展示最近 10 次）", style = MaterialTheme.typography.titleMedium)
     vm.wordReviews.take(10).forEach { review ->
         Text("${review.word} · ${if (review.remembered) "记住了" else "忘记了"} · ${review.studiedOn}")
@@ -241,6 +243,7 @@ private fun WordScreen(vm: StudyViewModel) {
                 Text(word.word, fontWeight = FontWeight.Bold)
                 Text(word.meaning)
                 Text(word.example)
+                Text("来源：${word.source}", style = MaterialTheme.typography.bodySmall)
                 Text(if (word.dueAt == 0L) "尚未学习" else "下次复习：${Instant.ofEpochMilli(word.dueAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}",
                     style = MaterialTheme.typography.bodySmall)
             }

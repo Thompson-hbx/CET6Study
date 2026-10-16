@@ -15,6 +15,10 @@ class StudyRepository(private val db: StudyDatabase) {
 
     suspend fun initialize() = dao.addWords(starterWords)
 
+    suspend fun importWords(words: List<WordEntity>): Int = db.withTransaction {
+        dao.addWords(words).count { it != -1L }
+    }
+
     suspend fun plan(date: LocalDate): DailyPlan = db.withTransaction {
         dao.dailyPlan(date.toString()) ?: (dao.previousPlan(date.toString())?.copy(date = date.toString())
             ?: DailyPlan(date.toString())).also { dao.saveDailyPlan(it) }

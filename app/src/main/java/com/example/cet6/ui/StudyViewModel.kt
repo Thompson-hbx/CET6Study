@@ -76,7 +76,17 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             try {
                 study.initialize()
-                study.words.collectLatest { words = it }
+                val bundled = withContext(Dispatchers.IO) {
+                    getApplication<Application>().assets.open("academic_words.csv").use {
+                        VocabularyImport.parse(VocabularyImport.read(it), "项目原创学术词汇练习；释义与例句原创；项目 LICENSE 授权")
+                    }
+                }
+                study.importWords(bundled)
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { studyStatus = "无法读取本地词库，请重启应用；不要卸载或清除数据。" }
+        }
+        viewModelScope.launch {
+            try { study.words.collectLatest { words = it }
             } catch (e: CancellationException) { throw e
             } catch (_: Exception) { studyStatus = "无法读取本地词库，请重启应用；不要卸载或清除数据。" }
         }
@@ -219,6 +229,26 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: CancellationException) { throw e
             } catch (e: IllegalArgumentException) { studyStatus = e.message.orEmpty()
             } catch (_: Exception) { studyStatus = "目标保存失败，请重试。"
+            } finally { savingStudy = false }
+        }
+    }
+
+    fun importVocabulary(uri: Uri, source: String) {
+        if (savingStudy) return
+        savingStudy = true
+        studyStatus = "正在校验词库，校验全部通过后才会写入……"
+        viewModelScope.launch {
+            try {
+                val imported = withContext(Dispatchers.IO) {
+                    getApplication<Application>().contentResolver.openInputStream(uri)?.use {
+                        VocabularyImport.parse(VocabularyImport.read(it), source)
+                    } ?: error("无法读取所选文件")
+                }
+                val added = study.importWords(imported)
+                studyStatus = "导入成功：新增 $added 条，已有 ${imported.size - added} 条已跳过并保留原进度。"
+            } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) { studyStatus = "词库未导入：${e.message}"
+            } catch (_: Exception) { studyStatus = "词库未导入：请检查 UTF-8 编码、CSV/JSON 格式与文件读取权限。"
             } finally { savingStudy = false }
         }
     }

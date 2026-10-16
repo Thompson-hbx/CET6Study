@@ -2,6 +2,7 @@ package com.example.cet6.data
 
 import android.content.Context
 import androidx.room.Dao
+import androidx.room.ColumnInfo
 import androidx.room.Database
 import androidx.room.Entity
 import androidx.room.Insert
@@ -21,7 +22,8 @@ data class WordEntity(
     val example: String,
     val dueAt: Long = 0L,
     val repetitions: Int = 0,
-    val intervalDays: Int = 0
+    val intervalDays: Int = 0,
+    @ColumnInfo(defaultValue = "'项目原创示例'") val source: String = "项目原创示例"
 )
 
 @Entity(tableName = "reading_attempts")
@@ -71,7 +73,7 @@ data class DailyWordProgress(
 @Dao
 interface StudyDao {
     @Query("SELECT * FROM words ORDER BY word") fun words(): Flow<List<WordEntity>>
-    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun addWords(words: List<WordEntity>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun addWords(words: List<WordEntity>): List<Long>
     @Query("UPDATE words SET dueAt=:due, repetitions=:reps, intervalDays=:days WHERE word=:word")
     suspend fun recordReview(word: String, due: Long, reps: Int, days: Int)
     @Query("SELECT * FROM words WHERE word=:word") suspend fun word(word: String): WordEntity?
@@ -98,7 +100,7 @@ interface StudyDao {
 }
 
 @Database(entities = [WordEntity::class, ReadingAttempt::class, EssayEntity::class,
-    WordReview::class, DailyPlan::class], version = 2)
+    WordReview::class, DailyPlan::class], version = 3)
 abstract class StudyDatabase : RoomDatabase() {
     abstract fun dao(): StudyDao
     companion object {
@@ -108,10 +110,15 @@ abstract class StudyDatabase : RoomDatabase() {
                 db.execSQL("CREATE TABLE IF NOT EXISTS daily_plans (date TEXT NOT NULL, newGoal INTEGER NOT NULL, reviewGoal INTEGER NOT NULL, PRIMARY KEY(date))")
             }
         }
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE words ADD COLUMN source TEXT NOT NULL DEFAULT '项目原创示例'")
+            }
+        }
         @Volatile private var INSTANCE: StudyDatabase? = null
         fun get(context: Context): StudyDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context.applicationContext, StudyDatabase::class.java,
-                "cet6_study.db").addMigrations(MIGRATION_1_2).build().also { INSTANCE = it }
+                "cet6_study.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3).build().also { INSTANCE = it }
         }
     }
 }
