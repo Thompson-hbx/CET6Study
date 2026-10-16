@@ -1,0 +1,9 @@
+Device: Pixel_7_API_36 / emulator-5554
+Android: 16 / API 36
+Install: adb install -r succeeded
+Cold launch: am start -W Status ok
+Room: review count 8 -> 7; retained after force-stop and APK replacement
+Reading: answer B accepted; one record retained after APK replacement
+OAuth: system Chrome opened; Chrome first-run setup prevents reaching authorization page
+No real ChatGPT login, plan inference, token rotation or remote revocation tested
+Current process crash/ANR matches: 0

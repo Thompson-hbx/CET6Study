@@ -1,0 +1,11 @@
+Date: 2026-10-16 Asia/Shanghai
+Device: vivo V2359A / Android 16 API 36
+OAuth: verified account and granted plan scope; account identifiers omitted
+Models: 7 visible; selected display name GPT-6.1-Sol
+Prompt: 请只回答：六级研习室 API 测试成功。
+Observed status: API 测试成功：已收到 response.completed。
+Observed answer: 六级研习室 API 测试成功。
+Login survived APK replacement and cold start
+Build: successful; 26 JVM tests passed; Lint 0 errors / 7 warnings
+Refresh after expiry, remote revocation, interruptions: not tested
+APK SHA256: 8178DA0BDCFE021514D9D26C9A05A687942C5FAF7FDD4C1639A53F3AD074FCBE
