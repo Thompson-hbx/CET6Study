@@ -34,6 +34,13 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     private val db = StudyDatabase.get(app)
     private val dao = db.dao()
     private val study = StudyRepository(db)
+    var speechReady by androidx.compose.runtime.mutableStateOf(false)
+        private set
+    var speechStatus by androidx.compose.runtime.mutableStateOf("正在检查系统离线英文语音……")
+        private set
+    private val speech = OfflineSpeech(app) { ready, message -> speechReady = ready; speechStatus = message }
+    var pronunciations by androidx.compose.runtime.mutableStateOf<Map<String, String>>(emptyMap())
+        private set
 
     var now by androidx.compose.runtime.mutableLongStateOf(System.currentTimeMillis())
         private set
@@ -46,6 +53,8 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     var studyStatus by androidx.compose.runtime.mutableStateOf("")
         private set
     var savingStudy by androidx.compose.runtime.mutableStateOf(false)
+        private set
+    var schedules by androidx.compose.runtime.mutableStateOf<Map<String, WordSchedule>>(emptyMap())
         private set
     val today: String get() = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().toString()
     val todayProgress: DailyWordProgress? get() = dailyProgress.find { it.date == today }
@@ -82,6 +91,12 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
                     }
                 }
                 study.importWords(bundled)
+                pronunciations = withContext(Dispatchers.IO) {
+                    getApplication<Application>().assets.open("pronunciations.tsv").bufferedReader().useLines { lines ->
+                        lines.drop(1).map { it.split('\t', limit = 2) }.filter { it.size == 2 }
+                            .associate { it[0] to it[1] }
+                    }
+                }
             } catch (e: CancellationException) { throw e
             } catch (_: Exception) { studyStatus = "无法读取本地词库，请重启应用；不要卸载或清除数据。" }
         }
@@ -92,6 +107,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         }
         viewModelScope.launch { study.wordReviews.collectLatest { wordReviews = it } }
         viewModelScope.launch { study.dailyProgress.collectLatest { dailyProgress = it } }
+        viewModelScope.launch { study.schedules.collectLatest { schedules = it.associateBy(WordSchedule::word) } }
         viewModelScope.launch {
             while (true) { refreshStudyDay(); delay(30_000) }
         }
@@ -192,20 +208,26 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun review(word: WordEntity, remember: Boolean) {
+    fun review(word: WordEntity, rating: WordRating) {
         if (savingStudy) return
         savingStudy = true
         viewModelScope.launch {
             try {
-                val recorded = study.review(word.word, remember)
-                studyStatus = if (recorded) "已保存：${word.word} · ${if (remember) "记住了" else "忘记了"}" else
+                val recorded = study.review(word.word, rating)
+                studyStatus = if (recorded) "已保存：${word.word} · ${rating.label}" else
                     "该词已记录或尚未到期，无需重复提交。"
                 refreshStudyDay()
             } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) { studyStatus = "未保存：${e.message}"
             } catch (_: Exception) { studyStatus = "学习记录保存失败，请重试；本次不计入完成数量。"
             } finally { savingStudy = false }
         }
     }
+
+    fun refreshStudyClock() { viewModelScope.launch { refreshStudyDay() } }
+    fun speak(text: String) = speech.speak(text)
+    fun stopSpeech() = speech.stop()
+    override fun onCleared() { speech.close(); super.onCleared() }
 
     private suspend fun refreshStudyDay() {
         now = System.currentTimeMillis()

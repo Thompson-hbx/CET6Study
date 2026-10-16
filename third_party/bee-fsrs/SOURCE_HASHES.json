@@ -1,0 +1,42 @@
+{
+  "repository": "https://github.com/bee-san/bee-fsrs",
+  "commit": "98f3ed75a9b7f3fa7243320721671557908eea2d",
+  "files": {
+    "DefaultFsrsEngine.kt": {
+      "upstream_sha256": "48ec00b9db0a0e8b9acd47b71a161a7f5be69d9a8aaa607db109a3429a0be299",
+      "integrated_sha256": "c7b506dccb5987ce9f916055fbf419550d12e1169774ca4ce0741e887c89159b"
+    },
+    "Fsrs.kt": {
+      "upstream_sha256": "ccc54d981813337ad472e597942e75f50a00c41aa14f23eaf378f9497656b8cd",
+      "integrated_sha256": "ccc54d981813337ad472e597942e75f50a00c41aa14f23eaf378f9497656b8cd"
+    },
+    "FsrsAlgorithmInfo.kt": {
+      "upstream_sha256": "4c6ad86b9cf51bf256eed0e953a850f0c6052e69bebbd692a40466efb2709ed1",
+      "integrated_sha256": "4c6ad86b9cf51bf256eed0e953a850f0c6052e69bebbd692a40466efb2709ed1"
+    },
+    "FsrsEngine.kt": {
+      "upstream_sha256": "5fa6d5960ceb117218b4fed9b44085a884ed9b2fc686c9062ceb1fd8fcb076ac",
+      "integrated_sha256": "5fa6d5960ceb117218b4fed9b44085a884ed9b2fc686c9062ceb1fd8fcb076ac"
+    },
+    "FsrsMemoryState.kt": {
+      "upstream_sha256": "3b6d70cb0de3859637064a4d8d40eb3a915681448e4e75f7e227ea9e51f42b8d",
+      "integrated_sha256": "3d9132b6688814089909c23497decb313d75c0c017e4f07da4d0311f27b67680"
+    },
+    "FsrsParameters.kt": {
+      "upstream_sha256": "a490f6ae5c0218a1938c9ad557056e0abe74a6296634c716fe144fb4ac949202",
+      "integrated_sha256": "a490f6ae5c0218a1938c9ad557056e0abe74a6296634c716fe144fb4ac949202"
+    },
+    "FsrsRating.kt": {
+      "upstream_sha256": "ee524415ac6cbe8d0f45dadf9a0f2a8b1590eede4b692c5adbdf63d13b369970",
+      "integrated_sha256": "ee524415ac6cbe8d0f45dadf9a0f2a8b1590eede4b692c5adbdf63d13b369970"
+    },
+    "FsrsReviewInput.kt": {
+      "upstream_sha256": "ba0831e63071e18df9dec6c3d1d76a8d559228905e637d4fa0815feff19a832a",
+      "integrated_sha256": "770a5e314b9d4e1a39842afd44957b28b5cb80fba1b49715a0569533e91df882"
+    },
+    "FsrsReviewOutput.kt": {
+      "upstream_sha256": "0b540c227ce68c3f2d676c1af8a3df90d327c08791e52676411c988a46160fad",
+      "integrated_sha256": "2fbd53ac7dec0c42aea215cfbcd3353f1f333c2438c87c04b035e85cc223fdb9"
+    }
+  }
+}

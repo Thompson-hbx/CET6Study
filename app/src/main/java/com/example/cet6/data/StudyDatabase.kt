@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.Upsert
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.flow.Flow
@@ -52,7 +53,23 @@ data class WordReview(
     val wasNew: Boolean,
     val studiedOn: String,
     val createdAt: Long,
-    val nextDueAt: Long
+    val nextDueAt: Long,
+    @ColumnInfo(defaultValue = "0") val rating: Int = 0,
+    @ColumnInfo(defaultValue = "'legacy'") val algorithm: String = "legacy",
+    @ColumnInfo(defaultValue = "0.0") val stability: Double = 0.0,
+    @ColumnInfo(defaultValue = "0.0") val difficulty: Double = 0.0,
+    @ColumnInfo(defaultValue = "0") val elapsedDays: Int = 0
+)
+
+@Entity(tableName = "word_schedules")
+data class WordSchedule(
+    @PrimaryKey val word: String,
+    val stability: Double,
+    val difficulty: Double,
+    val lastReviewedAt: Long,
+    val phase: Int,
+    val step: Int,
+    val algorithm: String
 )
 
 @Entity(tableName = "daily_plans")
@@ -77,11 +94,16 @@ interface StudyDao {
     @Query("UPDATE words SET dueAt=:due, repetitions=:reps, intervalDays=:days WHERE word=:word")
     suspend fun recordReview(word: String, due: Long, reps: Int, days: Int)
     @Query("SELECT * FROM words WHERE word=:word") suspend fun word(word: String): WordEntity?
+    @Query("SELECT * FROM word_schedules") fun wordSchedules(): Flow<List<WordSchedule>>
+    @Query("SELECT * FROM word_schedules WHERE word=:word") suspend fun schedule(word: String): WordSchedule?
+    @Upsert suspend fun saveSchedule(schedule: WordSchedule)
+    @Query("SELECT EXISTS(SELECT 1 FROM word_reviews WHERE word=:word AND studiedOn=:date AND wasNew=1)")
+    suspend fun wasIntroducedOn(word: String, date: String): Boolean
     @Insert suspend fun addWordReview(review: WordReview)
     @Query("SELECT * FROM word_reviews ORDER BY createdAt DESC LIMIT 100")
     fun wordReviewHistory(): Flow<List<WordReview>>
-    @Query("SELECT studiedOn AS date, SUM(CASE WHEN wasNew=1 THEN 1 ELSE 0 END) AS newCount, " +
-        "SUM(CASE WHEN wasNew=0 THEN 1 ELSE 0 END) AS reviewCount, " +
+    @Query("SELECT studiedOn AS date, COUNT(DISTINCT CASE WHEN wasNew=1 THEN word END) AS newCount, " +
+        "COUNT(DISTINCT CASE WHEN wasNew=0 THEN word END) AS reviewCount, " +
         "SUM(CASE WHEN remembered=1 THEN 1 ELSE 0 END) AS rememberedCount, COUNT(*) AS totalCount " +
         "FROM word_reviews GROUP BY studiedOn ORDER BY studiedOn DESC")
     fun dailyWordProgress(): Flow<List<DailyWordProgress>>
@@ -100,7 +122,7 @@ interface StudyDao {
 }
 
 @Database(entities = [WordEntity::class, ReadingAttempt::class, EssayEntity::class,
-    WordReview::class, DailyPlan::class], version = 3)
+    WordReview::class, DailyPlan::class, WordSchedule::class], version = 4)
 abstract class StudyDatabase : RoomDatabase() {
     abstract fun dao(): StudyDao
     companion object {
@@ -115,10 +137,20 @@ abstract class StudyDatabase : RoomDatabase() {
                 db.execSQL("ALTER TABLE words ADD COLUMN source TEXT NOT NULL DEFAULT '项目原创示例'")
             }
         }
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS word_schedules (word TEXT NOT NULL, stability REAL NOT NULL, difficulty REAL NOT NULL, lastReviewedAt INTEGER NOT NULL, phase INTEGER NOT NULL, step INTEGER NOT NULL, algorithm TEXT NOT NULL, PRIMARY KEY(word))")
+                db.execSQL("ALTER TABLE word_reviews ADD COLUMN rating INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE word_reviews ADD COLUMN algorithm TEXT NOT NULL DEFAULT 'legacy'")
+                db.execSQL("ALTER TABLE word_reviews ADD COLUMN stability REAL NOT NULL DEFAULT 0.0")
+                db.execSQL("ALTER TABLE word_reviews ADD COLUMN difficulty REAL NOT NULL DEFAULT 0.0")
+                db.execSQL("ALTER TABLE word_reviews ADD COLUMN elapsedDays INTEGER NOT NULL DEFAULT 0")
+            }
+        }
         @Volatile private var INSTANCE: StudyDatabase? = null
         fun get(context: Context): StudyDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context.applicationContext, StudyDatabase::class.java,
-                "cet6_study.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3).build().also { INSTANCE = it }
+                "cet6_study.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).build().also { INSTANCE = it }
         }
     }
 }
@@ -134,15 +166,3 @@ val starterWords = listOf(
     WordEntity("substantial", "大量的；实质的", "They made substantial progress during the semester."),
     WordEntity("undermine", "削弱；破坏", "Lack of sleep can undermine concentration.")
 )
-
-/** A simple scheduling algorithm. Not a full FSRS/SM-2 implementation. */
-fun nextReview(card: WordEntity, remembered: Boolean, now: Long): WordEntity {
-    val days = if (!remembered) 1 else when (card.intervalDays) {
-        0 -> 1; 1 -> 3; 3 -> 7; 7 -> 14; else -> (card.intervalDays * 2).coerceAtMost(90)
-    }
-    return card.copy(
-        dueAt = now + days * 86_400_000L,
-        repetitions = if (remembered) card.repetitions + 1 else 0,
-        intervalDays = days
-    )
-}

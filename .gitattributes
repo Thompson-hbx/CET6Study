@@ -1,0 +1,2 @@
+# Keep pinned vendor source bytes reproducible for SOURCE_HASHES.json on Windows.
+third_party/bee-fsrs/src/** text eol=lf

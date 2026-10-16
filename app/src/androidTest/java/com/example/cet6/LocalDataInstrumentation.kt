@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.time.LocalDate
+import org.json.JSONObject
 
 /** Framework runner: no new test dependency; never opens the user's actual database or credentials. */
 class LocalDataInstrumentation : Instrumentation() {
@@ -20,12 +21,52 @@ class LocalDataInstrumentation : Instrumentation() {
     override fun onStart() {
         val results = Bundle()
         try {
-            runBlocking { verifyMigrationAndTransactions() }
-            results.putString("stream", "PASS: v1→v3 preserves words/reading/essays; daily plans persist and roll over; duplicate review writes once; history survives reopen; CSV/JSON import preserves existing progress and sources.\n")
+            runBlocking { verifyMigrationAndTransactions(); verifyReleasedSchemas() }
+            results.putString("stream", "PASS: v1→v4 preserves words/reading/essays; daily plans persist and roll over; duplicate review writes once; FSRS state/history survives reopen; CSV/JSON import preserves existing progress and sources.\n")
             finish(-1, results)
         } catch (e: Throwable) {
             results.putString("stream", "FAIL: ${e.javaClass.simpleName}: ${e.message}\n${e.stackTraceToString()}")
             finish(0, results)
+        }
+    }
+
+    private suspend fun verifyReleasedSchemas() {
+        for (version in 1..3) {
+            val file = File(targetContext.cacheDir, "released-$version-${System.nanoTime()}.db")
+            val schema = context.assets.open("com.example.cet6.data.StudyDatabase/$version.json")
+                .bufferedReader().use { JSONObject(it.readText()).getJSONObject("database") }
+            SQLiteDatabase.openOrCreateDatabase(file, null).use { old ->
+                val entities = schema.getJSONArray("entities")
+                for (i in 0 until entities.length()) {
+                    val table = entities.getJSONObject(i)
+                    old.execSQL(table.getString("createSql").replace("\u0024{TABLE_NAME}", table.getString("tableName")))
+                }
+                val sourceColumn = if (version >= 3) ",source" else ""
+                val sourceValue = if (version >= 3) ",'用户来源'" else ""
+                old.execSQL("INSERT INTO words (word,meaning,example,dueAt,repetitions,intervalDays$sourceColumn) VALUES ('preserved','原释义','Original sentence.',1800000000000,5,30$sourceValue)")
+                old.execSQL("INSERT INTO reading_attempts VALUES (10,'q1','C',0,1000)")
+                old.execSQL("INSERT INTO essays VALUES (11,'topic','original draft','original feedback',1001)")
+                if (version >= 2) {
+                    old.execSQL("INSERT INTO daily_plans VALUES ('2026-10-16',7,15)")
+                    old.execSQL("INSERT INTO word_reviews VALUES ('old-log','preserved',1,0,'2026-10-16',1000,1800000000000)")
+                }
+                old.version = version
+            }
+            val upgraded = Room.databaseBuilder(targetContext, StudyDatabase::class.java, file.absolutePath)
+                .addMigrations(StudyDatabase.MIGRATION_1_2, StudyDatabase.MIGRATION_2_3, StudyDatabase.MIGRATION_3_4).build()
+            try {
+                val word = upgraded.dao().word("preserved")!!
+                check(word.dueAt == 1_800_000_000_000L && word.repetitions == 5 && word.intervalDays == 30)
+                check(word.source == if (version == 3) "用户来源" else "项目原创示例")
+                check(upgraded.dao().schedule(word.word) == null) { "migration fabricated FSRS memory" }
+                check(upgraded.dao().readingHistory().first().single().answer == "C")
+                check(upgraded.dao().essays().first().single().content == "original draft")
+                if (version >= 2) {
+                    val log = upgraded.dao().wordReviewHistory().first().single()
+                    check(log.id == "old-log" && log.rating == 0 && log.algorithm == "legacy")
+                    check(upgraded.dao().dailyPlan("2026-10-16")?.newGoal == 7)
+                }
+            } finally { upgraded.close() }
         }
     }
 
@@ -42,7 +83,7 @@ class LocalDataInstrumentation : Instrumentation() {
             old.version = 1
         }
         fun open() = Room.databaseBuilder(targetContext, StudyDatabase::class.java, file.absolutePath)
-            .addMigrations(StudyDatabase.MIGRATION_1_2, StudyDatabase.MIGRATION_2_3).build()
+            .addMigrations(StudyDatabase.MIGRATION_1_2, StudyDatabase.MIGRATION_2_3, StudyDatabase.MIGRATION_3_4).build()
         var db = open()
         try {
             check(db.dao().word("legacy") == legacyWord) { "legacy word changed" }
@@ -57,14 +98,14 @@ class LocalDataInstrumentation : Instrumentation() {
             db.dao().addWords(listOf(WordEntity("new", "新词", "New word.")))
             val now = 1_800_000_000_000L
             val writes = coroutineScope {
-                listOf(async { repository.review("new", true, now) },
-                    async { repository.review("new", false, now) }).awaitAll()
+                listOf(async { repository.review("new", WordRating.GOOD, now) },
+                    async { repository.review("new", WordRating.AGAIN, now) }).awaitAll()
             }
             check(writes.count { it } == 1) { "double tap created multiple reviews" }
             check(db.dao().wordReviewHistory().first().single().wasNew)
             check(db.dao().dailyWordProgress().first().single().newCount == 1)
-            check(!repository.review("missing", true, now))
-            check(repository.review("legacy", false, now))
+            check(!repository.review("missing", WordRating.GOOD, now))
+            check(repository.review("legacy", WordRating.AGAIN, now))
             check(db.dao().word("legacy")?.repetitions == 0)
             check(db.dao().dailyWordProgress().first().single().reviewCount == 1)
             val scheduled = db.dao().word("new")!!
@@ -83,6 +124,14 @@ class LocalDataInstrumentation : Instrumentation() {
             db = open()
             check(db.dao().wordReviewHistory().first().size == 2)
             check(db.dao().word("new")!!.dueAt > now)
+            check(db.dao().schedule("new")!!.algorithm == WordScheduler.ALGORITHM)
+            val due = db.dao().word("new")!!.dueAt
+            val before = db.dao().schedule("new")!!
+            check(repository.review("new", WordRating.GOOD, due))
+            check(db.dao().schedule("new")!!.lastReviewedAt == due)
+            check(db.dao().schedule("new")!!.stability >= before.stability)
+            check(db.dao().dailyWordProgress().first().single().newCount == 1)
+            check(db.dao().dailyWordProgress().first().single().reviewCount == 1)
             check(db.dao().dailyPlan(date.toString())?.newGoal == 3)
             check(db.dao().word("imported")!!.source == "测试原创授权")
         } finally { db.close() }

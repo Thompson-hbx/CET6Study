@@ -11,11 +11,13 @@ android {
         applicationId = "com.example.cet6"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.2.0-p1.2"
+        versionCode = 4
+        versionName = "0.3.0-fsrs"
         testInstrumentationRunner = "com.example.cet6.LocalDataInstrumentation"
     }
     buildFeatures { compose = true }
+    sourceSets.getByName("main").java.srcDir("../third_party/bee-fsrs/src")
+    sourceSets.getByName("androidTest").assets.srcDir("schemas")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

@@ -12,6 +12,7 @@ class StudyRepository(private val db: StudyDatabase) {
     val words = dao.words()
     val wordReviews = dao.wordReviewHistory()
     val dailyProgress = dao.dailyWordProgress()
+    val schedules = dao.wordSchedules()
 
     suspend fun initialize() = dao.addWords(starterWords)
 
@@ -30,17 +31,22 @@ class StudyRepository(private val db: StudyDatabase) {
     }
 
     /** Re-read inside the transaction: stale UI/double taps must never reschedule a card twice. */
-    suspend fun review(word: String, remembered: Boolean, now: Long = System.currentTimeMillis()): Boolean =
+    suspend fun review(word: String, rating: WordRating, now: Long = System.currentTimeMillis()): Boolean =
         db.withTransaction {
             val current = dao.word(word) ?: return@withTransaction false
             if (current.dueAt > now) return@withTransaction false
-            val updated = nextReview(current, remembered, now)
+            val scheduled = WordScheduler.next(current, dao.schedule(word), rating, now)
+            val updated = scheduled.card
+            val date = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().toString()
             dao.recordReview(word, updated.dueAt, updated.repetitions, updated.intervalDays)
+            dao.saveSchedule(scheduled.state)
             dao.addWordReview(WordReview(
-                id = UUID.randomUUID().toString(), word = word, remembered = remembered,
-                wasNew = current.dueAt == 0L,
-                studiedOn = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().toString(),
-                createdAt = now, nextDueAt = updated.dueAt
+                id = UUID.randomUUID().toString(), word = word, remembered = rating == WordRating.GOOD,
+                wasNew = current.dueAt == 0L || dao.wasIntroducedOn(word, date),
+                studiedOn = date, createdAt = now, nextDueAt = updated.dueAt,
+                rating = rating.value, algorithm = WordScheduler.ALGORITHM,
+                stability = scheduled.state.stability, difficulty = scheduled.state.difficulty,
+                elapsedDays = scheduled.elapsedDays
             ))
             true
         }
