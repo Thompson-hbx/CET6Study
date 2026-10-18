@@ -11,11 +11,15 @@ android {
         applicationId = "com.example.cet6"
         minSdk = 26
         targetSdk = 35
-        versionCode = 14
-        versionName = "0.5.5-input"
+        versionCode = 15
+        versionName = "0.6.0-paper-ink"
         testInstrumentationRunner = "com.example.cet6.LocalDataInstrumentation"
     }
     buildFeatures { compose = true }
+    // Personal third-party imports must not be distributed inside the APK.
+    androidResources {
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:CVS:thumbs.db:picasa.ini:*~:exam-packs"
+    }
     sourceSets.getByName("main").java.srcDir("../third_party/bee-fsrs/src")
     sourceSets.getByName("androidTest").assets.srcDir("schemas")
     compileOptions {

@@ -5,6 +5,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,7 +25,15 @@ fun BackupCard(vm: StudyViewModel) {
     val restore = rememberLauncherForActivityResult(StudyDocumentPicker()) { uri ->
         if (uri != null) vm.previewBackup(uri)
     }
-    OutlinedButton(onClick = { expanded = !expanded }) { Text(if (expanded) "收起数据备份" else "数据备份与恢复") }
+    OutlinedButton(
+        onClick = { expanded = !expanded },
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.small
+    ) {
+        Icon(Icons.Outlined.Backup, contentDescription = null, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.width(8.dp))
+        Text(if (expanded) "收起数据备份" else "数据备份与恢复")
+    }
     if (expanded) {
         ElevatedCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {

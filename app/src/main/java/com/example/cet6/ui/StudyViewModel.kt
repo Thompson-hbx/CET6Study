@@ -50,11 +50,16 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var backupPreview by androidx.compose.runtime.mutableStateOf<StudyBackup?>(null)
         private set
-    var speechReady by androidx.compose.runtime.mutableStateOf(false)
+    private val examStore = ExamStore(app)
+    var examPapers by androidx.compose.runtime.mutableStateOf<List<ExamPaper>>(emptyList())
         private set
-    var speechStatus by androidx.compose.runtime.mutableStateOf("正在检查系统离线英文语音……")
+    var examPreview by androidx.compose.runtime.mutableStateOf<List<ExamPaper>>(emptyList())
         private set
-    private val speech = OfflineSpeech(app) { ready, message -> speechReady = ready; speechStatus = message }
+    var examStatus by androidx.compose.runtime.mutableStateOf("")
+        private set
+    var examBusy by androidx.compose.runtime.mutableStateOf(false)
+        private set
+    private var examLoaded = false
     var pronunciations by androidx.compose.runtime.mutableStateOf<Map<String, String>>(emptyMap())
         private set
 
@@ -98,6 +103,12 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         private set
 
     init {
+        viewModelScope.launch {
+            try {
+                examPapers = withContext(Dispatchers.IO) { examStore.load() }
+                examLoaded = true
+            } catch (_: Exception) { examStatus = "本地题库读取失败，已保留原文件；请先导出或联系维护者，不要覆盖导入。" }
+        }
         viewModelScope.launch {
             try {
                 study.initialize()
@@ -241,10 +252,71 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun refreshStudyClock() { viewModelScope.launch { refreshStudyDay() } }
-    fun speak(text: String) = speech.speak(text)
-    fun stopSpeech() = speech.stop()
     fun saveDrafts() { viewModelScope.launch { coach.flush() } }
-    override fun onCleared() { speech.close(); super.onCleared() }
+
+    fun previewExam(uri: Uri) {
+        if (examBusy || !examLoaded) return
+        examBusy = true
+        examPreview = emptyList()
+        viewModelScope.launch {
+            try {
+                examPreview = withContext(Dispatchers.IO) {
+                    val bytes = getApplication<Application>().contentResolver.openInputStream(uri)?.use { input ->
+                        val output = java.io.ByteArrayOutputStream()
+                        val buffer = ByteArray(8192)
+                        while (true) {
+                            val count = input.read(buffer)
+                            if (count < 0) break
+                            require(output.size() + count <= ExamCodec.MAX_BYTES) { "内容包超过 4 MiB" }
+                            output.write(buffer, 0, count)
+                        }
+                        output.toByteArray()
+                    }
+                        ?: error("无法读取文件")
+                    require(bytes.size <= ExamCodec.MAX_BYTES) { "内容包超过 4 MiB" }
+                    val text = Charsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()
+                    ExamCodec.decode(text).also { examStore.merge(examPapers, it) }
+                }
+                examStatus = "预览 ${examPreview.size} 套；尚未写入。待校对内容不能开始训练。"
+            } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) { examStatus = "未导入：${e.message}"
+            } catch (_: Exception) { examStatus = "文件无法解析，请选择 UTF-8 CET6ExamPack v1 JSON；PDF / Word 请先使用本地转换工具。"
+            } finally { examBusy = false }
+        }
+    }
+
+    fun confirmExamImport() {
+        if (examBusy || !examLoaded || examPreview.isEmpty()) return
+        val incoming = examPreview
+        examBusy = true
+        viewModelScope.launch {
+            try {
+                val merged = withContext(Dispatchers.IO) { examStore.merge(examPapers, incoming).also(examStore::save) }
+                examPapers = merged
+                examPreview = emptyList()
+                examStatus = "已保存 ${incoming.size} 套个人内容；重复导入不增加套卷，既有作答保留。"
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { examStatus = "保存未完成，原题库保留，请重试。"
+            } finally { examBusy = false }
+        }
+    }
+
+    fun exportExam(uri: Uri) {
+        if (examBusy || !examLoaded) return
+        examBusy = true
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    getApplication<Application>().contentResolver.openOutputStream(uri, "wt")?.use {
+                        it.write(ExamCodec.encode(examPapers).toByteArray(Charsets.UTF_8))
+                    } ?: error("无法写入")
+                }
+                examStatus = "个人题库已导出；作答历史请另用学习数据备份。"
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { examStatus = "题库导出失败，目标可能留下不完整文件，请重试。"
+            } finally { examBusy = false }
+        }
+    }
 
     private suspend fun refreshStudyDay() {
         now = System.currentTimeMillis()

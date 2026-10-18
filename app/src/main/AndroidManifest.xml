@@ -4,7 +4,6 @@
     <queries>
         <package android:name="com.android.documentsui" />
         <package android:name="com.google.android.documentsui" />
-        <intent><action android:name="android.intent.action.TTS_SERVICE" /></intent>
     </queries>
     <application
         android:allowBackup="false"

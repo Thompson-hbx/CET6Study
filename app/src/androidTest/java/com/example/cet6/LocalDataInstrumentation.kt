@@ -19,17 +19,30 @@ class LocalDataInstrumentation : Instrumentation() {
     private var uiScenario = false
     private var translationFixture = false
     private var longFeedbackFixture = false
+    private var examFixture = false
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
         uiScenario = arguments?.getString("scenario") == "ui"
         translationFixture = arguments?.getString("fixture") == "translation"
         longFeedbackFixture = arguments?.getString("fixture") == "long-feedback"
+        examFixture = arguments?.getString("fixture") == "g4-sample"
         start()
     }
 
     override fun onStart() {
         val results = Bundle()
         try {
+            if (examFixture) {
+                check(android.os.Build.MODEL.contains("sdk_gphone") || android.os.Build.FINGERPRINT.contains("generic")) { "Exam sample fixture requires emulator" }
+                val input = File(targetContext.getExternalFilesDir(null), "exam-sample.json")
+                val papers = ExamCodec.decode(input.readText())
+                check(papers.all { it.sample && it.licenseStatus == "original" })
+                val store = ExamStore(targetContext)
+                store.save(store.merge(store.load(), papers))
+                results.putString("stream", "SEEDED: labelled original workflow sample, not genuine exam content.\n")
+                finish(-1, results)
+                return
+            }
             if (longFeedbackFixture) {
                 check(android.os.Build.MODEL.contains("sdk_gphone") || android.os.Build.FINGERPRINT.contains("generic")) {
                     "Long layout fixture is restricted to an emulator"
@@ -63,7 +76,7 @@ class LocalDataInstrumentation : Instrumentation() {
                 finish(-1, results)
                 return
             }
-            runBlocking { verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify() }
+            runBlocking { ExamInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify() }
             results.putString("stream", "PASS: v1-v6 to v7 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v4 roundtrip and v1-v3 imports; existing backup and scheduler checks.\n")
             finish(-1, results)
         } catch (e: Throwable) {

@@ -36,7 +36,8 @@ class CoachState(
     var partialEntryId by mutableStateOf<String?>(null)
         private set
     private val writes = mutableMapOf<CoachKind, Job>()
-    private val readingReady = CompletableDeferred<Unit>()
+    private val ready = CoachKind.entries.associateWith { CompletableDeferred<Unit>() }
+    private val readingReady = ready.getValue(CoachKind.READING)
     private val shareLock = Mutex()
     var shareStatus by mutableStateOf("")
         private set
@@ -54,7 +55,7 @@ class CoachState(
                 try { entries[kind] = repository.draft(kind) ?: CoachPractice(kind = kind.name) }
                 catch (e: CancellationException) { throw e }
                 catch (_: Exception) { messages[kind] = "草稿读取失败，请重启重试；未覆盖已有记录。" }
-                finally { if (kind == CoachKind.READING) readingReady.complete(Unit) }
+                finally { ready.getValue(kind).complete(Unit) }
             }
         }
     }
@@ -148,6 +149,22 @@ class CoachState(
 
     fun save(kind: CoachKind) = action(kind) { entries[kind]?.let { persist(kind, it) } }
 
+    fun startExam(practice: CoachPractice) {
+        val kind = CoachKind.valueOf(practice.kind)
+        action(kind) {
+            ready.getValue(kind).await()
+            val current = entries[kind] ?: return@action
+            if (!persist(kind, current)) return@action
+            // Reuse the latest saved draft for this exact content revision, never duplicate on repeated taps.
+            val meta = ExamCodec.metadata(practice) ?: return@action
+            val draft = (listOf(current) + history).firstOrNull { it.kind == kind.name && it.submittedAt == 0L &&
+                ExamCodec.itemId(it) == meta.optString("itemId") &&
+                ExamCodec.metadata(it)?.optInt("revision") == meta.optInt("revision") }
+            val next = draft ?: practice
+            if (persist(kind, next)) { entries[kind] = next; partial = "" }
+        }
+    }
+
     suspend fun flush(): Boolean {
         if (working) return false
         working = true
@@ -193,6 +210,35 @@ class CoachState(
         } catch (e: Exception) {
             messages[kind] = "微练习未生成：${CoachFailures.describe(e)} 原练习和错因已保留。"
         }
+    }
+
+    fun readingHint(number: Int, level: Int, followUp: String = "") = action(CoachKind.READING) {
+        val kind = CoachKind.READING
+        val current = entries[kind] ?: return@action
+        val prompt = try {
+            require(followUp.length <= 2000) { "追问请控制在 2000 字以内" }
+            ReadingGuidance.prompt(current, number, level) + if (followUp.isBlank()) "" else {
+                val previous = current.feedback.substringAfterLast("## 第 $number 题 · 第 $level 层提示", "").substringBefore("\n\n## 第 ").takeLast(4000)
+                "\n---本层此前提示（可能有误）---\n$previous\n---用户本层追问---\n$followUp\n仍只提供当前层提示，不提前揭示后续层次的答案。"
+            }
+        }
+        catch (e: IllegalArgumentException) { messages[kind] = e.message.orEmpty(); return@action }
+        if (!persist(kind, current)) return@action
+        if (!canRequest()) { messages[kind] = "答案已保存在本机。AI 提示需要在“我的”连接并选择模型；也可先按本地提示回看原卷。"; return@action }
+        val selectedModel = model()
+        partial = ""
+        partialEntryId = current.id
+        activeRequest = current.id
+        messages[kind] = "正在生成第 $number 题的第 $level 层提示……"
+        try {
+            val completed = request(prompt) { partial += it }
+            check(completed.isNotBlank())
+            val feedback = listOf(current.feedback, "## 第 $number 题 · 第 $level 层提示\n\n$completed").filter(String::isNotBlank).joinToString("\n\n")
+            val next = current.copy(feedback = feedback, model = selectedModel, updatedAt = System.currentTimeMillis())
+            if (persist(kind, next)) { entries[kind] = next; partial = ""; messages[kind] = "本层提示已保存。先回到纸上原题尝试，再展开下一层。" }
+        } catch (e: CancellationException) { throw e
+        } catch (e: Exception) { messages[kind] = "提示未完成：${CoachFailures.describe(e)} 已保留答案和此前完整提示。"
+        } finally { activeRequest = null }
     }
 
     fun submit(kind: CoachKind, explain: Boolean, followUp: String = "") = action(kind) {

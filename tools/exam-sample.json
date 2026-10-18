@@ -1,0 +1,288 @@
+{
+  "format": "CET6ExamPack",
+  "version": 1,
+  "papers": [
+    {
+      "stableId": "sample-cet6-2026-06-13-1",
+      "examDate": "2026-06-13",
+      "setCode": "1",
+      "revision": 1,
+      "sourceName": "项目原创功能样本；非真题",
+      "sourceUrl": "local:tools/exam-sample.json",
+      "licenseStatus": "original",
+      "reviewed": true,
+      "sample": true,
+      "passages": [
+        {
+          "code": "1",
+          "title": "The quiet hour",
+          "content": "A university library introduced a quiet hour each afternoon. During that hour, group discussions moved to a separate room, while the main reading hall remained open for individual work. Some students initially worried that the change would reduce opportunities to collaborate. After a month, however, they reported that a clear division of spaces made both activities easier.\n\nThe librarians did not assume that silence alone would improve learning. They invited students to explain how they used the building and adjusted the timetable after collecting comments. The experiment suggests that a useful study environment depends on listening to its users as well as setting rules.",
+          "questions": [
+            {
+              "number": 46,
+              "stem": "What changed during the quiet hour?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "The library closed."
+                },
+                {
+                  "label": "B",
+                  "text": "Group discussions moved to another room."
+                },
+                {
+                  "label": "C",
+                  "text": "Students stopped reading."
+                },
+                {
+                  "label": "D",
+                  "text": "Librarians left the building."
+                }
+              ],
+              "referenceAnswer": "B",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "group discussions moved to a separate room"
+            },
+            {
+              "number": 47,
+              "stem": "What initially concerned some students?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "The cost of books."
+                },
+                {
+                  "label": "B",
+                  "text": "The lack of volunteers."
+                },
+                {
+                  "label": "C",
+                  "text": "Fewer opportunities to collaborate."
+                },
+                {
+                  "label": "D",
+                  "text": "The loss of online access."
+                }
+              ],
+              "referenceAnswer": "C",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "reduce opportunities to collaborate"
+            },
+            {
+              "number": 48,
+              "stem": "What did students report after a month?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "Dividing spaces helped both activities."
+                },
+                {
+                  "label": "B",
+                  "text": "The experiment had failed."
+                },
+                {
+                  "label": "C",
+                  "text": "All rules were unnecessary."
+                },
+                {
+                  "label": "D",
+                  "text": "The reading hall was too small."
+                }
+              ],
+              "referenceAnswer": "A",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "a clear division of spaces made both activities easier"
+            },
+            {
+              "number": 49,
+              "stem": "Why was the timetable adjusted?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "A room was sold."
+                },
+                {
+                  "label": "B",
+                  "text": "Classes ended early."
+                },
+                {
+                  "label": "C",
+                  "text": "A computer failed."
+                },
+                {
+                  "label": "D",
+                  "text": "Students provided comments."
+                }
+              ],
+              "referenceAnswer": "D",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "adjusted the timetable after collecting comments"
+            },
+            {
+              "number": 50,
+              "stem": "What is the main lesson?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "Silence always guarantees learning."
+                },
+                {
+                  "label": "B",
+                  "text": "Users should help shape study environments."
+                },
+                {
+                  "label": "C",
+                  "text": "Libraries need no rules."
+                },
+                {
+                  "label": "D",
+                  "text": "Collaboration should be prohibited."
+                }
+              ],
+              "referenceAnswer": "B",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "listening to its users as well as setting rules"
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": "Repair before replacement",
+          "content": "A small college opened a repair workshop where students could bring damaged household objects. Volunteers taught visitors how to identify simple faults before deciding whether an item needed replacing. The workshop was free, but visitors were asked to describe what they had learned so that future volunteers could benefit.\n\nNot every object could be repaired safely. Electrical equipment with exposed wiring was referred to qualified technicians. The organisers considered recognising these limits an essential part of the project. Their aim was to encourage thoughtful decisions about resources, rather than to promise that every broken object could be saved.",
+          "questions": [
+            {
+              "number": 51,
+              "stem": "Who offered repair help?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "Volunteers."
+                },
+                {
+                  "label": "B",
+                  "text": "All visitors."
+                },
+                {
+                  "label": "C",
+                  "text": "Only shop owners."
+                },
+                {
+                  "label": "D",
+                  "text": "Nobody."
+                }
+              ],
+              "referenceAnswer": "A",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "Volunteers taught visitors"
+            },
+            {
+              "number": 52,
+              "stem": "What did visitors contribute?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "A monthly fee."
+                },
+                {
+                  "label": "B",
+                  "text": "New equipment."
+                },
+                {
+                  "label": "C",
+                  "text": "An account of their learning."
+                },
+                {
+                  "label": "D",
+                  "text": "A replacement object."
+                }
+              ],
+              "referenceAnswer": "C",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "describe what they had learned"
+            },
+            {
+              "number": 53,
+              "stem": "Where was unsafe equipment sent?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "To the reading hall."
+                },
+                {
+                  "label": "B",
+                  "text": "To qualified technicians."
+                },
+                {
+                  "label": "C",
+                  "text": "To untrained students."
+                },
+                {
+                  "label": "D",
+                  "text": "To a classroom."
+                }
+              ],
+              "referenceAnswer": "B",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "referred to qualified technicians"
+            },
+            {
+              "number": 54,
+              "stem": "Why did organisers recognise limits?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "To sell more objects."
+                },
+                {
+                  "label": "B",
+                  "text": "To stop all repairs."
+                },
+                {
+                  "label": "C",
+                  "text": "To avoid collecting comments."
+                },
+                {
+                  "label": "D",
+                  "text": "Safe decisions were part of the project."
+                }
+              ],
+              "referenceAnswer": "D",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "recognising these limits an essential part"
+            },
+            {
+              "number": 55,
+              "stem": "What was the aim?",
+              "options": [
+                {
+                  "label": "A",
+                  "text": "Repair every object."
+                },
+                {
+                  "label": "B",
+                  "text": "Replace all objects."
+                },
+                {
+                  "label": "C",
+                  "text": "Encourage thoughtful resource decisions."
+                },
+                {
+                  "label": "D",
+                  "text": "Charge visitors."
+                }
+              ],
+              "referenceAnswer": "C",
+              "answerSource": "项目原创功能测试答案；非官方真题答案",
+              "evidence": "encourage thoughtful decisions about resources"
+            }
+          ]
+        }
+      ],
+      "writingPrompt": "Write an essay discussing how a university can provide better spaces for independent study and collaboration.",
+      "writingInstructions": "Original functional sample, not a CET-6 exam task. Write 150–200 words and support your view with examples.",
+      "chineseText": "这所大学的图书馆为学生提供安静的阅读空间，也为小组讨论设置了独立的房间。图书管理员定期收集学生的意见，并根据实际需要调整开放时间。",
+      "referenceTranslation": "The university library provides quiet reading spaces as well as separate rooms for group discussions. Librarians regularly collect students’ comments and adjust opening hours according to their needs.",
+      "referenceSource": "项目原创参考译文；非官方答案"
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.*
 
@@ -16,22 +17,81 @@ import com.example.cet6.data.*
 fun ReadingChoices(entry: CoachPractice, editable: Boolean, onAnswer: (String) -> Unit) {
     val questions = remember(entry.questions) { ReadingQuestions.parse(entry.questions) }
     if (questions.isEmpty()) {
-        Text("可直接按题号作答。题目按 1. / 2. 编号、选项 A. 至 F. 各占一行时，会显示选项按钮。",
-            style = MaterialTheme.typography.bodySmall)
+        Surface(
+            shape = MaterialTheme.shapes.small,
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                "可直接按题号作答。题目按 1. / 2. 编号、选项 A. 至 F. 各占一行时，会显示选项按钮。",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(12.dp)
+            )
+        }
         return
     }
     val selectable = ReadingQuestions.canSelect(entry.answer)
-    if (!selectable && editable) Text("当前作答包含说明文字，请在下方继续编辑；选项按钮仅适用于「1. A」格式。")
+    if (!selectable && editable) {
+        Surface(
+            shape = MaterialTheme.shapes.small,
+            color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.6f),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                "当前作答包含说明文字，请在下方继续编辑；选项按钮仅适用于「1. A」格式。",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                modifier = Modifier.padding(12.dp)
+            )
+        }
+    }
     questions.forEach { question ->
-        ElevatedCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text("${question.number}. ${question.text}", style = MaterialTheme.typography.titleMedium)
+        ElevatedCard(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+        ) {
+            Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    "${question.number}. ${question.text}",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 question.choices.forEach { option ->
+                    val isSelected = ReadingQuestions.selected(entry.answer, question.number) == option.label
                     val select = { onAnswer(ReadingQuestions.choose(entry.answer, question.number, option.label)) }
-                    Row(Modifier.fillMaxWidth().clickable(enabled = editable && selectable, onClick = select)) {
-                        RadioButton(selected = ReadingQuestions.selected(entry.answer, question.number) == option.label,
-                            onClick = select, enabled = editable && selectable)
-                        Text("${option.label}. ${option.text}", Modifier.padding(top = 12.dp))
+                    Surface(
+                        shape = MaterialTheme.shapes.small,
+                        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        border = androidx.compose.foundation.BorderStroke(
+                            1.dp,
+                            if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(enabled = editable && selectable, onClick = select)
+                    ) {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp, vertical = 6.dp),
+                            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = isSelected,
+                                onClick = select,
+                                enabled = editable && selectable
+                            )
+                            Spacer(Modifier.width(4.dp))
+                            Text(
+                                "${option.label}. ${option.text}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
                     }
                 }
             }
