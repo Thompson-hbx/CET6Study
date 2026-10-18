@@ -36,7 +36,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         automation.waitForIdle(350, 3000)
     }
     private fun top() { repeat(12) {
-        if (node("AI 阅读教练") != null) return
+        if (node("阅读练习") != null) return
         scroll(false)
     } }
     private fun seek(text: String): AccessibilityNodeInfo {
@@ -76,7 +76,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         runner.startActivitySync(Intent(runner.targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         automation.waitForIdle(500, 5000)
         click("阅读")
-        click("新建阅读练习（保留当前内容）")
+        click("新建练习")
         SystemClock.sleep(400)
         check(runBlocking { StudyDatabase.get(runner.targetContext).dao().coachDraft("READING")?.questions?.isBlank() == true }) {
             "New exercise was not opened; stopping before editing existing work"
@@ -84,7 +84,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         top()
         val title = "模拟器UI阅读-${System.currentTimeMillis()}"
         val sentence = "Libraries need quiet rooms."
-        enter("阅读题目 / 标题", title)
+        enter("练习名称", title)
         enter("粘贴英文阅读文章", sentence)
         enter("新题目（含选项；可附参考答案）", "1. What do libraries need?\nA. Quiet rooms.\nB. Noise.")
         click("添加题目")
@@ -92,12 +92,12 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         val added = runBlocking { StudyDatabase.get(runner.targetContext).dao().allCoach().single { it.title == title } }
         check(com.example.cet6.data.ReadingQuestions.parse(added.questions).isNotEmpty()) { "Question not added or not selectable: ${added.questions}" }
         click("A. Quiet rooms.")
-        click("提交作答")
+        click("提交")
         click("错因难句")
         seek("原文证据与难句")
         enter("粘贴要核对的原文引用或难句", sentence)
         click("收藏这段原文")
-        seek("本篇难句收藏（离线可看）")
+        seek("本篇难句收藏")
         click("逻辑推断")
         // Exercise the background-save hook while its debounce write is still pending.
         runner.targetContext.startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

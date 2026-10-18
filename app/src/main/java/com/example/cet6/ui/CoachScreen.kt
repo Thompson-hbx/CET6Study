@@ -46,7 +46,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         return
     }
     if (entry == null) {
-        Text("AI ${kind.label}教练", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text("${kind.label}练习", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         Text(state.messages[kind] ?: "正在恢复本地草稿……", style = MaterialTheme.typography.bodyMedium)
         return
     }
@@ -57,7 +57,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("AI ${kind.label}教练", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text("${kind.label}练习", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         StatusBadge(
             text = if (editable) "可编辑" else if (entry.submittedAt > 0) "已作答" else "只读",
             isSuccess = editable
@@ -65,7 +65,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     }
 
     Text(
-        state.messages[kind] ?: "输入后自动保存草稿，也可手动保存。AI 批改不代表官方答案；请先核对再提交。",
+        state.messages[kind].orEmpty(),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
@@ -110,7 +110,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     ) {
         Icon(Icons.Outlined.Add, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(6.dp))
-        Text("新建${kind.label}练习（保留当前内容）", fontWeight = FontWeight.SemiBold)
+        Text("新建练习", fontWeight = FontWeight.SemiBold)
     }
 
     if (panel != 3) CoachSourceCard(state, entry)
@@ -119,11 +119,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         val materialWords = remember(entry.material) { englishWords.findAll(entry.material).count() }
         val answerWords = remember(entry.answer) { englishWords.findAll(entry.answer).count() }
 
-        Text("练习材料", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         OutlinedTextField(
             entry.title,
             { value -> state.edit(kind) { it.copy(title = value) } },
-            label = { Text("${kind.label}题目 / 标题") },
+            label = { Text("练习名称") },
             readOnly = !editable,
             enabled = !state.working,
             shape = MaterialTheme.shapes.small,
@@ -182,7 +181,6 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
             ReadingChoices(entry, editable) { value -> state.edit(kind) { it.copy(answer = value) } }
         }
 
-        Text("独立作答", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         OutlinedTextField(
             entry.answer,
             { value -> state.edit(kind) { it.copy(answer = value) } },
@@ -210,7 +208,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 modifier = Modifier.size(16.dp)
             )
             Text(
-                if (isSaved) "本次内容已保存到本机" else "本次内容尚未确认保存，可点击「保存到本机」",
+                if (isSaved) "已保存" else "尚未确认保存，请保存重试",
                 style = MaterialTheme.typography.bodySmall,
                 color = if (isSaved) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.tertiary
             )
@@ -218,7 +216,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
 
         if (entry.submittedAt > 0) {
             Text(
-                "本次原作答已保留。需要修改时，到「错因难句」选择「重新练习 / 修改一版」。",
+                "修改作答：在「错因难句」选择「再练」。",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -241,7 +239,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     ) {
                         Icon(Icons.Outlined.Save, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(6.dp))
-                        Text("保存到本机")
+                        Text("保存")
                     }
                     if (editable) {
                         OutlinedButton(
@@ -252,7 +250,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                         ) {
                             Icon(Icons.Outlined.Check, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
-                            Text("提交作答")
+                            Text("提交")
                         }
                     }
                 }
@@ -267,14 +265,14 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     Icon(Icons.Outlined.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        if (entry.feedback.isBlank()) "保存作答并请求 AI ${if (kind == CoachKind.READING) "解析" else "批改"}" else "重新请求 AI",
+                        if (entry.feedback.isBlank()) "AI ${if (kind == CoachKind.READING) "解析" else "批改"}" else "重新请求 AI",
                         fontWeight = FontWeight.SemiBold
                     )
                 }
 
                 if (!vm.hasPlan || vm.chosenModel.isBlank()) {
                     Text(
-                        "AI 需要网络：到「连接」页完成登录并加载模型；本地保存不受影响。",
+                        "AI 未连接，请到「我的」连接并选择模型。",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -301,7 +299,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     modifier = Modifier.size(36.dp)
                 )
                 Text(
-                    "尚无完整 AI 反馈。可在资料作答页填写内容，或重试已保存的作答。",
+                    "暂无 AI 反馈",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -356,7 +354,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("已保存 AI 反馈 · ${entry.model}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                    Text("AI 反馈 · ${entry.model}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
                     Surface(
                         shape = MaterialTheme.shapes.extraSmall,
                         color = MaterialTheme.colorScheme.secondaryContainer
@@ -374,7 +372,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 OutlinedTextField(
                     followUp,
                     { followUp = it.take(4000) },
-                    label = { Text("继续追问（可要求定位证据或拆解难句）") },
+                    label = { Text("继续追问") },
                     enabled = !state.working,
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.fillMaxWidth()
@@ -386,7 +384,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 ) {
                     Icon(Icons.Outlined.Send, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("发送追问并保存")
+                    Text("发送")
                 }
                 MarkdownFeedback(entry.feedback)
             }
@@ -403,11 +401,6 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("错因归档与复习", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text(
-                    "回看原文与上方作答，核对 AI 建议；保存自己的错因以便复习。",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     listOf("词汇理解", "长难句", "逻辑推断", "选项陷阱", "语法", "表达").forEach { category ->
                         val selected = entry.errorReason.contains(category)
@@ -424,16 +417,11 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 OutlinedTextField(
                     entry.errorReason,
                     { value -> state.edit(kind) { it.copy(errorReason = value) } },
-                    label = { Text("我的错因 / 修改笔记（可纠正 AI 归因）") },
+                    label = { Text("我的错因 / 修改笔记") },
                     enabled = !state.working,
                     minLines = 2,
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    "按自己确认的错因生成新练习；只发送当前练习的相关内容，生成失败仍保留原题。",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Button(
                     onClick = { state.generate(kind) },
@@ -443,7 +431,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 ) {
                     Icon(Icons.Outlined.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("AI 生成针对练习")
+                    Text("AI 针对练习")
                 }
                 OutlinedButton(
                     onClick = { state.open(kind, entry, retry = true) },
@@ -453,7 +441,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 ) {
                     Icon(Icons.Outlined.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("重新练习 / 修改一版（保留本次记录）")
+                    Text("再练")
                 }
             }
         }
@@ -574,7 +562,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                                 ) {
                                     Icon(Icons.Outlined.Visibility, contentDescription = null, modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(4.dp))
-                                    Text("查看 / 继续")
+                                    Text("继续")
                                 }
                                 OutlinedButton(
                                     onClick = { state.open(kind, saved, retry = true) },
@@ -652,7 +640,7 @@ fun WritingAndTranslationScreen(
             shape = MaterialTheme.shapes.medium
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("旧版作文批改记录（已保留）", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text("旧版作文记录", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 vm.essays.forEach { saved ->
                     var expanded by remember(saved.id) { mutableStateOf(false) }
                     OutlinedButton(onClick = { expanded = !expanded }, shape = MaterialTheme.shapes.small) {

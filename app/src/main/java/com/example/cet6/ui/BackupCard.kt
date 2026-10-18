@@ -39,8 +39,8 @@ fun BackupCard(vm: StudyViewModel) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("导出全部词汇、学习日志、复习计划、每日目标、旧版记录，以及阅读、作文、翻译训练、草稿和错因。文件不包含登录凭证。")
                 Text("备份是包含学习内容的明文 JSON，请选择自己信任的保存位置。恢复前先预览，重复恢复不会重复增加记录。")
-                OutlinedButton(onClick = { export.launch("CET6Study-${vm.today}.json") }, enabled = !vm.backupBusy) { Text("导出完整学习备份") }
-                OutlinedButton(onClick = { restore.launch(arrayOf("*/*")) }, enabled = !vm.backupBusy) { Text("选择备份并预览") }
+                OutlinedButton(onClick = { export.launch("CET6Study-${vm.today}.json") }, enabled = !vm.backupBusy) { Text("导出备份") }
+                OutlinedButton(onClick = { restore.launch(arrayOf("*/*")) }, enabled = !vm.backupBusy) { Text("恢复预览") }
                 if (vm.backupBusy) LinearProgressIndicator(Modifier.fillMaxWidth())
                 if (vm.backupStatus.isNotBlank()) Text(vm.backupStatus)
             }

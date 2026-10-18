@@ -36,7 +36,7 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("我的薄弱项回顾", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text("错因回顾", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Surface(
                     shape = MaterialTheme.shapes.extraSmall,
                     color = MaterialTheme.colorScheme.tertiaryContainer
@@ -50,11 +50,6 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                     )
                 }
             }
-            Text(
-                "按自己确认的错因筛选。记录数不是考试正确率，也不代表能力变化。",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 FilterChip(
                     selected = category == null,
@@ -86,11 +81,6 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Text(
-                "按作答日期分组，使用当前笔记；同一练习可属于多个类别。",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
             if (records.isEmpty()) {
                 Text(
                     "暂未记录错因。完成练习后，可在「错因难句」中记录自己的问题。",
@@ -147,7 +137,7 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                         ) {
                             Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
-                            Text("回看错因与针对练习")
+                            Text("回看练习")
                         }
                     }
                 }

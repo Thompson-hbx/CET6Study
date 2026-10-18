@@ -113,7 +113,7 @@ private fun MainContent(vm: StudyViewModel) {
                 Icon(Icons.Default.ArrowUpward, contentDescription = "返回训练导航")
             }
         },
-        topBar = { TopAppBar(title = { Text(if (tab == 0) "六级研习室" else tabs[tab],
+        topBar = { if (tab != 1) TopAppBar(title = { Text(if (tab == 0) "历年真题" else tabs[tab],
             style = MaterialTheme.typography.titleLarge) }) },
         bottomBar = {
             NavigationBar(containerColor = MaterialTheme.colorScheme.background, tonalElevation = 0.dp) {
@@ -143,14 +143,11 @@ private fun MainContent(vm: StudyViewModel) {
                     if (entry != null && com.example.cet6.data.ExamCodec.metadata(entry) != null && !custom) {
                         com.example.cet6.ui.ExamTrainingScreen(vm, kind, scroll)
                     } else {
-                        Text("自定义练习", style = MaterialTheme.typography.headlineMedium)
-                        Text("使用你有权使用的材料，或返回题库选择已导入试卷。", style = MaterialTheme.typography.bodyMedium)
                         CoachScreen(vm, kind, scroll)
                     }
-                    TextButton(onClick = { tab = 0 }) { Text("返回题库 / 选择试卷") }
+                    TextButton(onClick = { tab = 0 }) { Text("返回题库") }
                 }
                 2 -> {
-                    Text("让每次练习留下收获", style = MaterialTheme.typography.headlineMedium)
                     WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, onReview = { open(it) })
                     com.example.cet6.ui.ExamHistory(vm, onOpen = { open(it) })
                 }
@@ -162,7 +159,6 @@ private fun MainContent(vm: StudyViewModel) {
                         TodayScreen(vm, onWords = { mine = "words" }, onReading = { kind = CoachKind.READING; custom = true; tab = 1 },
                             onWriting = { kind = CoachKind.WRITING; custom = true; tab = 1 }, onReview = { open(it) }) }
                     else -> {
-                        Text("自己的学习节奏", style = MaterialTheme.typography.headlineMedium)
                         com.example.cet6.ui.PaperRow("ChatGPT 与模型", if (vm.hasPlan) "已连接 · 管理模型与授权" else "连接后可请求 AI 讲解", { mine = "connection" })
                         BackupCard(vm)
                         Text("题库内容与作答分开保存，请在题库页单独导出个人题库。", style = MaterialTheme.typography.bodySmall)

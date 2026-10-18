@@ -1,0 +1,10 @@
+android_metadata identical True
+words identical True
+reading_attempts before 0 after 0 existing changed fields []
+essays before 0 after 0 existing changed fields []
+word_reviews before 0 after 0 existing changed fields []
+daily_plans identical True
+word_schedules identical True
+coach_practices before 14 after 16 existing changed fields [('updatedAt', '7d466205-be8e-4761-a72e-453830639e77')]
+room_master_table before 1 after 1 existing changed fields []
+integrity: ok

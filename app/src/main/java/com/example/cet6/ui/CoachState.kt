@@ -235,7 +235,7 @@ class CoachState(
             check(completed.isNotBlank())
             val feedback = listOf(current.feedback, "## 第 $number 题 · 第 $level 层提示\n\n$completed").filter(String::isNotBlank).joinToString("\n\n")
             val next = current.copy(feedback = feedback, model = selectedModel, updatedAt = System.currentTimeMillis())
-            if (persist(kind, next)) { entries[kind] = next; partial = ""; messages[kind] = "本层提示已保存。先回到纸上原题尝试，再展开下一层。" }
+            if (persist(kind, next)) { entries[kind] = next; partial = ""; messages[kind] = "本层提示已保存" }
         } catch (e: CancellationException) { throw e
         } catch (e: Exception) { messages[kind] = "提示未完成：${CoachFailures.describe(e)} 已保留答案和此前完整提示。"
         } finally { activeRequest = null }
@@ -253,7 +253,7 @@ class CoachState(
             updatedAt = System.currentTimeMillis())
         if (!persist(kind, submitted)) return@action
         entries[kind] = submitted
-        if (!explain) { messages[kind] = "作答已保存，可离线查看，联网后可请求 AI。"; return@action }
+        if (!explain) { messages[kind] = "作答已保存"; return@action }
         if (!canRequest()) { messages[kind] = "作答已保存；请到连接页登录并选择模型，再重试 AI。"; return@action }
         val selectedModel = model()
         partial = ""
@@ -268,7 +268,7 @@ class CoachState(
             if (persist(kind, result)) {
                 entries[kind] = result
                 partial = ""
-                messages[kind] = "完整 AI 反馈已保存；请核对证据和错因。"
+                messages[kind] = "AI 反馈已保存"
             } else {
                 messages[kind] = "AI 已完成但反馈未保存，请重试；下方文本暂留内存。"
             }

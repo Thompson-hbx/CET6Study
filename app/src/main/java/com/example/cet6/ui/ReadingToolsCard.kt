@@ -23,7 +23,7 @@ fun ReadingChoices(entry: CoachPractice, editable: Boolean, onAnswer: (String) -
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                "可直接按题号作答。题目按 1. / 2. 编号、选项 A. 至 F. 各占一行时，会显示选项按钮。",
+                "按题号填写答案；题目和选项各占一行可显示选项按钮。",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(12.dp)
@@ -39,7 +39,7 @@ fun ReadingChoices(entry: CoachPractice, editable: Boolean, onAnswer: (String) -
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                "当前作答包含说明文字，请在下方继续编辑；选项按钮仅适用于「1. A」格式。",
+                "当前答案格式不支持选项按钮，请在下方编辑。",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.padding(12.dp)
@@ -118,7 +118,7 @@ fun ReadingEvidenceCard(state: CoachState, entry: CoachPractice) {
                 modifier = Modifier.fillMaxWidth(), maxLines = 4)
             if (quote.isNotBlank()) {
                 Text(if (range == null) "原文未找到相同文字；请检查 AI 是否改写或省略了引用。" else
-                    "已在原文找到（第 ${range.first + 1} 字符起）。文字匹配不代表 AI 解读一定正确。")
+                    "已匹配原文 · 第 ${range.first + 1} 字符起")
             }
             if (range != null) {
                 // Include context but keep long articles usable on a phone.
@@ -136,14 +136,14 @@ fun ReadingEvidenceCard(state: CoachState, entry: CoachPractice) {
                         val saved = ReadingEvidence.add(entry.material, entry.savedSentences, quote)
                         state.edit(CoachKind.READING) { it.copy(savedSentences = saved) }
                         state.save(CoachKind.READING)
-                        message = "已加入本篇难句收藏；保存状态见上方。"
+                        message = "已加入收藏，请确认保存状态。"
                     } catch (e: IllegalArgumentException) { message = e.message.orEmpty() }
                 }, enabled = !state.working) { Text("收藏这段原文") }
             }
             if (message.isNotBlank()) Text(message)
             val saved = ReadingEvidence.saved(entry.savedSentences)
             if (saved.isNotEmpty()) {
-                Text("本篇难句收藏（离线可看）")
+                Text("本篇难句收藏")
                 saved.forEach { sentence -> TextButton(onClick = { quote = sentence }) { Text(sentence) } }
             }
         }

@@ -36,7 +36,7 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(18.dp)
                     )
-                    Text("AI 原创针对练习 · 非官方题目", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                    Text("AI 原创练习 · 非真题", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 }
                 Surface(
                     shape = MaterialTheme.shapes.extraSmall,
@@ -64,7 +64,7 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
                 )
                 TextButton(onClick = { compare = !compare }) {
-                    Text(if (compare) "收起来源作答" else "对照来源作答与建议")
+                    Text(if (compare) "收起来源作答" else "对照来源")
                 }
                 if (compare) {
                     Surface(
@@ -73,7 +73,7 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Text("来源作答（保留的历史版本）", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                            Text("来源作答", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
                             SelectionContainer {
                                 Text(source.answer.ifBlank { "尚未作答" }, style = MaterialTheme.typography.bodyMedium)
                             }

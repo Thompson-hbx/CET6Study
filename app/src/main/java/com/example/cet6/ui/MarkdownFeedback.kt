@@ -35,13 +35,13 @@ fun MarkdownFeedback(text: String) {
             onClick = { raw = !raw },
             shape = MaterialTheme.shapes.small
         ) {
-            Text(if (raw) "返回排版阅读" else "查看原始文本")
+            Text(if (raw) "排版" else "原始文本")
         }
         OutlinedButton(
             onClick = { clipboard.setText(AnnotatedString(text)); copied = true },
             shape = MaterialTheme.shapes.small
         ) {
-            Text(if (copied) "已复制完整反馈" else "复制完整反馈")
+            Text(if (copied) "已复制" else "复制全文")
         }
     }
     Surface(
