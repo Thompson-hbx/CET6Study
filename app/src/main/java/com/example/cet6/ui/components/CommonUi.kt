@@ -1,6 +1,7 @@
 package com.example.cet6.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,6 +15,45 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cet6.ui.theme.*
+
+@Composable
+fun InteractiveStepPill(
+    stepNumber: String,
+    stepLabel: String,
+    isCurrent: Boolean,
+    isPassed: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Surface(
+        onClick = onClick,
+        enabled = enabled,
+        selected = isCurrent,
+        modifier = modifier.height(38.dp),
+        shape = RoundedCornerShape(8.dp),
+        color = when {
+            isCurrent -> MaterialTheme.colorScheme.primaryContainer
+            isPassed -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f)
+            else -> MaterialTheme.colorScheme.surface
+        },
+        border = BorderStroke(if (isCurrent) 1.5.dp else 1.dp, when {
+            isCurrent -> MaterialTheme.colorScheme.primary
+            isPassed -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
+            else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+        })
+    ) {
+        Row(
+            Modifier.padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
+        ) {
+            Text(stepNumber, style = MaterialTheme.typography.labelSmall.copy(
+                fontWeight = FontWeight.Bold, fontFeatureSettings = "tnum"))
+            Text(stepLabel, style = MaterialTheme.typography.labelSmall, maxLines = 1)
+        }
+    }
+}
 
 @Composable
 fun PageHeader(

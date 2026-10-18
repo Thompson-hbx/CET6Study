@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
+import com.example.cet6.ui.components.InteractiveStepPill
 import com.example.cet6.ui.theme.AccentSuccess
 import com.example.cet6.ui.theme.AccentSuccessContainer
 import com.example.cet6.ui.theme.AccentWarning
@@ -40,7 +41,7 @@ fun AnswerCardSlot(
 ) {
     Surface(
         onClick = onClick,
-        modifier = modifier.width(54.dp).height(66.dp),
+        modifier = modifier.width(56.dp).height(68.dp),
         shape = RoundedCornerShape(10.dp),
         color = containerColor ?: if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
                else if (value.isNotBlank()) MaterialTheme.colorScheme.surfaceVariant
@@ -190,16 +191,16 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                                 }
 
                                 // 5 Answer Slots (01—05)
-                                Row(
+                                FlowRow(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     passageQuestions.forEachIndexed { index, q ->
                                         val opt = answers[q.number].orEmpty()
                                         val isSelected = selectedSlotIndex == index
                                         AnswerCardSlot(
-                                            number = String.format("%02d", index + 1),
+                                            number = (index + 1).toString().padStart(2, '0'),
                                             value = opt,
                                             isSelected = isSelected,
                                             onClick = {
@@ -315,19 +316,22 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                                 Text("已保存到本机", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             if (!submitted) {
-                                Button(
-                                    onClick = { state.submit(CoachKind.READING, false) },
-                                    enabled = !state.working && answered > 0 && invalidPassages.isBlank(),
-                                    modifier = Modifier.fillMaxWidth().height(48.dp)
-                                ) {
-                                    Text("核对答案", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                                }
-                                OutlinedButton(
-                                    onClick = { state.save(CoachKind.READING) },
-                                    enabled = !state.working,
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text("保存录入草稿")
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    Button(
+                                        onClick = { state.submit(CoachKind.READING, false) },
+                                        enabled = !state.working && answered > 0 && invalidPassages.isBlank(),
+                                        modifier = Modifier.weight(1f).height(48.dp)
+                                    ) {
+                                        Text("核对答案", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                                    }
+                                    OutlinedButton(
+                                        onClick = { state.save(CoachKind.READING) },
+                                        enabled = !state.working,
+                                        modifier = Modifier.height(48.dp),
+                                        contentPadding = PaddingValues(horizontal = 12.dp)
+                                    ) {
+                                        Text("保存录入草稿")
+                                    }
                                 }
                             } else {
                                 Button(
@@ -488,7 +492,7 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                                             else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                                         }
                                         AnswerCardSlot(
-                                            number = String.format("%02d", index + 1),
+                                            number = (index + 1).toString().padStart(2, '0'),
                                             value = answers[q.number].orEmpty(),
                                             isSelected = selectedNumber == q.number,
                                             onClick = { selectedNumber = q.number },
@@ -566,36 +570,19 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
 
                             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
-                            // Stepped Hint Indicator
-                            Row(
+                            fun setQuestionLevel(targetLevel: Int) {
+                                levels = (levels.split(';').filter { it.isNotBlank() && !it.startsWith("${q.number}:") } +
+                                    "${q.number}:${targetLevel.coerceIn(0, 4)}").joinToString(";")
+                            }
+                            FlowRow(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                maxItemsInEachRow = 4
                             ) {
-                                listOf("01 题干线索", "02 原文定位", "03 证据关系", "04 选项与参考").forEachIndexed { i, stepTitle ->
-                                    val stepIndex = i + 1
-                                    val isCurrent = level == stepIndex
-                                    val isPassed = level > stepIndex
-                                    Surface(
-                                        shape = RoundedCornerShape(6.dp),
-                                        color = when {
-                                            isCurrent -> MaterialTheme.colorScheme.primaryContainer
-                                            isPassed -> MaterialTheme.colorScheme.surfaceVariant
-                                            else -> MaterialTheme.colorScheme.surface
-                                        },
-                                        border = BorderStroke(1.dp, if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
-                                        modifier = Modifier.weight(1f).height(28.dp)
-                                    ) {
-                                        Box(contentAlignment = Alignment.Center) {
-                                            Text(
-                                                text = stepTitle.take(2),
-                                                style = MaterialTheme.typography.labelSmall.copy(
-                                                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-                                                    fontFeatureSettings = "tnum"
-                                                ),
-                                                color = if (isCurrent) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                        }
-                                    }
+                                listOf("01" to "线索", "02" to "定位", "03" to "证据", "04" to "选项").forEachIndexed { i, (number, label) ->
+                                    InteractiveStepPill(number, label, level == i + 1, level > i + 1,
+                                        onClick = { setQuestionLevel(i + 1) }, modifier = Modifier.widthIn(min = 64.dp))
                                 }
                             }
 
@@ -654,19 +641,15 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                             }
 
                             // Step Buttons
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 if (level > 0) {
-                                    OutlinedButton(onClick = {
-                                        levels = (levels.split(';').filter { it.isNotBlank() && !it.startsWith("${q.number}:") } + "${q.number}:${level - 1}").joinToString(";")
-                                    }) { Text("上一步") }
+                                    OutlinedButton(onClick = { setQuestionLevel(level - 1) }, modifier = Modifier.height(42.dp)) { Text("上一步") }
                                 }
                                 if (level < 4) {
-                                    Button(onClick = {
-                                        levels = (levels.split(';').filter { it.isNotBlank() && !it.startsWith("${q.number}:") } + "${q.number}:${level + 1}").joinToString(";")
-                                    }) { Text(if (level == 0) "查看提示" else "下一步") }
+                                    Button(onClick = { setQuestionLevel(level + 1) }, modifier = Modifier.height(42.dp)) { Text(if (level == 0) "查看提示" else "下一步") }
                                 }
                                 if (level > 0) {
-                                    TextButton(onClick = { state.readingHint(q.number, level) }, enabled = !state.working && !vm.busy) {
+                                    TextButton(onClick = { state.readingHint(q.number, level) }, enabled = !state.working && !vm.busy, modifier = Modifier.height(42.dp)) {
                                         Text("AI 提示")
                                     }
                                 }
@@ -751,7 +734,17 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                                Text("篇章 ${p.code} · ${p.title.ifBlank { "Section C" }}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically) {
+                                    Text("篇章 ${p.code} · ${p.title.ifBlank { "Section C" }}", modifier = Modifier.weight(1f),
+                                        style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                                    Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.secondaryContainer) {
+                                        val words = Regex("[A-Za-z]+(?:['’-][A-Za-z]+)*").findAll(p.content).count()
+                                        Text("约 $words 词", modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                            style = MaterialTheme.typography.labelSmall.copy(fontFeatureSettings = "tnum"))
+                                    }
+                                }
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
                                 SelectionContainer {
                                     Text(p.content, fontFamily = FontFamily.Serif, fontSize = 16.sp, lineHeight = 28.sp)
                                 }

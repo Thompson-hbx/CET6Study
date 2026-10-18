@@ -20,6 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
+import com.example.cet6.ui.theme.AccentSuccess
+import com.example.cet6.ui.theme.AccentSuccessContainer
+import com.example.cet6.ui.theme.LightOnPrimaryContainer
 import com.example.cet6.ui.theme.AccentWarning
 import com.example.cet6.ui.theme.AccentWarningContainer
 import kotlinx.coroutines.delay
@@ -32,7 +35,7 @@ fun PaperRow(title: String, subtitle: String, onClick: () -> Unit, enabled: Bool
     Surface(
         onClick = onClick,
         enabled = enabled,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
         modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp)
@@ -45,7 +48,10 @@ fun PaperRow(title: String, subtitle: String, onClick: () -> Unit, enabled: Bool
                 Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Text("→", color = MaterialTheme.colorScheme.primary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f)) {
+                Text("进入", modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }
@@ -354,7 +360,11 @@ fun ExamLibraryScreen(vm: StudyViewModel, onContinue: (CoachPractice) -> Unit,
                         Text("继续上次练习", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
                         Text(latest.title.ifBlank { CoachKind.valueOf(latest.kind).label }, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                     }
-                    Text("继续 →", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(start = 8.dp)) {
+                        Text("继续 →", modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }
@@ -368,10 +378,11 @@ fun ExamLibraryScreen(vm: StudyViewModel, onContinue: (CoachPractice) -> Unit,
                 val isSelected = year == y
                 Surface(
                     onClick = { year = y },
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    tonalElevation = if (isSelected) 2.dp else 0.dp,
                     color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                     border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
-                    modifier = Modifier.weight(1f).height(40.dp)
+                    modifier = Modifier.weight(1f).height(44.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Text(
@@ -400,14 +411,15 @@ fun ExamLibraryScreen(vm: StudyViewModel, onContinue: (CoachPractice) -> Unit,
                         onClick = { selectedSessionDate = session.date },
                         shape = RoundedCornerShape(20.dp),
                         color = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
-                        border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
-                        modifier = Modifier.height(34.dp)
+                        border = BorderStroke(if (isSelected) 1.5.dp else 1.dp, if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
+                        modifier = Modifier.height(40.dp)
                     ) {
-                        Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(horizontal = 14.dp)) {
+                        Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(horizontal = 16.dp)) {
                             Text(
                                 text = label,
                                 style = MaterialTheme.typography.labelMedium.copy(
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                    fontFeatureSettings = "tnum"
                                 ),
                                 color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -484,7 +496,8 @@ fun ExamLibraryScreen(vm: StudyViewModel, onContinue: (CoachPractice) -> Unit,
                                 Text(
                                     text = if (count > 0) "已完成 $count / 4 项" else "未开始",
                                     style = MaterialTheme.typography.labelMedium.copy(
-                                        color = if (count > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                        color = if (count > 0) AccentSuccess else MaterialTheme.colorScheme.onSurfaceVariant,
+                                        fontWeight = if (count > 0) FontWeight.Bold else FontWeight.Normal,
                                         fontFeatureSettings = "tnum"
                                     )
                                 )
@@ -553,43 +566,94 @@ fun ExamTrainingScreen(vm: StudyViewModel, kind: CoachKind, scroll: ScrollState)
     val enabled = !state.working && !submitted
     LaunchedEffect(panel, entry.id) { scroll.scrollTo(0) }
 
-    Text(entry.title, style = MaterialTheme.typography.headlineSmall)
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(entry.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(if (kind == CoachKind.WRITING) "短文写作 · Part I Writing" else "段落翻译 · Part IV Translation",
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            WritingTimer(entry.id, enabled)
+        }
+    }
     val labels = listOf("作答", "对照", "复盘")
     SecondaryTabRow(panel, containerColor = MaterialTheme.colorScheme.background) {
-        labels.forEachIndexed { i, label -> Tab(selected = panel == i, onClick = { panel = i }, text = { Text(label) }, enabled = i != 2 || submitted) }
+        labels.forEachIndexed { i, label -> Tab(selected = panel == i, onClick = { panel = i },
+            text = { Text(label, fontWeight = if (panel == i) FontWeight.Bold else FontWeight.Normal) }, enabled = i != 2 || submitted) }
     }
 
-    if (panel == 2) {
-        FeedbackAndReview(vm, kind, entry)
-        return
-    }
-        if (panel == 0) {
-            SelectionContainer { Text(entry.material, style = MaterialTheme.typography.bodyLarge, lineHeight = 30.sp) }
-            WritingTimer(entry.id, enabled)
-            OutlinedTextField(entry.answer, { text -> state.edit(kind) { it.copy(answer = text) } },
-                modifier = Modifier.fillMaxWidth(), minLines = 8, readOnly = !enabled,
-                label = { Text(if (kind == CoachKind.WRITING) "我的作文" else "我的译文") },
-                textStyle = MaterialTheme.typography.bodyLarge.copy(lineHeight = 29.sp),
-                supportingText = { Text("${Regex("[A-Za-z]+(?:['’-][A-Za-z]+)*").findAll(entry.answer).count()} 词 · ${entry.answer.length} 字符") })
-            if (!submitted) Button(onClick = { state.submit(kind, false) }, enabled = enabled && entry.answer.isNotBlank()) { Text("提交") }
-            else TextButton(onClick = { panel = 1 }) { Text("查看对照") }
-        } else {
-            Text("我的原稿", style = MaterialTheme.typography.titleLarge)
-            SelectionContainer { Text(entry.answer.ifBlank { "尚未作答" }, lineHeight = 29.sp) }
-            if (submitted) {
-                HorizontalDivider()
-                if (meta.optString("referenceTranslation").orEmpty().isNotBlank()) {
-                    Text("有来源的参考译文", style = MaterialTheme.typography.titleMedium)
-                    SelectionContainer { Text(meta.optString("referenceTranslation"), lineHeight = 29.sp) }
-                    Text(meta.optString("referenceSource"), style = MaterialTheme.typography.bodySmall)
+    when (panel) {
+        0 -> {
+            TrainingCard {
+                SelectionContainer {
+                    Text(entry.material, style = MaterialTheme.typography.bodyLarge,
+                        fontFamily = FontFamily.Serif, lineHeight = 28.sp)
                 }
-                Text("AI 修改建议", style = MaterialTheme.typography.titleLarge)
-                if (entry.feedback.isNotBlank()) MarkdownFeedback(entry.feedback)
-                else Text("保存原稿后，可在复盘页请求逐句批改。")
             }
+            OutlinedTextField(entry.answer, { text -> state.edit(kind) { it.copy(answer = text) } },
+                modifier = Modifier.fillMaxWidth(), minLines = 6, readOnly = !enabled,
+                label = { Text(if (kind == CoachKind.WRITING) "我的作文" else "我的译文") },
+                textStyle = MaterialTheme.typography.bodyLarge.copy(lineHeight = 28.sp),
+                supportingText = {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("${Regex("[A-Za-z]+(?:['’-][A-Za-z]+)*").findAll(entry.answer).count()} 词 · ${entry.answer.length} 字符",
+                            style = MaterialTheme.typography.bodySmall.copy(fontFeatureSettings = "tnum"))
+                        Text(state.messages[kind].orEmpty(), modifier = Modifier.weight(1f),
+                            textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                    }
+                })
+            if (!submitted) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(onClick = { state.submit(kind, false) }, enabled = enabled && entry.answer.isNotBlank(),
+                        modifier = Modifier.weight(1f).height(48.dp)) { Text("提交") }
+                    OutlinedButton(onClick = { state.save(kind) }, enabled = !state.working,
+                        modifier = Modifier.height(48.dp)) { Text("保存草稿") }
+                }
+            } else TextButton(onClick = { panel = 1 }) { Text("查看对照") }
         }
-    Text(state.messages[kind].orEmpty(), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    if (!submitted) TextButton(onClick = { state.save(kind) }, enabled = !state.working) { Text("保存草稿") }
+        1 -> {
+            TrainingCard {
+                Text("我的原稿", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                SelectionContainer { Text(entry.answer.ifBlank { "尚未作答" }, fontFamily = FontFamily.Serif, lineHeight = 28.sp) }
+            }
+            if (submitted) {
+                if (meta.optString("referenceTranslation").orEmpty().isNotBlank()) {
+                    TrainingCard(containerColor = AccentSuccessContainer) {
+                        Text("有来源的参考译文", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        SelectionContainer { Text(meta.optString("referenceTranslation"), fontFamily = FontFamily.Serif, lineHeight = 28.sp) }
+                        Text(meta.optString("referenceSource"), style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+                TrainingCard {
+                    Text("AI 修改建议", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    if (entry.feedback.isNotBlank()) MarkdownFeedback(entry.feedback)
+                    else Text("保存原稿后，可在复盘页请求逐句批改。")
+                }
+            }
+            Text(state.messages[kind].orEmpty(), style = MaterialTheme.typography.bodySmall)
+            if (!submitted) OutlinedButton(onClick = { state.save(kind) }, enabled = !state.working,
+                modifier = Modifier.height(48.dp)) { Text("保存草稿") }
+        }
+        else -> FeedbackAndReview(vm, kind, entry)
+    }
+}
+
+@Composable
+private fun TrainingCard(
+    containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.surface,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Surface(shape = RoundedCornerShape(14.dp), color = containerColor,
+        contentColor = if (containerColor == AccentSuccessContainer) LightOnPrimaryContainer else contentColorFor(containerColor),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
+        modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
+    }
 }
 
 @Composable
@@ -599,8 +663,11 @@ private fun WritingTimer(id: String, enabled: Boolean) {
     LaunchedEffect(startedAt, enabled) {
         while (startedAt > 0 && enabled) { elapsed = (System.currentTimeMillis() - startedAt).coerceAtLeast(0) / 1000; delay(1000) }
     }
-    TextButton(onClick = { startedAt = if (startedAt == 0L) System.currentTimeMillis() else 0; elapsed = 0 }, enabled = enabled) {
-        Text(if (startedAt == 0L) "开始计时（可选）" else "${elapsed / 60}:${(elapsed % 60).toString().padStart(2, '0')} · 停止")
+    OutlinedButton(onClick = { startedAt = if (startedAt == 0L) System.currentTimeMillis() else 0; elapsed = 0 },
+        enabled = enabled, shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 12.dp),
+        modifier = Modifier.height(44.dp)) {
+        Text(if (startedAt == 0L) "开始计时" else "${elapsed / 60}:${(elapsed % 60).toString().padStart(2, '0')} · 停止",
+            style = MaterialTheme.typography.labelMedium.copy(fontFeatureSettings = "tnum"))
     }
 }
 
@@ -608,30 +675,40 @@ private fun WritingTimer(id: String, enabled: Boolean) {
 @Composable
 private fun FeedbackAndReview(vm: StudyViewModel, kind: CoachKind, entry: CoachPractice) {
     val state = vm.coach
-    TextButton(onClick = { state.submit(kind, true) }, enabled = !state.working && !vm.busy) { Text(if (entry.feedback.isBlank()) "AI 批改" else "重新批改") }
-    if (state.working) LinearProgressIndicator(Modifier.fillMaxWidth())
-    Text(state.messages[kind].orEmpty(), style = MaterialTheme.typography.bodySmall)
-    if (entry.feedback.isNotBlank()) {
-        MarkdownFeedback(entry.feedback)
-        var followUp by rememberSaveable(entry.id) { mutableStateOf("") }
-        OutlinedTextField(followUp, { followUp = it.take(4000) }, label = { Text("追问证据或修改建议") }, modifier = Modifier.fillMaxWidth())
-        TextButton(onClick = { state.submit(kind, true, followUp) }, enabled = !state.working && followUp.isNotBlank()) { Text("发送追问") }
-    }
-    if (state.partialEntryId == entry.id && state.partial.isNotBlank()) {
-        var show by rememberSaveable(entry.id) { mutableStateOf(false) }
-        TextButton(onClick = { show = !show }) { Text("未完成的临时反馈（尚未保存）") }
-        if (show) Text(state.partial)
-    }
-    if (kind == CoachKind.READING) ReadingEvidenceCard(state, entry)
-    Text("这次卡在哪里？", style = MaterialTheme.typography.titleLarge)
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        listOf("词汇理解", "长难句", "逻辑推断", "选项陷阱", "语法", "表达").forEach { reason ->
-            FilterChip(entry.errorReason.contains(reason), { state.edit(kind) { it.copy(errorReason = if (it.errorReason.contains(reason)) it.errorReason else listOf(it.errorReason, reason).filter(String::isNotBlank).joinToString("；")) } }, label = { Text(reason) }, enabled = !state.working)
+    TrainingCard {
+        Text("AI 批改与追问", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Button(onClick = { state.submit(kind, true) }, enabled = !state.working && !vm.busy,
+            modifier = Modifier.height(48.dp)) { Text(if (entry.feedback.isBlank()) "AI 批改" else "重新批改") }
+        if (state.working) LinearProgressIndicator(Modifier.fillMaxWidth())
+        Text(state.messages[kind].orEmpty(), style = MaterialTheme.typography.bodySmall)
+        if (entry.feedback.isNotBlank()) {
+            MarkdownFeedback(entry.feedback)
+            var followUp by rememberSaveable(entry.id) { mutableStateOf("") }
+            OutlinedTextField(followUp, { followUp = it.take(4000) }, label = { Text("追问证据或修改建议") }, modifier = Modifier.fillMaxWidth())
+            TextButton(onClick = { state.submit(kind, true, followUp) }, enabled = !state.working && followUp.isNotBlank()) { Text("发送追问") }
+        }
+        if (state.partialEntryId == entry.id && state.partial.isNotBlank()) {
+            var show by rememberSaveable(entry.id) { mutableStateOf(false) }
+            TextButton(onClick = { show = !show }) { Text("未完成的临时反馈（尚未保存）") }
+            if (show) Text(state.partial)
         }
     }
-    OutlinedTextField(entry.errorReason, { value -> state.edit(kind) { it.copy(errorReason = value) } }, label = { Text("记录自己的错因") }, modifier = Modifier.fillMaxWidth(), enabled = !state.working)
-    TextButton(onClick = { state.open(kind, entry, retry = true) }, enabled = !state.working) { Text("再练") }
-    TextButton(onClick = { state.generate(kind) }, enabled = !state.working && entry.errorReason.isNotBlank()) { Text("AI 针对练习") }
+    if (kind == CoachKind.READING) ReadingEvidenceCard(state, entry)
+    TrainingCard {
+        Text("这次卡在哪里？", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("词汇理解", "长难句", "逻辑推断", "选项陷阱", "语法", "表达").forEach { reason ->
+                FilterChip(entry.errorReason.contains(reason), { state.edit(kind) { it.copy(errorReason = if (it.errorReason.contains(reason)) it.errorReason else listOf(it.errorReason, reason).filter(String::isNotBlank).joinToString("；")) } }, label = { Text(reason) }, enabled = !state.working)
+            }
+        }
+        OutlinedTextField(entry.errorReason, { value -> state.edit(kind) { it.copy(errorReason = value) } }, label = { Text("记录自己的错因") }, modifier = Modifier.fillMaxWidth(), enabled = !state.working)
+    }
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        OutlinedButton(onClick = { state.open(kind, entry, retry = true) }, enabled = !state.working,
+            modifier = Modifier.weight(1f).height(48.dp)) { Text("再练") }
+        Button(onClick = { state.generate(kind) }, enabled = !state.working && entry.errorReason.isNotBlank(),
+            modifier = Modifier.height(48.dp)) { Text("AI 针对练习") }
+    }
 }
 
 @Composable

@@ -1,0 +1,13 @@
+PASS: before integrity_check=ok
+PASS: after integrity_check=ok
+PASS: android_metadata: all 1 original rows byte-value identical; 0 added rows
+PASS: words: all 80 original rows byte-value identical; 0 added rows
+PASS: reading_attempts: all 0 original rows byte-value identical; 0 added rows
+PASS: essays: all 0 original rows byte-value identical; 0 added rows
+PASS: word_reviews: all 0 original rows byte-value identical; 0 added rows
+PASS: daily_plans: all 1 original rows byte-value identical; 0 added rows
+PASS: word_schedules: all 0 original rows byte-value identical; 0 added rows
+PASS: coach_practices: all 18 original rows byte-value identical; 2 added rows
+PASS: room_master_table: all 1 original rows byte-value identical; 0 added rows
+PASS: two new original-sample reading practices only, 9/10 answers each; question 48 remains blank; one submitted and one saved draft
+PASS: final APK reinstallation and repeat isolated/UI checks: original rows still identical, total practices 20, integrity_check=ok

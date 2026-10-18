@@ -14,15 +14,13 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.Hub
-import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.Today
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.Hub
-import androidx.compose.material.icons.outlined.MenuBook
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Send
-import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -109,18 +107,29 @@ private fun MainContent(vm: StudyViewModel) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         floatingActionButton = {
-            if (tab == 1 && scroll.value > 0) SmallFloatingActionButton(onClick = { scope.launch { scroll.animateScrollTo(0) } }) {
+            if (tab == 1 && scroll.value > scroll.viewportSize && scroll.canScrollForward) SmallFloatingActionButton(onClick = { scope.launch { scroll.animateScrollTo(0) } }) {
                 Icon(Icons.Default.ArrowUpward, contentDescription = "返回训练导航")
             }
         },
-        topBar = { if (tab != 1) TopAppBar(title = { Text(if (tab == 0) "历年真题" else tabs[tab],
-            style = MaterialTheme.typography.titleLarge) }) },
+        topBar = { if (tab != 1) Column {
+            TopAppBar(title = { Text(if (tab == 0) "历年真题" else tabs[tab],
+                style = MaterialTheme.typography.titleLarge) })
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+        } },
         bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.background, tonalElevation = 0.dp) {
-                tabs.forEachIndexed { index, name ->
-                    NavigationBarItem(selected = tab == index, onClick = { tab = index; mine = "" },
-                        icon = { Icon(when(index) { 0 -> Icons.Outlined.MenuBook; 1 -> Icons.Outlined.EditNote;
-                            2 -> Icons.Outlined.AutoStories; else -> Icons.Outlined.Hub }, null) }, label = { Text(name) })
+            Column {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+                NavigationBar(containerColor = MaterialTheme.colorScheme.background, tonalElevation = 0.dp) {
+                    tabs.forEachIndexed { index, name ->
+                        val isSelected = tab == index
+                        NavigationBarItem(selected = isSelected, onClick = { tab = index; mine = "" },
+                            icon = { Icon(when(index) {
+                                0 -> if (isSelected) Icons.AutoMirrored.Filled.MenuBook else Icons.AutoMirrored.Outlined.MenuBook
+                                1 -> if (isSelected) Icons.Default.EditNote else Icons.Outlined.EditNote
+                                2 -> if (isSelected) Icons.Default.AutoStories else Icons.Outlined.AutoStories
+                                else -> if (isSelected) Icons.Default.Hub else Icons.Outlined.Hub
+                            }, null) }, label = { Text(name, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal) })
+                    }
                 }
             }
         }
@@ -145,7 +154,8 @@ private fun MainContent(vm: StudyViewModel) {
                     } else {
                         CoachScreen(vm, kind, scroll)
                     }
-                    TextButton(onClick = { tab = 0 }) { Text("返回题库") }
+                    OutlinedButton(onClick = { tab = 0 }, shape = MaterialTheme.shapes.small,
+                        modifier = Modifier.fillMaxWidth().height(44.dp)) { Text("返回题库") }
                 }
                 2 -> {
                     WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, onReview = { open(it) })
@@ -236,7 +246,7 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.small
     ) {
-        Icon(Icons.Outlined.MenuBook, contentDescription = null, modifier = Modifier.size(18.dp))
+        Icon(Icons.AutoMirrored.Outlined.MenuBook, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(8.dp))
         Text(if (legacyWords) "收起原有单词计划与记录" else "展开原有单词计划与记录")
     }

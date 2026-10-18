@@ -1,0 +1,10 @@
+PASS: direct pill 1; only current heading visible; reference withheld
+PASS: direct pill 2; only current heading visible; reference withheld
+PASS: direct pill 3; only current heading visible; reference withheld
+PASS: direct pill 4; only current heading visible; reference revealed by explicit click
+PASS: jump backward from 4 to 2 hides final-layer heading
+PASS: writing submit and save visible above navigation without scrolling; original 6 words / 46 characters preserved
+PASS: translation submit and save visible on first screen; empty draft submit disabled (clickable ancestor semantics)
+PASS: second independent sample draft saved, app restarted, 9/10 answers restored in UI
+PASS: 360dp narrow input screenshot wraps fifth slot without shrinking touch target; original resolution and light mode restored
+PASS: final APK reinstalled; four pills / single-layer headings rechecked; short-page FAB absent at answer action row; saved 9/10 draft restored again
