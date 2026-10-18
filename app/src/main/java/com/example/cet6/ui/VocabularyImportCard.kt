@@ -1,7 +1,6 @@
 package com.example.cet6.ui
 
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,7 +13,7 @@ fun VocabularyImportCard(vm: StudyViewModel) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     var source by rememberSaveable { mutableStateOf("") }
     var permitted by rememberSaveable { mutableStateOf(false) }
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    val picker = rememberLauncherForActivityResult(StudyDocumentPicker()) { uri ->
         if (uri != null) vm.importVocabulary(uri, source)
     }
     OutlinedButton(onClick = { expanded = !expanded }) { Text(if (expanded) "收起导入" else "导入我的词库") }

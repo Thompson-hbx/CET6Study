@@ -89,6 +89,13 @@ data class DailyWordProgress(
 
 @Dao
 interface StudyDao {
+    @Upsert suspend fun saveCoach(entry: CoachPractice)
+    @Query("SELECT * FROM coach_practices WHERE id=:id") suspend fun coachById(id: String): CoachPractice?
+    @Query("SELECT * FROM coach_practices ORDER BY updatedAt DESC")
+    fun coachHistory(): Flow<List<CoachPractice>>
+    @Query("SELECT * FROM coach_practices WHERE kind=:kind AND submittedAt=0 ORDER BY updatedAt DESC LIMIT 1")
+    suspend fun coachDraft(kind: String): CoachPractice?
+    @Query("SELECT * FROM coach_practices ORDER BY id") suspend fun allCoach(): List<CoachPractice>
     @Query("SELECT * FROM words ORDER BY word") fun words(): Flow<List<WordEntity>>
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun addWords(words: List<WordEntity>): List<Long>
     @Query("UPDATE words SET dueAt=:due, repetitions=:reps, intervalDays=:days WHERE word=:word")
@@ -119,13 +126,42 @@ interface StudyDao {
     @Insert suspend fun addEssay(essay: EssayEntity)
     @Query("SELECT * FROM essays ORDER BY createdAt DESC LIMIT 20")
     fun essays(): Flow<List<EssayEntity>>
+
+    // Full snapshots must never use the UI's recent-history limits.
+    @Query("SELECT * FROM words ORDER BY word") suspend fun allWords(): List<WordEntity>
+    @Query("SELECT * FROM word_reviews ORDER BY createdAt, id") suspend fun allWordReviews(): List<WordReview>
+    @Query("SELECT * FROM word_schedules ORDER BY word") suspend fun allSchedules(): List<WordSchedule>
+    @Query("SELECT * FROM daily_plans ORDER BY date") suspend fun allPlans(): List<DailyPlan>
+    @Query("SELECT * FROM reading_attempts ORDER BY id") suspend fun allReading(): List<ReadingAttempt>
+    @Query("SELECT * FROM essays ORDER BY id") suspend fun allEssays(): List<EssayEntity>
+    @Upsert suspend fun saveWords(words: List<WordEntity>)
+    @Insert suspend fun addWordReviews(reviews: List<WordReview>)
+    @Insert suspend fun addReadingAttempts(attempts: List<ReadingAttempt>)
+    @Insert suspend fun addEssays(essays: List<EssayEntity>)
+    @Query("DELETE FROM word_schedules WHERE word=:word") suspend fun clearSchedule(word: String)
 }
 
 @Database(entities = [WordEntity::class, ReadingAttempt::class, EssayEntity::class,
-    WordReview::class, DailyPlan::class, WordSchedule::class], version = 4)
+    WordReview::class, DailyPlan::class, WordSchedule::class, CoachPractice::class], version = 7)
 abstract class StudyDatabase : RoomDatabase() {
     abstract fun dao(): StudyDao
     companion object {
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE coach_practices ADD COLUMN sourcePracticeId TEXT NOT NULL DEFAULT ''")
+                db.execSQL("ALTER TABLE coach_practices ADD COLUMN practiceGoal TEXT NOT NULL DEFAULT ''")
+            }
+        }
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE coach_practices ADD COLUMN savedSentences TEXT NOT NULL DEFAULT ''")
+            }
+        }
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS coach_practices (id TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL, material TEXT NOT NULL, questions TEXT NOT NULL, answer TEXT NOT NULL, feedback TEXT NOT NULL, model TEXT NOT NULL, errorReason TEXT NOT NULL, submittedAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL, PRIMARY KEY(id))")
+            }
+        }
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("CREATE TABLE IF NOT EXISTS word_reviews (id TEXT NOT NULL, word TEXT NOT NULL, remembered INTEGER NOT NULL, wasNew INTEGER NOT NULL, studiedOn TEXT NOT NULL, createdAt INTEGER NOT NULL, nextDueAt INTEGER NOT NULL, PRIMARY KEY(id))")
@@ -150,7 +186,7 @@ abstract class StudyDatabase : RoomDatabase() {
         @Volatile private var INSTANCE: StudyDatabase? = null
         fun get(context: Context): StudyDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context.applicationContext, StudyDatabase::class.java,
-                "cet6_study.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).build().also { INSTANCE = it }
+                "cet6_study.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7).build().also { INSTANCE = it }
         }
     }
 }

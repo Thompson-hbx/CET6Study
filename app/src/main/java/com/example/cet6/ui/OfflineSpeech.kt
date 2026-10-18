@@ -31,7 +31,7 @@ class OfflineSpeech(context: Context, private val update: (Boolean, String) -> U
         val voice = tts.voices?.filter {
             it.locale.language == "en" && !it.isNetworkConnectionRequired &&
                 TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED !in it.features.orEmpty()
-        }?.sortedWith(compareBy({ it.locale.country != "US" }, { it.name }))?.firstOrNull()
+        }?.sortedWith(compareBy({ it.locale.country != "US" }, { -it.quality }, { it.latency }, { it.name }))?.firstOrNull()
         if (voice == null || tts.setVoice(voice) != TextToSpeech.SUCCESS) {
             update(false, "未找到已安装的离线英文语音；可在系统语音设置准备后重开 App。学习功能仍可用。")
             return

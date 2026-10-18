@@ -34,6 +34,22 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     private val db = StudyDatabase.get(app)
     private val dao = db.dao()
     private val study = StudyRepository(db)
+    private val backups = BackupRepository(db)
+    val coach = CoachState(CoachRepository(db), viewModelScope,
+        canRequest = { hasPlan && chosenModel.isNotBlank() && !busy },
+        model = { chosenModel },
+        request = { prompt, onDelta ->
+            busy = true
+            try {
+                ai.stream(chosenModel, prompt) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
+            } finally { syncSessionState(); busy = false }
+        })
+    var backupBusy by androidx.compose.runtime.mutableStateOf(false)
+        private set
+    var backupStatus by androidx.compose.runtime.mutableStateOf("")
+        private set
+    var backupPreview by androidx.compose.runtime.mutableStateOf<StudyBackup?>(null)
+        private set
     var speechReady by androidx.compose.runtime.mutableStateOf(false)
         private set
     var speechStatus by androidx.compose.runtime.mutableStateOf("正在检查系统离线英文语音……")
@@ -227,6 +243,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     fun refreshStudyClock() { viewModelScope.launch { refreshStudyDay() } }
     fun speak(text: String) = speech.speak(text)
     fun stopSpeech() = speech.stop()
+    fun saveDrafts() { viewModelScope.launch { coach.flush() } }
     override fun onCleared() { speech.close(); super.onCleared() }
 
     private suspend fun refreshStudyDay() {
@@ -272,6 +289,74 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: IllegalArgumentException) { studyStatus = "词库未导入：${e.message}"
             } catch (_: Exception) { studyStatus = "词库未导入：请检查 UTF-8 编码、CSV/JSON 格式与文件读取权限。"
             } finally { savingStudy = false }
+        }
+    }
+
+    fun exportBackup(uri: Uri) {
+        if (backupBusy) return
+        backupBusy = true
+        backupStatus = "正在导出完整学习快照……"
+        viewModelScope.launch {
+            try {
+                check(coach.flush()) { "训练正在处理或草稿保存失败，请稍后重试" }
+                val snapshot = backups.snapshot()
+                withContext(Dispatchers.IO) {
+                    val text = BackupCodec.encode(snapshot)
+                    getApplication<Application>().contentResolver.openOutputStream(uri, "wt")?.use { output ->
+                        output.write(text.toByteArray(Charsets.UTF_8)); output.flush()
+                    } ?: error("无法写入所选位置")
+                }
+                backupStatus = "备份已导出：${snapshot.words.size} 词、${snapshot.reviews.size} 条学习日志、${snapshot.reading.size} 条旧阅读、${snapshot.essays.size} 篇旧作文、${snapshot.coach.size} 条 G3 训练。未包含登录凭证。"
+            } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) { backupStatus = "未导出：${e.message}"
+            } catch (_: Exception) { backupStatus = "备份写入失败，请换位置重试；所选位置可能留下不完整文件。本机学习数据未改变。"
+            } finally { backupBusy = false }
+        }
+    }
+
+    fun previewBackup(uri: Uri) {
+        if (backupBusy) return
+        backupBusy = true
+        backupPreview = null
+        backupStatus = "正在完整校验备份，尚未修改学习数据……"
+        viewModelScope.launch {
+            try {
+                backupPreview = withContext(Dispatchers.IO) {
+                    getApplication<Application>().contentResolver.openInputStream(uri)?.use(BackupCodec::read)
+                        ?: error("无法读取所选文件")
+                }
+                backupStatus = "备份校验通过，请核对预览后确认合并恢复。"
+            } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) { backupStatus = "未恢复：${e.message}"
+            } catch (_: Exception) { backupStatus = "备份读取或格式校验失败，未修改本机数据。"
+            } finally { backupBusy = false }
+        }
+    }
+
+    fun cancelBackupRestore() { if (!backupBusy) { backupPreview = null; backupStatus = "已取消恢复，本机数据未改变。" } }
+
+    fun restoreBackup(adoptPlans: Boolean) {
+        val incoming = backupPreview ?: return
+        if (backupBusy || savingStudy) return
+        backupBusy = true
+        savingStudy = true
+        backupStatus = "正在事务内合并恢复……"
+        viewModelScope.launch {
+            var committed = false
+            try {
+                check(coach.flush()) { "训练正在处理或草稿保存失败，请稍后重试" }
+                val summary = backups.restore(incoming, adoptPlans)
+                committed = true
+                backupPreview = null
+                refreshStudyDay()
+                plan = study.plan(LocalDate.parse(today))
+                backupStatus = "恢复完成。${summary.message()}已有词义、来源和学习历史均保留。"
+            } catch (e: CancellationException) { throw e
+            } catch (e: IllegalArgumentException) {
+                backupStatus = if (committed) "数据已恢复，页面刷新失败，请重新打开应用。" else "未恢复：${e.message}"
+            } catch (_: Exception) {
+                backupStatus = if (committed) "数据已恢复，页面刷新失败，请重新打开应用。" else "恢复未能完成，事务已回滚，请保留备份文件后重试。"
+            } finally { backupBusy = false; savingStudy = false }
         }
     }
 
