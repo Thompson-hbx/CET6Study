@@ -1,0 +1,105 @@
+
+Total files to download: 46
+Output directory: D:\Workspace\projects\cet6\CET6Study\raw-papers
+
+[1/46] cet6_2023_03_1.pdf
+  SKIP (exists): cet6_2023_03_1.pdf
+[2/46] cet6_2023_03_1_ans.pdf
+  SKIP (exists): cet6_2023_03_1_ans.pdf
+[3/46] cet6_2023_03_2-3.pdf
+  SKIP (exists): cet6_2023_03_2-3.pdf
+[4/46] cet6_2023_03_2-3_ans.pdf
+  SKIP (exists): cet6_2023_03_2-3_ans.pdf
+[5/46] cet6_2023_06_1.pdf
+  SKIP (exists): cet6_2023_06_1.pdf
+[6/46] cet6_2023_06_1_ans.pdf
+  SKIP (exists): cet6_2023_06_1_ans.pdf
+[7/46] cet6_2023_06_2.pdf
+  SKIP (exists): cet6_2023_06_2.pdf
+[8/46] cet6_2023_06_2_ans.pdf
+  SKIP (exists): cet6_2023_06_2_ans.pdf
+[9/46] cet6_2023_06_3.pdf
+  SKIP (exists): cet6_2023_06_3.pdf
+[10/46] cet6_2023_06_3_ans.pdf
+  SKIP (exists): cet6_2023_06_3_ans.pdf
+[11/46] cet6_2023_12_1.pdf
+  SKIP (exists): cet6_2023_12_1.pdf
+[12/46] cet6_2023_12_1_ans.pdf
+  SKIP (exists): cet6_2023_12_1_ans.pdf
+[13/46] cet6_2023_12_2.pdf
+  SKIP (exists): cet6_2023_12_2.pdf
+[14/46] cet6_2023_12_2_ans.pdf
+  SKIP (exists): cet6_2023_12_2_ans.pdf
+[15/46] cet6_2023_12_3.pdf
+  SKIP (exists): cet6_2023_12_3.pdf
+[16/46] cet6_2023_12_3_ans.pdf
+  SKIP (exists): cet6_2023_12_3_ans.pdf
+[17/46] cet6_2024_06_1.pdf
+  SKIP (exists): cet6_2024_06_1.pdf
+[18/46] cet6_2024_06_1_ans.pdf
+  SKIP (exists): cet6_2024_06_1_ans.pdf
+[19/46] cet6_2024_06_2.pdf
+  SKIP (exists): cet6_2024_06_2.pdf
+[20/46] cet6_2024_06_2_ans.pdf
+  SKIP (exists): cet6_2024_06_2_ans.pdf
+[21/46] cet6_2024_06_3.pdf
+  SKIP (exists): cet6_2024_06_3.pdf
+[22/46] cet6_2024_06_3_ans.pdf
+  SKIP (exists): cet6_2024_06_3_ans.pdf
+[23/46] cet6_2024_12_1.pdf
+  SKIP (exists): cet6_2024_12_1.pdf
+[24/46] cet6_2024_12_1_ans.pdf
+  SKIP (exists): cet6_2024_12_1_ans.pdf
+[25/46] cet6_2024_12_2.pdf
+  SKIP (exists): cet6_2024_12_2.pdf
+[26/46] cet6_2024_12_2_ans.pdf
+  SKIP (exists): cet6_2024_12_2_ans.pdf
+[27/46] cet6_2024_12_3.pdf
+  SKIP (exists): cet6_2024_12_3.pdf
+[28/46] cet6_2024_12_3_ans.pdf
+  SKIP (exists): cet6_2024_12_3_ans.pdf
+[29/46] cet6_2025_06_1.pdf
+  SKIP (exists): cet6_2025_06_1.pdf
+[30/46] cet6_2025_06_1_ans.pdf
+  SKIP (exists): cet6_2025_06_1_ans.pdf
+[31/46] cet6_2025_06_2.pdf
+  SKIP (exists): cet6_2025_06_2.pdf
+[32/46] cet6_2025_06_2_ans.pdf
+  SKIP (exists): cet6_2025_06_2_ans.pdf
+[33/46] cet6_2025_06_3.pdf
+  SKIP (exists): cet6_2025_06_3.pdf
+[34/46] cet6_2025_06_3_ans.pdf
+  SKIP (exists): cet6_2025_06_3_ans.pdf
+[35/46] cet6_2025_12_1.pdf
+  SKIP (exists): cet6_2025_12_1.pdf
+[36/46] cet6_2025_12_1_ans.pdf
+  SKIP (exists): cet6_2025_12_1_ans.pdf
+[37/46] cet6_2025_12_2.pdf
+  SKIP (exists): cet6_2025_12_2.pdf
+[38/46] cet6_2025_12_2_ans.pdf
+  SKIP (exists): cet6_2025_12_2_ans.pdf
+[39/46] cet6_2025_12_3.pdf
+  SKIP (exists): cet6_2025_12_3.pdf
+[40/46] cet6_2025_12_3_ans.pdf
+  SKIP (exists): cet6_2025_12_3_ans.pdf
+[41/46] cet6_2026_06_1.pdf
+  SKIP (exists): cet6_2026_06_1.pdf
+[42/46] cet6_2026_06_1_ans.pdf
+  SKIP (exists): cet6_2026_06_1_ans.pdf
+[43/46] cet6_2026_06_2.pdf
+  SKIP (exists): cet6_2026_06_2.pdf
+[44/46] cet6_2026_06_2_ans.pdf
+  SKIP (exists): cet6_2026_06_2_ans.pdf
+[45/46] cet6_2026_06_3.pdf
+  SKIP (exists): cet6_2026_06_3.pdf
+[46/46] cet6_2026_06_3_ans.pdf
+  SKIP (exists): cet6_2026_06_3_ans.pdf
+
+--- Summary ---
+Downloaded: 0
+Skipped (existing): 46
+Not found (404): 0
+Failed: 0
+Dry-run: 0
+
+Manifest written to D:\Workspace\projects\cet6\CET6Study\.tools\private-exams\agent-download-audit.json

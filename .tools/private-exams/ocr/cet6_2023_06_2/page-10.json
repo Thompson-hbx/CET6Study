@@ -1,0 +1,2686 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_06_2\\page-10.png",
+    "unverifiedOCR":  true,
+    "text":  "KEYS Part I Writing Suggested Version When faced with differing oplmons ， we should try to reach agreement through friendly dlscussion and reasonable argument. ln our daily life ， it is common tO see college students struggling with a polite and logical way when their views differ from others. ApparentIy, this issue has sparked public concerns. Friendly discussion allows individuals tO share their perspectives and opinions in a respectful manner. This can lead to a better understanding Of each other ， s viewpoints and potentially even finding common ground. ln addition ， reasonable argument allows individuals tO present evidence and logic tO support their position which can help persuade others tO see their point Of view 、 However ， it is lmportant tO note that not all disagreements can be resolved through discussion and argument alone. ln some cases ， comprormse may be necessary tO reach a resolution that satlsfies all parties involved. To sum up ， fnendly discussion and reasonable argument ， to a large extent are of great use. We should be open-minded and engaged in such practlces. Part II Listening Comprehension 11 21 12 22 23 14 24 25 Part III Reading Comprehension 26 36 46 37 28 38 48 29 39 49 30 40 50 16 41 51 10 18 35 55 Part IV Translation With the rapid de 、 relopment Of China ， s economy and the steady improvement Of people ， s living standards, urban residents are demanding more and more from their environment and quality Of life. Local governments in China are paying more attenuon tO the construction and improvement Of public facilities to better meet people \u0027s needs. By buildmg new squares ， parks, and public green spaces ， or redesigning existmg public spaces ， many cities are providlng more places for citizens tO relax and socialize. Today, government-funded fitness equipment and paved fitness trails can be found everywhere in many cities ， significantly lmproving the condltions for outdoor activities and making C1t1es more 2023 一 06 一 CET6 （ 第 2 套 ） 一 10",
+    "lines":  [
+                  {
+                      "text":  "KEYS",
+                      "words":  [
+                                    {
+                                        "text":  "KEYS",
+                                        "x":  526,
+                                        "y":  158,
+                                        "width":  81,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part I Writing",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  90,
+                                        "y":  218,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  156,
+                                        "y":  218,
+                                        "width":  11,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Writing",
+                                        "x":  175,
+                                        "y":  218,
+                                        "width":  102,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Suggested Version",
+                      "words":  [
+                                    {
+                                        "text":  "Suggested",
+                                        "x":  90,
+                                        "y":  265,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Version",
+                                        "x":  194,
+                                        "y":  265,
+                                        "width":  73,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "When faced with differing oplmons ， we should try to reach agreement through friendly dlscussion",
+                      "words":  [
+                                    {
+                                        "text":  "When",
+                                        "x":  136,
+                                        "y":  295,
+                                        "width":  54,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "faced",
+                                        "x":  197,
+                                        "y":  294,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  253,
+                                        "y":  295,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "differing",
+                                        "x":  300,
+                                        "y":  294,
+                                        "width":  79,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "oplmons",
+                                        "x":  386,
+                                        "y":  300,
+                                        "width":  78,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  466,
+                                        "y":  308,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  477,
+                                        "y":  300,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "x":  511,
+                                        "y":  295,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "try",
+                                        "x":  578,
+                                        "y":  297,
+                                        "width":  25,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  610,
+                                        "y":  297,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "reach",
+                                        "x":  633,
+                                        "y":  295,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "agreement",
+                                        "x":  690,
+                                        "y":  297,
+                                        "width":  95,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "through",
+                                        "x":  791,
+                                        "y":  295,
+                                        "width":  71,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "friendly",
+                                        "x":  870,
+                                        "y":  294,
+                                        "width":  72,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "dlscussion",
+                                        "x":  949,
+                                        "y":  295,
+                                        "width":  95,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "and reasonable argument. ln our daily life ， it is common tO see college students struggling with a polite",
+                      "words":  [
+                                    {
+                                        "text":  "and",
+                                        "x":  90,
+                                        "y":  324,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "reasonable",
+                                        "x":  129,
+                                        "y":  325,
+                                        "width":  98,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "argument.",
+                                        "x":  234,
+                                        "y":  327,
+                                        "width":  90,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "ln",
+                                        "x":  332,
+                                        "y":  325,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "our",
+                                        "x":  357,
+                                        "y":  329,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "daily",
+                                        "x":  394,
+                                        "y":  324,
+                                        "width":  45,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "life",
+                                        "x":  446,
+                                        "y":  324,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  477,
+                                        "y":  338,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "it",
+                                        "x":  488,
+                                        "y":  324,
+                                        "width":  13,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  508,
+                                        "y":  324,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "common",
+                                        "x":  529,
+                                        "y":  329,
+                                        "width":  80,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  615,
+                                        "y":  327,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "see",
+                                        "x":  640,
+                                        "y":  329,
+                                        "width":  28,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "college",
+                                        "x":  675,
+                                        "y":  325,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "students",
+                                        "x":  748,
+                                        "y":  325,
+                                        "width":  73,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "struggling",
+                                        "x":  829,
+                                        "y":  324,
+                                        "width":  92,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  928,
+                                        "y":  324,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  975,
+                                        "y":  329,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "polite",
+                                        "x":  991,
+                                        "y":  324,
+                                        "width":  52,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "and logical way when their views differ from others. ApparentIy, this issue has sparked public concerns.",
+                      "words":  [
+                                    {
+                                        "text":  "and",
+                                        "x":  90,
+                                        "y":  354,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "logical",
+                                        "x":  129,
+                                        "y":  354,
+                                        "width":  62,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "way",
+                                        "x":  198,
+                                        "y":  359,
+                                        "width":  37,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "when",
+                                        "x":  242,
+                                        "y":  355,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  297,
+                                        "y":  354,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "views",
+                                        "x":  346,
+                                        "y":  354,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "differ",
+                                        "x":  405,
+                                        "y":  354,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  462,
+                                        "y":  354,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "others.",
+                                        "x":  512,
+                                        "y":  354,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "ApparentIy,",
+                                        "x":  580,
+                                        "y":  354,
+                                        "width":  107,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "x":  694,
+                                        "y":  354,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "issue",
+                                        "x":  733,
+                                        "y":  354,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  785,
+                                        "y":  354,
+                                        "width":  29,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "sparked",
+                                        "x":  822,
+                                        "y":  354,
+                                        "width":  70,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "public",
+                                        "x":  899,
+                                        "y":  354,
+                                        "width":  56,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "concerns.",
+                                        "x":  962,
+                                        "y":  359,
+                                        "width":  86,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Friendly discussion allows individuals tO share their perspectives and opinions in a respectful",
+                      "words":  [
+                                    {
+                                        "text":  "Friendly",
+                                        "x":  136,
+                                        "y":  384,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "discussion",
+                                        "x":  223,
+                                        "y":  384,
+                                        "width":  96,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "allows",
+                                        "x":  330,
+                                        "y":  384,
+                                        "width":  59,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "individuals",
+                                        "x":  400,
+                                        "y":  384,
+                                        "width":  101,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  512,
+                                        "y":  387,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "share",
+                                        "x":  540,
+                                        "y":  384,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  598,
+                                        "y":  384,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "perspectives",
+                                        "x":  650,
+                                        "y":  384,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  773,
+                                        "y":  384,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "opinions",
+                                        "x":  816,
+                                        "y":  384,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  906,
+                                        "y":  384,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  934,
+                                        "y":  389,
+                                        "width":  9,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "respectful",
+                                        "x":  953,
+                                        "y":  384,
+                                        "width":  90,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "manner. This can lead to a better understanding Of each other ， s viewpoints and potentially even finding",
+                      "words":  [
+                                    {
+                                        "text":  "manner.",
+                                        "x":  90,
+                                        "y":  419,
+                                        "width":  71,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "This",
+                                        "x":  169,
+                                        "y":  414,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  216,
+                                        "y":  419,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "lead",
+                                        "x":  254,
+                                        "y":  414,
+                                        "width":  38,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  299,
+                                        "y":  417,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  323,
+                                        "y":  419,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "better",
+                                        "x":  339,
+                                        "y":  414,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "understanding",
+                                        "x":  398,
+                                        "y":  414,
+                                        "width":  129,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  534,
+                                        "y":  414,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "each",
+                                        "x":  559,
+                                        "y":  414,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "other",
+                                        "x":  607,
+                                        "y":  414,
+                                        "width":  48,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  658,
+                                        "y":  414,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  663,
+                                        "y":  419,
+                                        "width":  7,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "viewpoints",
+                                        "x":  678,
+                                        "y":  414,
+                                        "width":  99,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  785,
+                                        "y":  414,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "potentially",
+                                        "x":  824,
+                                        "y":  414,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "even",
+                                        "x":  928,
+                                        "y":  419,
+                                        "width":  43,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "finding",
+                                        "x":  978,
+                                        "y":  414,
+                                        "width":  66,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "common ground. ln addition ， reasonable argument allows individuals tO present evidence and logic tO",
+                      "words":  [
+                                    {
+                                        "text":  "common",
+                                        "x":  90,
+                                        "y":  449,
+                                        "width":  80,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "ground.",
+                                        "x":  178,
+                                        "y":  444,
+                                        "width":  69,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "ln",
+                                        "x":  256,
+                                        "y":  444,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "addition",
+                                        "x":  282,
+                                        "y":  444,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  358,
+                                        "y":  457,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "reasonable",
+                                        "x":  370,
+                                        "y":  444,
+                                        "width":  98,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "argument",
+                                        "x":  475,
+                                        "y":  447,
+                                        "width":  87,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "allows",
+                                        "x":  569,
+                                        "y":  444,
+                                        "width":  59,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "individuals",
+                                        "x":  636,
+                                        "y":  444,
+                                        "width":  101,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  745,
+                                        "y":  447,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "present",
+                                        "x":  770,
+                                        "y":  447,
+                                        "width":  66,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "evidence",
+                                        "x":  844,
+                                        "y":  444,
+                                        "width":  82,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  933,
+                                        "y":  444,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "logic",
+                                        "x":  973,
+                                        "y":  444,
+                                        "width":  45,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  1026,
+                                        "y":  447,
+                                        "width":  18,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "support their position which can help persuade others tO see their point Of view 、 However ， it is",
+                      "words":  [
+                                    {
+                                        "text":  "support",
+                                        "x":  90,
+                                        "y":  477,
+                                        "width":  69,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  170,
+                                        "y":  474,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "position",
+                                        "x":  223,
+                                        "y":  474,
+                                        "width":  74,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "which",
+                                        "x":  314,
+                                        "y":  474,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  381,
+                                        "y":  479,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "help",
+                                        "x":  423,
+                                        "y":  474,
+                                        "width":  39,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "persuade",
+                                        "x":  474,
+                                        "y":  474,
+                                        "width":  82,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "others",
+                                        "x":  567,
+                                        "y":  474,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  634,
+                                        "y":  477,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "see",
+                                        "x":  664,
+                                        "y":  479,
+                                        "width":  28,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  703,
+                                        "y":  474,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "point",
+                                        "x":  756,
+                                        "y":  474,
+                                        "width":  48,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  815,
+                                        "y":  474,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "view",
+                                        "x":  845,
+                                        "y":  474,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  889,
+                                        "y":  487,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "However",
+                                        "x":  905,
+                                        "y":  474,
+                                        "width":  84,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  989,
+                                        "y":  487,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "it",
+                                        "x":  1005,
+                                        "y":  474,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  1029,
+                                        "y":  474,
+                                        "width":  14,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "lmportant tO note that not all disagreements can be resolved through discussion and argument alone. ln",
+                      "words":  [
+                                    {
+                                        "text":  "lmportant",
+                                        "x":  90,
+                                        "y":  507,
+                                        "width":  89,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  186,
+                                        "y":  507,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "note",
+                                        "x":  210,
+                                        "y":  507,
+                                        "width":  39,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  256,
+                                        "y":  504,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "not",
+                                        "x":  297,
+                                        "y":  507,
+                                        "width":  29,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "all",
+                                        "x":  333,
+                                        "y":  504,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "disagreements",
+                                        "x":  362,
+                                        "y":  504,
+                                        "width":  130,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  500,
+                                        "y":  509,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  538,
+                                        "y":  504,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "resolved",
+                                        "x":  566,
+                                        "y":  504,
+                                        "width":  77,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "through",
+                                        "x":  650,
+                                        "y":  504,
+                                        "width":  71,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "discussion",
+                                        "x":  728,
+                                        "y":  504,
+                                        "width":  96,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  831,
+                                        "y":  504,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "argument",
+                                        "x":  870,
+                                        "y":  507,
+                                        "width":  86,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "alone.",
+                                        "x":  963,
+                                        "y":  504,
+                                        "width":  54,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "ln",
+                                        "x":  1025,
+                                        "y":  504,
+                                        "width":  18,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "some cases ， comprormse may be necessary tO reach a resolution that satlsfies all parties involved.",
+                      "words":  [
+                                    {
+                                        "text":  "some",
+                                        "x":  90,
+                                        "y":  539,
+                                        "width":  48,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "cases",
+                                        "x":  144,
+                                        "y":  539,
+                                        "width":  47,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  193,
+                                        "y":  547,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "comprormse",
+                                        "x":  204,
+                                        "y":  539,
+                                        "width":  113,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "may",
+                                        "x":  323,
+                                        "y":  539,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  369,
+                                        "y":  534,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "necessary",
+                                        "x":  396,
+                                        "y":  539,
+                                        "width":  89,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  491,
+                                        "y":  536,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "reach",
+                                        "x":  515,
+                                        "y":  534,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  571,
+                                        "y":  539,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "resolution",
+                                        "x":  586,
+                                        "y":  534,
+                                        "width":  92,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  684,
+                                        "y":  534,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "satlsfies",
+                                        "x":  725,
+                                        "y":  534,
+                                        "width":  72,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "all",
+                                        "x":  804,
+                                        "y":  534,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "parties",
+                                        "x":  833,
+                                        "y":  534,
+                                        "width":  60,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "involved.",
+                                        "x":  900,
+                                        "y":  534,
+                                        "width":  84,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "To sum up ， fnendly discussion and reasonable argument ， to a large extent are of great use. We",
+                      "words":  [
+                                    {
+                                        "text":  "To",
+                                        "x":  136,
+                                        "y":  564,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "sum",
+                                        "x":  168,
+                                        "y":  569,
+                                        "width":  38,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "up",
+                                        "x":  214,
+                                        "y":  569,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  238,
+                                        "y":  577,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "fnendly",
+                                        "x":  251,
+                                        "y":  564,
+                                        "width":  72,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "discussion",
+                                        "x":  332,
+                                        "y":  564,
+                                        "width":  95,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  436,
+                                        "y":  564,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "reasonable",
+                                        "x":  477,
+                                        "y":  564,
+                                        "width":  98,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "argument",
+                                        "x":  584,
+                                        "y":  566,
+                                        "width":  86,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  671,
+                                        "y":  577,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  684,
+                                        "y":  566,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  710,
+                                        "y":  569,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "large",
+                                        "x":  728,
+                                        "y":  564,
+                                        "width":  45,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "extent",
+                                        "x":  782,
+                                        "y":  566,
+                                        "width":  56,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  852,
+                                        "y":  569,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  888,
+                                        "y":  564,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "great",
+                                        "x":  915,
+                                        "y":  566,
+                                        "width":  46,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "use.",
+                                        "x":  969,
+                                        "y":  569,
+                                        "width":  35,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "We",
+                                        "x":  1013,
+                                        "y":  564,
+                                        "width":  30,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "should be open-minded and engaged in such practlces.",
+                      "words":  [
+                                    {
+                                        "text":  "should",
+                                        "x":  90,
+                                        "y":  594,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  157,
+                                        "y":  594,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "open-minded",
+                                        "x":  184,
+                                        "y":  593,
+                                        "width":  121,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  312,
+                                        "y":  594,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "engaged",
+                                        "x":  351,
+                                        "y":  594,
+                                        "width":  75,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  433,
+                                        "y":  593,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "such",
+                                        "x":  457,
+                                        "y":  594,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "practlces.",
+                                        "x":  504,
+                                        "y":  596,
+                                        "width":  86,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part II Listening Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  90,
+                                        "y":  636,
+                                        "width":  57,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "II",
+                                        "x":  155,
+                                        "y":  637,
+                                        "width":  23,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "Listening",
+                                        "x":  187,
+                                        "y":  636,
+                                        "width":  122,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  318,
+                                        "y":  636,
+                                        "width":  205,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "11",
+                      "words":  [
+                                    {
+                                        "text":  "11",
+                                        "x":  129,
+                                        "y":  750,
+                                        "width":  19,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "21",
+                      "words":  [
+                                    {
+                                        "text":  "21",
+                                        "x":  127,
+                                        "y":  818,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "12",
+                      "words":  [
+                                    {
+                                        "text":  "12",
+                                        "x":  223,
+                                        "y":  750,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "22",
+                      "words":  [
+                                    {
+                                        "text":  "22",
+                                        "x":  222,
+                                        "y":  818,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "23",
+                      "words":  [
+                                    {
+                                        "text":  "23",
+                                        "x":  318,
+                                        "y":  818,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "14",
+                      "words":  [
+                                    {
+                                        "text":  "14",
+                                        "x":  414,
+                                        "y":  750,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "24",
+                      "words":  [
+                                    {
+                                        "text":  "24",
+                                        "x":  412,
+                                        "y":  818,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "25",
+                      "words":  [
+                                    {
+                                        "text":  "25",
+                                        "x":  508,
+                                        "y":  818,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part III Reading Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  90,
+                                        "y":  900,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "III",
+                                        "x":  155,
+                                        "y":  900,
+                                        "width":  35,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Reading",
+                                        "x":  199,
+                                        "y":  900,
+                                        "width":  108,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  316,
+                                        "y":  900,
+                                        "width":  206,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "26",
+                      "words":  [
+                                    {
+                                        "text":  "26",
+                                        "x":  127,
+                                        "y":  946,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "36",
+                      "words":  [
+                                    {
+                                        "text":  "36",
+                                        "x":  127,
+                                        "y":  1014,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "46",
+                      "words":  [
+                                    {
+                                        "text":  "46",
+                                        "x":  127,
+                                        "y":  1081,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "37",
+                      "words":  [
+                                    {
+                                        "text":  "37",
+                                        "x":  222,
+                                        "y":  1014,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "28",
+                      "words":  [
+                                    {
+                                        "text":  "28",
+                                        "x":  317,
+                                        "y":  946,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "38",
+                      "words":  [
+                                    {
+                                        "text":  "38",
+                                        "x":  317,
+                                        "y":  1014,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "48",
+                      "words":  [
+                                    {
+                                        "text":  "48",
+                                        "x":  317,
+                                        "y":  1081,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "29",
+                      "words":  [
+                                    {
+                                        "text":  "29",
+                                        "x":  412,
+                                        "y":  946,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "39",
+                      "words":  [
+                                    {
+                                        "text":  "39",
+                                        "x":  412,
+                                        "y":  1014,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "49",
+                      "words":  [
+                                    {
+                                        "text":  "49",
+                                        "x":  412,
+                                        "y":  1081,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "30",
+                      "words":  [
+                                    {
+                                        "text":  "30",
+                                        "x":  508,
+                                        "y":  946,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "40",
+                      "words":  [
+                                    {
+                                        "text":  "40",
+                                        "x":  507,
+                                        "y":  1014,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "50",
+                      "words":  [
+                                    {
+                                        "text":  "50",
+                                        "x":  508,
+                                        "y":  1081,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "16",
+                      "words":  [
+                                    {
+                                        "text":  "16",
+                                        "x":  604,
+                                        "y":  750,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "41",
+                      "words":  [
+                                    {
+                                        "text":  "41",
+                                        "x":  602,
+                                        "y":  1014,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "51",
+                      "words":  [
+                                    {
+                                        "text":  "51",
+                                        "x":  603,
+                                        "y":  1081,
+                                        "width":  21,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "10",
+                      "words":  [
+                                    {
+                                        "text":  "10",
+                                        "x":  984,
+                                        "y":  682,
+                                        "width":  21,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "18",
+                      "words":  [
+                                    {
+                                        "text":  "18",
+                                        "x":  794,
+                                        "y":  750,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "35",
+                      "words":  [
+                                    {
+                                        "text":  "35",
+                                        "x":  983,
+                                        "y":  946,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "55",
+                      "words":  [
+                                    {
+                                        "text":  "55",
+                                        "x":  983,
+                                        "y":  1081,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part IV Translation",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  90,
+                                        "y":  1164,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "IV",
+                                        "x":  155,
+                                        "y":  1164,
+                                        "width":  33,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Translation",
+                                        "x":  196,
+                                        "y":  1163,
+                                        "width":  150,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "With the rapid de 、 relopment Of China ， s economy and the steady improvement Of people ， s living",
+                      "words":  [
+                                    {
+                                        "text":  "With",
+                                        "x":  136,
+                                        "y":  1210,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  189,
+                                        "y":  1210,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "rapid",
+                                        "x":  225,
+                                        "y":  1210,
+                                        "width":  47,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "de",
+                                        "x":  280,
+                                        "y":  1210,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  302,
+                                        "y":  1216,
+                                        "width":  7,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "relopment",
+                                        "x":  309,
+                                        "y":  1210,
+                                        "width":  90,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  407,
+                                        "y":  1210,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "China",
+                                        "x":  434,
+                                        "y":  1210,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  491,
+                                        "y":  1210,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  496,
+                                        "y":  1215,
+                                        "width":  7,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "economy",
+                                        "x":  512,
+                                        "y":  1215,
+                                        "width":  84,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  605,
+                                        "y":  1210,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  646,
+                                        "y":  1210,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "steady",
+                                        "x":  682,
+                                        "y":  1210,
+                                        "width":  57,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "improvement",
+                                        "x":  749,
+                                        "y":  1210,
+                                        "width":  122,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  879,
+                                        "y":  1210,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  906,
+                                        "y":  1210,
+                                        "width":  61,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  969,
+                                        "y":  1210,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  974,
+                                        "y":  1215,
+                                        "width":  8,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "living",
+                                        "x":  991,
+                                        "y":  1210,
+                                        "width":  53,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "standards, urban residents are demanding more and more from their environment and quality Of life.",
+                      "words":  [
+                                    {
+                                        "text":  "standards,",
+                                        "x":  91,
+                                        "y":  1240,
+                                        "width":  90,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "urban",
+                                        "x":  190,
+                                        "y":  1240,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "residents",
+                                        "x":  251,
+                                        "y":  1240,
+                                        "width":  81,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  341,
+                                        "y":  1245,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "demanding",
+                                        "x":  377,
+                                        "y":  1240,
+                                        "width":  101,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  487,
+                                        "y":  1245,
+                                        "width":  47,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  543,
+                                        "y":  1240,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  584,
+                                        "y":  1245,
+                                        "width":  47,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  640,
+                                        "y":  1240,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  692,
+                                        "y":  1240,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "environment",
+                                        "x":  743,
+                                        "y":  1240,
+                                        "width":  116,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  867,
+                                        "y":  1240,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "quality",
+                                        "x":  909,
+                                        "y":  1240,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  981,
+                                        "y":  1240,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "life.",
+                                        "x":  1008,
+                                        "y":  1240,
+                                        "width":  35,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Local governments in China are paying more attenuon tO the construction and improvement Of public",
+                      "words":  [
+                                    {
+                                        "text":  "Local",
+                                        "x":  90,
+                                        "y":  1270,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "governments",
+                                        "x":  149,
+                                        "y":  1273,
+                                        "width":  118,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  275,
+                                        "y":  1270,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "China",
+                                        "x":  300,
+                                        "y":  1270,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  362,
+                                        "y":  1275,
+                                        "width":  28,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "paying",
+                                        "x":  397,
+                                        "y":  1270,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  467,
+                                        "y":  1275,
+                                        "width":  47,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "attenuon",
+                                        "x":  522,
+                                        "y":  1273,
+                                        "width":  79,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  609,
+                                        "y":  1273,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  634,
+                                        "y":  1270,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "construction",
+                                        "x":  669,
+                                        "y":  1270,
+                                        "width":  113,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  790,
+                                        "y":  1270,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "improvement",
+                                        "x":  830,
+                                        "y":  1270,
+                                        "width":  123,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  960,
+                                        "y":  1270,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "public",
+                                        "x":  986,
+                                        "y":  1270,
+                                        "width":  57,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "facilities to better meet people \u0027s needs. By buildmg new squares ， parks, and public green spaces ， or",
+                      "words":  [
+                                    {
+                                        "text":  "facilities",
+                                        "x":  90,
+                                        "y":  1300,
+                                        "width":  78,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  178,
+                                        "y":  1303,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "better",
+                                        "x":  204,
+                                        "y":  1300,
+                                        "width":  52,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "meet",
+                                        "x":  265,
+                                        "y":  1303,
+                                        "width":  44,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  317,
+                                        "y":  1300,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "\u0027s",
+                                        "x":  381,
+                                        "y":  1300,
+                                        "width":  12,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "needs.",
+                                        "x":  403,
+                                        "y":  1300,
+                                        "width":  56,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "By",
+                                        "x":  469,
+                                        "y":  1300,
+                                        "width":  26,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "buildmg",
+                                        "x":  504,
+                                        "y":  1300,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "new",
+                                        "x":  590,
+                                        "y":  1305,
+                                        "width":  37,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "squares",
+                                        "x":  637,
+                                        "y":  1305,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  706,
+                                        "y":  1313,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "parks,",
+                                        "x":  719,
+                                        "y":  1300,
+                                        "width":  55,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  784,
+                                        "y":  1300,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "public",
+                                        "x":  825,
+                                        "y":  1300,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "green",
+                                        "x":  892,
+                                        "y":  1305,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "spaces",
+                                        "x":  951,
+                                        "y":  1305,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1012,
+                                        "y":  1313,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "or",
+                                        "x":  1025,
+                                        "y":  1305,
+                                        "width":  20,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "redesigning existmg public spaces ， many cities are providlng more places for citizens tO relax and",
+                      "words":  [
+                                    {
+                                        "text":  "redesigning",
+                                        "x":  90,
+                                        "y":  1330,
+                                        "width":  106,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "existmg",
+                                        "x":  207,
+                                        "y":  1330,
+                                        "width":  72,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "public",
+                                        "x":  289,
+                                        "y":  1330,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "spaces",
+                                        "x":  357,
+                                        "y":  1335,
+                                        "width":  58,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  417,
+                                        "y":  1343,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  431,
+                                        "y":  1335,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "cities",
+                                        "x":  493,
+                                        "y":  1330,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  551,
+                                        "y":  1335,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "providlng",
+                                        "x":  588,
+                                        "y":  1330,
+                                        "width":  89,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  687,
+                                        "y":  1335,
+                                        "width":  47,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "places",
+                                        "x":  744,
+                                        "y":  1330,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  812,
+                                        "y":  1330,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "citizens",
+                                        "x":  848,
+                                        "y":  1330,
+                                        "width":  69,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  927,
+                                        "y":  1332,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "relax",
+                                        "x":  955,
+                                        "y":  1330,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  1011,
+                                        "y":  1330,
+                                        "width":  33,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "socialize. Today, government-funded fitness equipment and paved fitness trails can be found",
+                      "words":  [
+                                    {
+                                        "text":  "socialize.",
+                                        "x":  91,
+                                        "y":  1360,
+                                        "width":  83,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Today,",
+                                        "x":  191,
+                                        "y":  1360,
+                                        "width":  60,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "government-funded",
+                                        "x":  268,
+                                        "y":  1360,
+                                        "width":  181,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "fitness",
+                                        "x":  464,
+                                        "y":  1360,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "equipment",
+                                        "x":  540,
+                                        "y":  1360,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  652,
+                                        "y":  1360,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "paved",
+                                        "x":  700,
+                                        "y":  1360,
+                                        "width":  55,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "fitness",
+                                        "x":  770,
+                                        "y":  1360,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "trails",
+                                        "x":  845,
+                                        "y":  1360,
+                                        "width":  46,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  907,
+                                        "y":  1365,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  953,
+                                        "y":  1360,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "found",
+                                        "x":  991,
+                                        "y":  1360,
+                                        "width":  53,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "everywhere in many cities ， significantly lmproving the condltions for outdoor activities and making",
+                      "words":  [
+                                    {
+                                        "text":  "everywhere",
+                                        "x":  90,
+                                        "y":  1390,
+                                        "width":  106,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  206,
+                                        "y":  1390,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  232,
+                                        "y":  1395,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "cities",
+                                        "x":  292,
+                                        "y":  1390,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  342,
+                                        "y":  1403,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "significantly",
+                                        "x":  356,
+                                        "y":  1390,
+                                        "width":  114,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "lmproving",
+                                        "x":  479,
+                                        "y":  1390,
+                                        "width":  95,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  584,
+                                        "y":  1390,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "condltions",
+                                        "x":  621,
+                                        "y":  1390,
+                                        "width":  94,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  725,
+                                        "y":  1390,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "outdoor",
+                                        "x":  761,
+                                        "y":  1390,
+                                        "width":  71,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "activities",
+                                        "x":  841,
+                                        "y":  1390,
+                                        "width":  82,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  933,
+                                        "y":  1390,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "making",
+                                        "x":  975,
+                                        "y":  1390,
+                                        "width":  68,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C1t1es more",
+                      "words":  [
+                                    {
+                                        "text":  "C1t1es",
+                                        "x":  90,
+                                        "y":  1422,
+                                        "width":  48,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  144,
+                                        "y":  1425,
+                                        "width":  47,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 06 一 CET6 （ 第 2 套 ） 一 10",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  441,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  487,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "06",
+                                        "x":  494,
+                                        "y":  1495,
+                                        "width":  23,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  518,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "CET6",
+                                        "x":  525,
+                                        "y":  1495,
+                                        "width":  54,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  580,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  590,
+                                        "y":  1493,
+                                        "width":  17,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  616,
+                                        "y":  1495,
+                                        "width":  11,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  634,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  655,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  663,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "10",
+                                        "x":  673,
+                                        "y":  1496,
+                                        "width":  20,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

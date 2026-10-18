@@ -1,0 +1,364 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_06_1\\page-11.jpg",
+    "unverifiedOCR":  true,
+    "text":  "government has introduced a senes Of policies tO support and encourage mOI ℃ outstanding culture products with Chinese elements tO go abroad and expand the oversea market shares tO further raise the- global influence of Chinese cultures 2023 一 06 一 CET6 （ 第 1 套 片 ll",
+    "lines":  [
+                  {
+                      "text":  "government has introduced a senes Of policies tO support and encourage mOI ℃ outstanding culture",
+                      "words":  [
+                                    {
+                                        "text":  "government",
+                                        "x":  90,
+                                        "y":  148,
+                                        "width":  110,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  209,
+                                        "y":  145,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "introduced",
+                                        "x":  250,
+                                        "y":  145,
+                                        "width":  98,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  359,
+                                        "y":  150,
+                                        "width":  9,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "senes",
+                                        "x":  379,
+                                        "y":  150,
+                                        "width":  51,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  441,
+                                        "y":  145,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "policies",
+                                        "x":  469,
+                                        "y":  145,
+                                        "width":  71,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  551,
+                                        "y":  148,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "support",
+                                        "x":  580,
+                                        "y":  148,
+                                        "width":  68,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  658,
+                                        "y":  145,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "encourage",
+                                        "x":  702,
+                                        "y":  150,
+                                        "width":  94,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "mOI",
+                                        "x":  806,
+                                        "y":  150,
+                                        "width":  34,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "℃",
+                                        "x":  840,
+                                        "y":  150,
+                                        "width":  12,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "outstanding",
+                                        "x":  863,
+                                        "y":  145,
+                                        "width":  107,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "culture",
+                                        "x":  980,
+                                        "y":  145,
+                                        "width":  64,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "products with Chinese elements tO go abroad and expand the oversea market shares tO further raise the-",
+                      "words":  [
+                                    {
+                                        "text":  "products",
+                                        "x":  90,
+                                        "y":  176,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  176,
+                                        "y":  175,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  223,
+                                        "y":  175,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elements",
+                                        "x":  304,
+                                        "y":  176,
+                                        "width":  80,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  392,
+                                        "y":  178,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "go",
+                                        "x":  416,
+                                        "y":  180,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "abroad",
+                                        "x":  445,
+                                        "y":  175,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  515,
+                                        "y":  175,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "expand",
+                                        "x":  554,
+                                        "y":  176,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  627,
+                                        "y":  175,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "oversea",
+                                        "x":  661,
+                                        "y":  180,
+                                        "width":  71,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "market",
+                                        "x":  738,
+                                        "y":  175,
+                                        "width":  64,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "shares",
+                                        "x":  808,
+                                        "y":  175,
+                                        "width":  57,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  872,
+                                        "y":  178,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "further",
+                                        "x":  897,
+                                        "y":  175,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "raise",
+                                        "x":  965,
+                                        "y":  175,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the-",
+                                        "x":  1016,
+                                        "y":  175,
+                                        "width":  32,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "global influence of Chinese cultures",
+                      "words":  [
+                                    {
+                                        "text":  "global",
+                                        "x":  90,
+                                        "y":  205,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "influence",
+                                        "x":  153,
+                                        "y":  205,
+                                        "width":  85,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  244,
+                                        "y":  205,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  269,
+                                        "y":  205,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "cultures",
+                                        "x":  349,
+                                        "y":  205,
+                                        "width":  72,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 06 一 CET6 （ 第 1 套 片 ll",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  441,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  487,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "06",
+                                        "x":  494,
+                                        "y":  1496,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  517,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "CET6",
+                                        "x":  525,
+                                        "y":  1496,
+                                        "width":  54,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  580,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  591,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "1",
+                                        "x":  618,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  635,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "片",
+                                        "x":  657,
+                                        "y":  1496,
+                                        "width":  14,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "ll",
+                                        "x":  674,
+                                        "y":  1496,
+                                        "width":  17,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

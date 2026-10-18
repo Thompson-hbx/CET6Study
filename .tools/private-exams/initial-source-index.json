@@ -1,0 +1,599 @@
+{
+  "description": "CET6 2023—2026 真题来源索引，不包含第三方受版权保护的试卷正文或答案原文，也不代表官方认证",
+  "generated_on": "2026-10-18",
+  "scope": "2023、2024、2025、2026年已举行考次；2026年12月不包含；2023年3月单列为2022下半年延考",
+  "count": 24,
+  "standard_sitting_paper_count": 21,
+  "deferred_2023_03_count": 3,
+  "source_sites": [
+    {
+      "name": "懒笔记真题下载索引",
+      "url": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "type": "逐套详情、PDF、Word、解析版入口"
+    },
+    {
+      "name": "WeHUSTER六级试卷及参考答案目录",
+      "url": "https://www.wehuster.com/cet6",
+      "type": "原题和答案成对条目（需要核实对应）"
+    },
+    {
+      "name": "新东方在线历年答案索引",
+      "url": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "type": "第三方参考核对"
+    }
+  ],
+  "verification_requirements": [
+    "检查2023年3月与2022年12月延考的标签",
+    "同考次不同网站套卷序号不可假设一致：匹配题干、文章主题、选项及作文翻译",
+    "46—55题10个答案需逐项核对且记录来源，冲突则标记待人工校对",
+    "主观题无唯一标准译文或范文；只能称为参考",
+    "未经许可不将第三方整卷原文或答案解析重新打包入APK、提交公开仓库、再分发",
+    "下载入用户本机私人目录后可按已具备的使用权限导入，不代表来源网站允许镜像传播"
+  ],
+  "papers": [
+    {
+      "paper_id": "cet6-2023-03-1",
+      "year": 2023,
+      "month": 3,
+      "set_number": 1,
+      "exam_category": "2022年下半年延期加考",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-03-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": [
+        "2022年下半年因疫情延期至2023年3月的考次，应作为延期卷单独分类；部分套卷可能共用阅读部分。"
+      ]
+    },
+    {
+      "paper_id": "cet6-2023-03-2",
+      "year": 2023,
+      "month": 3,
+      "set_number": 2,
+      "exam_category": "2022年下半年延期加考",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-03-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": [
+        "2022年下半年因疫情延期至2023年3月的考次，应作为延期卷单独分类；部分套卷可能共用阅读部分。"
+      ]
+    },
+    {
+      "paper_id": "cet6-2023-03-3",
+      "year": 2023,
+      "month": 3,
+      "set_number": 3,
+      "exam_category": "2022年下半年延期加考",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-03-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": [
+        "2022年下半年因疫情延期至2023年3月的考次，应作为延期卷单独分类；部分套卷可能共用阅读部分。"
+      ]
+    },
+    {
+      "paper_id": "cet6-2023-06-1",
+      "year": 2023,
+      "month": 6,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-06-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2023-06-2",
+      "year": 2023,
+      "month": 6,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-06-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2023-06-3",
+      "year": 2023,
+      "month": 6,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-06-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2023-12-1",
+      "year": 2023,
+      "month": 12,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-12-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2023-12-2",
+      "year": 2023,
+      "month": 12,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-12-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2023-12-3",
+      "year": 2023,
+      "month": 12,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2023-12-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2024-06-1",
+      "year": 2024,
+      "month": 6,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2024-06-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2024-06-2",
+      "year": 2024,
+      "month": 6,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2024-06-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2024-06-3",
+      "year": 2024,
+      "month": 6,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2024-06-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2024-12-1",
+      "year": 2024,
+      "month": 12,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2024-12-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2024-12-2",
+      "year": 2024,
+      "month": 12,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2024-12-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2024-12-3",
+      "year": 2024,
+      "month": 12,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2024-12-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2025-06-1",
+      "year": 2025,
+      "month": 6,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2025-06-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2025-06-2",
+      "year": 2025,
+      "month": 6,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2025-06-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2025-06-3",
+      "year": 2025,
+      "month": 6,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2025-06-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2025-12-1",
+      "year": 2025,
+      "month": 12,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2025-12-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": [
+        "不同资源网站的作文题/套卷编号可能不一致：需比对同套仔细阅读46—55题和参考答案，不可仅凭第N套标记合并。"
+      ]
+    },
+    {
+      "paper_id": "cet6-2025-12-2",
+      "year": 2025,
+      "month": 12,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2025-12-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": [
+        "不同资源网站的作文题/套卷编号可能不一致：需比对同套仔细阅读46—55题和参考答案，不可仅凭第N套标记合并。"
+      ]
+    },
+    {
+      "paper_id": "cet6-2025-12-3",
+      "year": 2025,
+      "month": 12,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2025-12-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": [
+        "不同资源网站的作文题/套卷编号可能不一致：需比对同套仔细阅读46—55题和参考答案，不可仅凭第N套标记合并。"
+      ]
+    },
+    {
+      "paper_id": "cet6-2026-06-1",
+      "year": 2026,
+      "month": 6,
+      "set_number": 1,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2026-06-1/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2026-06-2",
+      "year": 2026,
+      "month": 6,
+      "set_number": 2,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2026-06-2/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    },
+    {
+      "paper_id": "cet6-2026-06-3",
+      "year": 2026,
+      "month": 6,
+      "set_number": 3,
+      "exam_category": "常规考次",
+      "coverage": [
+        "仔细阅读46-55题",
+        "写作",
+        "翻译"
+      ],
+      "paper_page": "https://english-exam.lazynote.cn/cet6/paper/2026-06-3/",
+      "download_index": "https://english-exam.lazynote.cn/cet6/downloads/",
+      "independent_answer_index": "https://www.wehuster.com/cet6",
+      "publisher_comparison_index": "https://cet6.koolearn.com/zt/cet6ztjda/",
+      "source_discovery": "download directory lists entry; not independently reviewed as exact official original",
+      "content_status": "目录已找到；原卷、参考答案与一致性待逐套核验",
+      "raw_file_local_path": null,
+      "questions_verified": false,
+      "answer_verified": false,
+      "permission_for_redistribution": "未核实",
+      "notes": []
+    }
+  ]
+}

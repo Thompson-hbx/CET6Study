@@ -1,0 +1,2994 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_06_3\\page-07.jpg",
+    "unverifiedOCR":  true,
+    "text":  "Whiten? A. Ch11dren lrrationally imitated every action of the experimenters. B 、 Ch1mpanzees could tell the transparent box from the opaque one. C. Ch1mpanzees could retrieve the treat more quickly than children did. D. Children omitted the step 0f tappmg on the box with a stick t0 open it. 54 ． What is anthropologist Joseph Henrich s explanatlon for the human preference for copying? A. lt originates in the rationality Of people around the world. B. lt stems from the way people learn complex technologies. C. lt results from people distrusting their own wisdom. D. derives from the desire tO acquire knowledge Step by step. 55 ， What point does the author want tO emphasize when he says We ， re not chimpanzees\"? A. lt is arguable whether everyone should avoid lmitation. B. lt is characteristic of human beings tO copy others. C. lt is desirable to trust in more knowledgeable peers. D. lt iS naive tO laugh at someone embracing nonconformity. Part IV Translation （ 30 minutes) Directions: For 尹 a ） “ allowed 30 m 忉 然 tra 肭 a passage 丿 m C / 2 忉 然 e 忉 E 理 g / 五 丿 “ 砀 0 “ 亿 w 门 、 a 肭 0 理 Answer Sheet 2 近 年 来 ， 中 国 城 市 加 快 发 展 ， 城 市 人 居 环 境 得 到 显 著 改 善 。 许 多 城 市 努 力 探 索 中 国 特 色 的 城 市 高 质 量 发 展 之 路 ， 城 市 功 能 不 断 完 善 ， 治 理 水 平 明 显 提 高 。 中 国 持 续 开 城 市 生 态 修 复 和 功 能 修 补 ， 全 面 实 施 城 镇 老 旧 小 区 改 造 ， 大 力 推 进 城 市 园 林 绿 化 ， 消 除 污 染 ； 同 时 大 力 推 进 城 市 基 础 设 施 体 系 化 建 设 ， 开 展 房 屋 建 筑 和 市 政 设 施 普 查 以 及 安 全 隐 排 查 整 ， 努 力 为 市 氏 创 造 高 品 质 的 生 活 环 境 ， 让 域 市 更 美 丽 、 更 安 全 、 更 宜 居 2023 一 06 一 CET6 （ 第 3 套 ） 一 7",
+    "lines":  [
+                  {
+                      "text":  "Whiten?",
+                      "words":  [
+                                    {
+                                        "text":  "Whiten?",
+                                        "x":  132,
+                                        "y":  145,
+                                        "width":  77,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. Ch11dren lrrationally imitated every action of the experimenters.",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  125,
+                                        "y":  176,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Ch11dren",
+                                        "x":  153,
+                                        "y":  175,
+                                        "width":  79,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lrrationally",
+                                        "x":  240,
+                                        "y":  175,
+                                        "width":  101,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "imitated",
+                                        "x":  347,
+                                        "y":  175,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "every",
+                                        "x":  428,
+                                        "y":  180,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "action",
+                                        "x":  485,
+                                        "y":  175,
+                                        "width":  56,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  547,
+                                        "y":  175,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  572,
+                                        "y":  175,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "experimenters.",
+                                        "x":  605,
+                                        "y":  175,
+                                        "width":  135,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B 、 Ch1mpanzees could tell the transparent box from the opaque one.",
+                      "words":  [
+                                    {
+                                        "text":  "B",
+                                        "x":  125,
+                                        "y":  205,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  141,
+                                        "y":  218,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "Ch1mpanzees",
+                                        "x":  152,
+                                        "y":  205,
+                                        "width":  123,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "could",
+                                        "x":  281,
+                                        "y":  205,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tell",
+                                        "x":  338,
+                                        "y":  205,
+                                        "width":  29,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  374,
+                                        "y":  205,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "transparent",
+                                        "x":  408,
+                                        "y":  208,
+                                        "width":  102,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "box",
+                                        "x":  514,
+                                        "y":  205,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  555,
+                                        "y":  205,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  606,
+                                        "y":  205,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "opaque",
+                                        "x":  640,
+                                        "y":  210,
+                                        "width":  65,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "one.",
+                                        "x":  711,
+                                        "y":  210,
+                                        "width":  38,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. Ch1mpanzees could retrieve the treat more quickly than children did.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  125,
+                                        "y":  235,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Ch1mpanzees",
+                                        "x":  152,
+                                        "y":  235,
+                                        "width":  123,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "could",
+                                        "x":  281,
+                                        "y":  235,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "retrieve",
+                                        "x":  338,
+                                        "y":  235,
+                                        "width":  70,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  414,
+                                        "y":  235,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "treat",
+                                        "x":  448,
+                                        "y":  237,
+                                        "width":  40,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  493,
+                                        "y":  240,
+                                        "width":  48,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "quickly",
+                                        "x":  547,
+                                        "y":  235,
+                                        "width":  68,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "than",
+                                        "x":  622,
+                                        "y":  235,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "children",
+                                        "x":  667,
+                                        "y":  235,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "did.",
+                                        "x":  748,
+                                        "y":  235,
+                                        "width":  34,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. Children omitted the step 0f tappmg on the box with a stick t0 open it.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  125,
+                                        "y":  265,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Children",
+                                        "x":  153,
+                                        "y":  265,
+                                        "width":  80,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "omitted",
+                                        "x":  239,
+                                        "y":  265,
+                                        "width":  70,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  315,
+                                        "y":  265,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "step",
+                                        "x":  349,
+                                        "y":  267,
+                                        "width":  36,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "0f",
+                                        "x":  392,
+                                        "y":  265,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tappmg",
+                                        "x":  417,
+                                        "y":  268,
+                                        "width":  68,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  491,
+                                        "y":  270,
+                                        "width":  23,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  520,
+                                        "y":  265,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "box",
+                                        "x":  553,
+                                        "y":  265,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  594,
+                                        "y":  265,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  641,
+                                        "y":  270,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "stick",
+                                        "x":  657,
+                                        "y":  265,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "t0",
+                                        "x":  706,
+                                        "y":  268,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "open",
+                                        "x":  730,
+                                        "y":  270,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "it.",
+                                        "x":  780,
+                                        "y":  265,
+                                        "width":  17,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "54 ． What is anthropologist Joseph Henrich s explanatlon for the human preference for copying?",
+                      "words":  [
+                                    {
+                                        "text":  "54",
+                                        "x":  90,
+                                        "y":  295,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  114,
+                                        "y":  308,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  124,
+                                        "y":  295,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  180,
+                                        "y":  295,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "anthropologist",
+                                        "x":  200,
+                                        "y":  295,
+                                        "width":  134,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Joseph",
+                                        "x":  339,
+                                        "y":  294,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Henrich",
+                                        "x":  408,
+                                        "y":  295,
+                                        "width":  72,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  488,
+                                        "y":  300,
+                                        "width":  7,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "explanatlon",
+                                        "x":  502,
+                                        "y":  295,
+                                        "width":  106,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  615,
+                                        "y":  295,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  648,
+                                        "y":  295,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "human",
+                                        "x":  681,
+                                        "y":  295,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "preference",
+                                        "x":  749,
+                                        "y":  295,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  852,
+                                        "y":  295,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "copying?",
+                                        "x":  885,
+                                        "y":  295,
+                                        "width":  83,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. lt originates in the rationality Of people around the world.",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  125,
+                                        "y":  325,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  153,
+                                        "y":  325,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "originates",
+                                        "x":  173,
+                                        "y":  324,
+                                        "width":  91,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  269,
+                                        "y":  325,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  293,
+                                        "y":  325,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "rationality",
+                                        "x":  326,
+                                        "y":  324,
+                                        "width":  95,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  427,
+                                        "y":  324,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  451,
+                                        "y":  325,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "around",
+                                        "x":  519,
+                                        "y":  325,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  588,
+                                        "y":  325,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "world.",
+                                        "x":  622,
+                                        "y":  325,
+                                        "width":  58,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. lt stems from the way people learn complex technologies.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  125,
+                                        "y":  355,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  152,
+                                        "y":  355,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "stems",
+                                        "x":  172,
+                                        "y":  357,
+                                        "width":  51,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  229,
+                                        "y":  355,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  280,
+                                        "y":  355,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "way",
+                                        "x":  314,
+                                        "y":  360,
+                                        "width":  37,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  358,
+                                        "y":  355,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "learn",
+                                        "x":  425,
+                                        "y":  355,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "complex",
+                                        "x":  476,
+                                        "y":  355,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "technologies.",
+                                        "x":  561,
+                                        "y":  354,
+                                        "width":  121,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. lt results from people distrusting their own wisdom.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  125,
+                                        "y":  384,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  152,
+                                        "y":  385,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "results",
+                                        "x":  171,
+                                        "y":  385,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  237,
+                                        "y":  384,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  288,
+                                        "y":  385,
+                                        "width":  60,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "distrusting",
+                                        "x":  355,
+                                        "y":  384,
+                                        "width":  96,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  458,
+                                        "y":  384,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "own",
+                                        "x":  506,
+                                        "y":  389,
+                                        "width":  38,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "wisdom.",
+                                        "x":  550,
+                                        "y":  384,
+                                        "width":  78,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. derives from the desire tO acquire knowledge Step by step.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  125,
+                                        "y":  415,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "derives",
+                                        "x":  173,
+                                        "y":  414,
+                                        "width":  66,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  245,
+                                        "y":  414,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  296,
+                                        "y":  414,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "desire",
+                                        "x":  329,
+                                        "y":  414,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  390,
+                                        "y":  417,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "acquire",
+                                        "x":  414,
+                                        "y":  414,
+                                        "width":  66,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "knowledge",
+                                        "x":  486,
+                                        "y":  414,
+                                        "width":  101,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Step",
+                                        "x":  593,
+                                        "y":  417,
+                                        "width":  37,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "x":  636,
+                                        "y":  414,
+                                        "width":  23,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "step.",
+                                        "x":  665,
+                                        "y":  417,
+                                        "width":  41,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "55 ， What point does the author want tO emphasize when he says We ， re not chimpanzees\"?",
+                      "words":  [
+                                    {
+                                        "text":  "55",
+                                        "x":  90,
+                                        "y":  444,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  114,
+                                        "y":  458,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  124,
+                                        "y":  444,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "point",
+                                        "x":  180,
+                                        "y":  444,
+                                        "width":  47,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "does",
+                                        "x":  233,
+                                        "y":  444,
+                                        "width":  41,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  280,
+                                        "y":  444,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "author",
+                                        "x":  314,
+                                        "y":  444,
+                                        "width":  59,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "want",
+                                        "x":  378,
+                                        "y":  447,
+                                        "width":  45,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  429,
+                                        "y":  447,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "emphasize",
+                                        "x":  453,
+                                        "y":  444,
+                                        "width":  96,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "when",
+                                        "x":  555,
+                                        "y":  444,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "he",
+                                        "x":  610,
+                                        "y":  444,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "says",
+                                        "x":  639,
+                                        "y":  449,
+                                        "width":  38,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "We",
+                                        "x":  694,
+                                        "y":  445,
+                                        "width":  29,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  726,
+                                        "y":  444,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "re",
+                                        "x":  732,
+                                        "y":  449,
+                                        "width":  17,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "not",
+                                        "x":  755,
+                                        "y":  446,
+                                        "width":  29,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "chimpanzees\"?",
+                                        "x":  791,
+                                        "y":  443,
+                                        "width":  137,
+                                        "height":  23
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. lt is arguable whether everyone should avoid lmitation.",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  124,
+                                        "y":  474,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  153,
+                                        "y":  474,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  173,
+                                        "y":  474,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "arguable",
+                                        "x":  194,
+                                        "y":  474,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "whether",
+                                        "x":  279,
+                                        "y":  474,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "everyone",
+                                        "x":  359,
+                                        "y":  479,
+                                        "width":  83,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "x":  448,
+                                        "y":  474,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "avoid",
+                                        "x":  515,
+                                        "y":  474,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lmitation.",
+                                        "x":  572,
+                                        "y":  474,
+                                        "width":  87,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. lt is characteristic of human beings tO copy others.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  125,
+                                        "y":  504,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  152,
+                                        "y":  504,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  172,
+                                        "y":  504,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "characteristic",
+                                        "x":  193,
+                                        "y":  504,
+                                        "width":  121,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  321,
+                                        "y":  504,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "human",
+                                        "x":  346,
+                                        "y":  504,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "beings",
+                                        "x":  414,
+                                        "y":  504,
+                                        "width":  59,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  480,
+                                        "y":  507,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "copy",
+                                        "x":  503,
+                                        "y":  509,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "others.",
+                                        "x":  554,
+                                        "y":  504,
+                                        "width":  60,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. lt is desirable to trust in more knowledgeable peers.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  125,
+                                        "y":  534,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  152,
+                                        "y":  534,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  171,
+                                        "y":  533,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "desirable",
+                                        "x":  193,
+                                        "y":  534,
+                                        "width":  83,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  281,
+                                        "y":  537,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "trust",
+                                        "x":  305,
+                                        "y":  537,
+                                        "width":  41,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  352,
+                                        "y":  534,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  375,
+                                        "y":  539,
+                                        "width":  49,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "knowledgeable",
+                                        "x":  428,
+                                        "y":  533,
+                                        "width":  139,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "peers.",
+                                        "x":  571,
+                                        "y":  538,
+                                        "width":  55,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. lt iS naive tO laugh at someone embracing nonconformity.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  125,
+                                        "y":  563,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  153,
+                                        "y":  564,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "iS",
+                                        "x":  172,
+                                        "y":  564,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "naive",
+                                        "x":  194,
+                                        "y":  564,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  249,
+                                        "y":  566,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "laugh",
+                                        "x":  273,
+                                        "y":  564,
+                                        "width":  51,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "at",
+                                        "x":  330,
+                                        "y":  566,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "someone",
+                                        "x":  353,
+                                        "y":  569,
+                                        "width":  81,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "embracing",
+                                        "x":  440,
+                                        "y":  563,
+                                        "width":  96,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "nonconformity.",
+                                        "x":  542,
+                                        "y":  564,
+                                        "width":  140,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part IV",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  607,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "IV",
+                                        "x":  157,
+                                        "y":  606,
+                                        "width":  33,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Translation",
+                      "words":  [
+                                    {
+                                        "text":  "Translation",
+                                        "x":  499,
+                                        "y":  606,
+                                        "width":  149,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "（ 30 minutes)",
+                      "words":  [
+                                    {
+                                        "text":  "（",
+                                        "x":  902,
+                                        "y":  606,
+                                        "width":  8,
+                                        "height":  26
+                                    },
+                                    {
+                                        "text":  "30",
+                                        "x":  911,
+                                        "y":  606,
+                                        "width":  30,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "minutes)",
+                                        "x":  950,
+                                        "y":  606,
+                                        "width":  112,
+                                        "height":  26
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Directions: For 尹 a ） “ allowed 30 m 忉 然 tra 肭 a passage 丿 m C / 2 忉 然 e 忉 E 理 g / 五",
+                      "words":  [
+                                    {
+                                        "text":  "Directions:",
+                                        "x":  91,
+                                        "y":  653,
+                                        "width":  106,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "For",
+                                        "x":  207,
+                                        "y":  654,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "尹",
+                                        "x":  286,
+                                        "y":  658,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  300,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  339,
+                                        "y":  659,
+                                        "width":  8,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  362,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "allowed",
+                                        "x":  416,
+                                        "y":  653,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "30",
+                                        "x":  497,
+                                        "y":  652,
+                                        "width":  23,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  527,
+                                        "y":  658,
+                                        "width":  16,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "忉",
+                                        "x":  544,
+                                        "y":  654,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "然",
+                                        "x":  580,
+                                        "y":  657,
+                                        "width":  18,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "tra",
+                                        "x":  631,
+                                        "y":  656,
+                                        "width":  26,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "肭",
+                                        "x":  658,
+                                        "y":  659,
+                                        "width":  19,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  719,
+                                        "y":  658,
+                                        "width":  12,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "passage",
+                                        "x":  736,
+                                        "y":  659,
+                                        "width":  76,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  815,
+                                        "y":  654,
+                                        "width":  11,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  845,
+                                        "y":  659,
+                                        "width":  16,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "C",
+                                        "x":  870,
+                                        "y":  653,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  884,
+                                        "y":  653,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  889,
+                                        "y":  658,
+                                        "width":  6,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "忉",
+                                        "x":  896,
+                                        "y":  654,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "然",
+                                        "x":  914,
+                                        "y":  658,
+                                        "width":  18,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "e",
+                                        "x":  933,
+                                        "y":  659,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "忉",
+                                        "x":  950,
+                                        "y":  654,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "E",
+                                        "x":  993,
+                                        "y":  654,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  1007,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "g",
+                                        "x":  1018,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  1030,
+                                        "y":  653,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "五",
+                                        "x":  1052,
+                                        "y":  653,
+                                        "width":  14,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "丿 “ 砀 0 “ 亿 w 门 、 a 肭 0 理 Answer Sheet 2",
+                      "words":  [
+                                    {
+                                        "text":  "丿",
+                                        "x":  222,
+                                        "y":  689,
+                                        "width":  6,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  230,
+                                        "y":  689,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "砀",
+                                        "x":  246,
+                                        "y":  683,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  267,
+                                        "y":  688,
+                                        "width":  11,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  279,
+                                        "y":  689,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "亿",
+                                        "x":  290,
+                                        "y":  683,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "w",
+                                        "x":  314,
+                                        "y":  689,
+                                        "width":  15,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "门",
+                                        "x":  330,
+                                        "y":  689,
+                                        "width":  13,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  406,
+                                        "y":  688,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  414,
+                                        "y":  688,
+                                        "width":  11,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "肭",
+                                        "x":  426,
+                                        "y":  688,
+                                        "width":  19,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  486,
+                                        "y":  688,
+                                        "width":  11,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  498,
+                                        "y":  689,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "Answer",
+                                        "x":  514,
+                                        "y":  683,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Sheet",
+                                        "x":  593,
+                                        "y":  683,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  650,
+                                        "y":  683,
+                                        "width":  11,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "近 年 来 ， 中 国 城 市 加 快 发 展 ， 城 市 人 居 环 境 得 到 显 著 改 善 。 许 多 城 市 努 力 探 索 中 国 特 色 的 城 市",
+                      "words":  [
+                                    {
+                                        "text":  "近",
+                                        "x":  137,
+                                        "y":  711,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  160,
+                                        "y":  710,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "来",
+                                        "x":  184,
+                                        "y":  710,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  207,
+                                        "y":  726,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  228,
+                                        "y":  710,
+                                        "width":  16,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  251,
+                                        "y":  712,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  271,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  295,
+                                        "y":  710,
+                                        "width":  19,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "加",
+                                        "x":  318,
+                                        "y":  712,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "快",
+                                        "x":  341,
+                                        "y":  711,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "发",
+                                        "x":  365,
+                                        "y":  711,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "展",
+                                        "x":  386,
+                                        "y":  711,
+                                        "width":  22,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  411,
+                                        "y":  726,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  429,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  452,
+                                        "y":  710,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "人",
+                                        "x":  475,
+                                        "y":  712,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "居",
+                                        "x":  498,
+                                        "y":  711,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "环",
+                                        "x":  522,
+                                        "y":  713,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "境",
+                                        "x":  544,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "得",
+                                        "x":  568,
+                                        "y":  711,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "到",
+                                        "x":  591,
+                                        "y":  712,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "显",
+                                        "x":  614,
+                                        "y":  712,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "著",
+                                        "x":  637,
+                                        "y":  710,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "改",
+                                        "x":  660,
+                                        "y":  711,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "善",
+                                        "x":  682,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "。",
+                                        "x":  707,
+                                        "y":  724,
+                                        "width":  6,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "许",
+                                        "x":  725,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "多",
+                                        "x":  750,
+                                        "y":  710,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  771,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  794,
+                                        "y":  710,
+                                        "width":  20,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "努",
+                                        "x":  817,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  841,
+                                        "y":  711,
+                                        "width":  16,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "探",
+                                        "x":  862,
+                                        "y":  711,
+                                        "width":  22,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "索",
+                                        "x":  887,
+                                        "y":  710,
+                                        "width":  18,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  911,
+                                        "y":  710,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  934,
+                                        "y":  711,
+                                        "width":  16,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "特",
+                                        "x":  956,
+                                        "y":  710,
+                                        "width":  20,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "色",
+                                        "x":  981,
+                                        "y":  710,
+                                        "width":  17,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  1002,
+                                        "y":  710,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  1024,
+                                        "y":  710,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  1047,
+                                        "y":  710,
+                                        "width":  20,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "高 质 量 发 展 之 路 ， 城 市 功 能 不 断 完 善 ， 治 理 水 平 明 显 提 高 。 中 国 持 续 开 城 市 生 态 修 复 和 功 能 修 补 ，",
+                      "words":  [
+                                    {
+                                        "text":  "高",
+                                        "x":  93,
+                                        "y":  740,
+                                        "width":  17,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "质",
+                                        "x":  114,
+                                        "y":  740,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "量",
+                                        "x":  137,
+                                        "y":  741,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "发",
+                                        "x":  162,
+                                        "y":  741,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "展",
+                                        "x":  183,
+                                        "y":  741,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "之",
+                                        "x":  206,
+                                        "y":  741,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "路",
+                                        "x":  228,
+                                        "y":  741,
+                                        "width":  22,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  253,
+                                        "y":  756,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  264,
+                                        "y":  740,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  287,
+                                        "y":  740,
+                                        "width":  20,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "功",
+                                        "x":  310,
+                                        "y":  741,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "能",
+                                        "x":  334,
+                                        "y":  740,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "不",
+                                        "x":  357,
+                                        "y":  742,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "断",
+                                        "x":  380,
+                                        "y":  741,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "完",
+                                        "x":  403,
+                                        "y":  741,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "善",
+                                        "x":  425,
+                                        "y":  740,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  450,
+                                        "y":  756,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "治",
+                                        "x":  461,
+                                        "y":  741,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  483,
+                                        "y":  742,
+                                        "width":  21,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "水",
+                                        "x":  507,
+                                        "y":  740,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "平",
+                                        "x":  530,
+                                        "y":  741,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "明",
+                                        "x":  554,
+                                        "y":  741,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "显",
+                                        "x":  576,
+                                        "y":  742,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "提",
+                                        "x":  597,
+                                        "y":  741,
+                                        "width":  22,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "高",
+                                        "x":  623,
+                                        "y":  740,
+                                        "width":  17,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "。",
+                                        "x":  646,
+                                        "y":  753,
+                                        "width":  6,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  659,
+                                        "y":  740,
+                                        "width":  15,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  682,
+                                        "y":  741,
+                                        "width":  16,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "持",
+                                        "x":  702,
+                                        "y":  740,
+                                        "width":  21,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "续",
+                                        "x":  726,
+                                        "y":  740,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "开",
+                                        "x":  749,
+                                        "y":  742,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  794,
+                                        "y":  740,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  818,
+                                        "y":  740,
+                                        "width":  19,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "生",
+                                        "x":  841,
+                                        "y":  740,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "态",
+                                        "x":  864,
+                                        "y":  740,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "修",
+                                        "x":  886,
+                                        "y":  741,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "复",
+                                        "x":  912,
+                                        "y":  740,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  932,
+                                        "y":  741,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "功",
+                                        "x":  956,
+                                        "y":  741,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "能",
+                                        "x":  980,
+                                        "y":  740,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "修",
+                                        "x":  1001,
+                                        "y":  741,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "补",
+                                        "x":  1025,
+                                        "y":  741,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1049,
+                                        "y":  755,
+                                        "width":  4,
+                                        "height":  8
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "全 面 实 施 城 镇 老 旧 小 区 改 造 ， 大 力 推 进 城 市 园 林 绿 化 ， 消 除 污 染 ； 同 时 大 力 推 进 城 市 基 础 设 施 体 系",
+                      "words":  [
+                                    {
+                                        "text":  "全",
+                                        "x":  92,
+                                        "y":  771,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "面",
+                                        "x":  115,
+                                        "y":  772,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "实",
+                                        "x":  138,
+                                        "y":  770,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "施",
+                                        "x":  161,
+                                        "y":  771,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  182,
+                                        "y":  770,
+                                        "width":  22,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "镇",
+                                        "x":  205,
+                                        "y":  770,
+                                        "width":  22,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  229,
+                                        "y":  770,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "旧",
+                                        "x":  254,
+                                        "y":  773,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "小",
+                                        "x":  276,
+                                        "y":  771,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  301,
+                                        "y":  771,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "改",
+                                        "x":  322,
+                                        "y":  771,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "造",
+                                        "x":  344,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  368,
+                                        "y":  785,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "大",
+                                        "x":  389,
+                                        "y":  771,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  411,
+                                        "y":  771,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "推",
+                                        "x":  433,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "进",
+                                        "x":  455,
+                                        "y":  771,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  478,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  502,
+                                        "y":  770,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "园",
+                                        "x":  527,
+                                        "y":  771,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "林",
+                                        "x":  548,
+                                        "y":  771,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "绿",
+                                        "x":  571,
+                                        "y":  771,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "化",
+                                        "x":  594,
+                                        "y":  771,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  618,
+                                        "y":  786,
+                                        "width":  5,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "消",
+                                        "x":  637,
+                                        "y":  770,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "除",
+                                        "x":  660,
+                                        "y":  770,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "污",
+                                        "x":  683,
+                                        "y":  771,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "染",
+                                        "x":  707,
+                                        "y":  770,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  731,
+                                        "y":  779,
+                                        "width":  4,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "同",
+                                        "x":  750,
+                                        "y":  771,
+                                        "width":  17,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "时",
+                                        "x":  772,
+                                        "y":  771,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "大",
+                                        "x":  796,
+                                        "y":  771,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  819,
+                                        "y":  770,
+                                        "width":  15,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "推",
+                                        "x":  840,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "进",
+                                        "x":  863,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  885,
+                                        "y":  770,
+                                        "width":  22,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  909,
+                                        "y":  770,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "基",
+                                        "x":  932,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "础",
+                                        "x":  955,
+                                        "y":  771,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "设",
+                                        "x":  978,
+                                        "y":  771,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "施",
+                                        "x":  1002,
+                                        "y":  771,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "体",
+                                        "x":  1024,
+                                        "y":  770,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "系",
+                                        "x":  1050,
+                                        "y":  770,
+                                        "width":  15,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "化 建 设 ， 开 展 房 屋 建 筑 和 市 政 设 施 普 查 以 及 安 全 隐 排 查 整 ， 努 力 为 市 氏 创 造 高 品 质 的 生 活 环 境 ，",
+                      "words":  [
+                                    {
+                                        "text":  "化",
+                                        "x":  91,
+                                        "y":  801,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "建",
+                                        "x":  114,
+                                        "y":  800,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "设",
+                                        "x":  137,
+                                        "y":  801,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  161,
+                                        "y":  816,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "开",
+                                        "x":  172,
+                                        "y":  802,
+                                        "width":  21,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "展",
+                                        "x":  195,
+                                        "y":  801,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "房",
+                                        "x":  219,
+                                        "y":  800,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "屋",
+                                        "x":  241,
+                                        "y":  801,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "建",
+                                        "x":  265,
+                                        "y":  800,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "筑",
+                                        "x":  288,
+                                        "y":  801,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  310,
+                                        "y":  801,
+                                        "width":  22,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  333,
+                                        "y":  800,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "政",
+                                        "x":  356,
+                                        "y":  800,
+                                        "width":  22,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "设",
+                                        "x":  379,
+                                        "y":  801,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "施",
+                                        "x":  403,
+                                        "y":  801,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "普",
+                                        "x":  426,
+                                        "y":  800,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "查",
+                                        "x":  449,
+                                        "y":  800,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "以",
+                                        "x":  474,
+                                        "y":  803,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "及",
+                                        "x":  495,
+                                        "y":  802,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "安",
+                                        "x":  517,
+                                        "y":  801,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "全",
+                                        "x":  541,
+                                        "y":  801,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "隐",
+                                        "x":  565,
+                                        "y":  801,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "排",
+                                        "x":  609,
+                                        "y":  801,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "查",
+                                        "x":  633,
+                                        "y":  800,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "整",
+                                        "x":  656,
+                                        "y":  800,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  703,
+                                        "y":  815,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "努",
+                                        "x":  714,
+                                        "y":  800,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  738,
+                                        "y":  801,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  761,
+                                        "y":  800,
+                                        "width":  17,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  783,
+                                        "y":  800,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "氏",
+                                        "x":  808,
+                                        "y":  801,
+                                        "width":  18,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "创",
+                                        "x":  829,
+                                        "y":  801,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "造",
+                                        "x":  852,
+                                        "y":  800,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "高",
+                                        "x":  876,
+                                        "y":  800,
+                                        "width":  17,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "品",
+                                        "x":  899,
+                                        "y":  802,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "质",
+                                        "x":  921,
+                                        "y":  800,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  945,
+                                        "y":  801,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "生",
+                                        "x":  967,
+                                        "y":  800,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "活",
+                                        "x":  991,
+                                        "y":  802,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "环",
+                                        "x":  1013,
+                                        "y":  803,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "境",
+                                        "x":  1035,
+                                        "y":  800,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1060,
+                                        "y":  815,
+                                        "width":  4,
+                                        "height":  7
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "让 域 市 更 美 丽 、 更 安 全 、 更 宜 居",
+                      "words":  [
+                                    {
+                                        "text":  "让",
+                                        "x":  91,
+                                        "y":  831,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "域",
+                                        "x":  113,
+                                        "y":  830,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  137,
+                                        "y":  830,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "更",
+                                        "x":  161,
+                                        "y":  831,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "美",
+                                        "x":  184,
+                                        "y":  829,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "丽",
+                                        "x":  207,
+                                        "y":  832,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  229,
+                                        "y":  842,
+                                        "width":  7,
+                                        "height":  8
+                                    },
+                                    {
+                                        "text":  "更",
+                                        "x":  252,
+                                        "y":  831,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "安",
+                                        "x":  275,
+                                        "y":  831,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "全",
+                                        "x":  299,
+                                        "y":  831,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  321,
+                                        "y":  844,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "更",
+                                        "x":  344,
+                                        "y":  831,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "宜",
+                                        "x":  368,
+                                        "y":  830,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "居",
+                                        "x":  390,
+                                        "y":  831,
+                                        "width":  21,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 06 一 CET6 （ 第 3 套 ） 一 7",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  446,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  492,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "06",
+                                        "x":  499,
+                                        "y":  1495,
+                                        "width":  23,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  523,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "CET6",
+                                        "x":  530,
+                                        "y":  1495,
+                                        "width":  54,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  586,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  596,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "3",
+                                        "x":  621,
+                                        "y":  1496,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  640,
+                                        "y":  1492,
+                                        "width":  20,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  661,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  669,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "7",
+                                        "x":  677,
+                                        "y":  1496,
+                                        "width":  11,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

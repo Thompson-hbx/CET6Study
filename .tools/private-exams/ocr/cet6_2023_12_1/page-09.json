@@ -1,0 +1,3720 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_12_1\\page-09.png",
+    "unverifiedOCR":  true,
+    "text":  "women rise tO senior roles ， the field will become more equal. Yet this study showed that even the junior ro es in psychology journals tended to be held disproportionately by men ， despite the fact that there are actually more female than male junior psychology faculty. This rmplies that a lack of female academics is not the problem 、 lnstead ， there are structural reasons that WOmen are disadvantaged in science. Women receive lower salaries and face greater childcare demands, for instance ， which can result in fewer publications and grants—the kinds of things that journals look for when declding who t0 appolnt. Rather than simply blamlng the inequality of editorial boards on tradition, we should be actlvely breaking down these exlstmg bamers. A lack Of diversity among journal editors aISO likely contributes tO psychology ， s WEIRD problem. If journal editors are largely men from the United States ， then they will probably place higher value on papers that are relevant tO Western ， male populations, whether consciously or not. 51. What would we expect an edltorial board of an academic journal to exhibit in view of its important responsibilities? A. lnsight. B. Expertise. C. lntegrlty. D. Diversity. 52 ． What do we learn from the findmgs of a new study in Nature Neuroscience? A. The majority of top psychology and neuroscience JournaIs reflect a varlety of 、 \u00270ices ， experiences and identities. B. The editorial boards Of most psychology and neuroscience journals dO influence the direction their field takes. C. The editorial boards of the most lmportant journals m psychology and neuroscience are male-dominated 、 D. The majority of editors m top psychology and neuroscience journals have relevant backgrounds. 53 、 What fact does the author highlight concerning the gender differences in editors of psychology journals? A. There were quite a few female edltors who also dlstinguished themselves as lnfluential psychology researchers. B. The number Of female editors was simply disproportionate tO that Of women engaged in psychology research. C. The proportion Of female editors was increasingly lower at senior levels. D. There were few female editors WhO could move up tO senior positlons 、 54 、 What can we infer from the conclusion drawn by the team of the new study on the basis of their findings? A. Women ， s vlews are underrepresented in the editorial boards of top psychology and neuroscience JournaIs. B. Male editors Of top psychology and neuroscience journals tend tO be biased against their female colleagues. C. Male researchers have enough representauon in the editorial boards tO ensure their publications. D. FemaIe editors have tO struggle tO get women ， s research articles published in academic joumals. 55 、 What does the author suggest we do instead of simply blaming the inequality of editorial boards on tradition? A. Strike a balance between male and female editors. lncrease WOmen\u0027S employment in senior positions C. EnIarge the body of female academlcs. 2023 一 12-CET6( 第 套 ） 一 9",
+    "lines":  [
+                  {
+                      "text":  "women rise tO senior roles ， the field will become more equal. Yet this study showed that even the junior",
+                      "words":  [
+                                    {
+                                        "text":  "women",
+                                        "x":  90,
+                                        "y":  150,
+                                        "width":  67,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "rise",
+                                        "x":  165,
+                                        "y":  145,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  205,
+                                        "y":  148,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "senior",
+                                        "x":  231,
+                                        "y":  145,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "roles",
+                                        "x":  293,
+                                        "y":  145,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  339,
+                                        "y":  159,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  351,
+                                        "y":  145,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "field",
+                                        "x":  386,
+                                        "y":  145,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  435,
+                                        "y":  145,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "become",
+                                        "x":  478,
+                                        "y":  145,
+                                        "width":  71,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  557,
+                                        "y":  150,
+                                        "width":  46,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "equal.",
+                                        "x":  611,
+                                        "y":  145,
+                                        "width":  54,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Yet",
+                                        "x":  673,
+                                        "y":  146,
+                                        "width":  31,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "x":  711,
+                                        "y":  145,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "study",
+                                        "x":  752,
+                                        "y":  145,
+                                        "width":  49,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "showed",
+                                        "x":  809,
+                                        "y":  145,
+                                        "width":  70,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  886,
+                                        "y":  145,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "even",
+                                        "x":  928,
+                                        "y":  150,
+                                        "width":  42,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  978,
+                                        "y":  145,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "junior",
+                                        "x":  1011,
+                                        "y":  145,
+                                        "width":  57,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ro es in psychology journals tended to be held disproportionately by men ， despite the fact that there are",
+                      "words":  [
+                                    {
+                                        "text":  "ro",
+                                        "x":  90,
+                                        "y":  180,
+                                        "width":  19,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "es",
+                                        "x":  116,
+                                        "y":  180,
+                                        "width":  18,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  143,
+                                        "y":  175,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  168,
+                                        "y":  175,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "journals",
+                                        "x":  279,
+                                        "y":  175,
+                                        "width":  76,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tended",
+                                        "x":  363,
+                                        "y":  175,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  432,
+                                        "y":  178,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  457,
+                                        "y":  175,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "held",
+                                        "x":  487,
+                                        "y":  175,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "disproportionately",
+                                        "x":  534,
+                                        "y":  175,
+                                        "width":  168,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "x":  710,
+                                        "y":  175,
+                                        "width":  22,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "men",
+                                        "x":  741,
+                                        "y":  180,
+                                        "width":  39,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  781,
+                                        "y":  189,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "despite",
+                                        "x":  794,
+                                        "y":  175,
+                                        "width":  65,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  867,
+                                        "y":  175,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "fact",
+                                        "x":  903,
+                                        "y":  175,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  944,
+                                        "y":  175,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "there",
+                                        "x":  986,
+                                        "y":  175,
+                                        "width":  46,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  1040,
+                                        "y":  180,
+                                        "width":  28,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "actually more female than male junior psychology faculty.",
+                      "words":  [
+                                    {
+                                        "text":  "actually",
+                                        "x":  90,
+                                        "y":  205,
+                                        "width":  72,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  168,
+                                        "y":  210,
+                                        "width":  47,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  222,
+                                        "y":  205,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "than",
+                                        "x":  290,
+                                        "y":  205,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "male",
+                                        "x":  335,
+                                        "y":  205,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "junior",
+                                        "x":  383,
+                                        "y":  205,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  446,
+                                        "y":  205,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "faculty.",
+                                        "x":  558,
+                                        "y":  205,
+                                        "width":  66,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "This rmplies that a lack of female academics is not the problem 、 lnstead ， there are structural reasons",
+                      "words":  [
+                                    {
+                                        "text":  "This",
+                                        "x":  136,
+                                        "y":  235,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "rmplies",
+                                        "x":  184,
+                                        "y":  235,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  258,
+                                        "y":  235,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  300,
+                                        "y":  240,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "lack",
+                                        "x":  316,
+                                        "y":  235,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  361,
+                                        "y":  235,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  387,
+                                        "y":  235,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "academics",
+                                        "x":  456,
+                                        "y":  235,
+                                        "width":  94,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  558,
+                                        "y":  235,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "not",
+                                        "x":  580,
+                                        "y":  238,
+                                        "width":  29,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  616,
+                                        "y":  235,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "problem",
+                                        "x":  651,
+                                        "y":  235,
+                                        "width":  76,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  728,
+                                        "y":  248,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "lnstead",
+                                        "x":  740,
+                                        "y":  235,
+                                        "width":  66,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  807,
+                                        "y":  248,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "there",
+                                        "x":  819,
+                                        "y":  235,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  871,
+                                        "y":  240,
+                                        "width":  28,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "structural",
+                                        "x":  906,
+                                        "y":  235,
+                                        "width":  86,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "reasons",
+                                        "x":  999,
+                                        "y":  240,
+                                        "width":  68,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "that WOmen are disadvantaged in science. Women receive lower salaries and face greater childcare",
+                      "words":  [
+                                    {
+                                        "text":  "that",
+                                        "x":  90,
+                                        "y":  265,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "WOmen",
+                                        "x":  136,
+                                        "y":  270,
+                                        "width":  67,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  215,
+                                        "y":  270,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "disadvantaged",
+                                        "x":  254,
+                                        "y":  265,
+                                        "width":  131,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  397,
+                                        "y":  265,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "science.",
+                                        "x":  427,
+                                        "y":  265,
+                                        "width":  71,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Women",
+                                        "x":  510,
+                                        "y":  265,
+                                        "width":  71,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "receive",
+                                        "x":  593,
+                                        "y":  265,
+                                        "width":  66,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lower",
+                                        "x":  671,
+                                        "y":  265,
+                                        "width":  52,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "salaries",
+                                        "x":  735,
+                                        "y":  265,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  815,
+                                        "y":  265,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "face",
+                                        "x":  859,
+                                        "y":  265,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "greater",
+                                        "x":  909,
+                                        "y":  268,
+                                        "width":  63,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "childcare",
+                                        "x":  984,
+                                        "y":  265,
+                                        "width":  84,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "demands, for instance ， which can result in fewer publications and grants—the kinds of things that journals",
+                      "words":  [
+                                    {
+                                        "text":  "demands,",
+                                        "x":  90,
+                                        "y":  295,
+                                        "width":  86,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  183,
+                                        "y":  295,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "instance",
+                                        "x":  216,
+                                        "y":  295,
+                                        "width":  75,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  292,
+                                        "y":  308,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "which",
+                                        "x":  303,
+                                        "y":  295,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  365,
+                                        "y":  300,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "result",
+                                        "x":  402,
+                                        "y":  295,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  459,
+                                        "y":  295,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "fewer",
+                                        "x":  483,
+                                        "y":  295,
+                                        "width":  52,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "publications",
+                                        "x":  541,
+                                        "y":  295,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  660,
+                                        "y":  295,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "grants—the",
+                                        "x":  698,
+                                        "y":  295,
+                                        "width":  108,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "kinds",
+                                        "x":  812,
+                                        "y":  295,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  867,
+                                        "y":  295,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "things",
+                                        "x":  893,
+                                        "y":  295,
+                                        "width":  55,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  955,
+                                        "y":  295,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "journals",
+                                        "x":  992,
+                                        "y":  295,
+                                        "width":  76,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "look for when declding who t0 appolnt. Rather than simply blamlng the inequality of editorial boards on",
+                      "words":  [
+                                    {
+                                        "text":  "look",
+                                        "x":  90,
+                                        "y":  325,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  138,
+                                        "y":  325,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "when",
+                                        "x":  172,
+                                        "y":  325,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "declding",
+                                        "x":  228,
+                                        "y":  325,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "who",
+                                        "x":  314,
+                                        "y":  325,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "t0",
+                                        "x":  361,
+                                        "y":  327,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "appolnt.",
+                                        "x":  386,
+                                        "y":  327,
+                                        "width":  72,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "Rather",
+                                        "x":  467,
+                                        "y":  325,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "than",
+                                        "x":  535,
+                                        "y":  325,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "simply",
+                                        "x":  582,
+                                        "y":  325,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "blamlng",
+                                        "x":  651,
+                                        "y":  325,
+                                        "width":  75,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  734,
+                                        "y":  325,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "inequality",
+                                        "x":  769,
+                                        "y":  325,
+                                        "width":  91,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  867,
+                                        "y":  325,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editorial",
+                                        "x":  893,
+                                        "y":  325,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "boards",
+                                        "x":  977,
+                                        "y":  325,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  1045,
+                                        "y":  330,
+                                        "width":  22,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "tradition, we should be actlvely breaking down these exlstmg bamers.",
+                      "words":  [
+                                    {
+                                        "text":  "tradition,",
+                                        "x":  90,
+                                        "y":  354,
+                                        "width":  82,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  179,
+                                        "y":  360,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "x":  212,
+                                        "y":  355,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  279,
+                                        "y":  355,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "actlvely",
+                                        "x":  307,
+                                        "y":  355,
+                                        "width":  71,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "breaking",
+                                        "x":  385,
+                                        "y":  354,
+                                        "width":  79,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "down",
+                                        "x":  471,
+                                        "y":  355,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "these",
+                                        "x":  528,
+                                        "y":  355,
+                                        "width":  46,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "exlstmg",
+                                        "x":  581,
+                                        "y":  357,
+                                        "width":  72,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "bamers.",
+                                        "x":  659,
+                                        "y":  355,
+                                        "width":  75,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A lack Of diversity among journal editors aISO likely contributes tO psychology ， s WEIRD problem. If",
+                      "words":  [
+                                    {
+                                        "text":  "A",
+                                        "x":  136,
+                                        "y":  385,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lack",
+                                        "x":  158,
+                                        "y":  384,
+                                        "width":  37,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  202,
+                                        "y":  384,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "diversity",
+                                        "x":  227,
+                                        "y":  384,
+                                        "width":  80,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "among",
+                                        "x":  314,
+                                        "y":  389,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "journal",
+                                        "x":  380,
+                                        "y":  384,
+                                        "width":  67,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  454,
+                                        "y":  384,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "aISO",
+                                        "x":  522,
+                                        "y":  384,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "likely",
+                                        "x":  566,
+                                        "y":  384,
+                                        "width":  51,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "contributes",
+                                        "x":  624,
+                                        "y":  384,
+                                        "width":  101,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  732,
+                                        "y":  387,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  756,
+                                        "y":  384,
+                                        "width":  106,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  864,
+                                        "y":  384,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  869,
+                                        "y":  389,
+                                        "width":  7,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "WEIRD",
+                                        "x":  883,
+                                        "y":  385,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "problem.",
+                                        "x":  964,
+                                        "y":  384,
+                                        "width":  81,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "If",
+                                        "x":  1053,
+                                        "y":  384,
+                                        "width":  18,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "journal editors are largely men from the United States ， then they will probably place higher value on",
+                      "words":  [
+                                    {
+                                        "text":  "journal",
+                                        "x":  88,
+                                        "y":  414,
+                                        "width":  66,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  164,
+                                        "y":  414,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  236,
+                                        "y":  419,
+                                        "width":  28,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "largely",
+                                        "x":  273,
+                                        "y":  414,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "men",
+                                        "x":  346,
+                                        "y":  419,
+                                        "width":  39,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  395,
+                                        "y":  414,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  448,
+                                        "y":  414,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "United",
+                                        "x":  485,
+                                        "y":  414,
+                                        "width":  63,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "States",
+                                        "x":  558,
+                                        "y":  414,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  613,
+                                        "y":  428,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "then",
+                                        "x":  627,
+                                        "y":  414,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "they",
+                                        "x":  676,
+                                        "y":  414,
+                                        "width":  39,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  725,
+                                        "y":  414,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "probably",
+                                        "x":  770,
+                                        "y":  414,
+                                        "width":  80,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "place",
+                                        "x":  861,
+                                        "y":  414,
+                                        "width":  48,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "higher",
+                                        "x":  918,
+                                        "y":  414,
+                                        "width":  59,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "value",
+                                        "x":  986,
+                                        "y":  414,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  1045,
+                                        "y":  419,
+                                        "width":  22,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "papers that are relevant tO Western ， male populations, whether consciously or not.",
+                      "words":  [
+                                    {
+                                        "text":  "papers",
+                                        "x":  90,
+                                        "y":  449,
+                                        "width":  59,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  156,
+                                        "y":  444,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  196,
+                                        "y":  449,
+                                        "width":  28,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "relevant",
+                                        "x":  230,
+                                        "y":  444,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  309,
+                                        "y":  447,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "Western",
+                                        "x":  332,
+                                        "y":  445,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  408,
+                                        "y":  458,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "male",
+                                        "x":  419,
+                                        "y":  444,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "populations,",
+                                        "x":  469,
+                                        "y":  444,
+                                        "width":  112,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "whether",
+                                        "x":  588,
+                                        "y":  444,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "consciously",
+                                        "x":  668,
+                                        "y":  444,
+                                        "width":  107,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "or",
+                                        "x":  782,
+                                        "y":  449,
+                                        "width":  19,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "not.",
+                                        "x":  807,
+                                        "y":  447,
+                                        "width":  33,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "51. What would we expect an edltorial board of an academic journal to exhibit in view of its important",
+                      "words":  [
+                                    {
+                                        "text":  "51.",
+                                        "x":  91,
+                                        "y":  504,
+                                        "width":  26,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  126,
+                                        "y":  504,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "would",
+                                        "x":  184,
+                                        "y":  504,
+                                        "width":  57,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  249,
+                                        "y":  509,
+                                        "width":  26,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "expect",
+                                        "x":  284,
+                                        "y":  507,
+                                        "width":  59,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  351,
+                                        "y":  509,
+                                        "width":  21,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "edltorial",
+                                        "x":  381,
+                                        "y":  504,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "board",
+                                        "x":  464,
+                                        "y":  504,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  524,
+                                        "y":  504,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  552,
+                                        "y":  509,
+                                        "width":  20,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "academic",
+                                        "x":  581,
+                                        "y":  504,
+                                        "width":  86,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "journal",
+                                        "x":  673,
+                                        "y":  504,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  748,
+                                        "y":  507,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "exhibit",
+                                        "x":  773,
+                                        "y":  504,
+                                        "width":  64,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  845,
+                                        "y":  504,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "view",
+                                        "x":  870,
+                                        "y":  504,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  923,
+                                        "y":  504,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "its",
+                                        "x":  950,
+                                        "y":  504,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "important",
+                                        "x":  979,
+                                        "y":  504,
+                                        "width":  89,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "responsibilities?",
+                      "words":  [
+                                    {
+                                        "text":  "responsibilities?",
+                                        "x":  132,
+                                        "y":  534,
+                                        "width":  149,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. lnsight.",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  125,
+                                        "y":  564,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lnsight.",
+                                        "x":  153,
+                                        "y":  564,
+                                        "width":  68,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. Expertise.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  336,
+                                        "y":  564,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Expertise.",
+                                        "x":  362,
+                                        "y":  564,
+                                        "width":  91,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. lntegrlty.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  537,
+                                        "y":  564,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lntegrlty.",
+                                        "x":  563,
+                                        "y":  564,
+                                        "width":  82,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. Diversity.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  733,
+                                        "y":  564,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Diversity.",
+                                        "x":  761,
+                                        "y":  564,
+                                        "width":  89,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "52 ． What do we learn from the findmgs of a new study in Nature Neuroscience?",
+                      "words":  [
+                                    {
+                                        "text":  "52",
+                                        "x":  90,
+                                        "y":  594,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  114,
+                                        "y":  607,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  124,
+                                        "y":  594,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "do",
+                                        "x":  180,
+                                        "y":  594,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  208,
+                                        "y":  599,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "learn",
+                                        "x":  241,
+                                        "y":  594,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  293,
+                                        "y":  594,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  343,
+                                        "y":  594,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "findmgs",
+                                        "x":  377,
+                                        "y":  594,
+                                        "width":  74,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  458,
+                                        "y":  594,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  483,
+                                        "y":  599,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "new",
+                                        "x":  499,
+                                        "y":  599,
+                                        "width":  37,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "study",
+                                        "x":  543,
+                                        "y":  594,
+                                        "width":  49,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  599,
+                                        "y":  594,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Nature",
+                                        "x":  622,
+                                        "y":  594,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Neuroscience?",
+                                        "x":  690,
+                                        "y":  594,
+                                        "width":  134,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. The majority of top psychology and neuroscience JournaIs reflect a varlety of 、 \u00270ices ， experiences and",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  90,
+                                        "y":  624,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  119,
+                                        "y":  624,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "majority",
+                                        "x":  162,
+                                        "y":  624,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  247,
+                                        "y":  623,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "top",
+                                        "x":  273,
+                                        "y":  626,
+                                        "width":  28,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  309,
+                                        "y":  624,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  422,
+                                        "y":  624,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "neuroscience",
+                                        "x":  461,
+                                        "y":  624,
+                                        "width":  120,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "JournaIs",
+                                        "x":  586,
+                                        "y":  624,
+                                        "width":  75,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "reflect",
+                                        "x":  669,
+                                        "y":  623,
+                                        "width":  58,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  735,
+                                        "y":  629,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "varlety",
+                                        "x":  751,
+                                        "y":  626,
+                                        "width":  64,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  823,
+                                        "y":  623,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  848,
+                                        "y":  629,
+                                        "width":  8,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "\u00270ices",
+                                        "x":  856,
+                                        "y":  624,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  908,
+                                        "y":  637,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "experiences",
+                                        "x":  920,
+                                        "y":  624,
+                                        "width":  107,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  1035,
+                                        "y":  624,
+                                        "width":  33,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "identities.",
+                      "words":  [
+                                    {
+                                        "text":  "identities.",
+                                        "x":  90,
+                                        "y":  653,
+                                        "width":  89,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. The editorial boards Of most psychology and neuroscience journals dO influence the direction their",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  90,
+                                        "y":  684,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  120,
+                                        "y":  684,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editorial",
+                                        "x":  165,
+                                        "y":  683,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "boards",
+                                        "x":  250,
+                                        "y":  683,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  321,
+                                        "y":  683,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "most",
+                                        "x":  349,
+                                        "y":  686,
+                                        "width":  44,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  402,
+                                        "y":  683,
+                                        "width":  105,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  518,
+                                        "y":  683,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "neuroscience",
+                                        "x":  560,
+                                        "y":  683,
+                                        "width":  119,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "journals",
+                                        "x":  686,
+                                        "y":  683,
+                                        "width":  75,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "dO",
+                                        "x":  771,
+                                        "y":  683,
+                                        "width":  23,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "influence",
+                                        "x":  804,
+                                        "y":  683,
+                                        "width":  84,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  898,
+                                        "y":  683,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "direction",
+                                        "x":  935,
+                                        "y":  683,
+                                        "width":  81,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  1026,
+                                        "y":  683,
+                                        "width":  42,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "field takes.",
+                      "words":  [
+                                    {
+                                        "text":  "field",
+                                        "x":  90,
+                                        "y":  713,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "takes.",
+                                        "x":  138,
+                                        "y":  713,
+                                        "width":  51,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. The editorial boards of the most lmportant journals m psychology and neuroscience are",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  90,
+                                        "y":  743,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  128,
+                                        "y":  743,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "editorial",
+                                        "x":  181,
+                                        "y":  743,
+                                        "width":  76,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "boards",
+                                        "x":  275,
+                                        "y":  743,
+                                        "width":  60,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  354,
+                                        "y":  743,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  390,
+                                        "y":  743,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "most",
+                                        "x":  435,
+                                        "y":  746,
+                                        "width":  45,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "lmportant",
+                                        "x":  497,
+                                        "y":  746,
+                                        "width":  89,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "journals",
+                                        "x":  601,
+                                        "y":  743,
+                                        "width":  76,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  695,
+                                        "y":  748,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  730,
+                                        "y":  743,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  853,
+                                        "y":  743,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "neuroscience",
+                                        "x":  903,
+                                        "y":  743,
+                                        "width":  120,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  1041,
+                                        "y":  748,
+                                        "width":  27,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "male-dominated 、",
+                      "words":  [
+                                    {
+                                        "text":  "male-dominated",
+                                        "x":  90,
+                                        "y":  773,
+                                        "width":  149,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  240,
+                                        "y":  786,
+                                        "width":  3,
+                                        "height":  3
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. The majority of editors m top psychology and neuroscience journals have relevant backgrounds.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  90,
+                                        "y":  803,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  118,
+                                        "y":  803,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "majority",
+                                        "x":  159,
+                                        "y":  803,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  243,
+                                        "y":  803,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  268,
+                                        "y":  803,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  336,
+                                        "y":  808,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "top",
+                                        "x":  360,
+                                        "y":  805,
+                                        "width":  28,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  395,
+                                        "y":  803,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  507,
+                                        "y":  803,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "neuroscience",
+                                        "x":  545,
+                                        "y":  803,
+                                        "width":  120,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "journals",
+                                        "x":  669,
+                                        "y":  803,
+                                        "width":  75,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  750,
+                                        "y":  803,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "relevant",
+                                        "x":  800,
+                                        "y":  803,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "backgrounds.",
+                                        "x":  879,
+                                        "y":  803,
+                                        "width":  122,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "53 、 What fact does the author highlight concerning the gender differences in editors of psychology",
+                      "words":  [
+                                    {
+                                        "text":  "53",
+                                        "x":  91,
+                                        "y":  833,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  114,
+                                        "y":  846,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  130,
+                                        "y":  833,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "fact",
+                                        "x":  191,
+                                        "y":  833,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "does",
+                                        "x":  236,
+                                        "y":  833,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  289,
+                                        "y":  833,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "author",
+                                        "x":  329,
+                                        "y":  833,
+                                        "width":  58,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "highlight",
+                                        "x":  398,
+                                        "y":  833,
+                                        "width":  83,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "concerning",
+                                        "x":  492,
+                                        "y":  833,
+                                        "width":  101,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  605,
+                                        "y":  833,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "gender",
+                                        "x":  644,
+                                        "y":  833,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "differences",
+                                        "x":  717,
+                                        "y":  833,
+                                        "width":  101,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  830,
+                                        "y":  833,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  859,
+                                        "y":  833,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  932,
+                                        "y":  833,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  962,
+                                        "y":  833,
+                                        "width":  106,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "journals?",
+                      "words":  [
+                                    {
+                                        "text":  "journals?",
+                                        "x":  130,
+                                        "y":  863,
+                                        "width":  85,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. There were quite a few female edltors who also dlstinguished themselves as lnfluential psychology",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  90,
+                                        "y":  893,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "There",
+                                        "x":  121,
+                                        "y":  893,
+                                        "width":  53,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "were",
+                                        "x":  183,
+                                        "y":  898,
+                                        "width":  44,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "quite",
+                                        "x":  236,
+                                        "y":  892,
+                                        "width":  46,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  291,
+                                        "y":  898,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "few",
+                                        "x":  310,
+                                        "y":  892,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  353,
+                                        "y":  892,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "edltors",
+                                        "x":  424,
+                                        "y":  893,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "who",
+                                        "x":  495,
+                                        "y":  893,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "also",
+                                        "x":  544,
+                                        "y":  893,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "dlstinguished",
+                                        "x":  589,
+                                        "y":  892,
+                                        "width":  123,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "themselves",
+                                        "x":  721,
+                                        "y":  893,
+                                        "width":  101,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  832,
+                                        "y":  898,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "lnfluential",
+                                        "x":  859,
+                                        "y":  892,
+                                        "width":  94,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  962,
+                                        "y":  893,
+                                        "width":  106,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "researchers.",
+                      "words":  [
+                                    {
+                                        "text":  "researchers.",
+                                        "x":  90,
+                                        "y":  923,
+                                        "width":  107,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. The number Of female editors was simply disproportionate tO that Of women engaged in psychology",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  90,
+                                        "y":  953,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  119,
+                                        "y":  952,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "number",
+                                        "x":  162,
+                                        "y":  952,
+                                        "width":  71,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  241,
+                                        "y":  952,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  268,
+                                        "y":  952,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  338,
+                                        "y":  952,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "was",
+                                        "x":  409,
+                                        "y":  957,
+                                        "width":  34,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "simply",
+                                        "x":  453,
+                                        "y":  952,
+                                        "width":  61,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "disproportionate",
+                                        "x":  523,
+                                        "y":  952,
+                                        "width":  150,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  681,
+                                        "y":  955,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  707,
+                                        "y":  952,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  749,
+                                        "y":  952,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "women",
+                                        "x":  777,
+                                        "y":  957,
+                                        "width":  66,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "engaged",
+                                        "x":  852,
+                                        "y":  952,
+                                        "width":  76,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  937,
+                                        "y":  952,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  962,
+                                        "y":  952,
+                                        "width":  105,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "research.",
+                      "words":  [
+                                    {
+                                        "text":  "research.",
+                                        "x":  90,
+                                        "y":  982,
+                                        "width":  81,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. The proportion Of female editors was increasingly lower at senior levels.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  90,
+                                        "y":  1012,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  116,
+                                        "y":  1012,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "proportion",
+                                        "x":  158,
+                                        "y":  1012,
+                                        "width":  96,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  261,
+                                        "y":  1012,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  286,
+                                        "y":  1012,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  354,
+                                        "y":  1012,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "was",
+                                        "x":  422,
+                                        "y":  1017,
+                                        "width":  35,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "increasingly",
+                                        "x":  463,
+                                        "y":  1012,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "lower",
+                                        "x":  582,
+                                        "y":  1012,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "at",
+                                        "x":  640,
+                                        "y":  1015,
+                                        "width":  16,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "senior",
+                                        "x":  662,
+                                        "y":  1012,
+                                        "width":  56,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "levels.",
+                                        "x":  724,
+                                        "y":  1012,
+                                        "width":  57,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. There were few female editors WhO could move up tO senior positlons 、",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  90,
+                                        "y":  1042,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "There",
+                                        "x":  118,
+                                        "y":  1042,
+                                        "width":  53,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "were",
+                                        "x":  177,
+                                        "y":  1047,
+                                        "width":  44,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "few",
+                                        "x":  228,
+                                        "y":  1042,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  268,
+                                        "y":  1042,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  336,
+                                        "y":  1042,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "WhO",
+                                        "x":  404,
+                                        "y":  1042,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "could",
+                                        "x":  449,
+                                        "y":  1042,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "move",
+                                        "x":  506,
+                                        "y":  1047,
+                                        "width":  51,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "up",
+                                        "x":  563,
+                                        "y":  1047,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  592,
+                                        "y":  1045,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "senior",
+                                        "x":  616,
+                                        "y":  1042,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "positlons",
+                                        "x":  677,
+                                        "y":  1042,
+                                        "width":  82,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  761,
+                                        "y":  1055,
+                                        "width":  3,
+                                        "height":  3
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "54 、 What can we infer from the conclusion drawn by the team of the new study on the basis of their",
+                      "words":  [
+                                    {
+                                        "text":  "54",
+                                        "x":  91,
+                                        "y":  1072,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  114,
+                                        "y":  1085,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  132,
+                                        "y":  1072,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  191,
+                                        "y":  1077,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  231,
+                                        "y":  1077,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "infer",
+                                        "x":  267,
+                                        "y":  1072,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  319,
+                                        "y":  1072,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  372,
+                                        "y":  1072,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "conclusion",
+                                        "x":  409,
+                                        "y":  1072,
+                                        "width":  99,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "drawn",
+                                        "x":  517,
+                                        "y":  1072,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "x":  583,
+                                        "y":  1072,
+                                        "width":  23,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  615,
+                                        "y":  1072,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "team",
+                                        "x":  652,
+                                        "y":  1075,
+                                        "width":  44,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  705,
+                                        "y":  1072,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  733,
+                                        "y":  1072,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "new",
+                                        "x":  770,
+                                        "y":  1077,
+                                        "width":  37,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "study",
+                                        "x":  817,
+                                        "y":  1072,
+                                        "width":  49,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  875,
+                                        "y":  1077,
+                                        "width":  23,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  907,
+                                        "y":  1072,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "basis",
+                                        "x":  943,
+                                        "y":  1072,
+                                        "width":  46,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  999,
+                                        "y":  1072,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  1026,
+                                        "y":  1072,
+                                        "width":  43,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "findings?",
+                      "words":  [
+                                    {
+                                        "text":  "findings?",
+                                        "x":  132,
+                                        "y":  1102,
+                                        "width":  85,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. Women ， s vlews are underrepresented in the editorial boards of top psychology and neuroscience",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  90,
+                                        "y":  1132,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Women",
+                                        "x":  123,
+                                        "y":  1132,
+                                        "width":  70,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  196,
+                                        "y":  1132,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  201,
+                                        "y":  1137,
+                                        "width":  7,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "vlews",
+                                        "x":  219,
+                                        "y":  1137,
+                                        "width":  54,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  284,
+                                        "y":  1137,
+                                        "width":  28,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "underrepresented",
+                                        "x":  323,
+                                        "y":  1131,
+                                        "width":  158,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  492,
+                                        "y":  1131,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  520,
+                                        "y":  1131,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "editorial",
+                                        "x":  559,
+                                        "y":  1131,
+                                        "width":  76,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "boards",
+                                        "x":  646,
+                                        "y":  1131,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  718,
+                                        "y":  1131,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "top",
+                                        "x":  748,
+                                        "y":  1134,
+                                        "width":  28,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  787,
+                                        "y":  1131,
+                                        "width":  107,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  905,
+                                        "y":  1131,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "neuroscience",
+                                        "x":  948,
+                                        "y":  1131,
+                                        "width":  119,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "JournaIs.",
+                      "words":  [
+                                    {
+                                        "text":  "JournaIs.",
+                                        "x":  88,
+                                        "y":  1162,
+                                        "width":  80,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. Male editors Of top psychology and neuroscience journals tend tO be biased against their female",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  91,
+                                        "y":  1192,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Male",
+                                        "x":  123,
+                                        "y":  1192,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  181,
+                                        "y":  1191,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  254,
+                                        "y":  1191,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "top",
+                                        "x":  284,
+                                        "y":  1194,
+                                        "width":  28,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "psychology",
+                                        "x":  323,
+                                        "y":  1192,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  440,
+                                        "y":  1191,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "neuroscience",
+                                        "x":  484,
+                                        "y":  1191,
+                                        "width":  119,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "journals",
+                                        "x":  612,
+                                        "y":  1192,
+                                        "width":  75,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tend",
+                                        "x":  699,
+                                        "y":  1192,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  749,
+                                        "y":  1194,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  777,
+                                        "y":  1192,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "biased",
+                                        "x":  809,
+                                        "y":  1191,
+                                        "width":  59,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "against",
+                                        "x":  879,
+                                        "y":  1191,
+                                        "width":  64,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  954,
+                                        "y":  1191,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  1007,
+                                        "y":  1191,
+                                        "width":  62,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "colleagues.",
+                      "words":  [
+                                    {
+                                        "text":  "colleagues.",
+                                        "x":  90,
+                                        "y":  1221,
+                                        "width":  101,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. Male researchers have enough representauon in the editorial boards tO ensure their publications.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  90,
+                                        "y":  1251,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Male",
+                                        "x":  117,
+                                        "y":  1251,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "researchers",
+                                        "x":  170,
+                                        "y":  1251,
+                                        "width":  102,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  279,
+                                        "y":  1251,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "enough",
+                                        "x":  328,
+                                        "y":  1251,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "representauon",
+                                        "x":  401,
+                                        "y":  1254,
+                                        "width":  130,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  538,
+                                        "y":  1251,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  561,
+                                        "y":  1251,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "editorial",
+                                        "x":  595,
+                                        "y":  1251,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "boards",
+                                        "x":  677,
+                                        "y":  1251,
+                                        "width":  60,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  744,
+                                        "y":  1254,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "ensure",
+                                        "x":  768,
+                                        "y":  1256,
+                                        "width":  59,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  833,
+                                        "y":  1251,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "publications.",
+                                        "x":  881,
+                                        "y":  1251,
+                                        "width":  117,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. FemaIe editors have tO struggle tO get women ， s research articles published in academic joumals.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  90,
+                                        "y":  1281,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "FemaIe",
+                                        "x":  118,
+                                        "y":  1281,
+                                        "width":  67,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "editors",
+                                        "x":  192,
+                                        "y":  1281,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  260,
+                                        "y":  1281,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  309,
+                                        "y":  1283,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "struggle",
+                                        "x":  333,
+                                        "y":  1281,
+                                        "width":  73,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  412,
+                                        "y":  1283,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "get",
+                                        "x":  436,
+                                        "y":  1283,
+                                        "width":  28,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "women",
+                                        "x":  469,
+                                        "y":  1286,
+                                        "width":  68,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  539,
+                                        "y":  1281,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  544,
+                                        "y":  1286,
+                                        "width":  8,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "research",
+                                        "x":  558,
+                                        "y":  1281,
+                                        "width":  76,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "articles",
+                                        "x":  641,
+                                        "y":  1281,
+                                        "width":  65,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "published",
+                                        "x":  712,
+                                        "y":  1281,
+                                        "width":  90,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  808,
+                                        "y":  1281,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "academic",
+                                        "x":  832,
+                                        "y":  1281,
+                                        "width":  85,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "joumals.",
+                                        "x":  922,
+                                        "y":  1281,
+                                        "width":  80,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "55 、 What does the author suggest we do instead of simply blaming the inequality of editorial boards on",
+                      "words":  [
+                                    {
+                                        "text":  "55",
+                                        "x":  91,
+                                        "y":  1311,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  114,
+                                        "y":  1324,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "What",
+                                        "x":  132,
+                                        "y":  1311,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "does",
+                                        "x":  189,
+                                        "y":  1311,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  239,
+                                        "y":  1311,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "author",
+                                        "x":  274,
+                                        "y":  1311,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "suggest",
+                                        "x":  341,
+                                        "y":  1314,
+                                        "width":  68,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  417,
+                                        "y":  1316,
+                                        "width":  26,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "do",
+                                        "x":  450,
+                                        "y":  1311,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "instead",
+                                        "x":  481,
+                                        "y":  1311,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  553,
+                                        "y":  1311,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "simply",
+                                        "x":  580,
+                                        "y":  1311,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "blaming",
+                                        "x":  649,
+                                        "y":  1311,
+                                        "width":  75,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  732,
+                                        "y":  1311,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "inequality",
+                                        "x":  768,
+                                        "y":  1311,
+                                        "width":  91,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  867,
+                                        "y":  1311,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editorial",
+                                        "x":  893,
+                                        "y":  1311,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "boards",
+                                        "x":  977,
+                                        "y":  1311,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  1046,
+                                        "y":  1316,
+                                        "width":  22,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "tradition?",
+                      "words":  [
+                                    {
+                                        "text":  "tradition?",
+                                        "x":  132,
+                                        "y":  1341,
+                                        "width":  87,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A. Strike a balance between male and female editors.",
+                      "words":  [
+                                    {
+                                        "text":  "A.",
+                                        "x":  125,
+                                        "y":  1371,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Strike",
+                                        "x":  154,
+                                        "y":  1371,
+                                        "width":  54,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  214,
+                                        "y":  1376,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "balance",
+                                        "x":  229,
+                                        "y":  1371,
+                                        "width":  70,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "between",
+                                        "x":  305,
+                                        "y":  1371,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "male",
+                                        "x":  388,
+                                        "y":  1371,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  439,
+                                        "y":  1371,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  477,
+                                        "y":  1371,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "editors.",
+                                        "x":  545,
+                                        "y":  1371,
+                                        "width":  67,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "lncrease WOmen\u0027S employment in senior positions",
+                      "words":  [
+                                    {
+                                        "text":  "lncrease",
+                                        "x":  152,
+                                        "y":  1401,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "WOmen\u0027S",
+                                        "x":  234,
+                                        "y":  1401,
+                                        "width":  82,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "employment",
+                                        "x":  323,
+                                        "y":  1401,
+                                        "width":  115,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  444,
+                                        "y":  1400,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "senior",
+                                        "x":  468,
+                                        "y":  1400,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "positions",
+                                        "x":  528,
+                                        "y":  1400,
+                                        "width":  83,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. EnIarge the body of female academlcs.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  125,
+                                        "y":  1431,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "EnIarge",
+                                        "x":  152,
+                                        "y":  1431,
+                                        "width":  70,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  229,
+                                        "y":  1431,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "body",
+                                        "x":  262,
+                                        "y":  1431,
+                                        "width":  46,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  314,
+                                        "y":  1430,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "female",
+                                        "x":  339,
+                                        "y":  1430,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "academlcs.",
+                                        "x":  408,
+                                        "y":  1431,
+                                        "width":  99,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 12-CET6( 第",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  446,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  492,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "12-CET6(",
+                                        "x":  502,
+                                        "y":  1495,
+                                        "width":  90,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  596,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "套 ） 一 9",
+                      "words":  [
+                                    {
+                                        "text":  "套",
+                                        "x":  640,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  662,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  669,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "9",
+                                        "x":  677,
+                                        "y":  1496,
+                                        "width":  11,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

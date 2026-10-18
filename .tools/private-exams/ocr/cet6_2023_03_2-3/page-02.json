@@ -1,0 +1,2690 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_03_2-3\\page-02.png",
+    "unverifiedOCR":  true,
+    "text":  "KEYS Part I Writing Suggested Version PeopIe are now increasingly aware of the challenges in making a decision when faced with too many choices. We are presented with various options for almost every aspect Of our lives ， from what we eat tO where we live. While having choices is Often considered a good thing, having tOO many can be overwhelming and lead to low efficiency. For example, When choosing a restaurant ， We may spend an excessive amount Of time scrolling through review apps and menus ， trying tO make the best decision possible. Even after we ， ve made our choice ， we may find ourselves questloning our decision and wonderlng if we should have chosen differently. This phenomenon is not just limited to ordinary choices like picking a restaurant. lt can also occur With more significant decisions, such aS choosing a career path or deciding where tO invest our money. ln light of this ， people are beginning t0 recognize the value of sunpllfying their decision-makmg process. Rather than focusing on the endless possibilities, they are looking for ways tO narrow down their options and make more informed choices. One approach iS tO prioritize what matters most, whether it\u0027s quality, affordability or convenience. Part II Listening Comprehension OMITTED Part III Reading Comprehension OMITTED Part IV Translation Zheng He is the most distmguished navigator m Chinese history, showing exceptional wisdom and outstandmg talents in many fields such as navigauon, diplomacy and military affairs 、 He led a huge fleet tO sail seven times ， visiting many countrles and regions in the Western Pacific and the lndian Ocean enhancing mutual understanding between China and Southeast Asia and East Africa. Zheng He\u0027s expedltlons tO the Western Oceans played a very positive role in promoting economic and cultural exchanges between Ch1na and foreign countries and alSO made great contrlbutions tO maintaining regional peace. ln order to forever commemorate Zheng He ， s great achievements ， July 11 ， the day when Zheng He first led a fleet on a distant voyage ， has been designated as Maritime Day of China. 2023 ． 03 一 CET6 （ 第 2 套 ） 一 2",
+    "lines":  [
+                  {
+                      "text":  "KEYS",
+                      "words":  [
+                                    {
+                                        "text":  "KEYS",
+                                        "x":  539,
+                                        "y":  158,
+                                        "width":  81,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part I Writing",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  92,
+                                        "y":  218,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  157,
+                                        "y":  218,
+                                        "width":  11,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Writing",
+                                        "x":  176,
+                                        "y":  218,
+                                        "width":  103,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Suggested Version",
+                      "words":  [
+                                    {
+                                        "text":  "Suggested",
+                                        "x":  92,
+                                        "y":  265,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Version",
+                                        "x":  195,
+                                        "y":  265,
+                                        "width":  74,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "PeopIe are now increasingly aware of the challenges in making a decision when faced with too many",
+                      "words":  [
+                                    {
+                                        "text":  "PeopIe",
+                                        "x":  126,
+                                        "y":  295,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  195,
+                                        "y":  300,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "now",
+                                        "x":  230,
+                                        "y":  300,
+                                        "width":  39,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "increasingly",
+                                        "x":  276,
+                                        "y":  295,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "aware",
+                                        "x":  395,
+                                        "y":  300,
+                                        "width":  54,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  456,
+                                        "y":  294,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  482,
+                                        "y":  295,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "challenges",
+                                        "x":  517,
+                                        "y":  295,
+                                        "width":  96,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  621,
+                                        "y":  295,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "making",
+                                        "x":  645,
+                                        "y":  295,
+                                        "width":  69,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  721,
+                                        "y":  300,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "decision",
+                                        "x":  738,
+                                        "y":  295,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "when",
+                                        "x":  821,
+                                        "y":  295,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "faced",
+                                        "x":  878,
+                                        "y":  294,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  934,
+                                        "y":  295,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "too",
+                                        "x":  982,
+                                        "y":  297,
+                                        "width":  28,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  1018,
+                                        "y":  300,
+                                        "width":  50,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "choices. We are presented with various options for almost every aspect Of our lives ， from what we eat tO",
+                      "words":  [
+                                    {
+                                        "text":  "choices.",
+                                        "x":  91,
+                                        "y":  324,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "We",
+                                        "x":  172,
+                                        "y":  325,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  210,
+                                        "y":  329,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "presented",
+                                        "x":  244,
+                                        "y":  324,
+                                        "width":  89,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  340,
+                                        "y":  324,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "various",
+                                        "x":  388,
+                                        "y":  324,
+                                        "width":  66,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "options",
+                                        "x":  462,
+                                        "y":  324,
+                                        "width":  67,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  537,
+                                        "y":  324,
+                                        "width":  26,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "almost",
+                                        "x":  570,
+                                        "y":  325,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "every",
+                                        "x":  639,
+                                        "y":  329,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "aspect",
+                                        "x":  696,
+                                        "y":  327,
+                                        "width":  57,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  760,
+                                        "y":  324,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "our",
+                                        "x":  787,
+                                        "y":  329,
+                                        "width":  30,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "lives",
+                                        "x":  824,
+                                        "y":  324,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  868,
+                                        "y":  338,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  880,
+                                        "y":  324,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "what",
+                                        "x":  932,
+                                        "y":  325,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  983,
+                                        "y":  330,
+                                        "width":  26,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "eat",
+                                        "x":  1017,
+                                        "y":  327,
+                                        "width":  26,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  1051,
+                                        "y":  327,
+                                        "width":  17,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "where we live. While having choices is Often considered a good thing, having tOO many can be",
+                      "words":  [
+                                    {
+                                        "text":  "where",
+                                        "x":  91,
+                                        "y":  354,
+                                        "width":  56,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  160,
+                                        "y":  359,
+                                        "width":  26,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "live.",
+                                        "x":  199,
+                                        "y":  354,
+                                        "width":  38,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "While",
+                                        "x":  251,
+                                        "y":  354,
+                                        "width":  56,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "having",
+                                        "x":  320,
+                                        "y":  354,
+                                        "width":  62,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "choices",
+                                        "x":  395,
+                                        "y":  354,
+                                        "width":  68,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  477,
+                                        "y":  354,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Often",
+                                        "x":  504,
+                                        "y":  354,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "considered",
+                                        "x":  564,
+                                        "y":  354,
+                                        "width":  99,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  676,
+                                        "y":  359,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "good",
+                                        "x":  699,
+                                        "y":  354,
+                                        "width":  45,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "thing,",
+                                        "x":  757,
+                                        "y":  354,
+                                        "width":  52,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "having",
+                                        "x":  822,
+                                        "y":  354,
+                                        "width":  62,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "tOO",
+                                        "x":  897,
+                                        "y":  357,
+                                        "width":  29,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  939,
+                                        "y":  359,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  1003,
+                                        "y":  359,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  1047,
+                                        "y":  354,
+                                        "width":  21,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "overwhelming and lead to low efficiency.",
+                      "words":  [
+                                    {
+                                        "text":  "overwhelming",
+                                        "x":  91,
+                                        "y":  384,
+                                        "width":  132,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  230,
+                                        "y":  384,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lead",
+                                        "x":  269,
+                                        "y":  384,
+                                        "width":  37,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  313,
+                                        "y":  387,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "low",
+                                        "x":  336,
+                                        "y":  384,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "efficiency.",
+                                        "x":  377,
+                                        "y":  384,
+                                        "width":  94,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "For example, When choosing a restaurant ， We may spend an excessive amount Of time scrolling",
+                      "words":  [
+                                    {
+                                        "text":  "For",
+                                        "x":  126,
+                                        "y":  414,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "example,",
+                                        "x":  168,
+                                        "y":  414,
+                                        "width":  83,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "When",
+                                        "x":  262,
+                                        "y":  414,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "choosing",
+                                        "x":  323,
+                                        "y":  414,
+                                        "width":  82,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  417,
+                                        "y":  419,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "restaurant",
+                                        "x":  437,
+                                        "y":  417,
+                                        "width":  91,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  529,
+                                        "y":  427,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "We",
+                                        "x":  545,
+                                        "y":  419,
+                                        "width":  26,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "may",
+                                        "x":  582,
+                                        "y":  419,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "spend",
+                                        "x":  633,
+                                        "y":  414,
+                                        "width":  52,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  697,
+                                        "y":  419,
+                                        "width":  21,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "excessive",
+                                        "x":  729,
+                                        "y":  414,
+                                        "width":  87,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "amount",
+                                        "x":  828,
+                                        "y":  417,
+                                        "width":  68,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  907,
+                                        "y":  414,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "time",
+                                        "x":  937,
+                                        "y":  414,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "scrolling",
+                                        "x":  989,
+                                        "y":  414,
+                                        "width":  79,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "through review apps and menus ， trying tO make the best decision possible. Even after we ， ve made our",
+                      "words":  [
+                                    {
+                                        "text":  "through",
+                                        "x":  91,
+                                        "y":  444,
+                                        "width":  71,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "review",
+                                        "x":  171,
+                                        "y":  444,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "apps",
+                                        "x":  242,
+                                        "y":  449,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  292,
+                                        "y":  444,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "menus",
+                                        "x":  334,
+                                        "y":  449,
+                                        "width":  59,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  394,
+                                        "y":  457,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "trying",
+                                        "x":  408,
+                                        "y":  444,
+                                        "width":  54,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  471,
+                                        "y":  447,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "make",
+                                        "x":  497,
+                                        "y":  444,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  555,
+                                        "y":  444,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "best",
+                                        "x":  591,
+                                        "y":  444,
+                                        "width":  37,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "decision",
+                                        "x":  636,
+                                        "y":  444,
+                                        "width":  76,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "possible.",
+                                        "x":  721,
+                                        "y":  444,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Even",
+                                        "x":  810,
+                                        "y":  444,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "after",
+                                        "x":  866,
+                                        "y":  444,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  916,
+                                        "y":  449,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  945,
+                                        "y":  444,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "ve",
+                                        "x":  951,
+                                        "y":  449,
+                                        "width":  21,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "made",
+                                        "x":  980,
+                                        "y":  444,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "our",
+                                        "x":  1039,
+                                        "y":  449,
+                                        "width":  30,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "choice ， we may find ourselves questloning our decision and wonderlng if we should have chosen",
+                      "words":  [
+                                    {
+                                        "text":  "choice",
+                                        "x":  91,
+                                        "y":  474,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  152,
+                                        "y":  487,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  169,
+                                        "y":  479,
+                                        "width":  26,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "may",
+                                        "x":  207,
+                                        "y":  479,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "find",
+                                        "x":  259,
+                                        "y":  474,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "ourselves",
+                                        "x":  308,
+                                        "y":  474,
+                                        "width":  86,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "questloning",
+                                        "x":  406,
+                                        "y":  474,
+                                        "width":  107,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "our",
+                                        "x":  526,
+                                        "y":  479,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "decision",
+                                        "x":  568,
+                                        "y":  474,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  657,
+                                        "y":  474,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "wonderlng",
+                                        "x":  702,
+                                        "y":  474,
+                                        "width":  98,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "if",
+                                        "x":  813,
+                                        "y":  474,
+                                        "width":  15,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  838,
+                                        "y":  479,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "x":  878,
+                                        "y":  474,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  950,
+                                        "y":  474,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "chosen",
+                                        "x":  1005,
+                                        "y":  474,
+                                        "width":  63,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "differently. This phenomenon is not just limited to ordinary choices like picking a restaurant. lt can also",
+                      "words":  [
+                                    {
+                                        "text":  "differently.",
+                                        "x":  91,
+                                        "y":  504,
+                                        "width":  100,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "This",
+                                        "x":  199,
+                                        "y":  504,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "phenomenon",
+                                        "x":  247,
+                                        "y":  504,
+                                        "width":  119,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  374,
+                                        "y":  504,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "not",
+                                        "x":  396,
+                                        "y":  507,
+                                        "width":  30,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "just",
+                                        "x":  431,
+                                        "y":  504,
+                                        "width":  35,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "limited",
+                                        "x":  474,
+                                        "y":  504,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  546,
+                                        "y":  507,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "ordinary",
+                                        "x":  571,
+                                        "y":  504,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "choices",
+                                        "x":  656,
+                                        "y":  504,
+                                        "width":  68,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "like",
+                                        "x":  732,
+                                        "y":  504,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "picking",
+                                        "x":  774,
+                                        "y":  504,
+                                        "width":  68,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  851,
+                                        "y":  509,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "restaurant.",
+                                        "x":  868,
+                                        "y":  507,
+                                        "width":  94,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  972,
+                                        "y":  504,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  993,
+                                        "y":  509,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "also",
+                                        "x":  1032,
+                                        "y":  504,
+                                        "width":  37,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "occur With more significant decisions, such aS choosing a career path or deciding where tO invest our",
+                      "words":  [
+                                    {
+                                        "text":  "occur",
+                                        "x":  91,
+                                        "y":  539,
+                                        "width":  51,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "With",
+                                        "x":  151,
+                                        "y":  534,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  201,
+                                        "y":  539,
+                                        "width":  47,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "significant",
+                                        "x":  258,
+                                        "y":  534,
+                                        "width":  96,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "decisions,",
+                                        "x":  363,
+                                        "y":  534,
+                                        "width":  90,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "such",
+                                        "x":  464,
+                                        "y":  534,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "aS",
+                                        "x":  515,
+                                        "y":  539,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "choosing",
+                                        "x":  542,
+                                        "y":  534,
+                                        "width":  83,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  635,
+                                        "y":  539,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "career",
+                                        "x":  653,
+                                        "y":  539,
+                                        "width":  56,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "path",
+                                        "x":  718,
+                                        "y":  534,
+                                        "width":  39,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "or",
+                                        "x":  767,
+                                        "y":  539,
+                                        "width":  19,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "deciding",
+                                        "x":  795,
+                                        "y":  534,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "where",
+                                        "x":  883,
+                                        "y":  534,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  948,
+                                        "y":  536,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "invest",
+                                        "x":  974,
+                                        "y":  534,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "our",
+                                        "x":  1038,
+                                        "y":  539,
+                                        "width":  31,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "money.",
+                      "words":  [
+                                    {
+                                        "text":  "money.",
+                                        "x":  91,
+                                        "y":  569,
+                                        "width":  66,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ln light of this ， people are beginning t0 recognize the value of sunpllfying their decision-makmg",
+                      "words":  [
+                                    {
+                                        "text":  "ln",
+                                        "x":  126,
+                                        "y":  594,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "light",
+                                        "x":  155,
+                                        "y":  593,
+                                        "width":  42,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  207,
+                                        "y":  593,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "x":  236,
+                                        "y":  593,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  270,
+                                        "y":  607,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  284,
+                                        "y":  594,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  356,
+                                        "y":  599,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "beginning",
+                                        "x":  393,
+                                        "y":  593,
+                                        "width":  91,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "t0",
+                                        "x":  495,
+                                        "y":  596,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "recognize",
+                                        "x":  522,
+                                        "y":  593,
+                                        "width":  89,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  622,
+                                        "y":  594,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "value",
+                                        "x":  659,
+                                        "y":  594,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  719,
+                                        "y":  593,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "sunpllfying",
+                                        "x":  749,
+                                        "y":  593,
+                                        "width":  104,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  864,
+                                        "y":  593,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "decision-makmg",
+                                        "x":  916,
+                                        "y":  593,
+                                        "width":  153,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "process. Rather than focusing on the endless possibilities, they are looking for ways tO narrow down their",
+                      "words":  [
+                                    {
+                                        "text":  "process.",
+                                        "x":  91,
+                                        "y":  628,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Rather",
+                                        "x":  172,
+                                        "y":  624,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "than",
+                                        "x":  240,
+                                        "y":  624,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "focusing",
+                                        "x":  286,
+                                        "y":  623,
+                                        "width":  78,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  371,
+                                        "y":  628,
+                                        "width":  22,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  400,
+                                        "y":  623,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "endless",
+                                        "x":  434,
+                                        "y":  624,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "possibilities,",
+                                        "x":  508,
+                                        "y":  623,
+                                        "width":  115,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "they",
+                                        "x":  630,
+                                        "y":  623,
+                                        "width":  39,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  676,
+                                        "y":  628,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "looking",
+                                        "x":  710,
+                                        "y":  623,
+                                        "width":  70,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  788,
+                                        "y":  623,
+                                        "width":  26,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "ways",
+                                        "x":  820,
+                                        "y":  628,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  874,
+                                        "y":  626,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "narrow",
+                                        "x":  898,
+                                        "y":  628,
+                                        "width":  64,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "down",
+                                        "x":  969,
+                                        "y":  623,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  1027,
+                                        "y":  623,
+                                        "width":  42,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "options and make more informed choices. One approach iS tO prioritize what matters most, whether it\u0027s",
+                      "words":  [
+                                    {
+                                        "text":  "options",
+                                        "x":  91,
+                                        "y":  653,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  167,
+                                        "y":  653,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "make",
+                                        "x":  208,
+                                        "y":  653,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  265,
+                                        "y":  658,
+                                        "width":  47,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "informed",
+                                        "x":  321,
+                                        "y":  653,
+                                        "width":  83,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "choices.",
+                                        "x":  412,
+                                        "y":  653,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "One",
+                                        "x":  495,
+                                        "y":  653,
+                                        "width":  37,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "approach",
+                                        "x":  541,
+                                        "y":  653,
+                                        "width":  83,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "iS",
+                                        "x":  633,
+                                        "y":  653,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  656,
+                                        "y":  656,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "prioritize",
+                                        "x":  681,
+                                        "y":  653,
+                                        "width":  84,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "what",
+                                        "x":  773,
+                                        "y":  653,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "matters",
+                                        "x":  825,
+                                        "y":  656,
+                                        "width":  67,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "most,",
+                                        "x":  901,
+                                        "y":  656,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "whether",
+                                        "x":  959,
+                                        "y":  653,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "it\u0027s",
+                                        "x":  1041,
+                                        "y":  653,
+                                        "width":  27,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "quality, affordability or convenience.",
+                      "words":  [
+                                    {
+                                        "text":  "quality,",
+                                        "x":  91,
+                                        "y":  683,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "affordability",
+                                        "x":  166,
+                                        "y":  683,
+                                        "width":  113,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "or",
+                                        "x":  285,
+                                        "y":  688,
+                                        "width":  20,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "convenience.",
+                                        "x":  310,
+                                        "y":  683,
+                                        "width":  119,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part II Listening Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  726,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "II",
+                                        "x":  157,
+                                        "y":  726,
+                                        "width":  23,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Listening",
+                                        "x":  188,
+                                        "y":  726,
+                                        "width":  122,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  320,
+                                        "y":  726,
+                                        "width":  205,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "OMITTED",
+                      "words":  [
+                                    {
+                                        "text":  "OMITTED",
+                                        "x":  91,
+                                        "y":  773,
+                                        "width":  103,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part III Reading Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  816,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "III",
+                                        "x":  157,
+                                        "y":  816,
+                                        "width":  35,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Reading",
+                                        "x":  201,
+                                        "y":  815,
+                                        "width":  107,
+                                        "height":  28
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  318,
+                                        "y":  815,
+                                        "width":  205,
+                                        "height":  28
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "OMITTED",
+                      "words":  [
+                                    {
+                                        "text":  "OMITTED",
+                                        "x":  91,
+                                        "y":  863,
+                                        "width":  103,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part IV Translation",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  905,
+                                        "width":  58,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "IV",
+                                        "x":  157,
+                                        "y":  905,
+                                        "width":  33,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Translation",
+                                        "x":  198,
+                                        "y":  905,
+                                        "width":  150,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Zheng He is the most distmguished navigator m Chinese history, showing exceptional wisdom and",
+                      "words":  [
+                                    {
+                                        "text":  "Zheng",
+                                        "x":  125,
+                                        "y":  952,
+                                        "width":  59,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  193,
+                                        "y":  952,
+                                        "width":  26,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  228,
+                                        "y":  952,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  252,
+                                        "y":  952,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "most",
+                                        "x":  289,
+                                        "y":  955,
+                                        "width":  44,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "distmguished",
+                                        "x":  342,
+                                        "y":  952,
+                                        "width":  122,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "navigator",
+                                        "x":  473,
+                                        "y":  952,
+                                        "width":  87,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  568,
+                                        "y":  957,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  594,
+                                        "y":  952,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "history,",
+                                        "x":  677,
+                                        "y":  952,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "showing",
+                                        "x":  754,
+                                        "y":  952,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "exceptional",
+                                        "x":  840,
+                                        "y":  952,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "wisdom",
+                                        "x":  954,
+                                        "y":  952,
+                                        "width":  73,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  1036,
+                                        "y":  952,
+                                        "width":  32,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "outstandmg talents in many fields such as navigauon, diplomacy and military affairs 、 He led a huge fleet",
+                      "words":  [
+                                    {
+                                        "text":  "outstandmg",
+                                        "x":  92,
+                                        "y":  982,
+                                        "width":  106,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "talents",
+                                        "x":  206,
+                                        "y":  982,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  273,
+                                        "y":  982,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  297,
+                                        "y":  987,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "fields",
+                                        "x":  355,
+                                        "y":  982,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "such",
+                                        "x":  413,
+                                        "y":  982,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  462,
+                                        "y":  987,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "navigauon,",
+                                        "x":  487,
+                                        "y":  982,
+                                        "width":  102,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "diplomacy",
+                                        "x":  597,
+                                        "y":  982,
+                                        "width":  96,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  701,
+                                        "y":  982,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "military",
+                                        "x":  741,
+                                        "y":  982,
+                                        "width":  71,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "affairs",
+                                        "x":  820,
+                                        "y":  982,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  879,
+                                        "y":  995,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  891,
+                                        "y":  982,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "led",
+                                        "x":  924,
+                                        "y":  982,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  959,
+                                        "y":  987,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "huge",
+                                        "x":  976,
+                                        "y":  982,
+                                        "width":  45,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "fleet",
+                                        "x":  1029,
+                                        "y":  982,
+                                        "width":  40,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "tO sail seven times ， visiting many countrles and regions in the Western Pacific and the lndian Ocean",
+                      "words":  [
+                                    {
+                                        "text":  "tO",
+                                        "x":  92,
+                                        "y":  1014,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "sail",
+                                        "x":  119,
+                                        "y":  1012,
+                                        "width":  31,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "seven",
+                                        "x":  160,
+                                        "y":  1017,
+                                        "width":  51,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "times",
+                                        "x":  221,
+                                        "y":  1012,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  272,
+                                        "y":  1025,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "visiting",
+                                        "x":  286,
+                                        "y":  1012,
+                                        "width":  68,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  364,
+                                        "y":  1017,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "countrles",
+                                        "x":  424,
+                                        "y":  1015,
+                                        "width":  83,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  518,
+                                        "y":  1012,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "regions",
+                                        "x":  559,
+                                        "y":  1012,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  636,
+                                        "y":  1012,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  663,
+                                        "y":  1012,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Western",
+                                        "x":  700,
+                                        "y":  1012,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Pacific",
+                                        "x":  784,
+                                        "y":  1012,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  857,
+                                        "y":  1012,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  899,
+                                        "y":  1012,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lndian",
+                                        "x":  937,
+                                        "y":  1012,
+                                        "width":  58,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Ocean",
+                                        "x":  1005,
+                                        "y":  1012,
+                                        "width":  58,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "enhancing mutual understanding between China and Southeast Asia and East Africa. Zheng He\u0027s",
+                      "words":  [
+                                    {
+                                        "text":  "enhancing",
+                                        "x":  92,
+                                        "y":  1042,
+                                        "width":  93,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "mutual",
+                                        "x":  198,
+                                        "y":  1042,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "understanding",
+                                        "x":  275,
+                                        "y":  1042,
+                                        "width":  130,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "between",
+                                        "x":  418,
+                                        "y":  1042,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "China",
+                                        "x":  508,
+                                        "y":  1042,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  576,
+                                        "y":  1042,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Southeast",
+                                        "x":  622,
+                                        "y":  1042,
+                                        "width":  89,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Asia",
+                                        "x":  724,
+                                        "y":  1042,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  779,
+                                        "y":  1042,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "East",
+                                        "x":  825,
+                                        "y":  1042,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Africa.",
+                                        "x":  877,
+                                        "y":  1042,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Zheng",
+                                        "x":  955,
+                                        "y":  1042,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "He\u0027s",
+                                        "x":  1027,
+                                        "y":  1042,
+                                        "width":  41,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "expedltlons tO the Western Oceans played a very positive role in promoting economic and cultural",
+                      "words":  [
+                                    {
+                                        "text":  "expedltlons",
+                                        "x":  92,
+                                        "y":  1072,
+                                        "width":  104,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  208,
+                                        "y":  1074,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  237,
+                                        "y":  1072,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Western",
+                                        "x":  276,
+                                        "y":  1072,
+                                        "width":  75,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Oceans",
+                                        "x":  362,
+                                        "y":  1072,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "played",
+                                        "x":  441,
+                                        "y":  1072,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  514,
+                                        "y":  1077,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "very",
+                                        "x":  535,
+                                        "y":  1077,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "positive",
+                                        "x":  586,
+                                        "y":  1072,
+                                        "width":  73,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "role",
+                                        "x":  670,
+                                        "y":  1072,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  717,
+                                        "y":  1072,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "promoting",
+                                        "x":  746,
+                                        "y":  1072,
+                                        "width":  96,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "economic",
+                                        "x":  853,
+                                        "y":  1072,
+                                        "width":  89,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  954,
+                                        "y":  1072,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "cultural",
+                                        "x":  998,
+                                        "y":  1072,
+                                        "width":  70,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "exchanges between Ch1na and foreign countries and alSO made great contrlbutions tO maintaining regional",
+                      "words":  [
+                                    {
+                                        "text":  "exchanges",
+                                        "x":  92,
+                                        "y":  1102,
+                                        "width":  94,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "between",
+                                        "x":  193,
+                                        "y":  1102,
+                                        "width":  76,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Ch1na",
+                                        "x":  275,
+                                        "y":  1102,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  336,
+                                        "y":  1102,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "foreign",
+                                        "x":  375,
+                                        "y":  1102,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "countries",
+                                        "x":  447,
+                                        "y":  1102,
+                                        "width":  84,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  538,
+                                        "y":  1102,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "alSO",
+                                        "x":  577,
+                                        "y":  1102,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "made",
+                                        "x":  620,
+                                        "y":  1102,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "great",
+                                        "x":  675,
+                                        "y":  1104,
+                                        "width":  46,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "contrlbutions",
+                                        "x":  727,
+                                        "y":  1102,
+                                        "width":  120,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  854,
+                                        "y":  1104,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "maintaining",
+                                        "x":  878,
+                                        "y":  1102,
+                                        "width":  109,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "regional",
+                                        "x":  994,
+                                        "y":  1102,
+                                        "width":  74,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "peace. ln order to forever commemorate Zheng He ， s great achievements ， July 11 ， the day when Zheng He",
+                      "words":  [
+                                    {
+                                        "text":  "peace.",
+                                        "x":  91,
+                                        "y":  1137,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "ln",
+                                        "x":  155,
+                                        "y":  1132,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "order",
+                                        "x":  180,
+                                        "y":  1132,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  235,
+                                        "y":  1134,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "forever",
+                                        "x":  259,
+                                        "y":  1131,
+                                        "width":  66,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "commemorate",
+                                        "x":  331,
+                                        "y":  1134,
+                                        "width":  131,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "Zheng",
+                                        "x":  468,
+                                        "y":  1132,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  533,
+                                        "y":  1132,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  562,
+                                        "y":  1132,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  567,
+                                        "y":  1137,
+                                        "width":  7,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "great",
+                                        "x":  581,
+                                        "y":  1134,
+                                        "width":  46,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "achievements",
+                                        "x":  633,
+                                        "y":  1132,
+                                        "width":  124,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  759,
+                                        "y":  1145,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "July",
+                                        "x":  770,
+                                        "y":  1132,
+                                        "width":  38,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "11",
+                                        "x":  817,
+                                        "y":  1132,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  837,
+                                        "y":  1145,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  848,
+                                        "y":  1132,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "day",
+                                        "x":  882,
+                                        "y":  1132,
+                                        "width":  33,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "when",
+                                        "x":  922,
+                                        "y":  1132,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Zheng",
+                                        "x":  977,
+                                        "y":  1132,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  1042,
+                                        "y":  1132,
+                                        "width":  26,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "first led a fleet on a distant voyage ， has been designated as Maritime Day of China.",
+                      "words":  [
+                                    {
+                                        "text":  "first",
+                                        "x":  92,
+                                        "y":  1161,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "led",
+                                        "x":  134,
+                                        "y":  1161,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  168,
+                                        "y":  1166,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "fleet",
+                                        "x":  184,
+                                        "y":  1161,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  230,
+                                        "y":  1166,
+                                        "width":  23,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  259,
+                                        "y":  1166,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "distant",
+                                        "x":  275,
+                                        "y":  1161,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "voyage",
+                                        "x":  342,
+                                        "y":  1166,
+                                        "width":  66,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  409,
+                                        "y":  1175,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  420,
+                                        "y":  1162,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  456,
+                                        "y":  1161,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "designated",
+                                        "x":  506,
+                                        "y":  1161,
+                                        "width":  98,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  610,
+                                        "y":  1166,
+                                        "width":  18,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "Maritime",
+                                        "x":  635,
+                                        "y":  1161,
+                                        "width":  85,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Day",
+                                        "x":  726,
+                                        "y":  1162,
+                                        "width":  37,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  770,
+                                        "y":  1161,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "China.",
+                                        "x":  795,
+                                        "y":  1161,
+                                        "width":  59,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 ． 03 一 CET6 （ 第 2 套 ） 一 2",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  446,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  492,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "03",
+                                        "x":  499,
+                                        "y":  1496,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  523,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "CET6",
+                                        "x":  530,
+                                        "y":  1495,
+                                        "width":  54,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  585,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  596,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  622,
+                                        "y":  1495,
+                                        "width":  10,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  640,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  662,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  669,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  677,
+                                        "y":  1495,
+                                        "width":  11,
+                                        "height":  17
+                                    }
+                                ]
+                  }
+              ]
+}

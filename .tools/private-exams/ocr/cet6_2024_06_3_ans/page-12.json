@@ -1,0 +1,1781 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2024_06_3_ans\\page-12.jpg",
+    "unverifiedOCR":  true,
+    "text":  "26 ． C 36 ． D 46 ． A 52 六 级 2024 ． 6 4 ． 第 四 句 ： “ 作 为 礼 物 赠 予 他 人 ” 翻 译 为 be presented as gifts ； “ 表 达 美 好 的 祝 福 和 真 挚 的 情 感 ” 表 示 伴 随 情 况 ， 使 用 现 在 分 词 短 语 来 表 达 ， 即 conveying delightful blessings and heartfelt emotions 5 ． 第 五 句 ： “ 但 作 为 一 种 “ “ “ 重 要 角 色 ” 与 前 半 句 形 成 转 折 ， 可 用 but 或 ye 涟 接 前 后 句 ； “ 作 为 一 种 文 化 符 号 和 艺 术 形 式 ” 是 方 式 状 语 ， 翻 译 为 asaculturaliconandaformofartg 31. O 32 ． E 34 ． G 41. K 42 ． E 51.A 52 ． D 54 ， D 2024 年 6 月 大 学 英 语 六 级 考 试 @三圳 Part111@ ReadingCompreheosion 27 ． H 37 ． H 47 ． B 2 \u0026 M 38 ． N 29 ． F 39 ． F 49 ． C 30 ． N 答 案 速 查 33 ． A 43 ， I 53 ． B 35 ． B 45 ， L 55 ， C",
+    "lines":  [
+                  {
+                      "text":  "26 ． C",
+                      "words":  [
+                                    {
+                                        "text":  "26",
+                                        "x":  186,
+                                        "y":  1338,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  205,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "C",
+                                        "x":  212,
+                                        "y":  1338,
+                                        "width":  12,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "36 ． D",
+                      "words":  [
+                                    {
+                                        "text":  "36",
+                                        "x":  187,
+                                        "y":  1368,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  205,
+                                        "y":  1378,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "D",
+                                        "x":  212,
+                                        "y":  1368,
+                                        "width":  13,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "46 ． A",
+                      "words":  [
+                                    {
+                                        "text":  "46",
+                                        "x":  185,
+                                        "y":  1396,
+                                        "width":  19,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  205,
+                                        "y":  1407,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A",
+                                        "x":  211,
+                                        "y":  1396,
+                                        "width":  13,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "52 六 级 2024 ． 6",
+                      "words":  [
+                                    {
+                                        "text":  "52",
+                                        "x":  178,
+                                        "y":  1445,
+                                        "width":  19,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "六",
+                                        "x":  208,
+                                        "y":  1447,
+                                        "width":  12,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "级",
+                                        "x":  221,
+                                        "y":  1446,
+                                        "width":  11,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "2024",
+                                        "x":  236,
+                                        "y":  1448,
+                                        "width":  25,
+                                        "height":  9
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  261,
+                                        "y":  1455,
+                                        "width":  3,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "6",
+                                        "x":  264,
+                                        "y":  1448,
+                                        "width":  7,
+                                        "height":  9
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "4 ． 第 四 句 ： “ 作 为 礼 物 赠 予 他 人 ” 翻 译 为 be presented as gifts ； “ 表 达 美 好 的 祝 福 和 真 挚 的 情 感 ” 表 示 伴 随 情",
+                      "words":  [
+                                    {
+                                        "text":  "4",
+                                        "x":  187,
+                                        "y":  146,
+                                        "width":  10,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  198,
+                                        "y":  156,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  211,
+                                        "y":  143,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "四",
+                                        "x":  230,
+                                        "y":  144,
+                                        "width":  15,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  248,
+                                        "y":  143,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  269,
+                                        "y":  150,
+                                        "width":  4,
+                                        "height":  9
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  286,
+                                        "y":  144,
+                                        "width":  7,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  294,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  314,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "礼",
+                                        "x":  332,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "物",
+                                        "x":  351,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "赠",
+                                        "x":  370,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "予",
+                                        "x":  389,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "他",
+                                        "x":  407,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "人",
+                                        "x":  426,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  446,
+                                        "y":  143,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  465,
+                                        "y":  143,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  482,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  502,
+                                        "y":  142,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  520,
+                                        "y":  145,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "presented",
+                                        "x":  543,
+                                        "y":  146,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  623,
+                                        "y":  150,
+                                        "width":  16,
+                                        "height":  9
+                                    },
+                                    {
+                                        "text":  "gifts",
+                                        "x":  645,
+                                        "y":  145,
+                                        "width":  34,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  682,
+                                        "y":  150,
+                                        "width":  5,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  699,
+                                        "y":  144,
+                                        "width":  8,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  708,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "达",
+                                        "x":  727,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "美",
+                                        "x":  746,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "好",
+                                        "x":  764,
+                                        "y":  142,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  784,
+                                        "y":  143,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "祝",
+                                        "x":  802,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "福",
+                                        "x":  821,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  841,
+                                        "y":  143,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "真",
+                                        "x":  859,
+                                        "y":  142,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "挚",
+                                        "x":  878,
+                                        "y":  142,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  897,
+                                        "y":  143,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "情",
+                                        "x":  915,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "感",
+                                        "x":  934,
+                                        "y":  142,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  954,
+                                        "y":  143,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  972,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "示",
+                                        "x":  991,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "伴",
+                                        "x":  1009,
+                                        "y":  142,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "随",
+                                        "x":  1029,
+                                        "y":  143,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "情",
+                                        "x":  1047,
+                                        "y":  143,
+                                        "width":  18,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "况 ， 使 用 现 在 分 词 短 语 来 表 达 ， 即 conveying delightful blessings and heartfelt emotions",
+                      "words":  [
+                                    {
+                                        "text":  "况",
+                                        "x":  209,
+                                        "y":  171,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  230,
+                                        "y":  183,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "使",
+                                        "x":  246,
+                                        "y":  171,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  265,
+                                        "y":  171,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "现",
+                                        "x":  283,
+                                        "y":  172,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "在",
+                                        "x":  301,
+                                        "y":  171,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "分",
+                                        "x":  319,
+                                        "y":  171,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  338,
+                                        "y":  171,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "短",
+                                        "x":  356,
+                                        "y":  171,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  374,
+                                        "y":  171,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "来",
+                                        "x":  392,
+                                        "y":  171,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  411,
+                                        "y":  171,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "达",
+                                        "x":  429,
+                                        "y":  171,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  450,
+                                        "y":  183,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  467,
+                                        "y":  172,
+                                        "width":  15,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "conveying",
+                                        "x":  483,
+                                        "y":  174,
+                                        "width":  76,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "delightful",
+                                        "x":  564,
+                                        "y":  174,
+                                        "width":  71,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "blessings",
+                                        "x":  639,
+                                        "y":  174,
+                                        "width":  67,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  711,
+                                        "y":  174,
+                                        "width":  26,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "heartfelt",
+                                        "x":  742,
+                                        "y":  174,
+                                        "width":  61,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "emotions",
+                                        "x":  807,
+                                        "y":  174,
+                                        "width":  67,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "5 ． 第 五 句 ： “ 但 作 为 一 种 “ “ “ 重 要 角 色 ” 与 前 半 句 形 成 转 折 ， 可 用 but 或 ye 涟 接 前 后 句 ； “ 作 为 一 种 文 化 符 号 和",
+                      "words":  [
+                                    {
+                                        "text":  "5",
+                                        "x":  188,
+                                        "y":  203,
+                                        "width":  8,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  198,
+                                        "y":  214,
+                                        "width":  2,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  211,
+                                        "y":  200,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "五",
+                                        "x":  229,
+                                        "y":  201,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  247,
+                                        "y":  200,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  267,
+                                        "y":  207,
+                                        "width":  4,
+                                        "height":  9
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  284,
+                                        "y":  200,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "但",
+                                        "x":  292,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  311,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  329,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  348,
+                                        "y":  208,
+                                        "width":  17,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "种",
+                                        "x":  366,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  386,
+                                        "y":  207,
+                                        "width":  9,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  398,
+                                        "y":  207,
+                                        "width":  9,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  410,
+                                        "y":  207,
+                                        "width":  9,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "重",
+                                        "x":  421,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "要",
+                                        "x":  439,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "角",
+                                        "x":  458,
+                                        "y":  200,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "色",
+                                        "x":  477,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  495,
+                                        "y":  200,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "与",
+                                        "x":  513,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "前",
+                                        "x":  531,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "半",
+                                        "x":  550,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  568,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "形",
+                                        "x":  586,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "成",
+                                        "x":  605,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "转",
+                                        "x":  623,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "折",
+                                        "x":  642,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  662,
+                                        "y":  212,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  679,
+                                        "y":  200,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  696,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "but",
+                                        "x":  715,
+                                        "y":  203,
+                                        "width":  23,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "或",
+                                        "x":  739,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "ye",
+                                        "x":  757,
+                                        "y":  207,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "涟",
+                                        "x":  775,
+                                        "y":  200,
+                                        "width":  22,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "接",
+                                        "x":  798,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "前",
+                                        "x":  817,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "后",
+                                        "x":  835,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  854,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  874,
+                                        "y":  208,
+                                        "width":  4,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  891,
+                                        "y":  200,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  899,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  918,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  936,
+                                        "y":  208,
+                                        "width":  18,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "种",
+                                        "x":  955,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "文",
+                                        "x":  974,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "化",
+                                        "x":  992,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "符",
+                                        "x":  1010,
+                                        "y":  200,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "号",
+                                        "x":  1029,
+                                        "y":  200,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  1048,
+                                        "y":  200,
+                                        "width":  16,
+                                        "height":  18
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "艺 术 形 式 ” 是 方 式 状 语 ， 翻 译 为 asaculturaliconandaformofartg",
+                      "words":  [
+                                    {
+                                        "text":  "艺",
+                                        "x":  209,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "术",
+                                        "x":  228,
+                                        "y":  229,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "形",
+                                        "x":  246,
+                                        "y":  229,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "式",
+                                        "x":  264,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  283,
+                                        "y":  229,
+                                        "width":  7,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "是",
+                                        "x":  301,
+                                        "y":  229,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  319,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "式",
+                                        "x":  337,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "状",
+                                        "x":  356,
+                                        "y":  229,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  374,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  395,
+                                        "y":  242,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  410,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  429,
+                                        "y":  229,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  448,
+                                        "y":  229,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "asaculturaliconandaformofartg",
+                                        "x":  465,
+                                        "y":  232,
+                                        "width":  259,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "31. O",
+                      "words":  [
+                                    {
+                                        "text":  "31.",
+                                        "x":  622,
+                                        "y":  1338,
+                                        "width":  22,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "O",
+                                        "x":  648,
+                                        "y":  1338,
+                                        "width":  13,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "32 ． E",
+                      "words":  [
+                                    {
+                                        "text":  "32",
+                                        "x":  709,
+                                        "y":  1338,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  728,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "E",
+                                        "x":  736,
+                                        "y":  1338,
+                                        "width":  11,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "34 ． G",
+                      "words":  [
+                                    {
+                                        "text":  "34",
+                                        "x":  884,
+                                        "y":  1338,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  902,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "G",
+                                        "x":  910,
+                                        "y":  1338,
+                                        "width":  13,
+                                        "height":  15
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "41. K",
+                      "words":  [
+                                    {
+                                        "text":  "41.",
+                                        "x":  621,
+                                        "y":  1368,
+                                        "width":  23,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "K",
+                                        "x":  648,
+                                        "y":  1367,
+                                        "width":  14,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "42 ． E",
+                      "words":  [
+                                    {
+                                        "text":  "42",
+                                        "x":  709,
+                                        "y":  1367,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  728,
+                                        "y":  1378,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "E",
+                                        "x":  736,
+                                        "y":  1368,
+                                        "width":  11,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "51.A",
+                      "words":  [
+                                    {
+                                        "text":  "51.A",
+                                        "x":  622,
+                                        "y":  1396,
+                                        "width":  38,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "52 ． D",
+                      "words":  [
+                                    {
+                                        "text":  "52",
+                                        "x":  709,
+                                        "y":  1396,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  728,
+                                        "y":  1407,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "D",
+                                        "x":  736,
+                                        "y":  1397,
+                                        "width":  13,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "54 ， D",
+                      "words":  [
+                                    {
+                                        "text":  "54",
+                                        "x":  884,
+                                        "y":  1397,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  902,
+                                        "y":  1408,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "D",
+                                        "x":  909,
+                                        "y":  1397,
+                                        "width":  13,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2024 年 6 月 大 学 英 语 六 级 考 试 @三圳",
+                      "words":  [
+                                    {
+                                        "text":  "2024",
+                                        "x":  348,
+                                        "y":  1237,
+                                        "width":  45,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  394,
+                                        "y":  1233,
+                                        "width":  21,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "6",
+                                        "x":  417,
+                                        "y":  1237,
+                                        "width":  11,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "月",
+                                        "x":  430,
+                                        "y":  1233,
+                                        "width":  17,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "大",
+                                        "x":  453,
+                                        "y":  1233,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "学",
+                                        "x":  475,
+                                        "y":  1232,
+                                        "width":  22,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "英",
+                                        "x":  498,
+                                        "y":  1232,
+                                        "width":  22,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  521,
+                                        "y":  1233,
+                                        "width":  22,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "六",
+                                        "x":  545,
+                                        "y":  1233,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "级",
+                                        "x":  568,
+                                        "y":  1233,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "考",
+                                        "x":  591,
+                                        "y":  1232,
+                                        "width":  21,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "试",
+                                        "x":  613,
+                                        "y":  1234,
+                                        "width":  22,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "@三圳",
+                                        "x":  654,
+                                        "y":  1230,
+                                        "width":  62,
+                                        "height":  25
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part111@ ReadingCompreheosion",
+                      "words":  [
+                                    {
+                                        "text":  "Part111@",
+                                        "x":  187,
+                                        "y":  1303,
+                                        "width":  89,
+                                        "height":  25
+                                    },
+                                    {
+                                        "text":  "ReadingCompreheosion",
+                                        "x":  286,
+                                        "y":  1306,
+                                        "width":  217,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "27 ． H",
+                      "words":  [
+                                    {
+                                        "text":  "27",
+                                        "x":  273,
+                                        "y":  1338,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  292,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "H",
+                                        "x":  300,
+                                        "y":  1338,
+                                        "width":  12,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "37 ． H",
+                      "words":  [
+                                    {
+                                        "text":  "37",
+                                        "x":  274,
+                                        "y":  1368,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  292,
+                                        "y":  1378,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "H",
+                                        "x":  299,
+                                        "y":  1368,
+                                        "width":  13,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "47 ． B",
+                      "words":  [
+                                    {
+                                        "text":  "47",
+                                        "x":  273,
+                                        "y":  1396,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  292,
+                                        "y":  1407,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "B",
+                                        "x":  299,
+                                        "y":  1396,
+                                        "width":  12,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2 \u0026 M",
+                      "words":  [
+                                    {
+                                        "text":  "2",
+                                        "x":  360,
+                                        "y":  1338,
+                                        "width":  9,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "\u0026",
+                                        "x":  370,
+                                        "y":  1338,
+                                        "width":  12,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "M",
+                                        "x":  387,
+                                        "y":  1338,
+                                        "width":  16,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "38 ． N",
+                      "words":  [
+                                    {
+                                        "text":  "38",
+                                        "x":  361,
+                                        "y":  1367,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  379,
+                                        "y":  1378,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "N",
+                                        "x":  386,
+                                        "y":  1368,
+                                        "width":  14,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "29 ． F",
+                      "words":  [
+                                    {
+                                        "text":  "29",
+                                        "x":  448,
+                                        "y":  1338,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  466,
+                                        "y":  1349,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "F",
+                                        "x":  474,
+                                        "y":  1338,
+                                        "width":  10,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "39 ． F",
+                      "words":  [
+                                    {
+                                        "text":  "39",
+                                        "x":  448,
+                                        "y":  1367,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  466,
+                                        "y":  1378,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "F",
+                                        "x":  474,
+                                        "y":  1367,
+                                        "width":  10,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "49 ． C",
+                      "words":  [
+                                    {
+                                        "text":  "49",
+                                        "x":  448,
+                                        "y":  1396,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  466,
+                                        "y":  1407,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "C",
+                                        "x":  474,
+                                        "y":  1396,
+                                        "width":  12,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "30 ． N",
+                      "words":  [
+                                    {
+                                        "text":  "30",
+                                        "x":  536,
+                                        "y":  1338,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  554,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "N",
+                                        "x":  561,
+                                        "y":  1338,
+                                        "width":  13,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "答 案 速 查",
+                      "words":  [
+                                    {
+                                        "text":  "答",
+                                        "x":  764,
+                                        "y":  1232,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "案",
+                                        "x":  786,
+                                        "y":  1232,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "速",
+                                        "x":  808,
+                                        "y":  1233,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "查",
+                                        "x":  834,
+                                        "y":  1233,
+                                        "width":  18,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "33 ． A",
+                      "words":  [
+                                    {
+                                        "text":  "33",
+                                        "x":  797,
+                                        "y":  1337,
+                                        "width":  16,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  815,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A",
+                                        "x":  821,
+                                        "y":  1338,
+                                        "width":  14,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "43 ， I",
+                      "words":  [
+                                    {
+                                        "text":  "43",
+                                        "x":  796,
+                                        "y":  1368,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  815,
+                                        "y":  1379,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  822,
+                                        "y":  1368,
+                                        "width":  7,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "53 ． B",
+                      "words":  [
+                                    {
+                                        "text":  "53",
+                                        "x":  797,
+                                        "y":  1397,
+                                        "width":  16,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  815,
+                                        "y":  1407,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "B",
+                                        "x":  822,
+                                        "y":  1397,
+                                        "width":  12,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "35 ． B",
+                      "words":  [
+                                    {
+                                        "text":  "35",
+                                        "x":  971,
+                                        "y":  1338,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  989,
+                                        "y":  1349,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "B",
+                                        "x":  996,
+                                        "y":  1339,
+                                        "width":  12,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "45 ， L",
+                      "words":  [
+                                    {
+                                        "text":  "45",
+                                        "x":  970,
+                                        "y":  1368,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  989,
+                                        "y":  1379,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "L",
+                                        "x":  996,
+                                        "y":  1368,
+                                        "width":  12,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "55 ， C",
+                      "words":  [
+                                    {
+                                        "text":  "55",
+                                        "x":  971,
+                                        "y":  1397,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  989,
+                                        "y":  1408,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "C",
+                                        "x":  997,
+                                        "y":  1396,
+                                        "width":  11,
+                                        "height":  15
+                                    }
+                                ]
+                  }
+              ]
+}

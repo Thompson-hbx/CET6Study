@@ -1,0 +1,2518 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_12_3_ans\\page-12.jpg",
+    "unverifiedOCR":  true,
+    "text":  "5 ， 第 五 句 ： 本 句 和 上 一 句 结 构 相 似 ， 句 子 主 干 为 “ 许 多 城 市 开 设 了 社 区 食 堂 \" ， 翻 译 为 Many cities have opened community canteens ； “ 为 方 便 老 年 人 用 餐 \" 是 “ 开 设 了 社 区 食 堂 \" 的 目 的 状 语 ， 翻 译 成 to facilitate dimng for the elderly ； 和 上 一 句 不 同 的 是 ， 本 句 结 尾 处 的 “ 为 他 们 提 供 价 格 实 惠 的 饭 菜 \" 表 示 伴 随 情 况 ， 应 翻 译 成 现 在 分 词 短 语 ， 充 当 伴 随 状 语 ， 即 providing them affordablemealso 6 ． 第 六 句 ： 句 子 主 体 “ 老 年 人 能 享 受 上 门 送 餐 服 务 \" 翻 译 为 ElderIy people can enjoy door-to-door meal delivery services ； “ 行 动 不 便 的 \" 充 当 定 语 ， 可 以 翻 译 为 介 词 短 语 形 式 的 后 置 定 语 with limited mobility ， 也 可 翻 译 为 前 置 定 语 physically challenged 7 ． 第 七 句 ： 主 体 句 为 “ 中 国 还 在 积 极 探 索 居 家 和 社 区 养 老 等 其 他 养 老 模 式 \" ， 翻 译 为 China is actively exploring other cldcrly care models such as home- and community-based elderly care ； “ 以 确 保 所 有 老 年 人 老 有 所 养 \" 表 示 目 的 ， 应 翻 译 成 目 的 状 语 ， 即 to ensure that all elderly people are supported in age; 注 意 “ 老 有 所 养 ” 即 “ 老 的 时 候 能 够 得 到 赡 养 ” ， 故 翻 译 为 are supported in old 六 级 2023 」 2 三 到 51",
+    "lines":  [
+                  {
+                      "text":  "5 ， 第 五 句 ： 本 句 和 上 一 句 结 构 相 似 ， 句 子 主 干 为 “ 许 多 城 市 开 设 了 社 区 食 堂 \" ， 翻 译 为 Many cities have",
+                      "words":  [
+                                    {
+                                        "text":  "5",
+                                        "x":  64,
+                                        "y":  50,
+                                        "width":  8,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  75,
+                                        "y":  62,
+                                        "width":  3,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  89,
+                                        "y":  46,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "五",
+                                        "x":  111,
+                                        "y":  47,
+                                        "width":  21,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  133,
+                                        "y":  46,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  158,
+                                        "y":  54,
+                                        "width":  4,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "本",
+                                        "x":  177,
+                                        "y":  46,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  200,
+                                        "y":  46,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  222,
+                                        "y":  48,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "上",
+                                        "x":  244,
+                                        "y":  48,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  266,
+                                        "y":  56,
+                                        "width":  20,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  288,
+                                        "y":  47,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "结",
+                                        "x":  310,
+                                        "y":  47,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "构",
+                                        "x":  333,
+                                        "y":  47,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "相",
+                                        "x":  356,
+                                        "y":  48,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "似",
+                                        "x":  378,
+                                        "y":  47,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  402,
+                                        "y":  62,
+                                        "width":  5,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  422,
+                                        "y":  48,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "子",
+                                        "x":  445,
+                                        "y":  48,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "主",
+                                        "x":  467,
+                                        "y":  48,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "干",
+                                        "x":  489,
+                                        "y":  48,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  512,
+                                        "y":  48,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  545,
+                                        "y":  49,
+                                        "width":  8,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "许",
+                                        "x":  555,
+                                        "y":  48,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "多",
+                                        "x":  578,
+                                        "y":  48,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  600,
+                                        "y":  49,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  622,
+                                        "y":  48,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "开",
+                                        "x":  645,
+                                        "y":  49,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "设",
+                                        "x":  666,
+                                        "y":  49,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "了",
+                                        "x":  690,
+                                        "y":  49,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "社",
+                                        "x":  711,
+                                        "y":  49,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  734,
+                                        "y":  50,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "食",
+                                        "x":  755,
+                                        "y":  49,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "堂",
+                                        "x":  778,
+                                        "y":  49,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  801,
+                                        "y":  50,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  824,
+                                        "y":  64,
+                                        "width":  5,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  845,
+                                        "y":  50,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  866,
+                                        "y":  49,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  889,
+                                        "y":  50,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "Many",
+                                        "x":  911,
+                                        "y":  53,
+                                        "width":  52,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "cities",
+                                        "x":  970,
+                                        "y":  53,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  1027,
+                                        "y":  53,
+                                        "width":  43,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "opened community canteens ； “ 为 方 便 老 年 人 用 餐 \" 是 “ 开 设 了 社 区 食 堂 \" 的 目 的 状 语 ， 翻 译 成 to facilitate",
+                      "words":  [
+                                    {
+                                        "text":  "opened",
+                                        "x":  88,
+                                        "y":  83,
+                                        "width":  64,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "community",
+                                        "x":  157,
+                                        "y":  83,
+                                        "width":  99,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "canteens",
+                                        "x":  262,
+                                        "y":  86,
+                                        "width":  76,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  341,
+                                        "y":  89,
+                                        "width":  5,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  361,
+                                        "y":  82,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  371,
+                                        "y":  81,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  392,
+                                        "y":  81,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "便",
+                                        "x":  414,
+                                        "y":  81,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  436,
+                                        "y":  81,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  458,
+                                        "y":  81,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "人",
+                                        "x":  479,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  500,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "餐",
+                                        "x":  522,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  544,
+                                        "y":  82,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "是",
+                                        "x":  564,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  598,
+                                        "y":  83,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "开",
+                                        "x":  608,
+                                        "y":  82,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "设",
+                                        "x":  628,
+                                        "y":  82,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "了",
+                                        "x":  652,
+                                        "y":  83,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "社",
+                                        "x":  672,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  695,
+                                        "y":  83,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "食",
+                                        "x":  714,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "堂",
+                                        "x":  736,
+                                        "y":  82,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  758,
+                                        "y":  83,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  780,
+                                        "y":  83,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "目",
+                                        "x":  804,
+                                        "y":  83,
+                                        "width":  14,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  823,
+                                        "y":  82,
+                                        "width":  18,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "状",
+                                        "x":  843,
+                                        "y":  83,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  864,
+                                        "y":  83,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  889,
+                                        "y":  97,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  909,
+                                        "y":  83,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  928,
+                                        "y":  83,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "成",
+                                        "x":  950,
+                                        "y":  83,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  971,
+                                        "y":  89,
+                                        "width":  16,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "facilitate",
+                                        "x":  994,
+                                        "y":  87,
+                                        "width":  76,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "dimng for the elderly ； 和 上 一 句 不 同 的 是 ， 本 句 结 尾 处 的 “ 为 他 们 提 供 价 格 实 惠 的 饭 菜 \" 表 示 伴 随 情 况 ， 应",
+                      "words":  [
+                                    {
+                                        "text":  "dimng",
+                                        "x":  88,
+                                        "y":  116,
+                                        "width":  54,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  148,
+                                        "y":  116,
+                                        "width":  24,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  177,
+                                        "y":  116,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  209,
+                                        "y":  116,
+                                        "width":  59,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  271,
+                                        "y":  122,
+                                        "width":  4,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  290,
+                                        "y":  114,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "上",
+                                        "x":  311,
+                                        "y":  114,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  332,
+                                        "y":  123,
+                                        "width":  20,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  353,
+                                        "y":  113,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "不",
+                                        "x":  375,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "同",
+                                        "x":  397,
+                                        "y":  114,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  418,
+                                        "y":  114,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "是",
+                                        "x":  439,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  462,
+                                        "y":  128,
+                                        "width":  5,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "本",
+                                        "x":  480,
+                                        "y":  114,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  502,
+                                        "y":  114,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "结",
+                                        "x":  523,
+                                        "y":  114,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "尾",
+                                        "x":  544,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "处",
+                                        "x":  566,
+                                        "y":  115,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  588,
+                                        "y":  115,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  619,
+                                        "y":  116,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  629,
+                                        "y":  115,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "他",
+                                        "x":  650,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "们",
+                                        "x":  671,
+                                        "y":  115,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "提",
+                                        "x":  692,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "供",
+                                        "x":  714,
+                                        "y":  115,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "价",
+                                        "x":  735,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "格",
+                                        "x":  756,
+                                        "y":  116,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "实",
+                                        "x":  777,
+                                        "y":  115,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "惠",
+                                        "x":  798,
+                                        "y":  116,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  820,
+                                        "y":  116,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "饭",
+                                        "x":  840,
+                                        "y":  116,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "菜",
+                                        "x":  861,
+                                        "y":  116,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  883,
+                                        "y":  117,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  904,
+                                        "y":  116,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "示",
+                                        "x":  924,
+                                        "y":  117,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "伴",
+                                        "x":  945,
+                                        "y":  116,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "随",
+                                        "x":  967,
+                                        "y":  117,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "情",
+                                        "x":  987,
+                                        "y":  116,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "况",
+                                        "x":  1008,
+                                        "y":  117,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1032,
+                                        "y":  131,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "应",
+                                        "x":  1050,
+                                        "y":  117,
+                                        "width":  19,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "翻 译 成 现 在 分 词 短 语 ， 充 当 伴 随 状 语 ， 即 providing them affordablemealso",
+                      "words":  [
+                                    {
+                                        "text":  "翻",
+                                        "x":  88,
+                                        "y":  146,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  108,
+                                        "y":  146,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "成",
+                                        "x":  130,
+                                        "y":  146,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "现",
+                                        "x":  150,
+                                        "y":  147,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "在",
+                                        "x":  171,
+                                        "y":  146,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "分",
+                                        "x":  193,
+                                        "y":  146,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  213,
+                                        "y":  147,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "短",
+                                        "x":  235,
+                                        "y":  147,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  255,
+                                        "y":  147,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  279,
+                                        "y":  161,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "充",
+                                        "x":  297,
+                                        "y":  147,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "当",
+                                        "x":  320,
+                                        "y":  147,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "伴",
+                                        "x":  340,
+                                        "y":  147,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "随",
+                                        "x":  362,
+                                        "y":  147,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "状",
+                                        "x":  382,
+                                        "y":  147,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  403,
+                                        "y":  147,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  427,
+                                        "y":  162,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  447,
+                                        "y":  148,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "providing",
+                                        "x":  466,
+                                        "y":  151,
+                                        "width":  82,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "them",
+                                        "x":  553,
+                                        "y":  151,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "affordablemealso",
+                                        "x":  643,
+                                        "y":  152,
+                                        "width":  148,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "6 ． 第 六 句 ： 句 子 主 体 “ 老 年 人 能 享 受 上 门 送 餐 服 务 \" 翻 译 为 ElderIy people can enjoy door-to-door meal delivery",
+                      "words":  [
+                                    {
+                                        "text":  "6",
+                                        "x":  63,
+                                        "y":  183,
+                                        "width":  9,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  73,
+                                        "y":  195,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  89,
+                                        "y":  179,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "六",
+                                        "x":  110,
+                                        "y":  180,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  130,
+                                        "y":  179,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  153,
+                                        "y":  188,
+                                        "width":  5,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  172,
+                                        "y":  179,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "子",
+                                        "x":  193,
+                                        "y":  180,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "主",
+                                        "x":  216,
+                                        "y":  180,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "体",
+                                        "x":  236,
+                                        "y":  179,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  268,
+                                        "y":  181,
+                                        "width":  9,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  279,
+                                        "y":  180,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  300,
+                                        "y":  180,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "人",
+                                        "x":  321,
+                                        "y":  180,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "能",
+                                        "x":  343,
+                                        "y":  180,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "享",
+                                        "x":  364,
+                                        "y":  180,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "受",
+                                        "x":  386,
+                                        "y":  180,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "上",
+                                        "x":  407,
+                                        "y":  181,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "门",
+                                        "x":  429,
+                                        "y":  181,
+                                        "width":  17,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "送",
+                                        "x":  449,
+                                        "y":  181,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "餐",
+                                        "x":  471,
+                                        "y":  181,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "服",
+                                        "x":  492,
+                                        "y":  181,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "务",
+                                        "x":  513,
+                                        "y":  181,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  535,
+                                        "y":  182,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  556,
+                                        "y":  181,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  576,
+                                        "y":  181,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  598,
+                                        "y":  182,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "ElderIy",
+                                        "x":  619,
+                                        "y":  185,
+                                        "width":  63,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  688,
+                                        "y":  185,
+                                        "width":  56,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  751,
+                                        "y":  190,
+                                        "width":  29,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "enjoy",
+                                        "x":  786,
+                                        "y":  185,
+                                        "width":  48,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "door-to-door",
+                                        "x":  839,
+                                        "y":  186,
+                                        "width":  109,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "meal",
+                                        "x":  953,
+                                        "y":  186,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "delivery",
+                                        "x":  1000,
+                                        "y":  186,
+                                        "width":  70,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "services ； “ 行 动 不 便 的 \" 充 当 定 语 ， 可 以 翻 译 为 介 词 短 语 形 式 的 后 置 定 语 with limited mobility ， 也 可 翻 译 为",
+                      "words":  [
+                                    {
+                                        "text":  "services",
+                                        "x":  87,
+                                        "y":  216,
+                                        "width":  68,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  159,
+                                        "y":  221,
+                                        "width":  4,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  178,
+                                        "y":  214,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "行",
+                                        "x":  188,
+                                        "y":  213,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "动",
+                                        "x":  210,
+                                        "y":  213,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "不",
+                                        "x":  231,
+                                        "y":  214,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "便",
+                                        "x":  252,
+                                        "y":  213,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  274,
+                                        "y":  213,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  296,
+                                        "y":  214,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "充",
+                                        "x":  316,
+                                        "y":  214,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "当",
+                                        "x":  339,
+                                        "y":  213,
+                                        "width":  17,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "定",
+                                        "x":  359,
+                                        "y":  213,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  379,
+                                        "y":  214,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  404,
+                                        "y":  228,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  423,
+                                        "y":  214,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "以",
+                                        "x":  445,
+                                        "y":  215,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  466,
+                                        "y":  214,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  486,
+                                        "y":  214,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  508,
+                                        "y":  214,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "介",
+                                        "x":  529,
+                                        "y":  214,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  550,
+                                        "y":  215,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "短",
+                                        "x":  571,
+                                        "y":  215,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  592,
+                                        "y":  215,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "形",
+                                        "x":  614,
+                                        "y":  215,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "式",
+                                        "x":  634,
+                                        "y":  215,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  657,
+                                        "y":  215,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "后",
+                                        "x":  677,
+                                        "y":  215,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "置",
+                                        "x":  699,
+                                        "y":  216,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "定",
+                                        "x":  720,
+                                        "y":  215,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  740,
+                                        "y":  215,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  762,
+                                        "y":  218,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "limited",
+                                        "x":  806,
+                                        "y":  218,
+                                        "width":  60,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "mobility",
+                                        "x":  872,
+                                        "y":  219,
+                                        "width":  72,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  947,
+                                        "y":  230,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "也",
+                                        "x":  965,
+                                        "y":  217,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  987,
+                                        "y":  217,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  1008,
+                                        "y":  217,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  1028,
+                                        "y":  216,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  1050,
+                                        "y":  216,
+                                        "width":  19,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "前 置 定 语 physically challenged",
+                      "words":  [
+                                    {
+                                        "text":  "前",
+                                        "x":  86,
+                                        "y":  246,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "置",
+                                        "x":  108,
+                                        "y":  247,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "定",
+                                        "x":  129,
+                                        "y":  246,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  149,
+                                        "y":  246,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "physically",
+                                        "x":  170,
+                                        "y":  250,
+                                        "width":  87,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "challenged",
+                                        "x":  262,
+                                        "y":  250,
+                                        "width":  91,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "7 ． 第 七 句 ： 主 体 句 为 “ 中 国 还 在 积 极 探 索 居 家 和 社 区 养 老 等 其 他 养 老 模 式 \" ， 翻 译 为 China is actively exploring",
+                      "words":  [
+                                    {
+                                        "text":  "7",
+                                        "x":  61,
+                                        "y":  282,
+                                        "width":  10,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  72,
+                                        "y":  295,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  88,
+                                        "y":  279,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "七",
+                                        "x":  108,
+                                        "y":  280,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  129,
+                                        "y":  279,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  152,
+                                        "y":  288,
+                                        "width":  4,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "主",
+                                        "x":  171,
+                                        "y":  280,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "体",
+                                        "x":  192,
+                                        "y":  279,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  213,
+                                        "y":  280,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  235,
+                                        "y":  280,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  266,
+                                        "y":  281,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  277,
+                                        "y":  280,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  299,
+                                        "y":  281,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "还",
+                                        "x":  318,
+                                        "y":  281,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "在",
+                                        "x":  339,
+                                        "y":  280,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "积",
+                                        "x":  361,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "极",
+                                        "x":  381,
+                                        "y":  280,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "探",
+                                        "x":  403,
+                                        "y":  280,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "索",
+                                        "x":  424,
+                                        "y":  280,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "居",
+                                        "x":  445,
+                                        "y":  281,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "家",
+                                        "x":  467,
+                                        "y":  280,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  488,
+                                        "y":  281,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "社",
+                                        "x":  508,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  531,
+                                        "y":  282,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "养",
+                                        "x":  550,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  572,
+                                        "y":  281,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "等",
+                                        "x":  592,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "其",
+                                        "x":  613,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "他",
+                                        "x":  634,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "养",
+                                        "x":  656,
+                                        "y":  281,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  677,
+                                        "y":  281,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "模",
+                                        "x":  697,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "式",
+                                        "x":  718,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  740,
+                                        "y":  282,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  763,
+                                        "y":  296,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  782,
+                                        "y":  282,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  802,
+                                        "y":  281,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  824,
+                                        "y":  282,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "China",
+                                        "x":  844,
+                                        "y":  285,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  900,
+                                        "y":  285,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "actively",
+                                        "x":  918,
+                                        "y":  285,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "exploring",
+                                        "x":  990,
+                                        "y":  286,
+                                        "width":  80,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "other cldcrly care models such as home- and community-based elderly care ； “ 以 确 保 所 有 老 年 人 老 有 所 养 \" 表",
+                      "words":  [
+                                    {
+                                        "text":  "other",
+                                        "x":  86,
+                                        "y":  316,
+                                        "width":  45,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "cldcrly",
+                                        "x":  136,
+                                        "y":  316,
+                                        "width":  60,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  202,
+                                        "y":  321,
+                                        "width":  36,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "models",
+                                        "x":  244,
+                                        "y":  316,
+                                        "width":  62,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "such",
+                                        "x":  312,
+                                        "y":  317,
+                                        "width":  40,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  357,
+                                        "y":  321,
+                                        "width":  18,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "home-",
+                                        "x":  381,
+                                        "y":  317,
+                                        "width":  55,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  442,
+                                        "y":  317,
+                                        "width":  31,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "community-based",
+                                        "x":  479,
+                                        "y":  317,
+                                        "width":  155,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  640,
+                                        "y":  317,
+                                        "width":  60,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  705,
+                                        "y":  323,
+                                        "width":  36,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  744,
+                                        "y":  323,
+                                        "width":  5,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  764,
+                                        "y":  316,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "以",
+                                        "x":  775,
+                                        "y":  316,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "确",
+                                        "x":  795,
+                                        "y":  315,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "保",
+                                        "x":  816,
+                                        "y":  314,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "所",
+                                        "x":  837,
+                                        "y":  315,
+                                        "width":  21,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  859,
+                                        "y":  315,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  880,
+                                        "y":  315,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  901,
+                                        "y":  315,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "人",
+                                        "x":  922,
+                                        "y":  315,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  944,
+                                        "y":  316,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  964,
+                                        "y":  315,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "所",
+                                        "x":  986,
+                                        "y":  316,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "养",
+                                        "x":  1007,
+                                        "y":  315,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  1029,
+                                        "y":  316,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  1048,
+                                        "y":  316,
+                                        "width":  20,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "示 目 的 ， 应 翻 译 成 目 的 状 语 ， 即 to ensure that all elderly people are supported in age; 注 意 “ 老 有 所 养 ” 即",
+                      "words":  [
+                                    {
+                                        "text":  "示",
+                                        "x":  86,
+                                        "y":  345,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "目",
+                                        "x":  110,
+                                        "y":  346,
+                                        "width":  14,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  129,
+                                        "y":  345,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  152,
+                                        "y":  359,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "应",
+                                        "x":  170,
+                                        "y":  345,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  193,
+                                        "y":  345,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  212,
+                                        "y":  345,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "成",
+                                        "x":  234,
+                                        "y":  345,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "目",
+                                        "x":  259,
+                                        "y":  346,
+                                        "width":  13,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  278,
+                                        "y":  346,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "状",
+                                        "x":  298,
+                                        "y":  345,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  319,
+                                        "y":  346,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  343,
+                                        "y":  360,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  363,
+                                        "y":  347,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  382,
+                                        "y":  352,
+                                        "width":  16,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "ensure",
+                                        "x":  404,
+                                        "y":  354,
+                                        "width":  56,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  465,
+                                        "y":  349,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "all",
+                                        "x":  503,
+                                        "y":  349,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  529,
+                                        "y":  349,
+                                        "width":  60,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  593,
+                                        "y":  350,
+                                        "width":  57,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  656,
+                                        "y":  354,
+                                        "width":  25,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "supported",
+                                        "x":  687,
+                                        "y":  350,
+                                        "width":  83,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  777,
+                                        "y":  350,
+                                        "width":  15,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "age;",
+                                        "x":  831,
+                                        "y":  355,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "注",
+                                        "x":  881,
+                                        "y":  348,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "意",
+                                        "x":  903,
+                                        "y":  347,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  934,
+                                        "y":  349,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  944,
+                                        "y":  348,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  965,
+                                        "y":  348,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "所",
+                                        "x":  986,
+                                        "y":  348,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "养",
+                                        "x":  1007,
+                                        "y":  348,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  1029,
+                                        "y":  348,
+                                        "width":  8,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  1050,
+                                        "y":  348,
+                                        "width":  17,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "“ 老 的 时 候 能 够 得 到 赡 养 ” ， 故 翻 译 为 are supported in old",
+                      "words":  [
+                                    {
+                                        "text":  "“",
+                                        "x":  97,
+                                        "y":  379,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "老",
+                                        "x":  107,
+                                        "y":  378,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  129,
+                                        "y":  378,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "时",
+                                        "x":  149,
+                                        "y":  378,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "候",
+                                        "x":  170,
+                                        "y":  378,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "能",
+                                        "x":  192,
+                                        "y":  378,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "够",
+                                        "x":  212,
+                                        "y":  378,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "得",
+                                        "x":  233,
+                                        "y":  379,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "到",
+                                        "x":  255,
+                                        "y":  379,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "赡",
+                                        "x":  276,
+                                        "y":  378,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "养",
+                                        "x":  297,
+                                        "y":  378,
+                                        "width":  20,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  319,
+                                        "y":  379,
+                                        "width":  8,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  341,
+                                        "y":  393,
+                                        "width":  5,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "故",
+                                        "x":  360,
+                                        "y":  379,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  382,
+                                        "y":  379,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  402,
+                                        "y":  379,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  424,
+                                        "y":  379,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  444,
+                                        "y":  387,
+                                        "width":  25,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "supported",
+                                        "x":  475,
+                                        "y":  383,
+                                        "width":  83,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  564,
+                                        "y":  382,
+                                        "width":  15,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "old",
+                                        "x":  585,
+                                        "y":  383,
+                                        "width":  26,
+                                        "height":  15
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "六 级 2023 」 2 三 到 51",
+                      "words":  [
+                                    {
+                                        "text":  "六",
+                                        "x":  924,
+                                        "y":  1571,
+                                        "width":  13,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "级",
+                                        "x":  938,
+                                        "y":  1571,
+                                        "width":  12,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "2023",
+                                        "x":  955,
+                                        "y":  1571,
+                                        "width":  27,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "」",
+                                        "x":  983,
+                                        "y":  1572,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  993,
+                                        "y":  1572,
+                                        "width":  7,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "三",
+                                        "x":  1020,
+                                        "y":  1574,
+                                        "width":  10,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "到",
+                                        "x":  1030,
+                                        "y":  1573,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "51",
+                                        "x":  1053,
+                                        "y":  1569,
+                                        "width":  19,
+                                        "height":  17
+                                    }
+                                ]
+                  }
+              ]
+}

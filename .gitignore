@@ -7,7 +7,7 @@ local.properties
 *.apk
 *.aab
 .tools/
-# Third-party materials are private imports, never repository/APK content.
+# Personal materials are excluded by default; authorized private backups are staged explicitly.
 /raw-papers/
 /tools/exam-packs/
 /app/src/main/assets/exam-packs/

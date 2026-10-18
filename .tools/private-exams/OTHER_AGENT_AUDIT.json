@@ -1,0 +1,975 @@
+{
+  "files": [
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_06_1.pdf",
+      "sha256": "6e102097e911b394171304b8aebf66792fb3cf774c875576b4ecdb1b387def71",
+      "size": 2100383,
+      "pages": 11,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_06_1_ans.pdf",
+      "sha256": "2818b589a4d403654e5c9d9eab784fc5755a521b3c8a40e56c712b4dc5a38d1e",
+      "size": 4292503,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_06_2-3.pdf",
+      "sha256": "adc7cae0dfb982a3dae2281e2f564f43d6e10459a35f8b8d53ee2605edf4e7ab",
+      "size": 2020677,
+      "pages": 10,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_06_2-3_ans.pdf",
+      "sha256": "f1fbbb704b6a3eeb958a2a97d1ba602bc3dca2b69a7de1ccb450dd038bb0d81d",
+      "size": 3175781,
+      "pages": 12,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_09_1.pdf",
+      "sha256": "84803728ee7739994faaeeaa865c236cc41889ebce74d3177daaa8a95e8fdd0f",
+      "size": 1866299,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_09_1_ans.pdf",
+      "sha256": "b642906ad801e9cbbf54e50889d3aaf5d33ec8ded3dd7ad1df16aa73814333a0",
+      "size": 3818207,
+      "pages": 14,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_09_2-3.pdf",
+      "sha256": "1d7f456011fadb345feb1a75cf427b2b448bd0355eff924326f73983f14f28d8",
+      "size": 189786,
+      "pages": 2,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_09_2-3_ans.pdf",
+      "sha256": "ff0e1c8772dbfa52780377bc0f24d47194e8625a13ef965a9aa68c3bcb9d0406",
+      "size": 442058,
+      "pages": 2,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_12_1.pdf",
+      "sha256": "6c321c079ddf8aaf5ed9c3531f33ffe43a1ea3c32008bed82e52b56ecbf50550",
+      "size": 2131105,
+      "pages": 11,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_12_1_ans.pdf",
+      "sha256": "a6d828b1861e8a5c4f38790fd79ceacd282a04336f35c6cf7c1592facbfba663",
+      "size": 4311441,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_12_2.pdf",
+      "sha256": "52a935ceb2113e22e4b3f519635c30b728aedcaeeaf774ca5a0e80f3a88b7966",
+      "size": 2158961,
+      "pages": 11,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_12_2_ans.pdf",
+      "sha256": "c342f9415627b0143c951707055234a102354ce9ce9b97b73e2360db94683c58",
+      "size": 4326216,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_12_3.pdf",
+      "sha256": "ea7339fb589c0f9c82a74c8325cd97b8440a979e6d42b831fc0d87b58c5c74cd",
+      "size": 1676136,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2022_12_3_ans.pdf",
+      "sha256": "b9f3285855aa6b20c915a237f7f3ad4bea35fec2579244c5331c9ea24871e79a",
+      "size": 2856991,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": null,
+      "scope": "outside-current-scope"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_03_1.pdf",
+      "sha256": "6fb1fd005a0677e2cf8009000562cd30f41351d93eebf5c57519b7b5ba10213a",
+      "size": 2087220,
+      "pages": 10,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_03_1_ans.pdf",
+      "sha256": "bf81c167a635f8120495d77393642b2c8c54ef040bc0239e65a6953a2979b0ec",
+      "size": 3952607,
+      "pages": 18,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_03_2-3.pdf",
+      "sha256": "2570952cd5781945f79b1e98a48266fb04f8ab815226d504941c14110683b8ea",
+      "size": 564588,
+      "pages": 4,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_03_2-3_ans.pdf",
+      "sha256": "67cb0dbd2001fc8c9f6d73177c8f9509aa9652b294e017e1f06280cd71aac053",
+      "size": 788629,
+      "pages": 4,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_06_1.pdf",
+      "sha256": "a64db8e40f453ed492ca11b86a9788e760bac393210809965215082d06256859",
+      "size": 2166290,
+      "pages": 11,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_06_1_ans.pdf",
+      "sha256": "10eb0d5fabd474de7a7fa4662b652b7ed346dff955e43639f9ce35d34be12f4b",
+      "size": 3998977,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_06_2.pdf",
+      "sha256": "2eef014b50171097056d0f0f0cff7e115c4202a9299d3e860b9dba15fb56efd9",
+      "size": 2140027,
+      "pages": 10,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_06_2_ans.pdf",
+      "sha256": "cad4430dd1077d4fa67ec65b82ab4fe703d16b6e0ba3931469fbb325d8cef201",
+      "size": 4095971,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_06_3.pdf",
+      "sha256": "12c74cd2a8ce94dc3efa2a178af99c36df6d03fe1611f178c89a9392c4e26ca2",
+      "size": 1696021,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_06_3_ans.pdf",
+      "sha256": "ba703aec961b4fb6f32a9352cd446bf9161a194f73f5d7081b8f82ce1aa54e44",
+      "size": 2480122,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_12_1.pdf",
+      "sha256": "942e09a84d31a40ffd1bc77fcb5bb0611a05a1bb7408e0514ffbc4807ae40a9a",
+      "size": 2177653,
+      "pages": 11,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_12_1_ans.pdf",
+      "sha256": "ad69525f548d6cf1d331a50e8e6ede4ae9e7eff98e0fb264ceaba05789b408da",
+      "size": 4337532,
+      "pages": 20,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_12_2.pdf",
+      "sha256": "35f400af8df9a622f257dd9e460513e09d609ddd82716cbba924736cd389c3b9",
+      "size": 2233496,
+      "pages": 12,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_12_2_ans.pdf",
+      "sha256": "14fdc572b79c8e05529653653d03c3229c42338d95a79caf4e3f9620397d4262",
+      "size": 4275436,
+      "pages": 19,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_12_3.pdf",
+      "sha256": "863dce5f60d8f4dad1b0920e70bcba80542644750f517f634be950c61f4b1fd6",
+      "size": 1706154,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2023_12_3_ans.pdf",
+      "sha256": "06d37c126560c340ae2a65728a5bdd8305f621a8a04fc9a52254b96dfae8c158",
+      "size": 2580492,
+      "pages": 12,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_06_1.pdf",
+      "sha256": "ef879d945d233082b357ac48a524d9f755b4aa63deffa246c6cb86c32440431f",
+      "size": 377948,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_06_1_ans.pdf",
+      "sha256": "42f6e5da3395b3dccdb2669e7bc3321f30b7d45f93d862cb3ca30569a31b0425",
+      "size": 4052285,
+      "pages": 20,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_06_2.pdf",
+      "sha256": "3df3ad48a9094dac4cc62aee9b80c05b6cfd3b140ff1d121986ed2edd670c48c",
+      "size": 263843,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_06_2_ans.pdf",
+      "sha256": "0a21dd50e50577134303fd0e15dece6f16a2ef1d89fb57d1dcda20acc383ef83",
+      "size": 4012164,
+      "pages": 20,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_06_3.pdf",
+      "sha256": "58bdf2e4cf9ad757887bac3e3901f66e092e8e7d7d0c6b56a6c137c0b2d00d54",
+      "size": 339662,
+      "pages": 7,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_06_3_ans.pdf",
+      "sha256": "389494605c21e439c776bace09a376274fb7ffe798909cd129ccaf7e3fbb6558",
+      "size": 2267958,
+      "pages": 12,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_12_1.pdf",
+      "sha256": "5d71737190c7a6951d25c9ecd8645c0068ceb29f032f5962c94ea8d776e46672",
+      "size": 371414,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_12_1_ans.pdf",
+      "sha256": "d38117a060c24d64d4155ed94d1d6d53ed359387ce4b42e3fa4c314bbe5be11e",
+      "size": 4147614,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_12_2.pdf",
+      "sha256": "de0f410d0edaa896970727b75cee67960b52459588ad7a7331d18f4c97d0dff4",
+      "size": 354412,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_12_2_ans.pdf",
+      "sha256": "ba1adaa0c37803dd04a105410cd22c8ca39df1694f8022195bbe69621736b6bd",
+      "size": 4138091,
+      "pages": 15,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_12_3.pdf",
+      "sha256": "4eff618e3b7b6ab54f2c9c2528b6ac23039c3650af035bd3d4bb3e104a775d8f",
+      "size": 319338,
+      "pages": 6,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2024_12_3_ans.pdf",
+      "sha256": "f6469f9b62d2a3e84f20abc697eeb40d89fd1c1a7b5584588e840a30c09036d8",
+      "size": 2652407,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_06_1.pdf",
+      "sha256": "15ac17ef0cf3089ca11c833ecd20b55955b33b4043f27093280222a0d79117b8",
+      "size": 356282,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_06_1_ans.pdf",
+      "sha256": "19f33693d4e9b6f0d4b709c035bfc37b7a9efedb1c430dd81c383330a7eaabbe",
+      "size": 4745121,
+      "pages": 20,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_06_2.pdf",
+      "sha256": "7b6186d254a6910a18e17de09e2112f37f4b4d0d6370626b9fbedbc09e73c11c",
+      "size": 361272,
+      "pages": 9,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_06_2_ans.pdf",
+      "sha256": "572a48d26cc248013f24e8eb456f463cced743877a6f9907f4a7e51ed94a96ac",
+      "size": 4586614,
+      "pages": 20,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_06_3.pdf",
+      "sha256": "0b517826acf7326d7528bf0f4d92ec24a30a095ec6bf05610d6a3ce1722a1696",
+      "size": 325142,
+      "pages": 7,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_06_3_ans.pdf",
+      "sha256": "7998dce6589556e93193d7b73b0c4502fb1b8da58bfb3d9daeb394934ae085fe",
+      "size": 2879353,
+      "pages": 12,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_12_1.pdf",
+      "sha256": "4fac338c84e06f95f341947d9944b3f5434d0074705762eb0a2c8945499dc1a3",
+      "size": 307920,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_12_1_ans.pdf",
+      "sha256": "62476a894db0d68e6ff94688a7b9fab88479992dc67d53714a17b2a6c14b9fe5",
+      "size": 4262874,
+      "pages": 18,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_12_2.pdf",
+      "sha256": "ad6b856ce3aa9647344d7ad1caa4bfbcbb074effa49f1ab787f7ab20859d52ed",
+      "size": 303543,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_12_2_ans.pdf",
+      "sha256": "12c8f46be673a6aefc2b34ec8d093187a3b91ec8f91f65cd45bf5cec8d241b80",
+      "size": 4402707,
+      "pages": 19,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_12_3.pdf",
+      "sha256": "9151ec800264de84ecee25f07bd37bee283c411ae821259fd6055cbf9b1d7c2b",
+      "size": 299050,
+      "pages": 7,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2025_12_3_ans.pdf",
+      "sha256": "0678793832a086d7949e66a6301e453f9f678bf6bd34d990d2f415e1b64b7d05",
+      "size": 2465967,
+      "pages": 11,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2026_06_1.pdf",
+      "sha256": "bcfa7f21ac278e6e652d03afe9c90d329d6e78bd7289b60f0aee47c561d47adb",
+      "size": 143281,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2026_06_1_ans.pdf",
+      "sha256": "711023b3f40c70c3c44238c0db8a7a4b076accf3a7c894f7388baec5633660d8",
+      "size": 3951157,
+      "pages": 21,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2026_06_2.pdf",
+      "sha256": "e3c61874e3d089e36ba315c47e3d2b7f4161e65edd01b271ae80f8314a255a3a",
+      "size": 146859,
+      "pages": 8,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2026_06_2_ans.pdf",
+      "sha256": "84551fb0f1c7244764bb72bd22f65dfe38438a00dc9049c553607e8b0e13332e",
+      "size": 4034413,
+      "pages": 22,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2026_06_3.pdf",
+      "sha256": "4dea7771d7bb282f4d0ba7473a89b0e77c4576b101d683906626ef968769e846",
+      "size": 140114,
+      "pages": 6,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    },
+    {
+      "file": "D:\\Workspace\\projects\\cet6\\CET6Study\\raw-papers\\cet6_2026_06_3_ans.pdf",
+      "sha256": "e37e8edb8b1932a506a761d31143c5ef5ca2019bb2d4ef106b40104a27e785de",
+      "size": 2373341,
+      "pages": 13,
+      "header": true,
+      "eof": true,
+      "existingMatch": true,
+      "scope": "2023-2026"
+    }
+  ],
+  "papers": [
+    {
+      "id": "cet6-2024-06-15-1",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "BDADCDCABA",
+      "badOptions": [
+        54,
+        55
+      ],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2024-06-15-2",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "BCAADCDBDA",
+      "badOptions": [
+        54
+      ],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2024-06-15-3",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "ABBCDADBDC",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2024-12-14-1",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "BBACDDCACB",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2024-12-14-2",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "ABDADACDBC",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2024-12-14-3",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "BCAADDBCCD",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2025-06-14-1",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "CABBCDADCB",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2025-06-14-2",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "ACDABBBCDB",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2025-06-14-3",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "CAADBACBDB",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2025-12-13-1",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "DADBBCACDB",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2025-12-13-2",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "ABCBCDBDAC",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2025-12-13-3",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "BBACCDCBAD",
+      "badOptions": [],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2026-06-13-1",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "??????????",
+      "badOptions": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2026-06-13-2",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "??????????",
+      "badOptions": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    },
+    {
+      "id": "cet6-2026-06-13-3",
+      "reviewed": true,
+      "passages": 2,
+      "numbers": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "keys": "??????????",
+      "badOptions": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "hasTranslation": false,
+      "keyConflicts": [],
+      "unfoundedOfficialLabels": true
+    }
+  ],
+  "assetsCopyIdentical": true
+}

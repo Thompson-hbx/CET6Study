@@ -1,0 +1,56 @@
+{
+  "cet6-2026-06-1": {
+    "referenceKey46to55": "ABCDACBADD",
+    "pageByQuestion": {
+      "46": 16,
+      "47": 16,
+      "48": 17,
+      "49": 17,
+      "50": 17,
+      "51": 18,
+      "52": 19,
+      "53": 19,
+      "54": 19,
+      "55": 19
+    },
+    "sourcePdf": "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\downloads\\cet6_2026_06_1_ans.pdf",
+    "sourceSha256": "711023b3f40c70c3c44238c0db8a7a4b076accf3a7c894f7388baec5633660d8",
+    "method": "Visually read literal answer letters in the answer explanation; compared translated stems/options with original questions. No model-solved answer. Not an official key."
+  },
+  "cet6-2026-06-2": {
+    "referenceKey46to55": "CABCDCBDBA",
+    "pageByQuestion": {
+      "46": 17,
+      "47": 18,
+      "48": 18,
+      "49": 18,
+      "50": 19,
+      "51": 20,
+      "52": 20,
+      "53": 20,
+      "54": 20,
+      "55": 21
+    },
+    "sourcePdf": "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\downloads\\cet6_2026_06_2_ans.pdf",
+    "sourceSha256": "84551fb0f1c7244764bb72bd22f65dfe38438a00dc9049c553607e8b0e13332e",
+    "method": "Visually read literal answer letters in the answer explanation; compared translated stems/options with original questions. No model-solved answer. Not an official key."
+  },
+  "cet6-2026-06-3": {
+    "referenceKey46to55": "BCDCBAADDA",
+    "pageByQuestion": {
+      "46": 8,
+      "47": 8,
+      "48": 9,
+      "49": 9,
+      "50": 9,
+      "51": 10,
+      "52": 11,
+      "53": 11,
+      "54": 11,
+      "55": 11
+    },
+    "sourcePdf": "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\downloads\\cet6_2026_06_3_ans.pdf",
+    "sourceSha256": "e37e8edb8b1932a506a761d31143c5ef5ca2019bb2d4ef106b40104a27e785de",
+    "method": "Visually read literal answer letters in the answer explanation; compared translated stems/options with original questions. No model-solved answer. Not an official key."
+  }
+}

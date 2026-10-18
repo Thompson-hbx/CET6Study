@@ -1,0 +1,3152 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_12_3\\page-08.png",
+    "unverifiedOCR":  true,
+    "text":  "KEYS Part I Writing Suggested Version With their valuable skills and experience, elderly people can continue to make slgnificant contributlons tO society. I fully agree with th1S view since elderly people outperform young people in skills and experience and with these advantages they can still contribute a IOt tO society. FirstIy ， elderly people, with their experuse and rich expenence can dO better than young people in many fields. Let\u0027s take an example of education. EIderIy teachers in school, with years Of teaching expenence ， know better hOW tO mspire students and they are good at teaching students m accordance with their aptltude. Young teachers stlll need to learn teaching skills under the elderly teachers ， expert guidance. Thus ， elderly teachers can make great contributions towards educatlon. Furthermore ， elderly people can deal with difficult problems. For example, facing cases with complicated symptoms ， elderly doctors can make accurate diagnosls thanks to their professional skills and rich experlence. And young doctors have a lot to learn from those elderly doctors. Therefore ， elderly doctors play an important role in medlcal care. TO sum up ， elderly people can continue tO make great contributions tO society with their valuable skills and experience. They can play an active role in various fields of the society. Part II Listening Comprehension OMITTED Part III Reading Comprehension 26 G 36 46 D M 37 A 28 38 A 48 B 29 39 K 49 A 30 40 50 C 31 A 44 B C B G Part IV Translation ln recent years ， the elderly population in China has contmued tO grow. The Chinese government is taking various measures tO promote the construcUon Of the elderly care service system ， SO that the elderly can live a healthy and happy life in their later years. Various elderly care service institutions have been built natlonwide. ln order tO improve the service quality Of elderly care institutions ， the government has issued a series Of standards tO strengthen the supervision Of elderly care instltutions. Many cities have opened communlty canteens to facllltate dlning for the elderly, providing them W1th affordable meals. ElderIy people with llmited mobility can also enJOY door-to-door meal delivery services. At the same time ， China is actively exploring Other elderly care models such as home- and community-based elderly care tO ensure that a11 elderly people are supported in OId age. 2023 一 12-CET6( 第 3 套 ） 一 8",
+    "lines":  [
+                  {
+                      "text":  "KEYS",
+                      "words":  [
+                                    {
+                                        "text":  "KEYS",
+                                        "x":  539,
+                                        "y":  158,
+                                        "width":  81,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part I Writing",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  92,
+                                        "y":  218,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  157,
+                                        "y":  218,
+                                        "width":  11,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Writing",
+                                        "x":  176,
+                                        "y":  218,
+                                        "width":  103,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Suggested Version",
+                      "words":  [
+                                    {
+                                        "text":  "Suggested",
+                                        "x":  92,
+                                        "y":  265,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Version",
+                                        "x":  195,
+                                        "y":  265,
+                                        "width":  74,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "With their valuable skills and experience, elderly people can continue to make slgnificant",
+                      "words":  [
+                                    {
+                                        "text":  "With",
+                                        "x":  125,
+                                        "y":  295,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  187,
+                                        "y":  295,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "valuable",
+                                        "x":  245,
+                                        "y":  295,
+                                        "width":  77,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "skills",
+                                        "x":  339,
+                                        "y":  295,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  403,
+                                        "y":  295,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "experience,",
+                                        "x":  452,
+                                        "y":  295,
+                                        "width":  104,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  573,
+                                        "y":  295,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  652,
+                                        "y":  295,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  730,
+                                        "y":  300,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "continue",
+                                        "x":  777,
+                                        "y":  295,
+                                        "width":  79,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  872,
+                                        "y":  297,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "make",
+                                        "x":  906,
+                                        "y":  295,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "slgnificant",
+                                        "x":  973,
+                                        "y":  294,
+                                        "width":  96,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "contributlons tO society. I fully agree with th1S view since elderly people outperform young people in",
+                      "words":  [
+                                    {
+                                        "text":  "contributlons",
+                                        "x":  91,
+                                        "y":  324,
+                                        "width":  121,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  222,
+                                        "y":  327,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "society.",
+                                        "x":  250,
+                                        "y":  324,
+                                        "width":  67,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  327,
+                                        "y":  325,
+                                        "width":  8,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "fully",
+                                        "x":  344,
+                                        "y":  324,
+                                        "width":  43,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "agree",
+                                        "x":  397,
+                                        "y":  329,
+                                        "width":  49,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  455,
+                                        "y":  324,
+                                        "width":  41,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "th1S",
+                                        "x":  505,
+                                        "y":  324,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "view",
+                                        "x":  548,
+                                        "y":  324,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "since",
+                                        "x":  602,
+                                        "y":  324,
+                                        "width":  46,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  658,
+                                        "y":  325,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  730,
+                                        "y":  325,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "outperform",
+                                        "x":  802,
+                                        "y":  324,
+                                        "width":  103,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "young",
+                                        "x":  914,
+                                        "y":  329,
+                                        "width":  57,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  981,
+                                        "y":  325,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  1051,
+                                        "y":  324,
+                                        "width":  18,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "skills and experience and with these advantages they can still contribute a IOt tO society.",
+                      "words":  [
+                                    {
+                                        "text":  "skills",
+                                        "x":  92,
+                                        "y":  354,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  146,
+                                        "y":  354,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "experience",
+                                        "x":  185,
+                                        "y":  354,
+                                        "width":  98,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  290,
+                                        "y":  354,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  329,
+                                        "y":  354,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "these",
+                                        "x":  375,
+                                        "y":  354,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "advantages",
+                                        "x":  429,
+                                        "y":  354,
+                                        "width":  100,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "they",
+                                        "x":  536,
+                                        "y":  354,
+                                        "width":  39,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  581,
+                                        "y":  359,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "still",
+                                        "x":  620,
+                                        "y":  354,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "contribute",
+                                        "x":  659,
+                                        "y":  354,
+                                        "width":  93,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  759,
+                                        "y":  359,
+                                        "width":  9,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "IOt",
+                                        "x":  774,
+                                        "y":  354,
+                                        "width":  25,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  804,
+                                        "y":  357,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "society.",
+                                        "x":  829,
+                                        "y":  354,
+                                        "width":  67,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "FirstIy ， elderly people, with their experuse and rich expenence can dO better than young people in",
+                      "words":  [
+                                    {
+                                        "text":  "FirstIy",
+                                        "x":  126,
+                                        "y":  384,
+                                        "width":  59,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  185,
+                                        "y":  397,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  199,
+                                        "y":  384,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people,",
+                                        "x":  271,
+                                        "y":  384,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  347,
+                                        "y":  384,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  396,
+                                        "y":  384,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "experuse",
+                                        "x":  447,
+                                        "y":  387,
+                                        "width":  83,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  539,
+                                        "y":  384,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "rich",
+                                        "x":  581,
+                                        "y":  384,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "expenence",
+                                        "x":  625,
+                                        "y":  389,
+                                        "width":  99,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  733,
+                                        "y":  389,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "dO",
+                                        "x":  774,
+                                        "y":  384,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "better",
+                                        "x":  805,
+                                        "y":  384,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "than",
+                                        "x":  866,
+                                        "y":  384,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "young",
+                                        "x":  915,
+                                        "y":  389,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  981,
+                                        "y":  384,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  1051,
+                                        "y":  384,
+                                        "width":  17,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "many fields. Let\u0027s take an example of education. EIderIy teachers in school, with years Of teaching",
+                      "words":  [
+                                    {
+                                        "text":  "many",
+                                        "x":  91,
+                                        "y":  419,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "fields.",
+                                        "x":  153,
+                                        "y":  414,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Let\u0027s",
+                                        "x":  220,
+                                        "y":  414,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "take",
+                                        "x":  277,
+                                        "y":  414,
+                                        "width":  38,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  326,
+                                        "y":  419,
+                                        "width":  21,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "example",
+                                        "x":  358,
+                                        "y":  414,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  446,
+                                        "y":  414,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "education.",
+                                        "x":  476,
+                                        "y":  414,
+                                        "width":  94,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "EIderIy",
+                                        "x":  582,
+                                        "y":  414,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "teachers",
+                                        "x":  660,
+                                        "y":  414,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  746,
+                                        "y":  414,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "school,",
+                                        "x":  775,
+                                        "y":  414,
+                                        "width":  64,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  851,
+                                        "y":  414,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "years",
+                                        "x":  902,
+                                        "y":  419,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  961,
+                                        "y":  414,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "teaching",
+                                        "x":  991,
+                                        "y":  414,
+                                        "width":  77,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "expenence ， know better hOW tO mspire students and they are good at teaching students m accordance with",
+                      "words":  [
+                                    {
+                                        "text":  "expenence",
+                                        "x":  91,
+                                        "y":  449,
+                                        "width":  99,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  191,
+                                        "y":  457,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "know",
+                                        "x":  202,
+                                        "y":  444,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "better",
+                                        "x":  259,
+                                        "y":  444,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "hOW",
+                                        "x":  317,
+                                        "y":  444,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  363,
+                                        "y":  447,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "mspire",
+                                        "x":  387,
+                                        "y":  444,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "students",
+                                        "x":  456,
+                                        "y":  444,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  537,
+                                        "y":  444,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "they",
+                                        "x":  576,
+                                        "y":  444,
+                                        "width":  39,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  622,
+                                        "y":  449,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "good",
+                                        "x":  655,
+                                        "y":  444,
+                                        "width":  46,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "at",
+                                        "x":  708,
+                                        "y":  447,
+                                        "width":  16,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "teaching",
+                                        "x":  730,
+                                        "y":  444,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "students",
+                                        "x":  814,
+                                        "y":  444,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  895,
+                                        "y":  449,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "accordance",
+                                        "x":  919,
+                                        "y":  444,
+                                        "width":  103,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  1028,
+                                        "y":  444,
+                                        "width":  40,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "their aptltude. Young teachers stlll need to learn teaching skills under the elderly teachers ， expert guidance.",
+                      "words":  [
+                                    {
+                                        "text":  "their",
+                                        "x":  91,
+                                        "y":  474,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "aptltude.",
+                                        "x":  139,
+                                        "y":  474,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Young",
+                                        "x":  225,
+                                        "y":  474,
+                                        "width":  59,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "teachers",
+                                        "x":  291,
+                                        "y":  474,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "stlll",
+                                        "x":  372,
+                                        "y":  474,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "need",
+                                        "x":  412,
+                                        "y":  474,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  461,
+                                        "y":  477,
+                                        "width":  17,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "learn",
+                                        "x":  485,
+                                        "y":  474,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "teaching",
+                                        "x":  537,
+                                        "y":  474,
+                                        "width":  76,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "skills",
+                                        "x":  620,
+                                        "y":  474,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "under",
+                                        "x":  674,
+                                        "y":  474,
+                                        "width":  53,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  733,
+                                        "y":  474,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  766,
+                                        "y":  474,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "teachers",
+                                        "x":  836,
+                                        "y":  474,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  913,
+                                        "y":  474,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "expert",
+                                        "x":  923,
+                                        "y":  477,
+                                        "width":  57,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "guidance.",
+                                        "x":  986,
+                                        "y":  474,
+                                        "width":  87,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Thus ， elderly teachers can make great contributions towards educatlon. Furthermore ， elderly people can",
+                      "words":  [
+                                    {
+                                        "text":  "Thus",
+                                        "x":  91,
+                                        "y":  504,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  138,
+                                        "y":  517,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  151,
+                                        "y":  504,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "teachers",
+                                        "x":  222,
+                                        "y":  504,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  305,
+                                        "y":  509,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "make",
+                                        "x":  344,
+                                        "y":  504,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "great",
+                                        "x":  402,
+                                        "y":  507,
+                                        "width":  46,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "contributions",
+                                        "x":  455,
+                                        "y":  504,
+                                        "width":  121,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "towards",
+                                        "x":  585,
+                                        "y":  504,
+                                        "width":  71,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "educatlon.",
+                                        "x":  665,
+                                        "y":  504,
+                                        "width":  94,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Furthermore",
+                                        "x":  768,
+                                        "y":  504,
+                                        "width":  114,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  883,
+                                        "y":  517,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  896,
+                                        "y":  504,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  968,
+                                        "y":  504,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  1037,
+                                        "y":  509,
+                                        "width":  31,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "deal with difficult problems. For example, facing cases with complicated symptoms ， elderly doctors can",
+                      "words":  [
+                                    {
+                                        "text":  "deal",
+                                        "x":  91,
+                                        "y":  534,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  137,
+                                        "y":  534,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "difficult",
+                                        "x":  185,
+                                        "y":  534,
+                                        "width":  73,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "problems.",
+                                        "x":  266,
+                                        "y":  534,
+                                        "width":  90,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "For",
+                                        "x":  364,
+                                        "y":  534,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "example,",
+                                        "x":  404,
+                                        "y":  534,
+                                        "width":  82,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "facing",
+                                        "x":  495,
+                                        "y":  534,
+                                        "width":  56,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "cases",
+                                        "x":  559,
+                                        "y":  539,
+                                        "width":  48,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  615,
+                                        "y":  534,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "complicated",
+                                        "x":  663,
+                                        "y":  534,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "symptoms",
+                                        "x":  784,
+                                        "y":  536,
+                                        "width":  93,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  879,
+                                        "y":  547,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  892,
+                                        "y":  534,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "doctors",
+                                        "x":  963,
+                                        "y":  534,
+                                        "width":  66,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  1037,
+                                        "y":  539,
+                                        "width":  32,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "make accurate diagnosls thanks to their professional skills and rich experlence. And young doctors have a",
+                      "words":  [
+                                    {
+                                        "text":  "make",
+                                        "x":  91,
+                                        "y":  564,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "accurate",
+                                        "x":  147,
+                                        "y":  566,
+                                        "width":  76,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "diagnosls",
+                                        "x":  229,
+                                        "y":  564,
+                                        "width":  87,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "thanks",
+                                        "x":  323,
+                                        "y":  564,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  389,
+                                        "y":  566,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  412,
+                                        "y":  564,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "professional",
+                                        "x":  460,
+                                        "y":  564,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "skills",
+                                        "x":  580,
+                                        "y":  564,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  634,
+                                        "y":  564,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "rich",
+                                        "x":  673,
+                                        "y":  564,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "experlence.",
+                                        "x":  715,
+                                        "y":  569,
+                                        "width":  104,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "And",
+                                        "x":  826,
+                                        "y":  564,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "young",
+                                        "x":  872,
+                                        "y":  569,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "doctors",
+                                        "x":  935,
+                                        "y":  564,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  1009,
+                                        "y":  564,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  1059,
+                                        "y":  569,
+                                        "width":  10,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "lot to learn from those elderly doctors. Therefore ， elderly doctors play an important role in medlcal care.",
+                      "words":  [
+                                    {
+                                        "text":  "lot",
+                                        "x":  91,
+                                        "y":  594,
+                                        "width":  24,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  121,
+                                        "y":  596,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "learn",
+                                        "x":  145,
+                                        "y":  594,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "from",
+                                        "x":  197,
+                                        "y":  593,
+                                        "width":  44,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "those",
+                                        "x":  247,
+                                        "y":  594,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  301,
+                                        "y":  594,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "doctors.",
+                                        "x":  371,
+                                        "y":  594,
+                                        "width":  72,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Therefore",
+                                        "x":  449,
+                                        "y":  593,
+                                        "width":  91,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  541,
+                                        "y":  607,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  552,
+                                        "y":  594,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "doctors",
+                                        "x":  621,
+                                        "y":  594,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "play",
+                                        "x":  694,
+                                        "y":  594,
+                                        "width":  39,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  740,
+                                        "y":  599,
+                                        "width":  21,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "important",
+                                        "x":  768,
+                                        "y":  593,
+                                        "width":  89,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "role",
+                                        "x":  862,
+                                        "y":  594,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  904,
+                                        "y":  594,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "medlcal",
+                                        "x":  928,
+                                        "y":  594,
+                                        "width":  72,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "care.",
+                                        "x":  1006,
+                                        "y":  599,
+                                        "width":  42,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "TO sum up ， elderly people can continue tO make great contributions tO society with their valuable",
+                      "words":  [
+                                    {
+                                        "text":  "TO",
+                                        "x":  126,
+                                        "y":  624,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "sum",
+                                        "x":  159,
+                                        "y":  628,
+                                        "width":  38,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "up",
+                                        "x":  207,
+                                        "y":  628,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  230,
+                                        "y":  637,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  244,
+                                        "y":  623,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  317,
+                                        "y":  623,
+                                        "width":  61,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  388,
+                                        "y":  628,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "continue",
+                                        "x":  428,
+                                        "y":  623,
+                                        "width":  79,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  517,
+                                        "y":  626,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "make",
+                                        "x":  544,
+                                        "y":  624,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "great",
+                                        "x":  603,
+                                        "y":  626,
+                                        "width":  45,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "contributions",
+                                        "x":  657,
+                                        "y":  623,
+                                        "width":  121,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  788,
+                                        "y":  626,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "society",
+                                        "x":  816,
+                                        "y":  623,
+                                        "width":  64,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  890,
+                                        "y":  623,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  940,
+                                        "y":  623,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "valuable",
+                                        "x":  991,
+                                        "y":  623,
+                                        "width":  78,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "skills and experience. They can play an active role in various fields of the society.",
+                      "words":  [
+                                    {
+                                        "text":  "skills",
+                                        "x":  92,
+                                        "y":  653,
+                                        "width":  47,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  146,
+                                        "y":  653,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "experience.",
+                                        "x":  185,
+                                        "y":  653,
+                                        "width":  103,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "They",
+                                        "x":  295,
+                                        "y":  653,
+                                        "width":  46,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  348,
+                                        "y":  658,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "play",
+                                        "x":  385,
+                                        "y":  653,
+                                        "width":  39,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  431,
+                                        "y":  658,
+                                        "width":  21,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "active",
+                                        "x":  459,
+                                        "y":  653,
+                                        "width":  54,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "role",
+                                        "x":  519,
+                                        "y":  653,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  561,
+                                        "y":  653,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "various",
+                                        "x":  585,
+                                        "y":  653,
+                                        "width":  66,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "fields",
+                                        "x":  658,
+                                        "y":  653,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  715,
+                                        "y":  653,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  740,
+                                        "y":  653,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "society.",
+                                        "x":  774,
+                                        "y":  653,
+                                        "width":  67,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part II Listening Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  696,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "II",
+                                        "x":  157,
+                                        "y":  696,
+                                        "width":  23,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Listening",
+                                        "x":  188,
+                                        "y":  696,
+                                        "width":  122,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  320,
+                                        "y":  696,
+                                        "width":  205,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "OMITTED",
+                      "words":  [
+                                    {
+                                        "text":  "OMITTED",
+                                        "x":  91,
+                                        "y":  743,
+                                        "width":  103,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part III Reading Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  786,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "III",
+                                        "x":  157,
+                                        "y":  786,
+                                        "width":  35,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Reading",
+                                        "x":  200,
+                                        "y":  786,
+                                        "width":  108,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  318,
+                                        "y":  785,
+                                        "width":  205,
+                                        "height":  28
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "26",
+                      "words":  [
+                                    {
+                                        "text":  "26",
+                                        "x":  127,
+                                        "y":  834,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "G",
+                      "words":  [
+                                    {
+                                        "text":  "G",
+                                        "x":  130,
+                                        "y":  868,
+                                        "width":  16,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "36",
+                      "words":  [
+                                    {
+                                        "text":  "36",
+                                        "x":  127,
+                                        "y":  902,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "46",
+                      "words":  [
+                                    {
+                                        "text":  "46",
+                                        "x":  127,
+                                        "y":  970,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D",
+                      "words":  [
+                                    {
+                                        "text":  "D",
+                                        "x":  130,
+                                        "y":  1004,
+                                        "width":  16,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "M",
+                      "words":  [
+                                    {
+                                        "text":  "M",
+                                        "x":  224,
+                                        "y":  869,
+                                        "width":  19,
+                                        "height":  15
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "37",
+                      "words":  [
+                                    {
+                                        "text":  "37",
+                                        "x":  222,
+                                        "y":  902,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A",
+                      "words":  [
+                                    {
+                                        "text":  "A",
+                                        "x":  225,
+                                        "y":  1004,
+                                        "width":  17,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "28",
+                      "words":  [
+                                    {
+                                        "text":  "28",
+                                        "x":  318,
+                                        "y":  834,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "38",
+                      "words":  [
+                                    {
+                                        "text":  "38",
+                                        "x":  317,
+                                        "y":  902,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A",
+                      "words":  [
+                                    {
+                                        "text":  "A",
+                                        "x":  320,
+                                        "y":  936,
+                                        "width":  17,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "48",
+                      "words":  [
+                                    {
+                                        "text":  "48",
+                                        "x":  317,
+                                        "y":  970,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B",
+                      "words":  [
+                                    {
+                                        "text":  "B",
+                                        "x":  321,
+                                        "y":  1004,
+                                        "width":  14,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "29",
+                      "words":  [
+                                    {
+                                        "text":  "29",
+                                        "x":  413,
+                                        "y":  834,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "39",
+                      "words":  [
+                                    {
+                                        "text":  "39",
+                                        "x":  412,
+                                        "y":  902,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "K",
+                      "words":  [
+                                    {
+                                        "text":  "K",
+                                        "x":  416,
+                                        "y":  936,
+                                        "width":  16,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "49",
+                      "words":  [
+                                    {
+                                        "text":  "49",
+                                        "x":  412,
+                                        "y":  970,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A",
+                      "words":  [
+                                    {
+                                        "text":  "A",
+                                        "x":  415,
+                                        "y":  1004,
+                                        "width":  17,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "30",
+                      "words":  [
+                                    {
+                                        "text":  "30",
+                                        "x":  508,
+                                        "y":  834,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "40",
+                      "words":  [
+                                    {
+                                        "text":  "40",
+                                        "x":  507,
+                                        "y":  902,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "50",
+                      "words":  [
+                                    {
+                                        "text":  "50",
+                                        "x":  508,
+                                        "y":  970,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C",
+                      "words":  [
+                                    {
+                                        "text":  "C",
+                                        "x":  511,
+                                        "y":  1004,
+                                        "width":  14,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "31",
+                      "words":  [
+                                    {
+                                        "text":  "31",
+                                        "x":  603,
+                                        "y":  834,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "A",
+                      "words":  [
+                                    {
+                                        "text":  "A",
+                                        "x":  606,
+                                        "y":  1004,
+                                        "width":  16,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "44",
+                      "words":  [
+                                    {
+                                        "text":  "44",
+                                        "x":  888,
+                                        "y":  902,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B",
+                      "words":  [
+                                    {
+                                        "text":  "B",
+                                        "x":  892,
+                                        "y":  936,
+                                        "width":  13,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C",
+                      "words":  [
+                                    {
+                                        "text":  "C",
+                                        "x":  701,
+                                        "y":  936,
+                                        "width":  15,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B",
+                      "words":  [
+                                    {
+                                        "text":  "B",
+                                        "x":  701,
+                                        "y":  1004,
+                                        "width":  14,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "G",
+                      "words":  [
+                                    {
+                                        "text":  "G",
+                                        "x":  796,
+                                        "y":  936,
+                                        "width":  16,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part IV Translation",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  91,
+                                        "y":  1050,
+                                        "width":  58,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "IV",
+                                        "x":  157,
+                                        "y":  1050,
+                                        "width":  33,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Translation",
+                                        "x":  198,
+                                        "y":  1050,
+                                        "width":  150,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ln recent years ， the elderly population in China has contmued tO grow. The Chinese government is",
+                      "words":  [
+                                    {
+                                        "text":  "ln",
+                                        "x":  126,
+                                        "y":  1098,
+                                        "width":  18,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "recent",
+                                        "x":  153,
+                                        "y":  1100,
+                                        "width":  56,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "years",
+                                        "x":  217,
+                                        "y":  1102,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  267,
+                                        "y":  1110,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  280,
+                                        "y":  1097,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  316,
+                                        "y":  1097,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "population",
+                                        "x":  388,
+                                        "y":  1097,
+                                        "width":  98,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  496,
+                                        "y":  1097,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "China",
+                                        "x":  521,
+                                        "y":  1097,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  584,
+                                        "y":  1097,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "contmued",
+                                        "x":  623,
+                                        "y":  1097,
+                                        "width":  90,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  722,
+                                        "y":  1100,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "grow.",
+                                        "x":  749,
+                                        "y":  1102,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  808,
+                                        "y":  1097,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  852,
+                                        "y":  1097,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "government",
+                                        "x":  935,
+                                        "y":  1100,
+                                        "width":  110,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  1054,
+                                        "y":  1097,
+                                        "width":  14,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "taking various measures tO promote the construcUon Of the elderly care service system ， SO that the elderly",
+                      "words":  [
+                                    {
+                                        "text":  "taking",
+                                        "x":  92,
+                                        "y":  1127,
+                                        "width":  56,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "various",
+                                        "x":  155,
+                                        "y":  1127,
+                                        "width":  67,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "measures",
+                                        "x":  229,
+                                        "y":  1132,
+                                        "width":  84,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  321,
+                                        "y":  1130,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "promote",
+                                        "x":  345,
+                                        "y":  1130,
+                                        "width":  76,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  428,
+                                        "y":  1127,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "construcUon",
+                                        "x":  462,
+                                        "y":  1130,
+                                        "width":  113,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  582,
+                                        "y":  1127,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  607,
+                                        "y":  1127,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  641,
+                                        "y":  1127,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  711,
+                                        "y":  1132,
+                                        "width":  38,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "service",
+                                        "x":  756,
+                                        "y":  1127,
+                                        "width":  65,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "system",
+                                        "x":  828,
+                                        "y":  1130,
+                                        "width":  63,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  892,
+                                        "y":  1140,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "SO",
+                                        "x":  904,
+                                        "y":  1132,
+                                        "width":  19,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  930,
+                                        "y":  1127,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  970,
+                                        "y":  1127,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  1005,
+                                        "y":  1127,
+                                        "width":  63,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "can live a healthy and happy life in their later years. Various elderly care service institutions have been",
+                      "words":  [
+                                    {
+                                        "text":  "can",
+                                        "x":  91,
+                                        "y":  1162,
+                                        "width":  32,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "live",
+                                        "x":  131,
+                                        "y":  1157,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  173,
+                                        "y":  1162,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "healthy",
+                                        "x":  191,
+                                        "y":  1157,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  267,
+                                        "y":  1157,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "happy",
+                                        "x":  307,
+                                        "y":  1157,
+                                        "width":  56,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "life",
+                                        "x":  372,
+                                        "y":  1157,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  410,
+                                        "y":  1157,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  436,
+                                        "y":  1157,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "later",
+                                        "x":  486,
+                                        "y":  1157,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "years.",
+                                        "x":  534,
+                                        "y":  1162,
+                                        "width":  53,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Various",
+                                        "x":  596,
+                                        "y":  1157,
+                                        "width":  69,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  674,
+                                        "y":  1157,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  745,
+                                        "y":  1162,
+                                        "width":  39,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "service",
+                                        "x":  792,
+                                        "y":  1157,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "institutions",
+                                        "x":  864,
+                                        "y":  1157,
+                                        "width":  102,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  974,
+                                        "y":  1157,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  1025,
+                                        "y":  1157,
+                                        "width":  43,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "built natlonwide. ln order tO improve the service quality Of elderly care institutions ， the government has",
+                      "words":  [
+                                    {
+                                        "text":  "built",
+                                        "x":  91,
+                                        "y":  1187,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "natlonwide.",
+                                        "x":  141,
+                                        "y":  1187,
+                                        "width":  106,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "ln",
+                                        "x":  256,
+                                        "y":  1187,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "order",
+                                        "x":  282,
+                                        "y":  1187,
+                                        "width":  49,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  338,
+                                        "y":  1189,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "improve",
+                                        "x":  364,
+                                        "y":  1187,
+                                        "width":  76,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  447,
+                                        "y":  1187,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "service",
+                                        "x":  484,
+                                        "y":  1187,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "quality",
+                                        "x":  556,
+                                        "y":  1187,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  627,
+                                        "y":  1187,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  654,
+                                        "y":  1187,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  724,
+                                        "y":  1192,
+                                        "width":  38,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "institutions",
+                                        "x":  770,
+                                        "y":  1187,
+                                        "width":  102,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  873,
+                                        "y":  1200,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  886,
+                                        "y":  1187,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "government",
+                                        "x":  921,
+                                        "y":  1189,
+                                        "width":  110,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  1038,
+                                        "y":  1187,
+                                        "width":  30,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "issued a series Of standards tO strengthen the supervision Of elderly care instltutions. Many cities have",
+                      "words":  [
+                                    {
+                                        "text":  "issued",
+                                        "x":  92,
+                                        "y":  1217,
+                                        "width":  56,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  157,
+                                        "y":  1222,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "series",
+                                        "x":  176,
+                                        "y":  1217,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  237,
+                                        "y":  1217,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "standards",
+                                        "x":  265,
+                                        "y":  1217,
+                                        "width":  86,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  360,
+                                        "y":  1219,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "strengthen",
+                                        "x":  387,
+                                        "y":  1217,
+                                        "width":  95,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  491,
+                                        "y":  1217,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "supervision",
+                                        "x":  528,
+                                        "y":  1217,
+                                        "width":  105,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  643,
+                                        "y":  1217,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  671,
+                                        "y":  1217,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  743,
+                                        "y":  1222,
+                                        "width":  38,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "instltutions.",
+                                        "x":  790,
+                                        "y":  1217,
+                                        "width":  106,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Many",
+                                        "x":  906,
+                                        "y":  1217,
+                                        "width":  53,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "cities",
+                                        "x":  968,
+                                        "y":  1217,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  1025,
+                                        "y":  1217,
+                                        "width":  43,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "opened communlty canteens to facllltate dlning for the elderly, providing them W1th affordable meals.",
+                      "words":  [
+                                    {
+                                        "text":  "opened",
+                                        "x":  92,
+                                        "y":  1247,
+                                        "width":  65,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "communlty",
+                                        "x":  167,
+                                        "y":  1249,
+                                        "width":  104,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "canteens",
+                                        "x":  280,
+                                        "y":  1249,
+                                        "width":  79,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  368,
+                                        "y":  1249,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "facllltate",
+                                        "x":  396,
+                                        "y":  1247,
+                                        "width":  79,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "dlning",
+                                        "x":  485,
+                                        "y":  1247,
+                                        "width":  58,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  553,
+                                        "y":  1247,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  588,
+                                        "y":  1247,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly,",
+                                        "x":  626,
+                                        "y":  1247,
+                                        "width":  66,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "providing",
+                                        "x":  702,
+                                        "y":  1247,
+                                        "width":  89,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "them",
+                                        "x":  802,
+                                        "y":  1247,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "W1th",
+                                        "x":  857,
+                                        "y":  1247,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "affordable",
+                                        "x":  907,
+                                        "y":  1247,
+                                        "width":  93,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "meals.",
+                                        "x":  1010,
+                                        "y":  1247,
+                                        "width":  57,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ElderIy people with llmited mobility can also enJOY door-to-door meal delivery services. At the same time ，",
+                      "words":  [
+                                    {
+                                        "text":  "ElderIy",
+                                        "x":  91,
+                                        "y":  1277,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  165,
+                                        "y":  1277,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  232,
+                                        "y":  1276,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "llmited",
+                                        "x":  279,
+                                        "y":  1276,
+                                        "width":  64,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "mobility",
+                                        "x":  350,
+                                        "y":  1276,
+                                        "width":  77,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  434,
+                                        "y":  1282,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "also",
+                                        "x":  472,
+                                        "y":  1277,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "enJOY",
+                                        "x":  515,
+                                        "y":  1282,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "door-to-door",
+                                        "x":  571,
+                                        "y":  1277,
+                                        "width":  118,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "meal",
+                                        "x":  694,
+                                        "y":  1277,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "delivery",
+                                        "x":  745,
+                                        "y":  1276,
+                                        "width":  75,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "services.",
+                                        "x":  827,
+                                        "y":  1276,
+                                        "width":  77,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "At",
+                                        "x":  912,
+                                        "y":  1277,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  941,
+                                        "y":  1277,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "same",
+                                        "x":  976,
+                                        "y":  1282,
+                                        "width":  46,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "time",
+                                        "x":  1028,
+                                        "y":  1276,
+                                        "width":  41,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1070,
+                                        "y":  1290,
+                                        "width":  4,
+                                        "height":  6
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "China is actively exploring Other elderly care models such as home- and community-based elderly care tO",
+                      "words":  [
+                                    {
+                                        "text":  "China",
+                                        "x":  91,
+                                        "y":  1306,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  153,
+                                        "y":  1306,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "actively",
+                                        "x":  174,
+                                        "y":  1306,
+                                        "width":  72,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "exploring",
+                                        "x":  253,
+                                        "y":  1306,
+                                        "width":  87,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Other",
+                                        "x":  347,
+                                        "y":  1307,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  400,
+                                        "y":  1306,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  470,
+                                        "y":  1311,
+                                        "width":  38,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "models",
+                                        "x":  515,
+                                        "y":  1306,
+                                        "width":  65,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "such",
+                                        "x":  588,
+                                        "y":  1307,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  636,
+                                        "y":  1311,
+                                        "width":  18,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "home-",
+                                        "x":  661,
+                                        "y":  1307,
+                                        "width":  58,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  726,
+                                        "y":  1307,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "community-based",
+                                        "x":  766,
+                                        "y":  1306,
+                                        "width":  164,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  937,
+                                        "y":  1306,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "care",
+                                        "x":  1007,
+                                        "y":  1311,
+                                        "width":  37,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  1051,
+                                        "y":  1309,
+                                        "width":  17,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ensure that a11 elderly people are supported in OId age.",
+                      "words":  [
+                                    {
+                                        "text":  "ensure",
+                                        "x":  92,
+                                        "y":  1341,
+                                        "width":  59,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  157,
+                                        "y":  1336,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a11",
+                                        "x":  197,
+                                        "y":  1336,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  226,
+                                        "y":  1336,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  295,
+                                        "y":  1336,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  363,
+                                        "y":  1341,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "supported",
+                                        "x":  397,
+                                        "y":  1336,
+                                        "width":  89,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  493,
+                                        "y":  1336,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "OId",
+                                        "x":  516,
+                                        "y":  1336,
+                                        "width":  29,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "age.",
+                                        "x":  552,
+                                        "y":  1341,
+                                        "width":  35,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 12-CET6( 第 3 套 ） 一 8",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  446,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  492,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "12-CET6(",
+                                        "x":  502,
+                                        "y":  1495,
+                                        "width":  90,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  596,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "3",
+                                        "x":  622,
+                                        "y":  1496,
+                                        "width":  9,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  640,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  662,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  669,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "8",
+                                        "x":  678,
+                                        "y":  1496,
+                                        "width":  9,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

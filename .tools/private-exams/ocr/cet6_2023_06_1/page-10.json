@@ -1,0 +1,2744 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_06_1\\page-10.png",
+    "unverifiedOCR":  true,
+    "text":  "KEYS Part I Writing Suggested Version Mental well-being is regarded as a state of health where a person is able to address normal stresses in daily life. RecentIy, th1S state has been grasped as much attention as physical health. ObviousIy, there are several factors that affect people ， s mental well-being. FirstIy, a strong contributor tO mental well-being refers tO the state Of a person ， S usual environment. Adverse envlronmental circumstances can have negative effects on psychological wellness. LiVing a positlve social envlronment ， m contrast ， can provide protection agamst mental challenges. Secondly, people\u0027s lifestyle can also impact their mental health. Smoking, a poor diet ， alcohol consumptlon ， substance use ， and risky sexual behavior may result in psychological harm. Smoking, a poor diet ， alcohol consumptlon ， substance use ， and risky sexual behavior may result in psychological harm. Worse, such behaviors have been llnked to depression. ln conclusion ， because mental health is SO important tO general wellness ， it\u0027s lmportant that you take care Of your mental health. Talking therapy, meditation and maintaining a positi 、 outlook on life all contribute tO people mental health. With a positive mental state ， all areas of life will go towards active development. Part II Listening Comprehension 11 21 12 22 13 14 24 Part III Reading Comprehension 16 31 26 36 46 37 28 38 48 29 39 49 30 40 50 18 52 10 55 Part IV Translation ln recent years ， more and more Chinese culture products have appeared on the global market and gradually gained the favour of overseas consumers. With the rapid development of foreign culture trade ， the export volume of Chinese culture products has been ranking high in the world for many years in a row ， contributing to the establlshment of a series of Chinese culture products and brands with internauonal influence. Statistics show that the sales volume of the Chinese publlcauons, films and TV programmes, internet literature and cartoon products has been on the rise for years. The Chinese 2023 一 06 一 CET6 （ 第 1 套 ） 一 10",
+    "lines":  [
+                  {
+                      "text":  "KEYS",
+                      "words":  [
+                                    {
+                                        "text":  "KEYS",
+                                        "x":  539,
+                                        "y":  158,
+                                        "width":  81,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part I Writing",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  92,
+                                        "y":  218,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  157,
+                                        "y":  218,
+                                        "width":  11,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Writing",
+                                        "x":  176,
+                                        "y":  218,
+                                        "width":  103,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Suggested Version",
+                      "words":  [
+                                    {
+                                        "text":  "Suggested",
+                                        "x":  91,
+                                        "y":  265,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Version",
+                                        "x":  195,
+                                        "y":  265,
+                                        "width":  73,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Mental well-being is regarded as a state of health where a person is able to address normal stresses in",
+                      "words":  [
+                                    {
+                                        "text":  "Mental",
+                                        "x":  137,
+                                        "y":  295,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "well-being",
+                                        "x":  208,
+                                        "y":  295,
+                                        "width":  97,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  312,
+                                        "y":  294,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "regarded",
+                                        "x":  333,
+                                        "y":  295,
+                                        "width":  80,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  420,
+                                        "y":  300,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  444,
+                                        "y":  300,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "state",
+                                        "x":  461,
+                                        "y":  297,
+                                        "width":  41,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  508,
+                                        "y":  294,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "health",
+                                        "x":  533,
+                                        "y":  295,
+                                        "width":  56,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "where",
+                                        "x":  595,
+                                        "y":  295,
+                                        "width":  56,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  657,
+                                        "y":  300,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "person",
+                                        "x":  672,
+                                        "y":  300,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  740,
+                                        "y":  295,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "able",
+                                        "x":  761,
+                                        "y":  295,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  805,
+                                        "y":  297,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "address",
+                                        "x":  829,
+                                        "y":  295,
+                                        "width":  68,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "normal",
+                                        "x":  904,
+                                        "y":  295,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "stresses",
+                                        "x":  975,
+                                        "y":  297,
+                                        "width":  69,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  1051,
+                                        "y":  295,
+                                        "width":  17,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "daily life. RecentIy, th1S state has been grasped as much attention as physical health.",
+                      "words":  [
+                                    {
+                                        "text":  "daily",
+                                        "x":  90,
+                                        "y":  324,
+                                        "width":  45,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "life.",
+                                        "x":  142,
+                                        "y":  324,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "RecentIy,",
+                                        "x":  183,
+                                        "y":  325,
+                                        "width":  85,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "th1S",
+                                        "x":  275,
+                                        "y":  325,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "state",
+                                        "x":  315,
+                                        "y":  327,
+                                        "width":  41,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  362,
+                                        "y":  325,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  398,
+                                        "y":  325,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "grasped",
+                                        "x":  448,
+                                        "y":  324,
+                                        "width":  71,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  525,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "much",
+                                        "x":  550,
+                                        "y":  324,
+                                        "width":  50,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "attention",
+                                        "x":  607,
+                                        "y":  324,
+                                        "width":  79,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  693,
+                                        "y":  329,
+                                        "width":  18,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "physical",
+                                        "x":  718,
+                                        "y":  324,
+                                        "width":  76,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "health.",
+                                        "x":  800,
+                                        "y":  325,
+                                        "width":  60,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ObviousIy, there are several factors that affect people ， s mental well-being. FirstIy, a strong",
+                      "words":  [
+                                    {
+                                        "text":  "ObviousIy,",
+                                        "x":  137,
+                                        "y":  354,
+                                        "width":  99,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "there",
+                                        "x":  251,
+                                        "y":  354,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  311,
+                                        "y":  359,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "several",
+                                        "x":  353,
+                                        "y":  354,
+                                        "width":  64,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "factors",
+                                        "x":  432,
+                                        "y":  354,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  508,
+                                        "y":  354,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "affect",
+                                        "x":  557,
+                                        "y":  354,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  623,
+                                        "y":  354,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  686,
+                                        "y":  354,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  691,
+                                        "y":  359,
+                                        "width":  8,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  713,
+                                        "y":  354,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "well-being.",
+                                        "x":  790,
+                                        "y":  354,
+                                        "width":  103,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "FirstIy,",
+                                        "x":  909,
+                                        "y":  354,
+                                        "width":  63,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  987,
+                                        "y":  359,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "strong",
+                                        "x":  1012,
+                                        "y":  357,
+                                        "width":  56,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "contributor tO mental well-being refers tO the state Of a person ， S usual environment. Adverse",
+                      "words":  [
+                                    {
+                                        "text":  "contributor",
+                                        "x":  90,
+                                        "y":  384,
+                                        "width":  102,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  208,
+                                        "y":  387,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  241,
+                                        "y":  384,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "well-being",
+                                        "x":  320,
+                                        "y":  384,
+                                        "width":  98,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "refers",
+                                        "x":  434,
+                                        "y":  384,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  501,
+                                        "y":  386,
+                                        "width":  18,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  535,
+                                        "y":  384,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "state",
+                                        "x":  580,
+                                        "y":  386,
+                                        "width":  41,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  637,
+                                        "y":  384,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  672,
+                                        "y":  389,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "person",
+                                        "x":  697,
+                                        "y":  389,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  761,
+                                        "y":  384,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "S",
+                                        "x":  766,
+                                        "y":  389,
+                                        "width":  7,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "usual",
+                                        "x":  790,
+                                        "y":  384,
+                                        "width":  48,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "environment.",
+                                        "x":  854,
+                                        "y":  384,
+                                        "width":  121,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Adverse",
+                                        "x":  992,
+                                        "y":  384,
+                                        "width":  76,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "envlronmental circumstances can have negative effects on psychological wellness. LiVing a positlve",
+                      "words":  [
+                                    {
+                                        "text":  "envlronmental",
+                                        "x":  90,
+                                        "y":  414,
+                                        "width":  132,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "circumstances",
+                                        "x":  231,
+                                        "y":  414,
+                                        "width":  129,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  370,
+                                        "y":  419,
+                                        "width":  31,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  411,
+                                        "y":  414,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "negative",
+                                        "x":  463,
+                                        "y":  414,
+                                        "width":  77,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "effects",
+                                        "x":  550,
+                                        "y":  414,
+                                        "width":  59,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  619,
+                                        "y":  419,
+                                        "width":  22,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "psychological",
+                                        "x":  650,
+                                        "y":  414,
+                                        "width":  127,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "wellness.",
+                                        "x":  787,
+                                        "y":  414,
+                                        "width":  83,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "LiVing",
+                                        "x":  881,
+                                        "y":  414,
+                                        "width":  60,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  978,
+                                        "y":  419,
+                                        "width":  9,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "positlve",
+                                        "x":  996,
+                                        "y":  414,
+                                        "width":  72,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "social envlronment ， m contrast ， can provide protection agamst mental challenges. Secondly, people\u0027s",
+                      "words":  [
+                                    {
+                                        "text":  "social",
+                                        "x":  91,
+                                        "y":  444,
+                                        "width":  52,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "envlronment",
+                                        "x":  154,
+                                        "y":  447,
+                                        "width":  116,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  271,
+                                        "y":  457,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  286,
+                                        "y":  449,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "contrast",
+                                        "x":  314,
+                                        "y":  447,
+                                        "width":  73,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  388,
+                                        "y":  457,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  403,
+                                        "y":  449,
+                                        "width":  32,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "provide",
+                                        "x":  446,
+                                        "y":  444,
+                                        "width":  70,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "protection",
+                                        "x":  526,
+                                        "y":  444,
+                                        "width":  93,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "agamst",
+                                        "x":  630,
+                                        "y":  447,
+                                        "width":  65,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  705,
+                                        "y":  444,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "challenges.",
+                                        "x":  779,
+                                        "y":  444,
+                                        "width":  101,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Secondly,",
+                                        "x":  892,
+                                        "y":  444,
+                                        "width":  88,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "people\u0027s",
+                                        "x":  992,
+                                        "y":  444,
+                                        "width":  76,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "lifestyle can also impact their mental health. Smoking, a poor diet ， alcohol consumptlon ， substance use ，",
+                      "words":  [
+                                    {
+                                        "text":  "lifestyle",
+                                        "x":  90,
+                                        "y":  474,
+                                        "width":  74,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "can",
+                                        "x":  171,
+                                        "y":  479,
+                                        "width":  32,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "also",
+                                        "x":  211,
+                                        "y":  474,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "impact",
+                                        "x":  256,
+                                        "y":  474,
+                                        "width":  62,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "their",
+                                        "x":  326,
+                                        "y":  474,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  375,
+                                        "y":  474,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "health.",
+                                        "x":  446,
+                                        "y":  474,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Smoking,",
+                                        "x":  516,
+                                        "y":  474,
+                                        "width":  87,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  612,
+                                        "y":  479,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "poor",
+                                        "x":  629,
+                                        "y":  479,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "diet",
+                                        "x":  679,
+                                        "y":  474,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  715,
+                                        "y":  487,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "alcohol",
+                                        "x":  727,
+                                        "y":  474,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "consumptlon",
+                                        "x":  803,
+                                        "y":  477,
+                                        "width":  118,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  922,
+                                        "y":  487,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "substance",
+                                        "x":  935,
+                                        "y":  474,
+                                        "width":  89,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "use",
+                                        "x":  1032,
+                                        "y":  479,
+                                        "width":  30,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1063,
+                                        "y":  487,
+                                        "width":  4,
+                                        "height":  6
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "and risky sexual behavior may result in psychological harm. Smoking, a poor diet ， alcohol consumptlon ，",
+                      "words":  [
+                                    {
+                                        "text":  "and",
+                                        "x":  90,
+                                        "y":  504,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "risky",
+                                        "x":  130,
+                                        "y":  504,
+                                        "width":  45,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "sexual",
+                                        "x":  183,
+                                        "y":  504,
+                                        "width":  58,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "behavior",
+                                        "x":  248,
+                                        "y":  504,
+                                        "width":  81,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "may",
+                                        "x":  336,
+                                        "y":  509,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "result",
+                                        "x":  382,
+                                        "y":  504,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  441,
+                                        "y":  504,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "psychological",
+                                        "x":  465,
+                                        "y":  504,
+                                        "width":  127,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "harm.",
+                                        "x":  600,
+                                        "y":  504,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Smoking,",
+                                        "x":  660,
+                                        "y":  504,
+                                        "width":  88,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  756,
+                                        "y":  509,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "poor",
+                                        "x":  773,
+                                        "y":  509,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "diet",
+                                        "x":  822,
+                                        "y":  504,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  857,
+                                        "y":  517,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "alcohol",
+                                        "x":  869,
+                                        "y":  504,
+                                        "width":  68,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "consumptlon",
+                                        "x":  944,
+                                        "y":  507,
+                                        "width":  119,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1064,
+                                        "y":  517,
+                                        "width":  4,
+                                        "height":  6
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "substance use ， and risky sexual behavior may result in psychological harm. Worse, such behaviors have",
+                      "words":  [
+                                    {
+                                        "text":  "substance",
+                                        "x":  91,
+                                        "y":  534,
+                                        "width":  88,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "use",
+                                        "x":  187,
+                                        "y":  539,
+                                        "width":  30,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  218,
+                                        "y":  547,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  231,
+                                        "y":  534,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "risky",
+                                        "x":  271,
+                                        "y":  534,
+                                        "width":  46,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "sexual",
+                                        "x":  326,
+                                        "y":  534,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "behavior",
+                                        "x":  391,
+                                        "y":  534,
+                                        "width":  81,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "may",
+                                        "x":  479,
+                                        "y":  539,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "result",
+                                        "x":  526,
+                                        "y":  534,
+                                        "width":  52,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  586,
+                                        "y":  534,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "psychological",
+                                        "x":  611,
+                                        "y":  534,
+                                        "width":  127,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "harm.",
+                                        "x":  746,
+                                        "y":  534,
+                                        "width":  52,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Worse,",
+                                        "x":  806,
+                                        "y":  534,
+                                        "width":  63,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "such",
+                                        "x":  879,
+                                        "y":  534,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "behaviors",
+                                        "x":  928,
+                                        "y":  534,
+                                        "width":  88,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  1025,
+                                        "y":  534,
+                                        "width":  43,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "been llnked to depression.",
+                      "words":  [
+                                    {
+                                        "text":  "been",
+                                        "x":  90,
+                                        "y":  564,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "llnked",
+                                        "x":  139,
+                                        "y":  564,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  202,
+                                        "y":  566,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "depression.",
+                                        "x":  226,
+                                        "y":  564,
+                                        "width":  102,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ln conclusion ， because mental health is SO important tO general wellness ， it\u0027s lmportant that you take",
+                      "words":  [
+                                    {
+                                        "text":  "ln",
+                                        "x":  137,
+                                        "y":  594,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "conclusion",
+                                        "x":  162,
+                                        "y":  593,
+                                        "width":  100,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  263,
+                                        "y":  607,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "because",
+                                        "x":  274,
+                                        "y":  594,
+                                        "width":  73,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  353,
+                                        "y":  594,
+                                        "width":  62,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "health",
+                                        "x":  423,
+                                        "y":  594,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  485,
+                                        "y":  593,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "SO",
+                                        "x":  507,
+                                        "y":  599,
+                                        "width":  20,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "important",
+                                        "x":  534,
+                                        "y":  593,
+                                        "width":  89,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  630,
+                                        "y":  596,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "general",
+                                        "x":  654,
+                                        "y":  594,
+                                        "width":  67,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "wellness",
+                                        "x":  728,
+                                        "y":  594,
+                                        "width":  79,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  808,
+                                        "y":  607,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "it\u0027s",
+                                        "x":  820,
+                                        "y":  593,
+                                        "width":  25,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lmportant",
+                                        "x":  852,
+                                        "y":  596,
+                                        "width":  89,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  948,
+                                        "y":  594,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "x":  989,
+                                        "y":  599,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "take",
+                                        "x":  1030,
+                                        "y":  594,
+                                        "width":  38,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "care Of your mental health. Talking therapy, meditation and maintaining a positi 、 outlook on life all",
+                      "words":  [
+                                    {
+                                        "text":  "care",
+                                        "x":  90,
+                                        "y":  628,
+                                        "width":  38,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  137,
+                                        "y":  623,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "your",
+                                        "x":  166,
+                                        "y":  628,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  218,
+                                        "y":  624,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "health.",
+                                        "x":  289,
+                                        "y":  623,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Talking",
+                                        "x":  361,
+                                        "y":  623,
+                                        "width":  69,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "therapy,",
+                                        "x":  440,
+                                        "y":  623,
+                                        "width":  72,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "meditation",
+                                        "x":  523,
+                                        "y":  623,
+                                        "width":  97,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  631,
+                                        "y":  624,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "maintaining",
+                                        "x":  673,
+                                        "y":  623,
+                                        "width":  109,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  792,
+                                        "y":  628,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "positi",
+                                        "x":  812,
+                                        "y":  623,
+                                        "width":  50,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  863,
+                                        "y":  629,
+                                        "width":  7,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "outlook",
+                                        "x":  894,
+                                        "y":  623,
+                                        "width":  70,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  974,
+                                        "y":  628,
+                                        "width":  22,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "life",
+                                        "x":  1006,
+                                        "y":  623,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "all",
+                                        "x":  1046,
+                                        "y":  623,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "contribute tO people mental health. With a positive mental state ， all areas of life will go towards active",
+                      "words":  [
+                                    {
+                                        "text":  "contribute",
+                                        "x":  90,
+                                        "y":  653,
+                                        "width":  93,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  191,
+                                        "y":  656,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "people",
+                                        "x":  217,
+                                        "y":  653,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  286,
+                                        "y":  653,
+                                        "width":  62,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "health.",
+                                        "x":  357,
+                                        "y":  653,
+                                        "width":  60,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "With",
+                                        "x":  426,
+                                        "y":  653,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  480,
+                                        "y":  658,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "positive",
+                                        "x":  498,
+                                        "y":  653,
+                                        "width":  72,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "mental",
+                                        "x":  579,
+                                        "y":  653,
+                                        "width":  61,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "state",
+                                        "x":  650,
+                                        "y":  656,
+                                        "width":  41,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  692,
+                                        "y":  667,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "all",
+                                        "x":  706,
+                                        "y":  653,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "areas",
+                                        "x":  737,
+                                        "y":  658,
+                                        "width":  46,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  792,
+                                        "y":  653,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "life",
+                                        "x":  819,
+                                        "y":  653,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  858,
+                                        "y":  653,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "go",
+                                        "x":  901,
+                                        "y":  658,
+                                        "width":  23,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "towards",
+                                        "x":  932,
+                                        "y":  653,
+                                        "width":  72,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "active",
+                                        "x":  1014,
+                                        "y":  653,
+                                        "width":  54,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "development.",
+                      "words":  [
+                                    {
+                                        "text":  "development.",
+                                        "x":  90,
+                                        "y":  683,
+                                        "width":  123,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part II Listening Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  92,
+                                        "y":  726,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "II",
+                                        "x":  157,
+                                        "y":  726,
+                                        "width":  23,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Listening",
+                                        "x":  189,
+                                        "y":  726,
+                                        "width":  121,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  320,
+                                        "y":  726,
+                                        "width":  205,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "11",
+                      "words":  [
+                                    {
+                                        "text":  "11",
+                                        "x":  129,
+                                        "y":  841,
+                                        "width":  18,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "21",
+                      "words":  [
+                                    {
+                                        "text":  "21",
+                                        "x":  127,
+                                        "y":  909,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "12",
+                      "words":  [
+                                    {
+                                        "text":  "12",
+                                        "x":  223,
+                                        "y":  841,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "22",
+                      "words":  [
+                                    {
+                                        "text":  "22",
+                                        "x":  222,
+                                        "y":  909,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "13",
+                      "words":  [
+                                    {
+                                        "text":  "13",
+                                        "x":  318,
+                                        "y":  841,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "14",
+                      "words":  [
+                                    {
+                                        "text":  "14",
+                                        "x":  413,
+                                        "y":  841,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "24",
+                      "words":  [
+                                    {
+                                        "text":  "24",
+                                        "x":  412,
+                                        "y":  909,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part III Reading Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  92,
+                                        "y":  990,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "III",
+                                        "x":  157,
+                                        "y":  990,
+                                        "width":  35,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Reading",
+                                        "x":  201,
+                                        "y":  989,
+                                        "width":  107,
+                                        "height":  28
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  318,
+                                        "y":  989,
+                                        "width":  205,
+                                        "height":  28
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "16",
+                      "words":  [
+                                    {
+                                        "text":  "16",
+                                        "x":  604,
+                                        "y":  841,
+                                        "width":  21,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "31",
+                      "words":  [
+                                    {
+                                        "text":  "31",
+                                        "x":  602,
+                                        "y":  1038,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "26",
+                      "words":  [
+                                    {
+                                        "text":  "26",
+                                        "x":  127,
+                                        "y":  1038,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "36",
+                      "words":  [
+                                    {
+                                        "text":  "36",
+                                        "x":  127,
+                                        "y":  1105,
+                                        "width":  22,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "46",
+                      "words":  [
+                                    {
+                                        "text":  "46",
+                                        "x":  127,
+                                        "y":  1173,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "37",
+                      "words":  [
+                                    {
+                                        "text":  "37",
+                                        "x":  222,
+                                        "y":  1105,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "28",
+                      "words":  [
+                                    {
+                                        "text":  "28",
+                                        "x":  318,
+                                        "y":  1038,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "38",
+                      "words":  [
+                                    {
+                                        "text":  "38",
+                                        "x":  317,
+                                        "y":  1105,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "48",
+                      "words":  [
+                                    {
+                                        "text":  "48",
+                                        "x":  317,
+                                        "y":  1173,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "29",
+                      "words":  [
+                                    {
+                                        "text":  "29",
+                                        "x":  413,
+                                        "y":  1038,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "39",
+                      "words":  [
+                                    {
+                                        "text":  "39",
+                                        "x":  412,
+                                        "y":  1105,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "49",
+                      "words":  [
+                                    {
+                                        "text":  "49",
+                                        "x":  412,
+                                        "y":  1173,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "30",
+                      "words":  [
+                                    {
+                                        "text":  "30",
+                                        "x":  507,
+                                        "y":  1038,
+                                        "width":  23,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "40",
+                      "words":  [
+                                    {
+                                        "text":  "40",
+                                        "x":  507,
+                                        "y":  1105,
+                                        "width":  23,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "50",
+                      "words":  [
+                                    {
+                                        "text":  "50",
+                                        "x":  508,
+                                        "y":  1173,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "18",
+                      "words":  [
+                                    {
+                                        "text":  "18",
+                                        "x":  794,
+                                        "y":  841,
+                                        "width":  21,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "52",
+                      "words":  [
+                                    {
+                                        "text":  "52",
+                                        "x":  698,
+                                        "y":  1173,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "10",
+                      "words":  [
+                                    {
+                                        "text":  "10",
+                                        "x":  984,
+                                        "y":  774,
+                                        "width":  21,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "55",
+                      "words":  [
+                                    {
+                                        "text":  "55",
+                                        "x":  983,
+                                        "y":  1173,
+                                        "width":  22,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part IV Translation",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  92,
+                                        "y":  1253,
+                                        "width":  57,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "IV",
+                                        "x":  157,
+                                        "y":  1253,
+                                        "width":  33,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Translation",
+                                        "x":  198,
+                                        "y":  1253,
+                                        "width":  150,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ln recent years ， more and more Chinese culture products have appeared on the global market and",
+                      "words":  [
+                                    {
+                                        "text":  "ln",
+                                        "x":  136,
+                                        "y":  1300,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "recent",
+                                        "x":  161,
+                                        "y":  1303,
+                                        "width":  57,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "years",
+                                        "x":  224,
+                                        "y":  1305,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  274,
+                                        "y":  1313,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  286,
+                                        "y":  1305,
+                                        "width":  47,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  340,
+                                        "y":  1300,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "more",
+                                        "x":  380,
+                                        "y":  1305,
+                                        "width":  47,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  434,
+                                        "y":  1300,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "culture",
+                                        "x":  515,
+                                        "y":  1300,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "products",
+                                        "x":  585,
+                                        "y":  1300,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  671,
+                                        "y":  1300,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "appeared",
+                                        "x":  722,
+                                        "y":  1300,
+                                        "width":  82,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  811,
+                                        "y":  1305,
+                                        "width":  23,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  841,
+                                        "y":  1300,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "global",
+                                        "x":  876,
+                                        "y":  1300,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "market",
+                                        "x":  940,
+                                        "y":  1300,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  1011,
+                                        "y":  1300,
+                                        "width":  33,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "gradually gained the favour of overseas consumers. With the rapid development of foreign culture trade ，",
+                      "words":  [
+                                    {
+                                        "text":  "gradually",
+                                        "x":  90,
+                                        "y":  1330,
+                                        "width":  86,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "gained",
+                                        "x":  182,
+                                        "y":  1330,
+                                        "width":  61,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  250,
+                                        "y":  1330,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "favour",
+                                        "x":  284,
+                                        "y":  1330,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  349,
+                                        "y":  1330,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "overseas",
+                                        "x":  374,
+                                        "y":  1335,
+                                        "width":  78,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "consumers.",
+                                        "x":  459,
+                                        "y":  1335,
+                                        "width":  102,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "With",
+                                        "x":  569,
+                                        "y":  1330,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  620,
+                                        "y":  1330,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "rapid",
+                                        "x":  653,
+                                        "y":  1330,
+                                        "width":  47,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "development",
+                                        "x":  707,
+                                        "y":  1330,
+                                        "width":  119,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  832,
+                                        "y":  1330,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "foreign",
+                                        "x":  857,
+                                        "y":  1330,
+                                        "width":  65,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "culture",
+                                        "x":  928,
+                                        "y":  1330,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "trade",
+                                        "x":  998,
+                                        "y":  1330,
+                                        "width":  46,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1045,
+                                        "y":  1343,
+                                        "width":  4,
+                                        "height":  6
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "the export volume of Chinese culture products has been ranking high in the world for many years in a",
+                      "words":  [
+                                    {
+                                        "text":  "the",
+                                        "x":  90,
+                                        "y":  1360,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "export",
+                                        "x":  125,
+                                        "y":  1362,
+                                        "width":  58,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "volume",
+                                        "x":  190,
+                                        "y":  1360,
+                                        "width":  69,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  266,
+                                        "y":  1360,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  292,
+                                        "y":  1360,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "culture",
+                                        "x":  373,
+                                        "y":  1360,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "products",
+                                        "x":  443,
+                                        "y":  1360,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  529,
+                                        "y":  1360,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  567,
+                                        "y":  1360,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "ranking",
+                                        "x":  617,
+                                        "y":  1360,
+                                        "width":  70,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "high",
+                                        "x":  694,
+                                        "y":  1360,
+                                        "width":  41,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  742,
+                                        "y":  1360,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  767,
+                                        "y":  1360,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "world",
+                                        "x":  802,
+                                        "y":  1360,
+                                        "width":  53,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  862,
+                                        "y":  1360,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "many",
+                                        "x":  896,
+                                        "y":  1365,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "years",
+                                        "x":  953,
+                                        "y":  1365,
+                                        "width":  48,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  1009,
+                                        "y":  1360,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  1034,
+                                        "y":  1365,
+                                        "width":  10,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "row ， contributing to the establlshment of a series of Chinese culture products and brands with",
+                      "words":  [
+                                    {
+                                        "text":  "row",
+                                        "x":  90,
+                                        "y":  1395,
+                                        "width":  35,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  125,
+                                        "y":  1403,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "contributing",
+                                        "x":  142,
+                                        "y":  1390,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  267,
+                                        "y":  1392,
+                                        "width":  18,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  298,
+                                        "y":  1390,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "establlshment",
+                                        "x":  339,
+                                        "y":  1390,
+                                        "width":  126,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  478,
+                                        "y":  1389,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  510,
+                                        "y":  1395,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "series",
+                                        "x":  533,
+                                        "y":  1390,
+                                        "width":  50,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  597,
+                                        "y":  1390,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  629,
+                                        "y":  1390,
+                                        "width":  73,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "culture",
+                                        "x":  715,
+                                        "y":  1390,
+                                        "width":  64,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "products",
+                                        "x":  791,
+                                        "y":  1390,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  884,
+                                        "y":  1390,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "brands",
+                                        "x":  929,
+                                        "y":  1390,
+                                        "width":  60,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  1003,
+                                        "y":  1390,
+                                        "width":  41,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "internauonal influence. Statistics show that the sales volume of the Chinese publlcauons, films and TV",
+                      "words":  [
+                                    {
+                                        "text":  "internauonal",
+                                        "x":  90,
+                                        "y":  1419,
+                                        "width":  115,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "influence.",
+                                        "x":  213,
+                                        "y":  1419,
+                                        "width":  89,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Statistics",
+                                        "x":  310,
+                                        "y":  1419,
+                                        "width":  82,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "show",
+                                        "x":  400,
+                                        "y":  1420,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "that",
+                                        "x":  454,
+                                        "y":  1420,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  495,
+                                        "y":  1420,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "sales",
+                                        "x":  530,
+                                        "y":  1420,
+                                        "width":  43,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "volume",
+                                        "x":  580,
+                                        "y":  1420,
+                                        "width":  69,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  656,
+                                        "y":  1419,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  681,
+                                        "y":  1420,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  716,
+                                        "y":  1420,
+                                        "width":  74,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "publlcauons,",
+                                        "x":  796,
+                                        "y":  1420,
+                                        "width":  117,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "films",
+                                        "x":  921,
+                                        "y":  1419,
+                                        "width":  46,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  975,
+                                        "y":  1420,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "TV",
+                                        "x":  1013,
+                                        "y":  1420,
+                                        "width":  31,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "programmes, internet literature and cartoon products has been on the rise for years. The Chinese",
+                      "words":  [
+                                    {
+                                        "text":  "programmes,",
+                                        "x":  90,
+                                        "y":  1454,
+                                        "width":  119,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "internet",
+                                        "x":  221,
+                                        "y":  1449,
+                                        "width":  70,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "literature",
+                                        "x":  302,
+                                        "y":  1449,
+                                        "width":  82,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  396,
+                                        "y":  1449,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "cartoon",
+                                        "x":  440,
+                                        "y":  1452,
+                                        "width":  68,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "products",
+                                        "x":  519,
+                                        "y":  1450,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  609,
+                                        "y":  1449,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  650,
+                                        "y":  1449,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  705,
+                                        "y":  1454,
+                                        "width":  22,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  738,
+                                        "y":  1449,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "rise",
+                                        "x":  777,
+                                        "y":  1449,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  821,
+                                        "y":  1449,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "years.",
+                                        "x":  858,
+                                        "y":  1454,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "The",
+                                        "x":  924,
+                                        "y":  1450,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Chinese",
+                                        "x":  970,
+                                        "y":  1449,
+                                        "width":  74,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 06 一 CET6 （ 第 1 套 ） 一 10",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  440,
+                                        "y":  1496,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  486,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "06",
+                                        "x":  494,
+                                        "y":  1495,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  517,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "CET6",
+                                        "x":  524,
+                                        "y":  1495,
+                                        "width":  55,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  580,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  590,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "1",
+                                        "x":  618,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  634,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  656,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  664,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "10",
+                                        "x":  674,
+                                        "y":  1496,
+                                        "width":  20,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

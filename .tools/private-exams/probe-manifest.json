@@ -1,0 +1,15 @@
+{
+  "httpStatus": 200,
+  "contentType": "application/pdf",
+  "contentLength": "143281",
+  "finalUrl": "https://www.wehuster.com/static/cet6/cet6_2026_06_1.pdf",
+  "url": "https://www.wehuster.com/static/cet6/cet6_2026_06_1.pdf",
+  "sourcePage": "https://www.wehuster.com/cet6/cet6_2026_06_1",
+  "sha256": "bcfa7f21ac278e6e652d03afe9c90d329d6e78bd7289b60f0aee47c561d47adb",
+  "size": 143281,
+  "pages": 8,
+  "textCharacters": 27801,
+  "eof": true,
+  "encrypted": false,
+  "licenseStatus": "Personal local use requested; site offers Download PDF; redistribution permission unverified"
+}

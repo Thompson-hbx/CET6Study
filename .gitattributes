@@ -1,2 +1,9 @@
 # Keep pinned vendor source bytes reproducible for SOURCE_HASHES.json on Windows.
 third_party/bee-fsrs/src/** text eol=lf
+# Personal backup bytes must match their SHA-256 inventory on every platform.
+raw-papers/** -text
+.tools/private-exams/** -text
+.tools/*/cet6_study.db* -text
+.tools/private-backup-inventory.json -text
+tools/exam-packs/** -text
+app/src/main/assets/exam-packs/** -text

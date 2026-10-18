@@ -1,0 +1,3816 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_06_2\\page-01.jpg",
+    "unverifiedOCR":  true,
+    "text":  "2023 年 6 月 大 学 英 语 六 级 考 试 真 题 （ 第 2 套 ） Part I 、 Vriting （ 30 minutes) Directions ： For 卜 a ） ， ou are allowed 30 m vv an e begins 前 the sentenee \u0027 “ faced \" 方 屋 r g 0 尹 \u0027 “ ， we s 方 0 “ 湿 try “ 方 agreement ro g 方 friendly diSCtISSlOIl and reasonable a me 孔 ” ， Can / 々 CO / / e ， Cite 巳 n. / 丿 化 、 Or LLSe ） u 疒 ers 伊 / e 丸 e / ． 理 ces / 0 / 丿 ， OI essay. You （ 川 / e / 50 岬 伊 衣 but 理 0 mo than 2 wo \u0026 Part II Section A Listening Comprehension （ 30 minutes) Directions ： 忉 丷 c 五 on ， Y\u0027O will 方 敌 tV 以 丿 ／ 0 理 \u0026 （ 刀 a ／ / 吓 ． At the 0 / ofeach CO / ℃ 塔 a ／ 理 ， ， 0 will / a 厂 ． 吧 忉 0 ． BO 叻 the com汜0酊忉理 and the “ 五 0 肭 will be 挈 0 ” only 0 理 c 巴 4 you hear a q “ )n ， you must choose the best answerfrom the four 酗 0 记 、 ked ， 4 丿 ， B 丿 ， 0 ， and D). 7 力 en mark the COI 、 （ m / r Answer S / 丿 with a 乊 ” g hne through the “ 吧 Questions 1 tO 4 are based on the conversation you have just heard. 1. A. She is attracted to the beauty of modern buildings. B. She is preoccumed with her dream to be an architect 、 C. She is influenced by her father whO teaches architecture D. She is drawn tO its integration Of design and engineering. 2 ． A. Through hard work. C. By studying the subject online. 3 、 A. lt is groundbreaking, C. lt is lmmaterial. 4 ， A. Economics. B. Philosophy. B. With the professor \u0027s he p. D 、 By taking prerequisite courses. B. lt is long-lasting 、 D 、 lt is lmmortal. C. Computer science. D. Western art. Questions 5 tO 8 are based on the conversation you have just heard. 5 ． A. He has occasionally been harassed by h1S fans. B. He has been guarded by a discreet assistant. C. He is well known tO the public. D. He is a famous football coach. 6 ， A. Serve as a personal assistant. B. PIay a key role in ReaI Madrid. C. Run common daily chores for the woman. D. HeIp promote Mr. Sanchez\u0027s public profile. 7 ． A. He is honest and always tells the truth. B. He once worked part-tlme in university. C. He cares little about his working hours. D. He has little previous work experience. 2023 一 06 一 CET6 （ 第 2 套 ） 一 1",
+    "lines":  [
+                  {
+                      "text":  "2023 年 6 月 大 学 英 语 六 级 考 试 真 题 （ 第 2 套 ）",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  219,
+                                        "y":  155,
+                                        "width":  75,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  304,
+                                        "y":  151,
+                                        "width":  38,
+                                        "height":  38
+                                    },
+                                    {
+                                        "text":  "6",
+                                        "x":  353,
+                                        "y":  155,
+                                        "width":  18,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "月",
+                                        "x":  380,
+                                        "y":  152,
+                                        "width":  30,
+                                        "height":  36
+                                    },
+                                    {
+                                        "text":  "大",
+                                        "x":  418,
+                                        "y":  151,
+                                        "width":  37,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "学",
+                                        "x":  457,
+                                        "y":  151,
+                                        "width":  36,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "英",
+                                        "x":  494,
+                                        "y":  151,
+                                        "width":  38,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  533,
+                                        "y":  151,
+                                        "width":  37,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "六",
+                                        "x":  572,
+                                        "y":  151,
+                                        "width":  36,
+                                        "height":  36
+                                    },
+                                    {
+                                        "text":  "级",
+                                        "x":  610,
+                                        "y":  152,
+                                        "width":  37,
+                                        "height":  36
+                                    },
+                                    {
+                                        "text":  "考",
+                                        "x":  648,
+                                        "y":  151,
+                                        "width":  37,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "试",
+                                        "x":  686,
+                                        "y":  151,
+                                        "width":  37,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "真",
+                                        "x":  725,
+                                        "y":  151,
+                                        "width":  37,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "题",
+                                        "x":  763,
+                                        "y":  151,
+                                        "width":  37,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  803,
+                                        "y":  155,
+                                        "width":  10,
+                                        "height":  32
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  815,
+                                        "y":  150,
+                                        "width":  36,
+                                        "height":  39
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  862,
+                                        "y":  155,
+                                        "width":  18,
+                                        "height":  26
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  889,
+                                        "y":  151,
+                                        "width":  38,
+                                        "height":  37
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  928,
+                                        "y":  155,
+                                        "width":  10,
+                                        "height":  32
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part I",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  90,
+                                        "y":  218,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "x":  155,
+                                        "y":  218,
+                                        "width":  12,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "、 Vriting",
+                      "words":  [
+                                    {
+                                        "text":  "、",
+                                        "x":  500,
+                                        "y":  218,
+                                        "width":  12,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "Vriting",
+                                        "x":  511,
+                                        "y":  218,
+                                        "width":  91,
+                                        "height":  27
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "（ 30 minutes)",
+                      "words":  [
+                                    {
+                                        "text":  "（",
+                                        "x":  907,
+                                        "y":  218,
+                                        "width":  8,
+                                        "height":  26
+                                    },
+                                    {
+                                        "text":  "30",
+                                        "x":  916,
+                                        "y":  218,
+                                        "width":  30,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "minutes)",
+                                        "x":  961,
+                                        "y":  218,
+                                        "width":  112,
+                                        "height":  26
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Directions ： For 卜 a ） ， ou are allowed 30 m vv an e begins 前 the sentenee",
+                      "words":  [
+                                    {
+                                        "text":  "Directions",
+                                        "x":  89,
+                                        "y":  265,
+                                        "width":  101,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  192,
+                                        "y":  270,
+                                        "width":  5,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "For",
+                                        "x":  206,
+                                        "y":  265,
+                                        "width":  36,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "卜",
+                                        "x":  269,
+                                        "y":  265,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  303,
+                                        "y":  270,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  344,
+                                        "y":  270,
+                                        "width":  7,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  352,
+                                        "y":  270,
+                                        "width":  3,
+                                        "height":  8
+                                    },
+                                    {
+                                        "text":  "ou",
+                                        "x":  355,
+                                        "y":  270,
+                                        "width":  22,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  386,
+                                        "y":  270,
+                                        "width":  30,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "allowed",
+                                        "x":  425,
+                                        "y":  264,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "30",
+                                        "x":  506,
+                                        "y":  265,
+                                        "width":  24,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  538,
+                                        "y":  270,
+                                        "width":  16,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "vv",
+                                        "x":  646,
+                                        "y":  270,
+                                        "width":  14,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  701,
+                                        "y":  270,
+                                        "width":  22,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "e",
+                                        "x":  733,
+                                        "y":  270,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "begins",
+                                        "x":  836,
+                                        "y":  264,
+                                        "width":  59,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "前",
+                                        "x":  905,
+                                        "y":  265,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  953,
+                                        "y":  265,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "sentenee",
+                                        "x":  988,
+                                        "y":  268,
+                                        "width":  80,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "\u0027 “ faced \" 方 屋 r g 0 尹 \u0027 “ ， we s 方 0 “ 湿 try “ 方 agreement ro g 方 friendly",
+                      "words":  [
+                                    {
+                                        "text":  "\u0027",
+                                        "x":  213,
+                                        "y":  295,
+                                        "width":  5,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  250,
+                                        "y":  300,
+                                        "width":  22,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "faced",
+                                        "x":  278,
+                                        "y":  294,
+                                        "width":  55,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  341,
+                                        "y":  300,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  369,
+                                        "y":  294,
+                                        "width":  12,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "屋",
+                                        "x":  389,
+                                        "y":  295,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "r",
+                                        "x":  432,
+                                        "y":  300,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "g",
+                                        "x":  460,
+                                        "y":  300,
+                                        "width":  12,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  480,
+                                        "y":  300,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "尹",
+                                        "x":  489,
+                                        "y":  300,
+                                        "width":  13,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "\u0027",
+                                        "x":  541,
+                                        "y":  300,
+                                        "width":  6,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  546,
+                                        "y":  300,
+                                        "width":  15,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  561,
+                                        "y":  307,
+                                        "width":  5,
+                                        "height":  8
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "x":  577,
+                                        "y":  300,
+                                        "width":  24,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  609,
+                                        "y":  300,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  619,
+                                        "y":  294,
+                                        "width":  12,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  632,
+                                        "y":  300,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  643,
+                                        "y":  300,
+                                        "width":  12,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "湿",
+                                        "x":  656,
+                                        "y":  294,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "try",
+                                        "x":  681,
+                                        "y":  297,
+                                        "width":  25,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  760,
+                                        "y":  300,
+                                        "width":  21,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  782,
+                                        "y":  295,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "agreement",
+                                        "x":  802,
+                                        "y":  297,
+                                        "width":  101,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "ro",
+                                        "x":  929,
+                                        "y":  300,
+                                        "width":  20,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "g",
+                                        "x":  962,
+                                        "y":  300,
+                                        "width":  12,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  974,
+                                        "y":  294,
+                                        "width":  12,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "friendly",
+                                        "x":  991,
+                                        "y":  294,
+                                        "width":  77,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "diSCtISSlOIl and reasonable a me 孔 ” ， Can / 々 CO / / e ， Cite 巳 n. / 丿 化 、 Or LLSe ） u 疒",
+                      "words":  [
+                                    {
+                                        "text":  "diSCtISSlOIl",
+                                        "x":  205,
+                                        "y":  324,
+                                        "width":  98,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  312,
+                                        "y":  324,
+                                        "width":  36,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "reasonable",
+                                        "x":  355,
+                                        "y":  324,
+                                        "width":  103,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  467,
+                                        "y":  330,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "me",
+                                        "x":  511,
+                                        "y":  330,
+                                        "width":  28,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "孔",
+                                        "x":  552,
+                                        "y":  327,
+                                        "width":  10,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  567,
+                                        "y":  325,
+                                        "width":  10,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  586,
+                                        "y":  325,
+                                        "width":  8,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Can",
+                                        "x":  625,
+                                        "y":  329,
+                                        "width":  33,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  666,
+                                        "y":  329,
+                                        "width":  5,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "々",
+                                        "x":  694,
+                                        "y":  324,
+                                        "width":  11,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "CO",
+                                        "x":  722,
+                                        "y":  329,
+                                        "width":  21,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  743,
+                                        "y":  330,
+                                        "width":  6,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  760,
+                                        "y":  330,
+                                        "width":  5,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "e",
+                                        "x":  777,
+                                        "y":  330,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  814,
+                                        "y":  338,
+                                        "width":  3,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "Cite",
+                                        "x":  827,
+                                        "y":  325,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "巳",
+                                        "x":  868,
+                                        "y":  330,
+                                        "width":  13,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "n.",
+                                        "x":  905,
+                                        "y":  330,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  915,
+                                        "y":  330,
+                                        "width":  7,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  922,
+                                        "y":  330,
+                                        "width":  5,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "化",
+                                        "x":  928,
+                                        "y":  324,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  944,
+                                        "y":  330,
+                                        "width":  8,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "Or",
+                                        "x":  961,
+                                        "y":  329,
+                                        "width":  22,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "LLSe",
+                                        "x":  989,
+                                        "y":  330,
+                                        "width":  30,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  1026,
+                                        "y":  330,
+                                        "width":  9,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "u",
+                                        "x":  1049,
+                                        "y":  330,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "疒",
+                                        "x":  1061,
+                                        "y":  329,
+                                        "width":  9,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "ers 伊 / e 丸 e / ． 理 ces / 0 / 丿 ， OI essay. You （ 川 / e / 50 岬 伊 衣 but 理 0 mo",
+                      "words":  [
+                                    {
+                                        "text":  "ers",
+                                        "x":  217,
+                                        "y":  360,
+                                        "width":  27,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "伊",
+                                        "x":  245,
+                                        "y":  360,
+                                        "width":  17,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  280,
+                                        "y":  354,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "e",
+                                        "x":  293,
+                                        "y":  360,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "丸",
+                                        "x":  302,
+                                        "y":  360,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "e",
+                                        "x":  324,
+                                        "y":  360,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  335,
+                                        "y":  360,
+                                        "width":  5,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  340,
+                                        "y":  360,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  360,
+                                        "y":  360,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "ces",
+                                        "x":  372,
+                                        "y":  360,
+                                        "width":  28,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  474,
+                                        "y":  354,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  480,
+                                        "y":  360,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  490,
+                                        "y":  360,
+                                        "width":  7,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  497,
+                                        "y":  360,
+                                        "width":  5,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  508,
+                                        "y":  360,
+                                        "width":  11,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "OI",
+                                        "x":  520,
+                                        "y":  360,
+                                        "width":  16,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "essay.",
+                                        "x":  558,
+                                        "y":  360,
+                                        "width":  52,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "You",
+                                        "x":  621,
+                                        "y":  355,
+                                        "width":  31,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  680,
+                                        "y":  361,
+                                        "width":  5,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "川",
+                                        "x":  684,
+                                        "y":  360,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  743,
+                                        "y":  360,
+                                        "width":  5,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "e",
+                                        "x":  765,
+                                        "y":  360,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  856,
+                                        "y":  355,
+                                        "width":  10,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "50",
+                                        "x":  867,
+                                        "y":  355,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "岬",
+                                        "x":  897,
+                                        "y":  360,
+                                        "width":  14,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "伊",
+                                        "x":  911,
+                                        "y":  360,
+                                        "width":  18,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "衣",
+                                        "x":  936,
+                                        "y":  354,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "but",
+                                        "x":  958,
+                                        "y":  354,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  994,
+                                        "y":  360,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  1005,
+                                        "y":  360,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "mo",
+                                        "x":  1023,
+                                        "y":  360,
+                                        "width":  28,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "than 2 wo \u0026",
+                      "words":  [
+                                    {
+                                        "text":  "than",
+                                        "x":  206,
+                                        "y":  384,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  252,
+                                        "y":  384,
+                                        "width":  11,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "wo",
+                                        "x":  293,
+                                        "y":  389,
+                                        "width":  26,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "\u0026",
+                                        "x":  339,
+                                        "y":  390,
+                                        "width":  12,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Part II",
+                      "words":  [
+                                    {
+                                        "text":  "Part",
+                                        "x":  90,
+                                        "y":  517,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "II",
+                                        "x":  155,
+                                        "y":  517,
+                                        "width":  23,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Section A",
+                      "words":  [
+                                    {
+                                        "text":  "Section",
+                                        "x":  90,
+                                        "y":  577,
+                                        "width":  83,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "A",
+                                        "x":  179,
+                                        "y":  577,
+                                        "width":  18,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Listening Comprehension",
+                      "words":  [
+                                    {
+                                        "text":  "Listening",
+                                        "x":  379,
+                                        "y":  517,
+                                        "width":  123,
+                                        "height":  27
+                                    },
+                                    {
+                                        "text":  "Comprehension",
+                                        "x":  511,
+                                        "y":  516,
+                                        "width":  205,
+                                        "height":  28
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "（ 30 minutes)",
+                      "words":  [
+                                    {
+                                        "text":  "（",
+                                        "x":  910,
+                                        "y":  517,
+                                        "width":  9,
+                                        "height":  26
+                                    },
+                                    {
+                                        "text":  "30",
+                                        "x":  920,
+                                        "y":  517,
+                                        "width":  29,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "minutes)",
+                                        "x":  963,
+                                        "y":  516,
+                                        "width":  112,
+                                        "height":  26
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Directions ： 忉 丷 c 五 on ， Y\u0027O will 方 敌 tV 以 丿 ／ 0 理 \u0026 （ 刀 a ／ / 吓 ． At the 0 / ofeach CO / ℃ 塔 a ／ 理 ， ， 0",
+                      "words":  [
+                                    {
+                                        "text":  "Directions",
+                                        "x":  90,
+                                        "y":  624,
+                                        "width":  100,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  192,
+                                        "y":  628,
+                                        "width":  4,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "忉",
+                                        "x":  206,
+                                        "y":  624,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "丷",
+                                        "x":  274,
+                                        "y":  629,
+                                        "width":  19,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "c",
+                                        "x":  294,
+                                        "y":  629,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "五",
+                                        "x":  304,
+                                        "y":  624,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  317,
+                                        "y":  629,
+                                        "width":  22,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  340,
+                                        "y":  637,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "Y\u0027O",
+                                        "x":  352,
+                                        "y":  628,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  394,
+                                        "y":  623,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "方",
+                                        "x":  438,
+                                        "y":  623,
+                                        "width":  10,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "敌",
+                                        "x":  449,
+                                        "y":  629,
+                                        "width":  15,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "tV",
+                                        "x":  488,
+                                        "y":  627,
+                                        "width":  13,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "以",
+                                        "x":  501,
+                                        "y":  628,
+                                        "width":  14,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  514,
+                                        "y":  629,
+                                        "width":  6,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "／",
+                                        "x":  530,
+                                        "y":  623,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  535,
+                                        "y":  629,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  547,
+                                        "y":  629,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "\u0026",
+                                        "x":  558,
+                                        "y":  629,
+                                        "width":  12,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  578,
+                                        "y":  629,
+                                        "width":  6,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "刀",
+                                        "x":  583,
+                                        "y":  628,
+                                        "width":  16,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  649,
+                                        "y":  629,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "／",
+                                        "x":  661,
+                                        "y":  626,
+                                        "width":  6,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  685,
+                                        "y":  629,
+                                        "width":  5,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "吓",
+                                        "x":  690,
+                                        "y":  629,
+                                        "width":  15,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  706,
+                                        "y":  637,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "At",
+                                        "x":  718,
+                                        "y":  624,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  748,
+                                        "y":  623,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  784,
+                                        "y":  629,
+                                        "width":  16,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  811,
+                                        "y":  623,
+                                        "width":  7,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "ofeach",
+                                        "x":  825,
+                                        "y":  623,
+                                        "width":  69,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "CO",
+                                        "x":  903,
+                                        "y":  629,
+                                        "width":  20,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  924,
+                                        "y":  629,
+                                        "width":  6,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "℃",
+                                        "x":  942,
+                                        "y":  629,
+                                        "width":  14,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "塔",
+                                        "x":  957,
+                                        "y":  629,
+                                        "width":  16,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  974,
+                                        "y":  629,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "／",
+                                        "x":  986,
+                                        "y":  626,
+                                        "width":  6,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  1010,
+                                        "y":  629,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1021,
+                                        "y":  637,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1034,
+                                        "y":  628,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  1045,
+                                        "y":  629,
+                                        "width":  11,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "will / a 厂 ． 吧 忉 0 ． BO 叻 the com汜0酊忉理 and the “ 五 0 肭 will be 挈 0 ” only 0 理 c 巴",
+                      "words":  [
+                                    {
+                                        "text":  "will",
+                                        "x":  202,
+                                        "y":  653,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  246,
+                                        "y":  653,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  267,
+                                        "y":  658,
+                                        "width":  11,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "厂",
+                                        "x":  279,
+                                        "y":  659,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  331,
+                                        "y":  659,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "吧",
+                                        "x":  359,
+                                        "y":  659,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "忉",
+                                        "x":  377,
+                                        "y":  654,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  397,
+                                        "y":  659,
+                                        "width":  10,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  429,
+                                        "y":  666,
+                                        "width":  3,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "BO",
+                                        "x":  442,
+                                        "y":  654,
+                                        "width":  25,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "叻",
+                                        "x":  468,
+                                        "y":  653,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  494,
+                                        "y":  653,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "com汜0酊忉理",
+                                        "x":  530,
+                                        "y":  654,
+                                        "width":  117,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  656,
+                                        "y":  652,
+                                        "width":  35,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  698,
+                                        "y":  653,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  757,
+                                        "y":  659,
+                                        "width":  18,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "五",
+                                        "x":  776,
+                                        "y":  654,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  789,
+                                        "y":  658,
+                                        "width":  11,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "肭",
+                                        "x":  801,
+                                        "y":  659,
+                                        "width":  19,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  829,
+                                        "y":  653,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  871,
+                                        "y":  653,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "挈",
+                                        "x":  900,
+                                        "y":  659,
+                                        "width":  20,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  921,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  953,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "only",
+                                        "x":  972,
+                                        "y":  653,
+                                        "width":  39,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  1019,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  1031,
+                                        "y":  659,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "c",
+                                        "x":  1043,
+                                        "y":  659,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "巴",
+                                        "x":  1053,
+                                        "y":  659,
+                                        "width":  13,
+                                        "height":  11
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "4 you hear a q “ )n ， you must choose the best answerfrom the four 酗 0 记 、 ked ， 4 丿 ，",
+                      "words":  [
+                                    {
+                                        "text":  "4",
+                                        "x":  202,
+                                        "y":  683,
+                                        "width":  15,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "x":  254,
+                                        "y":  688,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "hear",
+                                        "x":  295,
+                                        "y":  683,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  343,
+                                        "y":  688,
+                                        "width":  12,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "q",
+                                        "x":  361,
+                                        "y":  689,
+                                        "width":  11,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  373,
+                                        "y":  689,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  ")n",
+                                        "x":  423,
+                                        "y":  688,
+                                        "width":  16,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  440,
+                                        "y":  696,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "x":  450,
+                                        "y":  688,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "must",
+                                        "x":  491,
+                                        "y":  686,
+                                        "width":  45,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "choose",
+                                        "x":  541,
+                                        "y":  683,
+                                        "width":  63,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  612,
+                                        "y":  683,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "best",
+                                        "x":  646,
+                                        "y":  683,
+                                        "width":  38,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "answerfrom",
+                                        "x":  689,
+                                        "y":  683,
+                                        "width":  115,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  811,
+                                        "y":  683,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "four",
+                                        "x":  842,
+                                        "y":  683,
+                                        "width":  43,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "酗",
+                                        "x":  891,
+                                        "y":  683,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  912,
+                                        "y":  688,
+                                        "width":  11,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "记",
+                                        "x":  924,
+                                        "y":  684,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  1000,
+                                        "y":  688,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "ked",
+                                        "x":  1003,
+                                        "y":  683,
+                                        "width":  32,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1040,
+                                        "y":  694,
+                                        "width":  4,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "4",
+                                        "x":  1044,
+                                        "y":  683,
+                                        "width":  10,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  1055,
+                                        "y":  683,
+                                        "width":  6,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  1062,
+                                        "y":  696,
+                                        "width":  4,
+                                        "height":  7
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B 丿 ， 0 ， and D). 7 力 en mark the COI 、 （ m / r Answer S / 丿 with a 乊 ” g hne",
+                      "words":  [
+                                    {
+                                        "text":  "B",
+                                        "x":  203,
+                                        "y":  713,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  217,
+                                        "y":  713,
+                                        "width":  7,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  225,
+                                        "y":  726,
+                                        "width":  3,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "0",
+                                        "x":  241,
+                                        "y":  713,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  262,
+                                        "y":  726,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  277,
+                                        "y":  713,
+                                        "width":  36,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "D).",
+                                        "x":  320,
+                                        "y":  713,
+                                        "width":  28,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "7",
+                                        "x":  361,
+                                        "y":  713,
+                                        "width":  8,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  370,
+                                        "y":  713,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "en",
+                                        "x":  384,
+                                        "y":  718,
+                                        "width":  21,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "mark",
+                                        "x":  414,
+                                        "y":  713,
+                                        "width":  48,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  471,
+                                        "y":  713,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "COI",
+                                        "x":  508,
+                                        "y":  718,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  535,
+                                        "y":  718,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  577,
+                                        "y":  719,
+                                        "width":  6,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "m",
+                                        "x":  583,
+                                        "y":  718,
+                                        "width":  16,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  650,
+                                        "y":  713,
+                                        "width":  6,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "r",
+                                        "x":  690,
+                                        "y":  718,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "Answer",
+                                        "x":  737,
+                                        "y":  713,
+                                        "width":  74,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "S",
+                                        "x":  820,
+                                        "y":  713,
+                                        "width":  12,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "/",
+                                        "x":  833,
+                                        "y":  713,
+                                        "width":  7,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "丿",
+                                        "x":  881,
+                                        "y":  713,
+                                        "width":  10,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  902,
+                                        "y":  713,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  950,
+                                        "y":  718,
+                                        "width":  12,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "乊",
+                                        "x":  971,
+                                        "y":  714,
+                                        "width":  15,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  986,
+                                        "y":  718,
+                                        "width":  11,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "g",
+                                        "x":  997,
+                                        "y":  718,
+                                        "width":  12,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "hne",
+                                        "x":  1035,
+                                        "y":  713,
+                                        "width":  34,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "through the “ 吧",
+                      "words":  [
+                                    {
+                                        "text":  "through",
+                                        "x":  203,
+                                        "y":  742,
+                                        "width":  72,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  281,
+                                        "y":  743,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  315,
+                                        "y":  748,
+                                        "width":  19,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "吧",
+                                        "x":  354,
+                                        "y":  747,
+                                        "width":  20,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Questions 1 tO 4 are based on the conversation you have just heard.",
+                      "words":  [
+                                    {
+                                        "text":  "Questions",
+                                        "x":  90,
+                                        "y":  773,
+                                        "width":  96,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "1",
+                                        "x":  194,
+                                        "y":  773,
+                                        "width":  9,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  210,
+                                        "y":  774,
+                                        "width":  19,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "4",
+                                        "x":  235,
+                                        "y":  773,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  252,
+                                        "y":  778,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "based",
+                                        "x":  289,
+                                        "y":  773,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  351,
+                                        "y":  778,
+                                        "width":  24,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  381,
+                                        "y":  773,
+                                        "width":  31,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "conversation",
+                                        "x":  418,
+                                        "y":  773,
+                                        "width":  124,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "x":  548,
+                                        "y":  778,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  589,
+                                        "y":  773,
+                                        "width":  47,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "just",
+                                        "x":  640,
+                                        "y":  773,
+                                        "width":  38,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "heard.",
+                                        "x":  684,
+                                        "y":  773,
+                                        "width":  63,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "1. A. She is attracted to the beauty of modern buildings.",
+                      "words":  [
+                                    {
+                                        "text":  "1.",
+                                        "x":  92,
+                                        "y":  803,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  111,
+                                        "y":  803,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "She",
+                                        "x":  140,
+                                        "y":  803,
+                                        "width":  34,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  180,
+                                        "y":  802,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "attracted",
+                                        "x":  201,
+                                        "y":  803,
+                                        "width":  79,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  286,
+                                        "y":  805,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  309,
+                                        "y":  803,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "beauty",
+                                        "x":  343,
+                                        "y":  803,
+                                        "width":  60,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  409,
+                                        "y":  803,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "modern",
+                                        "x":  435,
+                                        "y":  803,
+                                        "width":  69,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "buildings.",
+                                        "x":  511,
+                                        "y":  803,
+                                        "width":  90,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. She is preoccumed with her dream to be an architect 、",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  113,
+                                        "y":  833,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "She",
+                                        "x":  140,
+                                        "y":  833,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  180,
+                                        "y":  833,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "preoccumed",
+                                        "x":  201,
+                                        "y":  833,
+                                        "width":  112,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  318,
+                                        "y":  833,
+                                        "width":  41,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "her",
+                                        "x":  366,
+                                        "y":  833,
+                                        "width":  29,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "dream",
+                                        "x":  401,
+                                        "y":  833,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "x":  464,
+                                        "y":  835,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "x":  488,
+                                        "y":  833,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  515,
+                                        "y":  838,
+                                        "width":  21,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "architect",
+                                        "x":  543,
+                                        "y":  833,
+                                        "width":  78,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  622,
+                                        "y":  845,
+                                        "width":  4,
+                                        "height":  4
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. She is influenced by her father whO teaches architecture",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  113,
+                                        "y":  862,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "She",
+                                        "x":  140,
+                                        "y":  862,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  180,
+                                        "y":  862,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "influenced",
+                                        "x":  201,
+                                        "y":  862,
+                                        "width":  97,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "x":  304,
+                                        "y":  862,
+                                        "width":  22,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "her",
+                                        "x":  332,
+                                        "y":  863,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "father",
+                                        "x":  368,
+                                        "y":  862,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "whO",
+                                        "x":  427,
+                                        "y":  863,
+                                        "width":  39,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "teaches",
+                                        "x":  472,
+                                        "y":  863,
+                                        "width":  67,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "architecture",
+                                        "x":  545,
+                                        "y":  862,
+                                        "width":  108,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. She is drawn tO its integration Of design and engineering.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  113,
+                                        "y":  893,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "She",
+                                        "x":  141,
+                                        "y":  892,
+                                        "width":  34,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  181,
+                                        "y":  892,
+                                        "width":  15,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "drawn",
+                                        "x":  202,
+                                        "y":  892,
+                                        "width":  57,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  265,
+                                        "y":  894,
+                                        "width":  18,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "its",
+                                        "x":  289,
+                                        "y":  892,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "integration",
+                                        "x":  317,
+                                        "y":  892,
+                                        "width":  99,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  422,
+                                        "y":  892,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "design",
+                                        "x":  447,
+                                        "y":  892,
+                                        "width":  59,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  513,
+                                        "y":  893,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "engineering.",
+                                        "x":  552,
+                                        "y":  892,
+                                        "width":  112,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2 ． A. Through hard work.",
+                      "words":  [
+                                    {
+                                        "text":  "2",
+                                        "x":  89,
+                                        "y":  920,
+                                        "width":  12,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  102,
+                                        "y":  936,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  111,
+                                        "y":  922,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Through",
+                                        "x":  139,
+                                        "y":  922,
+                                        "width":  79,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "hard",
+                                        "x":  224,
+                                        "y":  922,
+                                        "width":  40,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "work.",
+                                        "x":  270,
+                                        "y":  922,
+                                        "width":  52,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. By studying the subject online.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  113,
+                                        "y":  952,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "By",
+                                        "x":  140,
+                                        "y":  952,
+                                        "width":  26,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "studying",
+                                        "x":  173,
+                                        "y":  952,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  257,
+                                        "y":  952,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "subject",
+                                        "x":  292,
+                                        "y":  952,
+                                        "width":  64,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "online.",
+                                        "x":  362,
+                                        "y":  952,
+                                        "width":  61,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "3 、 A. lt is groundbreaking,",
+                      "words":  [
+                                    {
+                                        "text":  "3",
+                                        "x":  90,
+                                        "y":  982,
+                                        "width":  10,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  101,
+                                        "y":  995,
+                                        "width":  5,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  111,
+                                        "y":  982,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  140,
+                                        "y":  982,
+                                        "width":  13,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  160,
+                                        "y":  982,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "groundbreaking,",
+                                        "x":  181,
+                                        "y":  982,
+                                        "width":  149,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. lt is lmmaterial.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  113,
+                                        "y":  1012,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  140,
+                                        "y":  1012,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  159,
+                                        "y":  1012,
+                                        "width":  15,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lmmaterial.",
+                                        "x":  180,
+                                        "y":  1012,
+                                        "width":  105,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "4 ， A. Economics.",
+                      "words":  [
+                                    {
+                                        "text":  "4",
+                                        "x":  89,
+                                        "y":  1040,
+                                        "width":  12,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  102,
+                                        "y":  1055,
+                                        "width":  3,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  112,
+                                        "y":  1042,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Economics.",
+                                        "x":  139,
+                                        "y":  1042,
+                                        "width":  107,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. Philosophy.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  316,
+                                        "y":  1042,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Philosophy.",
+                                        "x":  343,
+                                        "y":  1042,
+                                        "width":  107,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. With the professor \u0027s he p.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  536,
+                                        "y":  923,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "With",
+                                        "x":  563,
+                                        "y":  922,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  614,
+                                        "y":  922,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "professor",
+                                        "x":  648,
+                                        "y":  922,
+                                        "width":  85,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "\u0027s",
+                                        "x":  736,
+                                        "y":  922,
+                                        "width":  12,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "he",
+                                        "x":  755,
+                                        "y":  922,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "p.",
+                                        "x":  783,
+                                        "y":  927,
+                                        "width":  16,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D 、 By taking prerequisite courses.",
+                      "words":  [
+                                    {
+                                        "text":  "D",
+                                        "x":  537,
+                                        "y":  952,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  554,
+                                        "y":  965,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "By",
+                                        "x":  565,
+                                        "y":  952,
+                                        "width":  26,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "taking",
+                                        "x":  597,
+                                        "y":  952,
+                                        "width":  57,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "prerequisite",
+                                        "x":  660,
+                                        "y":  952,
+                                        "width":  108,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "courses.",
+                                        "x":  775,
+                                        "y":  957,
+                                        "width":  73,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. lt is long-lasting 、",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  536,
+                                        "y":  982,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  563,
+                                        "y":  982,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  584,
+                                        "y":  982,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "long-lasting",
+                                        "x":  604,
+                                        "y":  982,
+                                        "width":  110,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  715,
+                                        "y":  995,
+                                        "width":  3,
+                                        "height":  3
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D 、 lt is lmmortal.",
+                      "words":  [
+                                    {
+                                        "text":  "D",
+                                        "x":  537,
+                                        "y":  1012,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  554,
+                                        "y":  1025,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "lt",
+                                        "x":  565,
+                                        "y":  1012,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  585,
+                                        "y":  1012,
+                                        "width":  14,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "lmmortal.",
+                                        "x":  605,
+                                        "y":  1012,
+                                        "width":  89,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. Computer science.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  537,
+                                        "y":  1042,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Computer",
+                                        "x":  563,
+                                        "y":  1042,
+                                        "width":  93,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "science.",
+                                        "x":  662,
+                                        "y":  1042,
+                                        "width":  71,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. Western art.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  781,
+                                        "y":  1042,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Western",
+                                        "x":  808,
+                                        "y":  1041,
+                                        "width":  75,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "art.",
+                                        "x":  890,
+                                        "y":  1044,
+                                        "width":  28,
+                                        "height":  14
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Questions 5 tO 8 are based on the conversation you have just heard.",
+                      "words":  [
+                                    {
+                                        "text":  "Questions",
+                                        "x":  90,
+                                        "y":  1072,
+                                        "width":  96,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "5",
+                                        "x":  193,
+                                        "y":  1072,
+                                        "width":  10,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  210,
+                                        "y":  1073,
+                                        "width":  19,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "8",
+                                        "x":  235,
+                                        "y":  1072,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "are",
+                                        "x":  252,
+                                        "y":  1077,
+                                        "width":  31,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "based",
+                                        "x":  289,
+                                        "y":  1072,
+                                        "width":  55,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "x":  351,
+                                        "y":  1077,
+                                        "width":  24,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  381,
+                                        "y":  1072,
+                                        "width":  31,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "conversation",
+                                        "x":  418,
+                                        "y":  1072,
+                                        "width":  124,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "x":  548,
+                                        "y":  1077,
+                                        "width":  35,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "x":  590,
+                                        "y":  1072,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "just",
+                                        "x":  640,
+                                        "y":  1072,
+                                        "width":  38,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "heard.",
+                                        "x":  684,
+                                        "y":  1072,
+                                        "width":  63,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "5 ． A. He has occasionally been harassed by h1S fans.",
+                      "words":  [
+                                    {
+                                        "text":  "5",
+                                        "x":  90,
+                                        "y":  1102,
+                                        "width":  10,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  102,
+                                        "y":  1115,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  111,
+                                        "y":  1101,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  139,
+                                        "y":  1102,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  172,
+                                        "y":  1102,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "occasionally",
+                                        "x":  208,
+                                        "y":  1101,
+                                        "width":  115,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  329,
+                                        "y":  1102,
+                                        "width":  42,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "harassed",
+                                        "x":  378,
+                                        "y":  1102,
+                                        "width":  79,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "x":  463,
+                                        "y":  1102,
+                                        "width":  22,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "h1S",
+                                        "x":  491,
+                                        "y":  1101,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "fans.",
+                                        "x":  524,
+                                        "y":  1102,
+                                        "width":  43,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. He has been guarded by a discreet assistant.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  113,
+                                        "y":  1132,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  140,
+                                        "y":  1132,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  172,
+                                        "y":  1132,
+                                        "width":  30,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "been",
+                                        "x":  208,
+                                        "y":  1131,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "guarded",
+                                        "x":  258,
+                                        "y":  1131,
+                                        "width":  73,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "x":  337,
+                                        "y":  1132,
+                                        "width":  23,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  367,
+                                        "y":  1137,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "discreet",
+                                        "x":  382,
+                                        "y":  1131,
+                                        "width":  72,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "assistant.",
+                                        "x":  459,
+                                        "y":  1132,
+                                        "width":  83,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. He is well known tO the public.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  113,
+                                        "y":  1161,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  140,
+                                        "y":  1162,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  172,
+                                        "y":  1161,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "well",
+                                        "x":  193,
+                                        "y":  1161,
+                                        "width":  39,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "known",
+                                        "x":  238,
+                                        "y":  1161,
+                                        "width":  63,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "tO",
+                                        "x":  307,
+                                        "y":  1164,
+                                        "width":  17,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  331,
+                                        "y":  1162,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "public.",
+                                        "x":  365,
+                                        "y":  1161,
+                                        "width":  62,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. He is a famous football coach.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  113,
+                                        "y":  1192,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  141,
+                                        "y":  1192,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  173,
+                                        "y":  1191,
+                                        "width":  15,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  195,
+                                        "y":  1196,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "famous",
+                                        "x":  210,
+                                        "y":  1191,
+                                        "width":  67,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "football",
+                                        "x":  284,
+                                        "y":  1191,
+                                        "width":  71,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "coach.",
+                                        "x":  361,
+                                        "y":  1191,
+                                        "width":  58,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "6 ， A. Serve as a personal assistant.",
+                      "words":  [
+                                    {
+                                        "text":  "6",
+                                        "x":  90,
+                                        "y":  1221,
+                                        "width":  11,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  102,
+                                        "y":  1235,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  111,
+                                        "y":  1221,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Serve",
+                                        "x":  140,
+                                        "y":  1221,
+                                        "width":  51,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  198,
+                                        "y":  1225,
+                                        "width":  18,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  223,
+                                        "y":  1225,
+                                        "width":  9,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "personal",
+                                        "x":  238,
+                                        "y":  1221,
+                                        "width":  78,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "assistant.",
+                                        "x":  323,
+                                        "y":  1221,
+                                        "width":  82,
+                                        "height":  18
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. PIay a key role in ReaI Madrid.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  113,
+                                        "y":  1251,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "PIay",
+                                        "x":  140,
+                                        "y":  1251,
+                                        "width":  40,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  186,
+                                        "y":  1256,
+                                        "width":  11,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "key",
+                                        "x":  202,
+                                        "y":  1251,
+                                        "width":  33,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "role",
+                                        "x":  241,
+                                        "y":  1251,
+                                        "width":  35,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  283,
+                                        "y":  1251,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "ReaI",
+                                        "x":  306,
+                                        "y":  1251,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Madrid.",
+                                        "x":  354,
+                                        "y":  1251,
+                                        "width":  72,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. Run common daily chores for the woman.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  113,
+                                        "y":  1281,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Run",
+                                        "x":  140,
+                                        "y":  1281,
+                                        "width":  38,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "common",
+                                        "x":  184,
+                                        "y":  1286,
+                                        "width":  80,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "daily",
+                                        "x":  270,
+                                        "y":  1281,
+                                        "width":  45,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "chores",
+                                        "x":  322,
+                                        "y":  1281,
+                                        "width":  59,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  388,
+                                        "y":  1281,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  420,
+                                        "y":  1281,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "woman.",
+                                        "x":  454,
+                                        "y":  1286,
+                                        "width":  72,
+                                        "height":  12
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. HeIp promote Mr. Sanchez\u0027s public profile.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  113,
+                                        "y":  1311,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "HeIp",
+                                        "x":  141,
+                                        "y":  1311,
+                                        "width":  44,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "promote",
+                                        "x":  191,
+                                        "y":  1313,
+                                        "width":  76,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "Mr.",
+                                        "x":  273,
+                                        "y":  1311,
+                                        "width":  32,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Sanchez\u0027s",
+                                        "x":  313,
+                                        "y":  1311,
+                                        "width":  90,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "public",
+                                        "x":  409,
+                                        "y":  1310,
+                                        "width":  57,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "profile.",
+                                        "x":  472,
+                                        "y":  1310,
+                                        "width":  66,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "7 ． A. He is honest and always tells the truth.",
+                      "words":  [
+                                    {
+                                        "text":  "7",
+                                        "x":  90,
+                                        "y":  1341,
+                                        "width":  10,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  102,
+                                        "y":  1354,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "A.",
+                                        "x":  111,
+                                        "y":  1340,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  139,
+                                        "y":  1341,
+                                        "width":  28,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  172,
+                                        "y":  1340,
+                                        "width":  14,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "honest",
+                                        "x":  193,
+                                        "y":  1341,
+                                        "width":  60,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  259,
+                                        "y":  1341,
+                                        "width":  33,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "always",
+                                        "x":  298,
+                                        "y":  1341,
+                                        "width":  63,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "tells",
+                                        "x":  368,
+                                        "y":  1341,
+                                        "width":  37,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  412,
+                                        "y":  1341,
+                                        "width":  27,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "truth.",
+                                        "x":  445,
+                                        "y":  1340,
+                                        "width":  48,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "B. He once worked part-tlme in university.",
+                      "words":  [
+                                    {
+                                        "text":  "B.",
+                                        "x":  113,
+                                        "y":  1371,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  140,
+                                        "y":  1371,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "once",
+                                        "x":  172,
+                                        "y":  1376,
+                                        "width":  43,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "worked",
+                                        "x":  221,
+                                        "y":  1371,
+                                        "width":  69,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "part-tlme",
+                                        "x":  296,
+                                        "y":  1373,
+                                        "width":  84,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  386,
+                                        "y":  1371,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "university.",
+                                        "x":  410,
+                                        "y":  1371,
+                                        "width":  95,
+                                        "height":  21
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "C. He cares little about his working hours.",
+                      "words":  [
+                                    {
+                                        "text":  "C.",
+                                        "x":  113,
+                                        "y":  1401,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  140,
+                                        "y":  1401,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "cares",
+                                        "x":  172,
+                                        "y":  1405,
+                                        "width":  46,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "little",
+                                        "x":  225,
+                                        "y":  1400,
+                                        "width":  42,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "about",
+                                        "x":  273,
+                                        "y":  1401,
+                                        "width":  51,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "his",
+                                        "x":  330,
+                                        "y":  1400,
+                                        "width":  26,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "working",
+                                        "x":  362,
+                                        "y":  1401,
+                                        "width":  76,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "hours.",
+                                        "x":  444,
+                                        "y":  1401,
+                                        "width":  56,
+                                        "height":  16
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "D. He has little previous work experience.",
+                      "words":  [
+                                    {
+                                        "text":  "D.",
+                                        "x":  113,
+                                        "y":  1431,
+                                        "width":  21,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "He",
+                                        "x":  141,
+                                        "y":  1431,
+                                        "width":  26,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "has",
+                                        "x":  173,
+                                        "y":  1430,
+                                        "width":  30,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "little",
+                                        "x":  210,
+                                        "y":  1430,
+                                        "width":  43,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "previous",
+                                        "x":  257,
+                                        "y":  1430,
+                                        "width":  79,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "work",
+                                        "x":  342,
+                                        "y":  1430,
+                                        "width":  48,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "experience.",
+                                        "x":  396,
+                                        "y":  1430,
+                                        "width":  103,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 一 06 一 CET6 （ 第 2 套 ） 一 1",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  446,
+                                        "y":  1496,
+                                        "width":  45,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  493,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "06",
+                                        "x":  500,
+                                        "y":  1495,
+                                        "width":  22,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  523,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "CET6",
+                                        "x":  531,
+                                        "y":  1495,
+                                        "width":  54,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "（",
+                                        "x":  586,
+                                        "y":  1496,
+                                        "width":  6,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  596,
+                                        "y":  1492,
+                                        "width":  16,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  622,
+                                        "y":  1496,
+                                        "width":  10,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  640,
+                                        "y":  1492,
+                                        "width":  19,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  661,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  669,
+                                        "y":  1505,
+                                        "width":  7,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "1",
+                                        "x":  678,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

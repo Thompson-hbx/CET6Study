@@ -1,0 +1,233 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2023_12_2\\page-12.jpg",
+    "unverifiedOCR":  true,
+    "text":  "services for the elderly. With the jOint efforts Of the government and social organizations, the elderly will live a happier life. 2023 刁 2-CET6( 第 2 套 ） 一 12",
+    "lines":  [
+                  {
+                      "text":  "services for the elderly. With the jOint efforts Of the government and social organizations, the elderly",
+                      "words":  [
+                                    {
+                                        "text":  "services",
+                                        "x":  91,
+                                        "y":  145,
+                                        "width":  72,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "x":  172,
+                                        "y":  145,
+                                        "width":  27,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  206,
+                                        "y":  145,
+                                        "width":  29,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly.",
+                                        "x":  242,
+                                        "y":  145,
+                                        "width":  67,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "With",
+                                        "x":  318,
+                                        "y":  145,
+                                        "width":  45,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  371,
+                                        "y":  145,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "jOint",
+                                        "x":  405,
+                                        "y":  145,
+                                        "width":  44,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "efforts",
+                                        "x":  457,
+                                        "y":  145,
+                                        "width":  58,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "Of",
+                                        "x":  524,
+                                        "y":  145,
+                                        "width":  21,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  551,
+                                        "y":  145,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "government",
+                                        "x":  587,
+                                        "y":  148,
+                                        "width":  109,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  705,
+                                        "y":  145,
+                                        "width":  33,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "social",
+                                        "x":  746,
+                                        "y":  145,
+                                        "width":  53,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "organizations,",
+                                        "x":  807,
+                                        "y":  145,
+                                        "width":  128,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  944,
+                                        "y":  145,
+                                        "width":  28,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "elderly",
+                                        "x":  980,
+                                        "y":  145,
+                                        "width":  64,
+                                        "height":  22
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "will live a happier life.",
+                      "words":  [
+                                    {
+                                        "text":  "will",
+                                        "x":  90,
+                                        "y":  175,
+                                        "width":  35,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "live",
+                                        "x":  132,
+                                        "y":  175,
+                                        "width":  34,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  172,
+                                        "y":  180,
+                                        "width":  10,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "happier",
+                                        "x":  187,
+                                        "y":  175,
+                                        "width":  70,
+                                        "height":  22
+                                    },
+                                    {
+                                        "text":  "life.",
+                                        "x":  262,
+                                        "y":  175,
+                                        "width":  35,
+                                        "height":  17
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2023 刁 2-CET6( 第 2 套 ） 一 12",
+                      "words":  [
+                                    {
+                                        "text":  "2023",
+                                        "x":  441,
+                                        "y":  1496,
+                                        "width":  44,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "刁",
+                                        "x":  486,
+                                        "y":  1496,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "2-CET6(",
+                                        "x":  506,
+                                        "y":  1496,
+                                        "width":  81,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  591,
+                                        "y":  1493,
+                                        "width":  16,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "2",
+                                        "x":  616,
+                                        "y":  1496,
+                                        "width":  11,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "套",
+                                        "x":  634,
+                                        "y":  1493,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "）",
+                                        "x":  655,
+                                        "y":  1496,
+                                        "width":  7,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  663,
+                                        "y":  1505,
+                                        "width":  6,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "12",
+                                        "x":  673,
+                                        "y":  1496,
+                                        "width":  20,
+                                        "height":  16
+                                    }
+                                ]
+                  }
+              ]
+}

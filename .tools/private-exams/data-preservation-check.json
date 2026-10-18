@@ -1,0 +1,58 @@
+[
+  {
+    "table": "words",
+    "before": 80,
+    "after": 80,
+    "unchangedOriginalRows": 80,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "reading_attempts",
+    "before": 0,
+    "after": 0,
+    "unchangedOriginalRows": 0,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "essays",
+    "before": 0,
+    "after": 0,
+    "unchangedOriginalRows": 0,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "word_reviews",
+    "before": 0,
+    "after": 0,
+    "unchangedOriginalRows": 0,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "daily_plans",
+    "before": 1,
+    "after": 1,
+    "unchangedOriginalRows": 1,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "word_schedules",
+    "before": 0,
+    "after": 0,
+    "unchangedOriginalRows": 0,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "coach_practices",
+    "before": 9,
+    "after": 13,
+    "unchangedOriginalRows": 9,
+    "missingOrChanged": 0
+  },
+  {
+    "table": "room_master_table",
+    "before": 1,
+    "after": 1,
+    "unchangedOriginalRows": 1,
+    "missingOrChanged": 0
+  }
+]

@@ -1,0 +1,4064 @@
+{
+  "purpose": "User-authorized personal backup to verified PRIVATE GitHub repository; no redistribution or APK bundling license asserted",
+  "resourceFiles": 768,
+  "learningSnapshotFolders": 19,
+  "files": [
+    {
+      "path": ".tools/backup-before-20261017/cet6_study.db",
+      "bytes": 69632,
+      "sha256": "e6b19995b9297401f4e11b860a9b3cc3e6c55e09363edd08ab878b13bc8a7bea"
+    },
+    {
+      "path": ".tools/backup-upgraded-20261017/cet6_study.db",
+      "bytes": 77824,
+      "sha256": "99c852f16895a0902a4787606f130df7a015a61cb458bfbd1371abc272e06447"
+    },
+    {
+      "path": ".tools/emulator-before-share-warm-20261018/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "6b60fd9cf913679ab2e83be7d308a0c5b91d9b4167eb3368f2413b056c6fd64d"
+    },
+    {
+      "path": ".tools/emulator-before-share-warm-20261018/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "3cb3b2b99aeefcb78f5e09f070f27051f0d9172880e25e4992996617c4d56f30"
+    },
+    {
+      "path": ".tools/emulator-before-share-warm-20261018/cet6_study.db-wal",
+      "bytes": 53592,
+      "sha256": "2dbdb515d42300357e42fc141f7a5856f802825b762f38a8ac913d88cfa54007"
+    },
+    {
+      "path": ".tools/emulator-reading-verified-20261018-103600/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "e9e9e0b46b5f7aca3d20bcd7d005eb76e26906d0129d2f95deaf45036db5106d"
+    },
+    {
+      "path": ".tools/emulator-reading-verified-20261018-103600/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "f84cfae361d5afe7f0867484e3b97b61b70079fa91bd0732fd4b63f31f96ada0"
+    },
+    {
+      "path": ".tools/emulator-reading-verified-20261018-103600/cet6_study.db-wal",
+      "bytes": 243112,
+      "sha256": "e6048becbc397ce776f53379d99c78cbbfb3ef5dae95f6c4046dc187510a1789"
+    },
+    {
+      "path": ".tools/fsrs-actual-new-20261017/cet6_study.db",
+      "bytes": 77824,
+      "sha256": "f7cdba5189d9ac2d24649379e5d93453b0e36ee47d9494825c247e0a4128532d"
+    },
+    {
+      "path": ".tools/fsrs-actual-repeat-20261017/cet6_study.db",
+      "bytes": 77824,
+      "sha256": "fcef6f9dc9f4bd1e896415a0235351e7174e4ba7eede0687c8aa4181967e6a0c"
+    },
+    {
+      "path": ".tools/fsrs-before/cet6_study.db",
+      "bytes": 69632,
+      "sha256": "e6b19995b9297401f4e11b860a9b3cc3e6c55e09363edd08ab878b13bc8a7bea"
+    },
+    {
+      "path": ".tools/g4-after/cet6_study.db",
+      "bytes": 106496,
+      "sha256": "329687f12b9dd89d6ff110f9f988de7006699aec92007bfc0a2176f714b80e05"
+    },
+    {
+      "path": ".tools/g4-before/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "ace075a09ec51808f083eb9d4bd93ccfc4730a2e6254674e1e83d33d0640fa33"
+    },
+    {
+      "path": ".tools/p1a-before/cet6_study.db",
+      "bytes": 4096,
+      "sha256": "94772575633b6f43be37fdc3bc98e81d25f0b53e7098b5f21d547a0f415a894c"
+    },
+    {
+      "path": ".tools/p1a-before/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "ab67dfd7fca67ee9baba8b02b801b2a598c65ae5defa449170e1f3e26754f941"
+    },
+    {
+      "path": ".tools/p1a-before/cet6_study.db-wal",
+      "bytes": 57712,
+      "sha256": "c67632d3173af216c4f374d83bb1249f17fef4ad9e1837d42917f7f909314681"
+    },
+    {
+      "path": ".tools/phone-after-g3-20261018-095606/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "59de74e6d714215d5a6aa0328a141043cea719a5ac5a9f6b85a221d6725e1254"
+    },
+    {
+      "path": ".tools/phone-after-g3-20261018-095606/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "0f4bbd58ead8a6aeb75b454ef329b7bf7998d0aabe67c4897b07c771cc2fc70d"
+    },
+    {
+      "path": ".tools/phone-after-g3-20261018-095606/cet6_study.db-wal",
+      "bytes": 32992,
+      "sha256": "43f2a5aa2746bd54554a7f94b8ed005653a4dec6e604772f88e0a8e1ba69b238"
+    },
+    {
+      "path": ".tools/phone-after-micro-20261018-105042/cet6_study.db",
+      "bytes": 106496,
+      "sha256": "7845527c2efe7788d94c4e94f3bb2eb72ad4e165c96b247b92a813720af94a5a"
+    },
+    {
+      "path": ".tools/phone-after-micro-20261018-105042/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "45afe0c2f5eb539e444a1d2f86ac1b6c658ab9f3427f285ff66b7206ea9c549b"
+    },
+    {
+      "path": ".tools/phone-after-micro-20261018-105042/cet6_study.db-wal",
+      "bytes": 82432,
+      "sha256": "6cc5012a0fb2430e4b3936ae21c0a1c13735a7406a0d344e99cdbfd07a79a759"
+    },
+    {
+      "path": ".tools/phone-before-feedback-20261018-101032/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "59de74e6d714215d5a6aa0328a141043cea719a5ac5a9f6b85a221d6725e1254"
+    },
+    {
+      "path": ".tools/phone-before-feedback-20261018-101032/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "92ab9a3d65e0eb642e695fd35d246513d90c48bc9283bae4cdfce90deb610303"
+    },
+    {
+      "path": ".tools/phone-before-feedback-20261018-101032/cet6_study.db-wal",
+      "bytes": 140112,
+      "sha256": "457b73221d8cb7828821f14133ea9ef38329e701a265f068f9a31cfdec3c259d"
+    },
+    {
+      "path": ".tools/phone-before-g3-20261018-095228/cet6_study.db",
+      "bytes": 77824,
+      "sha256": "5d7272b527e5a6a99dad2ca2fdb1af8a08d9490b0c65f2f28c54b0bd07be4444"
+    },
+    {
+      "path": ".tools/phone-before-g3-20261018-095228/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "47838751d9a6a50838639c8e55650df6e7d01629d387aed4933b9b369d1f592b"
+    },
+    {
+      "path": ".tools/phone-before-g3-20261018-095228/cet6_study.db-wal",
+      "bytes": 49472,
+      "sha256": "3168c4ec12b9acbbc57b8f6814f6443b21be4d7cca8de42b38d34df04455a1f3"
+    },
+    {
+      "path": ".tools/phone-before-micro-20261018-104456/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "59de74e6d714215d5a6aa0328a141043cea719a5ac5a9f6b85a221d6725e1254"
+    },
+    {
+      "path": ".tools/phone-before-micro-20261018-104456/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "549288bd4c7d8b06c57cc6f3b691090e5a87468eac49e015309caa6e6e2a5bf1"
+    },
+    {
+      "path": ".tools/phone-before-micro-20261018-104456/cet6_study.db-wal",
+      "bytes": 346112,
+      "sha256": "dad30674d8a5f2a3f4c43f756f4e4c132cbb84e502f3b335cb903d4dfbad36fd"
+    },
+    {
+      "path": ".tools/phone-reading-completed-20261018-100327/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "59de74e6d714215d5a6aa0328a141043cea719a5ac5a9f6b85a221d6725e1254"
+    },
+    {
+      "path": ".tools/phone-reading-completed-20261018-100327/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "aa74ef32613d4b4dac98b5e3a2ac9eccce6662de4132b3cf7abe0136a79c29e8"
+    },
+    {
+      "path": ".tools/phone-reading-completed-20261018-100327/cet6_study.db-wal",
+      "bytes": 127752,
+      "sha256": "a7c0b37bff583f9a5e2d48d01456c7ab567e3c120e5ff68117a17dde55b04d0a"
+    },
+    {
+      "path": ".tools/phone-writing-translation-20261018-103334/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "59de74e6d714215d5a6aa0328a141043cea719a5ac5a9f6b85a221d6725e1254"
+    },
+    {
+      "path": ".tools/phone-writing-translation-20261018-103334/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "189a4976c5bab1f22a2a360547fdd9b786ca79a7495c8bcbfdf5c708e3be3244"
+    },
+    {
+      "path": ".tools/phone-writing-translation-20261018-103334/cet6_study.db-wal",
+      "bytes": 300792,
+      "sha256": "fd118ea03c7c5421908fc72b1985597e67594dbe2f3c42f3b0f61ae96888c773"
+    },
+    {
+      "path": ".tools/phone-writing-translation-verified-20261018-103503/cet6_study.db",
+      "bytes": 86016,
+      "sha256": "59de74e6d714215d5a6aa0328a141043cea719a5ac5a9f6b85a221d6725e1254"
+    },
+    {
+      "path": ".tools/phone-writing-translation-verified-20261018-103503/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "b149e08f29d0ebfbc74793216ab0b16eda0ce67b0a6dfefe44d894eb43ae7424"
+    },
+    {
+      "path": ".tools/phone-writing-translation-verified-20261018-103503/cet6_study.db-wal",
+      "bytes": 329632,
+      "sha256": "968b20896f9d35d25aa9f46ad34e2503e21ab72dabedeaec8b5d908489c4f0a9"
+    },
+    {
+      "path": ".tools/private-exams/OTHER_AGENT_AUDIT.json",
+      "bytes": 27058,
+      "sha256": "65a7d609d1928c93fd4ec0d579cba12504aa7ebf3cc5ff3a888c5100dc75fcad"
+    },
+    {
+      "path": ".tools/private-exams/OTHER_AGENT_REVIEW.md",
+      "bytes": 5947,
+      "sha256": "c8a36c40e454627e63a500c35fc969ec738f2f32388f0d08aed12d74066e1125"
+    },
+    {
+      "path": ".tools/private-exams/RESOURCE_REPORT.md",
+      "bytes": 26542,
+      "sha256": "63d6085012a8873acb1516441f17256e656bbf419b9cbf4f25a57165391cbee7"
+    },
+    {
+      "path": ".tools/private-exams/acquisition.log",
+      "bytes": 1634,
+      "sha256": "83f78115682cacce4d0e4d16d4a6f3afffa4bc3aeeb627136b0ddb97a281bcd0"
+    },
+    {
+      "path": ".tools/private-exams/agent-download-audit.json",
+      "bytes": 11198,
+      "sha256": "342c92fd1e21fdaed25ce4502be492fcf087debdc07e29732ef275130a12f7ff"
+    },
+    {
+      "path": ".tools/private-exams/agent-download-dry-run.log",
+      "bytes": 3481,
+      "sha256": "455f0db369b606902f69b17a2e7965a8a45143c09bc9b37f10f726e0c32508f3"
+    },
+    {
+      "path": ".tools/private-exams/agent-extracted/cet6-recent-years.json",
+      "bytes": 274482,
+      "sha256": "8051f708b89eb058133d2082ccb4d7020d6eb4743688b05f0fd929631cb93404"
+    },
+    {
+      "path": ".tools/private-exams/agent-extraction.log",
+      "bytes": 1044,
+      "sha256": "f82caabf7dc28ffd2ad56019c9ad641675fc737edc9f96f7959dae0300c9a3fa"
+    },
+    {
+      "path": ".tools/private-exams/candidate-pack-unreviewed.json",
+      "bytes": 270840,
+      "sha256": "1706f965c092ba585e488d1acce1a8ee7eee9b9ab02c265d0f761622700b0824"
+    },
+    {
+      "path": ".tools/private-exams/data-preservation-check.json",
+      "bytes": 1095,
+      "sha256": "f51c38fdf04578eb3121b75a93278dc6f2868ae1fcbbc8004de6c70efcddb94c"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_03_1.pdf",
+      "bytes": 2087220,
+      "sha256": "6fb1fd005a0677e2cf8009000562cd30f41351d93eebf5c57519b7b5ba10213a"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_03_1_ans.pdf",
+      "bytes": 3952607,
+      "sha256": "bf81c167a635f8120495d77393642b2c8c54ef040bc0239e65a6953a2979b0ec"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_03_2-3.pdf",
+      "bytes": 564588,
+      "sha256": "2570952cd5781945f79b1e98a48266fb04f8ab815226d504941c14110683b8ea"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_03_2-3_ans.pdf",
+      "bytes": 788629,
+      "sha256": "67cb0dbd2001fc8c9f6d73177c8f9509aa9652b294e017e1f06280cd71aac053"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_06_1.pdf",
+      "bytes": 2166290,
+      "sha256": "a64db8e40f453ed492ca11b86a9788e760bac393210809965215082d06256859"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_06_1_ans.pdf",
+      "bytes": 3998977,
+      "sha256": "10eb0d5fabd474de7a7fa4662b652b7ed346dff955e43639f9ce35d34be12f4b"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_06_2.pdf",
+      "bytes": 2140027,
+      "sha256": "2eef014b50171097056d0f0f0cff7e115c4202a9299d3e860b9dba15fb56efd9"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_06_2_ans.pdf",
+      "bytes": 4095971,
+      "sha256": "cad4430dd1077d4fa67ec65b82ab4fe703d16b6e0ba3931469fbb325d8cef201"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_06_3.pdf",
+      "bytes": 1696021,
+      "sha256": "12c74cd2a8ce94dc3efa2a178af99c36df6d03fe1611f178c89a9392c4e26ca2"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_06_3_ans.pdf",
+      "bytes": 2480122,
+      "sha256": "ba703aec961b4fb6f32a9352cd446bf9161a194f73f5d7081b8f82ce1aa54e44"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_12_1.pdf",
+      "bytes": 2177653,
+      "sha256": "942e09a84d31a40ffd1bc77fcb5bb0611a05a1bb7408e0514ffbc4807ae40a9a"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_12_1_ans.pdf",
+      "bytes": 4337532,
+      "sha256": "ad69525f548d6cf1d331a50e8e6ede4ae9e7eff98e0fb264ceaba05789b408da"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_12_2.pdf",
+      "bytes": 2233496,
+      "sha256": "35f400af8df9a622f257dd9e460513e09d609ddd82716cbba924736cd389c3b9"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_12_2_ans.pdf",
+      "bytes": 4275436,
+      "sha256": "14fdc572b79c8e05529653653d03c3229c42338d95a79caf4e3f9620397d4262"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_12_3.pdf",
+      "bytes": 1706154,
+      "sha256": "863dce5f60d8f4dad1b0920e70bcba80542644750f517f634be950c61f4b1fd6"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2023_12_3_ans.pdf",
+      "bytes": 2580492,
+      "sha256": "06d37c126560c340ae2a65728a5bdd8305f621a8a04fc9a52254b96dfae8c158"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_06_1.pdf",
+      "bytes": 377948,
+      "sha256": "ef879d945d233082b357ac48a524d9f755b4aa63deffa246c6cb86c32440431f"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_06_1_ans.pdf",
+      "bytes": 4052285,
+      "sha256": "42f6e5da3395b3dccdb2669e7bc3321f30b7d45f93d862cb3ca30569a31b0425"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_06_2.pdf",
+      "bytes": 263843,
+      "sha256": "3df3ad48a9094dac4cc62aee9b80c05b6cfd3b140ff1d121986ed2edd670c48c"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_06_2_ans.pdf",
+      "bytes": 4012164,
+      "sha256": "0a21dd50e50577134303fd0e15dece6f16a2ef1d89fb57d1dcda20acc383ef83"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_06_3.pdf",
+      "bytes": 339662,
+      "sha256": "58bdf2e4cf9ad757887bac3e3901f66e092e8e7d7d0c6b56a6c137c0b2d00d54"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_06_3_ans.pdf",
+      "bytes": 2267958,
+      "sha256": "389494605c21e439c776bace09a376274fb7ffe798909cd129ccaf7e3fbb6558"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_12_1.pdf",
+      "bytes": 371414,
+      "sha256": "5d71737190c7a6951d25c9ecd8645c0068ceb29f032f5962c94ea8d776e46672"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_12_1_ans.pdf",
+      "bytes": 4147614,
+      "sha256": "d38117a060c24d64d4155ed94d1d6d53ed359387ce4b42e3fa4c314bbe5be11e"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_12_2.pdf",
+      "bytes": 354412,
+      "sha256": "de0f410d0edaa896970727b75cee67960b52459588ad7a7331d18f4c97d0dff4"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_12_2_ans.pdf",
+      "bytes": 4138091,
+      "sha256": "ba1adaa0c37803dd04a105410cd22c8ca39df1694f8022195bbe69621736b6bd"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_12_3.pdf",
+      "bytes": 319338,
+      "sha256": "4eff618e3b7b6ab54f2c9c2528b6ac23039c3650af035bd3d4bb3e104a775d8f"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2024_12_3_ans.pdf",
+      "bytes": 2652407,
+      "sha256": "f6469f9b62d2a3e84f20abc697eeb40d89fd1c1a7b5584588e840a30c09036d8"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_06_1.pdf",
+      "bytes": 356282,
+      "sha256": "15ac17ef0cf3089ca11c833ecd20b55955b33b4043f27093280222a0d79117b8"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_06_1_ans.pdf",
+      "bytes": 4745121,
+      "sha256": "19f33693d4e9b6f0d4b709c035bfc37b7a9efedb1c430dd81c383330a7eaabbe"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_06_2.pdf",
+      "bytes": 361272,
+      "sha256": "7b6186d254a6910a18e17de09e2112f37f4b4d0d6370626b9fbedbc09e73c11c"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_06_2_ans.pdf",
+      "bytes": 4586614,
+      "sha256": "572a48d26cc248013f24e8eb456f463cced743877a6f9907f4a7e51ed94a96ac"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_06_3.pdf",
+      "bytes": 325142,
+      "sha256": "0b517826acf7326d7528bf0f4d92ec24a30a095ec6bf05610d6a3ce1722a1696"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_06_3_ans.pdf",
+      "bytes": 2879353,
+      "sha256": "7998dce6589556e93193d7b73b0c4502fb1b8da58bfb3d9daeb394934ae085fe"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_12_1.pdf",
+      "bytes": 307920,
+      "sha256": "4fac338c84e06f95f341947d9944b3f5434d0074705762eb0a2c8945499dc1a3"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_12_1_ans.pdf",
+      "bytes": 4262874,
+      "sha256": "62476a894db0d68e6ff94688a7b9fab88479992dc67d53714a17b2a6c14b9fe5"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_12_2.pdf",
+      "bytes": 303543,
+      "sha256": "ad6b856ce3aa9647344d7ad1caa4bfbcbb074effa49f1ab787f7ab20859d52ed"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_12_2_ans.pdf",
+      "bytes": 4402707,
+      "sha256": "12c8f46be673a6aefc2b34ec8d093187a3b91ec8f91f65cd45bf5cec8d241b80"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_12_3.pdf",
+      "bytes": 299050,
+      "sha256": "9151ec800264de84ecee25f07bd37bee283c411ae821259fd6055cbf9b1d7c2b"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2025_12_3_ans.pdf",
+      "bytes": 2465967,
+      "sha256": "0678793832a086d7949e66a6301e453f9f678bf6bd34d990d2f415e1b64b7d05"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2026_06_1.pdf",
+      "bytes": 143281,
+      "sha256": "bcfa7f21ac278e6e652d03afe9c90d329d6e78bd7289b60f0aee47c561d47adb"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2026_06_1_ans.pdf",
+      "bytes": 3951157,
+      "sha256": "711023b3f40c70c3c44238c0db8a7a4b076accf3a7c894f7388baec5633660d8"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2026_06_2.pdf",
+      "bytes": 146859,
+      "sha256": "e3c61874e3d089e36ba315c47e3d2b7f4161e65edd01b271ae80f8314a255a3a"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2026_06_2_ans.pdf",
+      "bytes": 4034413,
+      "sha256": "84551fb0f1c7244764bb72bd22f65dfe38438a00dc9049c553607e8b0e13332e"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2026_06_3.pdf",
+      "bytes": 140114,
+      "sha256": "4dea7771d7bb282f4d0ba7473a89b0e77c4576b101d683906626ef968769e846"
+    },
+    {
+      "path": ".tools/private-exams/downloads/cet6_2026_06_3_ans.pdf",
+      "bytes": 2373341,
+      "sha256": "e37e8edb8b1932a506a761d31143c5ef5ca2019bb2d4ef106b40104a27e785de"
+    },
+    {
+      "path": ".tools/private-exams/downloads/wehuster-2026-06-1-paper.pdf",
+      "bytes": 143281,
+      "sha256": "bcfa7f21ac278e6e652d03afe9c90d329d6e78bd7289b60f0aee47c561d47adb"
+    },
+    {
+      "path": ".tools/private-exams/extraction-regression.json",
+      "bytes": 65,
+      "sha256": "99b354d56190d76403d5b423d45401f814d664c76c0299209c361eb944379c79"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_03_1.txt",
+      "bytes": 36,
+      "sha256": "022fdac1f75a7ab94bc7f61a4b3587a030ec02eca5cb1fc3e9cbae6d1fce704e"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_03_1_ans.txt",
+      "bytes": 68,
+      "sha256": "84812fb36d9fc31ce802c4cf9fa3c8615f197a767cd764cebdb739e0710b98de"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_03_2-3.txt",
+      "bytes": 12,
+      "sha256": "9c8d0d8dc8633ab1a8324bcd19679616729360171fde33812b12c335938f45dc"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_03_2-3_ans.txt",
+      "bytes": 12,
+      "sha256": "9c8d0d8dc8633ab1a8324bcd19679616729360171fde33812b12c335938f45dc"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_06_1.txt",
+      "bytes": 40,
+      "sha256": "ee883a2b8d2e7fdcb89f6ba4485c41730de915d7cb0dffcff97fb2a5cb897706"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_06_1_ans.txt",
+      "bytes": 56,
+      "sha256": "a9fd3223fc4db3af4d2ff0f2a0e39d1deb873dfdef3fdf7c92d05814acc200bb"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_06_2.txt",
+      "bytes": 36,
+      "sha256": "022fdac1f75a7ab94bc7f61a4b3587a030ec02eca5cb1fc3e9cbae6d1fce704e"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_06_2_ans.txt",
+      "bytes": 56,
+      "sha256": "a9fd3223fc4db3af4d2ff0f2a0e39d1deb873dfdef3fdf7c92d05814acc200bb"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_06_3.txt",
+      "bytes": 28,
+      "sha256": "d92b9b8fad1e11b3a62063ce0cc73bdc4fad214b6ceb247086588bf1e10f767d"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_06_3_ans.txt",
+      "bytes": 32,
+      "sha256": "01bf59209d2b7d7c5699f654f63165d75e472367cbe4ab4e2dd85fd9a50a21ec"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_12_1.txt",
+      "bytes": 40,
+      "sha256": "ee883a2b8d2e7fdcb89f6ba4485c41730de915d7cb0dffcff97fb2a5cb897706"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_12_1_ans.txt",
+      "bytes": 76,
+      "sha256": "0ce36791360afe3668423c924f4a332d04bb93149355eb7c305c7526f96b9695"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_12_2.txt",
+      "bytes": 44,
+      "sha256": "638f4d870669ba599582b742514c79055b0798c6392c14a627d2a766736aa09f"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_12_2_ans.txt",
+      "bytes": 72,
+      "sha256": "34579e37618d1071e225153270cfb89bc7ea585a39d3eec9f43127adf131a408"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_12_3.txt",
+      "bytes": 28,
+      "sha256": "d92b9b8fad1e11b3a62063ce0cc73bdc4fad214b6ceb247086588bf1e10f767d"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2023_12_3_ans.txt",
+      "bytes": 44,
+      "sha256": "638f4d870669ba599582b742514c79055b0798c6392c14a627d2a766736aa09f"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_06_1.txt",
+      "bytes": 29821,
+      "sha256": "4c7706bf9534d2c6a455432ea2aae4d943175eeed9cb3ed7acdd85dfe93bc6ab"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_06_1_ans.txt",
+      "bytes": 76,
+      "sha256": "0ce36791360afe3668423c924f4a332d04bb93149355eb7c305c7526f96b9695"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_06_2.txt",
+      "bytes": 29283,
+      "sha256": "a1aaf0082c4a3f9aaa448e601b09a47e979d748361fd620a522bbcf99452875a"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_06_2_ans.txt",
+      "bytes": 76,
+      "sha256": "0ce36791360afe3668423c924f4a332d04bb93149355eb7c305c7526f96b9695"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_06_3.txt",
+      "bytes": 23187,
+      "sha256": "fdbf750f12d8ac0f322538358988bc5448f1c03f88361c3bb12353f60075e467"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_06_3_ans.txt",
+      "bytes": 44,
+      "sha256": "638f4d870669ba599582b742514c79055b0798c6392c14a627d2a766736aa09f"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_12_1.txt",
+      "bytes": 30032,
+      "sha256": "1cc3d55761c1b18b98e656fc7742d6f8670707847b6e64d126cfa872945536e3"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_12_1_ans.txt",
+      "bytes": 56,
+      "sha256": "a9fd3223fc4db3af4d2ff0f2a0e39d1deb873dfdef3fdf7c92d05814acc200bb"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_12_2.txt",
+      "bytes": 29169,
+      "sha256": "bf37dbbc50cc9358eaa5530fc16b8377863c37a087f47fe4e11e259ca2723c90"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_12_2_ans.txt",
+      "bytes": 56,
+      "sha256": "a9fd3223fc4db3af4d2ff0f2a0e39d1deb873dfdef3fdf7c92d05814acc200bb"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_12_3.txt",
+      "bytes": 23277,
+      "sha256": "fd87f424ffea8402753240b08bf66621d46dad520cbfeedb392c8d2513c4e665"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2024_12_3_ans.txt",
+      "bytes": 32,
+      "sha256": "01bf59209d2b7d7c5699f654f63165d75e472367cbe4ab4e2dd85fd9a50a21ec"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_06_1.txt",
+      "bytes": 31440,
+      "sha256": "3aa04c91518984ece99b14610ccdec48c0c3556a2196080becbf931e1dfd4bdf"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_06_1_ans.txt",
+      "bytes": 6598,
+      "sha256": "e86802e4746e9d8acc67a2b7e281d571f1c194760dbaa7214e342ae6628c6b92"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_06_2.txt",
+      "bytes": 29545,
+      "sha256": "0b8c8f799f2b4a63a937a33735cec53418c6ab9555c36e62478a74d50b8d1833"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_06_2_ans.txt",
+      "bytes": 76,
+      "sha256": "0ce36791360afe3668423c924f4a332d04bb93149355eb7c305c7526f96b9695"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_06_3.txt",
+      "bytes": 23922,
+      "sha256": "ee2527e72acfa80f231ee49ea39453337115ee6369be628e2cb6f9f90af9d27a"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_06_3_ans.txt",
+      "bytes": 44,
+      "sha256": "638f4d870669ba599582b742514c79055b0798c6392c14a627d2a766736aa09f"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_12_1.txt",
+      "bytes": 29014,
+      "sha256": "53372da1ab3a83a5e959d10c641ea46ac36d327ad00be91374f9e6d9eed59084"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_12_1_ans.txt",
+      "bytes": 68,
+      "sha256": "84812fb36d9fc31ce802c4cf9fa3c8615f197a767cd764cebdb739e0710b98de"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_12_2.txt",
+      "bytes": 29413,
+      "sha256": "6b9edafaa9f19a1abef701fd65dcbedb61d420c81e0f810ec52e343858581338"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_12_2_ans.txt",
+      "bytes": 72,
+      "sha256": "34579e37618d1071e225153270cfb89bc7ea585a39d3eec9f43127adf131a408"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_12_3.txt",
+      "bytes": 23106,
+      "sha256": "df8741af6f46cb989682ccad82a51d6776af3111e46f8997504998b52cbd6b0e"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2025_12_3_ans.txt",
+      "bytes": 40,
+      "sha256": "ee883a2b8d2e7fdcb89f6ba4485c41730de915d7cb0dffcff97fb2a5cb897706"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2026_06_1.txt",
+      "bytes": 28899,
+      "sha256": "89a94b1fe646a5c2b3fc9df064283cd89f1aaef19499e82b6629fc2f827e99ab"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2026_06_1_ans.txt",
+      "bytes": 80,
+      "sha256": "c01f01e48df8555ab2320e9990afc12f57a1fccc16b6a63692c0fb8b4da5090f"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2026_06_2.txt",
+      "bytes": 29813,
+      "sha256": "6814b317b5c7f824882249a871d2fd947cfec0fe238652ac09ed1d28107bdc09"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2026_06_2_ans.txt",
+      "bytes": 84,
+      "sha256": "8edb84062ae8e2635a75f8ae23335793d7cb087b6b2d46109a7a24b85526c4e7"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2026_06_3.txt",
+      "bytes": 22994,
+      "sha256": "d5d0bd9c1d366bc742360ba809a8006dafb558d42d8166a900fc41d79030bbc4"
+    },
+    {
+      "path": ".tools/private-exams/extracts/cet6_2026_06_3_ans.txt",
+      "bytes": 48,
+      "sha256": "faa18a38d96008711f280ffedc14d162c0810852bd5a7c99b9b07250e0b03c01"
+    },
+    {
+      "path": ".tools/private-exams/extracts/wehuster-2026-06-1-paper.txt",
+      "bytes": 28899,
+      "sha256": "89a94b1fe646a5c2b3fc9df064283cd89f1aaef19499e82b6629fc2f827e99ab"
+    },
+    {
+      "path": ".tools/private-exams/initial-source-index-provenance.json",
+      "bytes": 313,
+      "sha256": "a53bfda76392b0bbd0c80fdce0074e79f229c0db4b22b1d6fabb2cdf9d3a0d4e"
+    },
+    {
+      "path": ".tools/private-exams/initial-source-index.json",
+      "bytes": 24786,
+      "sha256": "35f8488a707ea66668a8b4e77d67cd540b31ef57b9ffcfe419798daa72ae42d8"
+    },
+    {
+      "path": ".tools/private-exams/manifest.json",
+      "bytes": 47438,
+      "sha256": "f983acd3dabf3cd1d28efc3a5984f27e613447c894cac042206a9c5469a211f3"
+    },
+    {
+      "path": ".tools/private-exams/manual-key-transcription.json",
+      "bytes": 1996,
+      "sha256": "2d2711f7e967e8a53ddd33fe749095738cee7d66ccfd55203752e77b00eb3efb"
+    },
+    {
+      "path": ".tools/private-exams/ocr-originals.log",
+      "bytes": 314,
+      "sha256": "b238da337a87f057746b0b44268c238ca733d46e672d1c4e29cbb5284720dca5"
+    },
+    {
+      "path": ".tools/private-exams/ocr.log",
+      "bytes": 991,
+      "sha256": "95f7b3d1e90db553eda662c32c8b026c3d648c28c73cfb8e8e9f6b2b83bfa5ae"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-01.jpg",
+      "bytes": 188836,
+      "sha256": "e82b0c6b7189d6c31486054867f88c7070c4e1872fddd4ab94cb0933ccb0ace9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-01.json",
+      "bytes": 189954,
+      "sha256": "d505a185b51c58b8ea74da2ae10fb30d1c60f3a375d2ab36faa0c658377489e3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-02.jpg",
+      "bytes": 184023,
+      "sha256": "57d08471e72f5b8b67f2d27b97d5ec3c7bfb9629358b7eccc081741cafe81b7c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-02.json",
+      "bytes": 205608,
+      "sha256": "2bb873c61d890bbcce224f135f97bdcc87320cc75192522b6d1972d6f37f52b8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-03.jpg",
+      "bytes": 206460,
+      "sha256": "9fb4ee9acad0ab92e197faa28a53e39ea7db060b59fb1a6adfc1498ebaa88cbe"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-03.json",
+      "bytes": 196936,
+      "sha256": "837777a5f18e07cfb6905e176097067a351722e3412c5086d5fc1deb2760b545"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-04.json",
+      "bytes": 230533,
+      "sha256": "420b31e2069ca65e580d5194de909f0de09ad1c156fdc89a3a19e7758ba7683c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-04.png",
+      "bytes": 234167,
+      "sha256": "72189658a7a4057eea565bb58ccfaf64caab74bc1a10c0961e86039c0ad54ff1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-05.json",
+      "bytes": 266497,
+      "sha256": "0808c566b44c3ab1516b728940b86803ce8266f025c27323b4d8373dd5d36959"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-05.png",
+      "bytes": 281050,
+      "sha256": "74836402409c3a5447b12128e16d6f77eaeff672df672e433a911820cbebd489"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-06.json",
+      "bytes": 216097,
+      "sha256": "7473c9e57de1e09353e2fa0a0214a30392394db874377c285e79e9c46107d80f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-06.png",
+      "bytes": 237152,
+      "sha256": "95f1f3e288b87a57857d7f013033f4bbb67f610c7c59ae6e1e199c30ca23ca78"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-07.json",
+      "bytes": 247724,
+      "sha256": "5e178767edba81ba333c072bb25394103133bfe79a73aa580fc5fb7f3d98e333"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-07.png",
+      "bytes": 266296,
+      "sha256": "88ad293027ba1bc2e7293df5901e05c98b21074fcfad27ad45c3c524284a8cc7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-08.json",
+      "bytes": 210597,
+      "sha256": "1ec8d4c243b265e356ffb2c717e1965e628d8f4d57a3cb5ee414f8d703d3db09"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-08.png",
+      "bytes": 226338,
+      "sha256": "1843c3df4a397debc218120c54dec7cc34b2afa57aad011c8023a809cdc50e2a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-09.jpg",
+      "bytes": 217479,
+      "sha256": "a8bada843130623d6a00c6474e7d08ae5ce7285a415fb1788e5b0c8fd85e7522"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-09.json",
+      "bytes": 234344,
+      "sha256": "17db37a4bbd723018124cf7b7dbcdf03bb4a9efaf3c62fa71512aaef73189cf6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-10.json",
+      "bytes": 130686,
+      "sha256": "27c51b81756abd3263c4b2c04865e2d18dc5ca3e0a70df40af2631069d53181a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1/page-10.png",
+      "bytes": 169890,
+      "sha256": "00bc1dbe07d0329bcbaa2c43ca001f1e4694513b83894456d5922236bfb20a23"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-11.jpg",
+      "bytes": 211664,
+      "sha256": "8055dfef261ad0a01eab68c256d48d422a7f67c92ded8d920dbe001a62903424"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-11.json",
+      "bytes": 425247,
+      "sha256": "2f75d6d2d3691288dbdf86dbe43d2cfdec9364d85b34e83603095490697efbb2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-12.jpg",
+      "bytes": 208328,
+      "sha256": "7d47bfca9349237a5f40c38a7f7235201951d6134f4119a2129c6cf3c7f9fc42"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-12.json",
+      "bytes": 419305,
+      "sha256": "ffe55eea9b9db543aa15d41de4e355fb1b02d1214ba7f5c67cfbf902efa71738"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-13.jpg",
+      "bytes": 257636,
+      "sha256": "ba2bcf7be85c004ad42ac3bcdd78704e4a76da73012c7d23f58b489782d82085"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-13.json",
+      "bytes": 522160,
+      "sha256": "5f7546c384a086ba5c1a6ff3e458f07d9e6543c374ad14621b3fefcce224ae79"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-14.jpg",
+      "bytes": 281694,
+      "sha256": "39afda9973f21389a5fc6c1b2ab980c7554e9c794a058cb170005bcdaa247547"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-14.json",
+      "bytes": 568005,
+      "sha256": "243bcf1471420fc6f69e77a2d93498598b7ab3c5533c254feec9a3b9da078579"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-15.jpg",
+      "bytes": 225756,
+      "sha256": "07c8a66225546b76aa7898fca8d271240b9275c9328f495632c5529335466225"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-15.json",
+      "bytes": 426885,
+      "sha256": "c7fadc06ef985e24b80c10f3d0d99ec606803f25a3f101811f9b0c258e9d481c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-16.jpg",
+      "bytes": 265003,
+      "sha256": "ae9b0e47b45f11ccae83e043ff0d5ae745209aa050f8fa23505f2cfaf24fac99"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-16.json",
+      "bytes": 515747,
+      "sha256": "1b0c135307a4f2a50006c34679175e2780fe30a259fe06f5fd839a4c890c284e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-17.jpg",
+      "bytes": 268425,
+      "sha256": "2f30b3ce9e26bc949fb70374eb39facfcfe18c25a66a57db133a7eb362277f92"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-17.json",
+      "bytes": 538738,
+      "sha256": "d861078086e36807446bffdbbc9c89fdad47662ecbb4d669af0428ca0a811c68"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-18.jpg",
+      "bytes": 181853,
+      "sha256": "f6ee9a5f3cc85c0af4724b87f5a2fff5ad14406739ab72617a29f71ceda2004b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_1_ans/page-18.json",
+      "bytes": 288987,
+      "sha256": "9c15004ed74ca944a49cbe422649ce616c7fabf8b36adbf470d2d6abfc79be19"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-01.jpg",
+      "bytes": 153286,
+      "sha256": "9bf2c2fd7a22d681d17014a8616da4d1fa280115fc32ec76fbd4944ef024e012"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-01.json",
+      "bytes": 190799,
+      "sha256": "037d8cf6e76f95b8b7f2cccab03fc98ba51c98a521f5ab25a3902168942ca642"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-02.json",
+      "bytes": 136395,
+      "sha256": "22dcc550045c9f1d773db8049b843964c2f85e8459bc015a7f45aa235d9d74d3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-02.png",
+      "bytes": 162119,
+      "sha256": "7b3a3e15ea49ec90b6fe1c1439548e4f08904dbf4f3499601092a6e050ceff25"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-03.jpg",
+      "bytes": 151197,
+      "sha256": "b66de3a553e570c32adb2c563c17dbe1fa4bd744e5031c39d70f895eba5628cd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-03.json",
+      "bytes": 187833,
+      "sha256": "bf7f2459a2e945187d4ffcdf3c4c75771cc59401187c5c42b3aba1458d89a660"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-04.json",
+      "bytes": 134539,
+      "sha256": "1a8dd1e909f0494f05e3420504fb8dd218f2c1ffc8d876d6538607eb1612eee5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3/page-04.png",
+      "bytes": 160523,
+      "sha256": "b675eee89c2c4d1b7ccc10ceaf0c54c0d451a03fc847613683c78152641c69e1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-01.jpg",
+      "bytes": 210887,
+      "sha256": "9aabff3bb5a7a43b40ce89cf12f45eabf66ef468413f56a1dd6893ee41310e51"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-01.json",
+      "bytes": 329899,
+      "sha256": "f1b36c07c3ed850713d08654226c0adfd8e90a59563a11a13997a1cea615a550"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-02.jpg",
+      "bytes": 215406,
+      "sha256": "6c8e05287a0142045a4e2eb86ad788f2b52e1c51f2efde92b921c56ea17c76e8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-02.json",
+      "bytes": 348611,
+      "sha256": "7371f9f668e22a15431212382fc451539f1f6b5e117e4f65a90162cc797ea30f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-03.jpg",
+      "bytes": 205337,
+      "sha256": "5732dceb76dd7a77fb25bd7b88e6968e3d97d032413de8dce2181dc53a900883"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-03.json",
+      "bytes": 327785,
+      "sha256": "7cbd8ea1a163a405f56d230a9c56ae916ace3e53df3c7e30b2c793092f0e7174"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-04.jpg",
+      "bytes": 208951,
+      "sha256": "314afc2b467a52a57df855895e2bce081526f8b20165bcff2fe5fa68288b624f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_03_2-3_ans/page-04.json",
+      "bytes": 333761,
+      "sha256": "25da94dab6c27c350c2a0d8d5dc1ff69b3d0e7b4aec1bcc8d552c73916783171"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-01.jpg",
+      "bytes": 194949,
+      "sha256": "161ab898830752e150122be1926792a706af3d19c9726c7ca0dbd2bbc46cdeb0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-01.json",
+      "bytes": 197349,
+      "sha256": "0152294f07b88ac6269137630b3490b8ef1cf493d16084b04fcba8a4c145370c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-02.jpg",
+      "bytes": 191483,
+      "sha256": "b5aff32c8f86f4540913d4346c6fa711dc01e2d613b27198e21deb8d10720532"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-02.json",
+      "bytes": 199849,
+      "sha256": "516461a53c949d33f76e77ef772f979344a3ac9db8e7ca799130a12f28677083"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-03.jpg",
+      "bytes": 195707,
+      "sha256": "76550ff8db7ca9b23f62cb8ed06c8ecb5badd8233948c9ab5f4302b891a23863"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-03.json",
+      "bytes": 175144,
+      "sha256": "8d0cb3cd06e412c121c076949bfc283b09437981cf193aea00dab632629ff8b6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-04.json",
+      "bytes": 219109,
+      "sha256": "db87554e18a67335fb8e1979459083da3048539b0f116a4629812231723ca180"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-04.png",
+      "bytes": 234565,
+      "sha256": "b88e43e96c62d95f34488f9f48a1941da0d3977e1b1487cae5aaab26218fe271"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-05.json",
+      "bytes": 274084,
+      "sha256": "3a56fa47771960e7c5ee4e5e6f03bb85e1508db4f2cd65f3cc1a66d9676b8771"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-05.png",
+      "bytes": 292649,
+      "sha256": "7d46a7a871b3dbdfb0eb93d5a5453e501a411fbb3c1df1ec0af39bcbe6958ccd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-06.json",
+      "bytes": 240411,
+      "sha256": "fb9731797a867a11962c321b8a190419c0a70a98d5785ef1a65da33afba43ce5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-06.png",
+      "bytes": 253272,
+      "sha256": "0aec0b66fa246e963d145990fb02b4d3f37e242d88b4c4b96a67d068a56d3240"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-07.json",
+      "bytes": 229983,
+      "sha256": "c07d648b5f250385e3af85cfc8dc45e245abaefa5da21be0bd5a61df36e8ef06"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-07.png",
+      "bytes": 248750,
+      "sha256": "4ed51daa2525cfe89816a7851616aa39dfd57b470a57aaac90094940ed3dab05"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-08.json",
+      "bytes": 226197,
+      "sha256": "54f216a9fae6fa0db298ae23e05b78b089610450ba77d35d5de6c03cfcadb676"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-08.png",
+      "bytes": 241124,
+      "sha256": "738f7db75eec17efdb0b645b10689d214a1eee061908e8aa3a96cae7108a46ec"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-09.jpg",
+      "bytes": 241457,
+      "sha256": "216d6678c051f34ba113319aaef4d7c8ae868b34de8423fb8f37c84e4e88f7b2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-09.json",
+      "bytes": 245374,
+      "sha256": "081391b9d84223cd6b799ca367043d0e4a2f53b4578cc227a67adf23df4de8f7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-10.json",
+      "bytes": 136723,
+      "sha256": "6256b5dede53b0456dad3b8601dfd886453870aa85d3475ebfd3fa3f881d8a3e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-10.png",
+      "bytes": 171929,
+      "sha256": "9ec3d9b38a9d04054111353dccf869b6e515a8cf7a09a256ba162445233ea68a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-11.jpg",
+      "bytes": 41100,
+      "sha256": "2d2fce28e671149d75789463720ad74e6f51ca2aaaeb5fd3a746ac2c734e3a74"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1/page-11.json",
+      "bytes": 18295,
+      "sha256": "746c5aa9fe92363f1b7e997cbe17ce1ff3cd0926c86764d167311f47e5091ab3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-08.jpg",
+      "bytes": 322297,
+      "sha256": "550c9c4121bf73306f621230f5a7251149c0629314967b4f7f3e72440b3ffb00"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-08.json",
+      "bytes": 628437,
+      "sha256": "ec30f92657dc88572cdf32e5934fc40cd66eea3250858128229c3a20ede77a6e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-09.jpg",
+      "bytes": 265366,
+      "sha256": "e844f7153296e20126f05d2344dbb3a423d538518d7219ff4d6149a821ea4671"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-09.json",
+      "bytes": 482680,
+      "sha256": "210fa31ed6b19ec34e680c7d3d445f4ba4914339624cb45699667324c689537a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-10.jpg",
+      "bytes": 320064,
+      "sha256": "7c3350e79e9fcc9bbdaf36b2c1c6e31f2660c37fe500839a687d1c6ab6a4f082"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-10.json",
+      "bytes": 614943,
+      "sha256": "ff040ff8fc7aca2b51f629c4f0adee9b896bfb7ac07256e6f2f7123ebc42ff8a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-11.jpg",
+      "bytes": 299698,
+      "sha256": "15fda8997b93f21821d84e82449219f948addf8623b493f6136c3d305a3f0e32"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-11.json",
+      "bytes": 570613,
+      "sha256": "260ba87afa901e50475fe4ad026e6b7c208cff6a48f403805ac2cf62a650ba2d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-12.jpg",
+      "bytes": 318907,
+      "sha256": "709d8352fc1c3c00eb47c85097731c35e307c4cc89cad0b2c39b1a3adb270a19"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-12.json",
+      "bytes": 640993,
+      "sha256": "27397d055b89ea2d4ce7bbda9badaca975d4c40d679bb976d60fc7fd954cfb8d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-13.jpg",
+      "bytes": 287917,
+      "sha256": "f9f1210bca6929f7cd499c802c9921739063ee30e4b81492dd4e2ee63b3e06a0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-13.json",
+      "bytes": 548768,
+      "sha256": "7ab63a960d626dbc2a00b3ed8c498afa7b8a1815098f223d5d837c731bc669d5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-14.jpg",
+      "bytes": 318303,
+      "sha256": "c520da2eef6e3906a03ea5487f9c3f935458a172eac37a2160f2fc26a0441350"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-14.json",
+      "bytes": 667773,
+      "sha256": "5bf43a12f6645544b0d93675c76572579cd9e37282e977080c66b43e8c6f21f1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-15.jpg",
+      "bytes": 176364,
+      "sha256": "602d4463b0908a4256b4e4ae7dd78c579edbf1d5ab9c1813a81aac0ac86824aa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_1_ans/page-15.json",
+      "bytes": 247859,
+      "sha256": "e6ab7eb80b8b6f732d079695eb001ddbaf81de2f9c786806c19b717d6da48b7c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-01.jpg",
+      "bytes": 178423,
+      "sha256": "c8ffe92b5f5b9af353d46c84b9a009f095bd4db0ddd30a08285cc458433a7348"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-01.json",
+      "bytes": 190651,
+      "sha256": "b0cefc7726dc5300e911fcca41876a79fd0114b37417971e00cebe05dfc42e12"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-02.jpg",
+      "bytes": 190199,
+      "sha256": "a465b12a3a9435ad336e72b50f769b0eb8d47b83e0b0ec863c63c7fbbc196284"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-02.json",
+      "bytes": 210870,
+      "sha256": "44f3e00f890a3f501084bdeb8afa98f957749e847529760b4a7f48767e762627"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-03.json",
+      "bytes": 166375,
+      "sha256": "6f11178b76e6a61b5581d48428ae65a8c7982391fee93013fe63ae6fd252a7ed"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-03.png",
+      "bytes": 187365,
+      "sha256": "f2534c2bc033fc639a00d1020af804e1966a846b70b263af2b86d29ad1c33b10"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-04.jpg",
+      "bytes": 244311,
+      "sha256": "a6a9ef7d4e601a7ed45a74d18338e8ea956c6fd1dff247fb5b30c80fab9107e9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-04.json",
+      "bytes": 247344,
+      "sha256": "cc5944a0826d77e04f665f12a2e915b620179f2987e3ad6eea0f31703ec645fc"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-05.json",
+      "bytes": 270308,
+      "sha256": "0269b29fb2e0fb55afe289c96eb94abacbb2f6ba513ef0343ff3a442dde566cf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-05.png",
+      "bytes": 288617,
+      "sha256": "d2203cea5ff3a92599aa383739c1b3740d7cefaac495abeabee8415be3689385"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-06.json",
+      "bytes": 270266,
+      "sha256": "13483db437207e53dfa2c15b8a107c8a32de85e1b39024b01edaa4036b2bc4c2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-06.png",
+      "bytes": 277583,
+      "sha256": "bc57b541c15d3af09aea7a430451dc0c29841c6d8aef632fedd99bb85ecd1439"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-07.json",
+      "bytes": 246726,
+      "sha256": "a9d8170bd3d60605c96676359b83209efa656b25100d85d331349665b68ad72b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-07.png",
+      "bytes": 254766,
+      "sha256": "e9481cf847b9f7e9f421a412144f2b9a9bba89c373912159a907326776c40a8e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-08.json",
+      "bytes": 228901,
+      "sha256": "f4a53ff58f87453dba5f89d9b5cd6553360975a6504ed780cac5b13287c78bdf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-08.png",
+      "bytes": 256741,
+      "sha256": "db0572b16c3384cd176f380177eb441066dc0e5b9427f3318af0ad54263116b4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-09.jpg",
+      "bytes": 218273,
+      "sha256": "e0b0788ea14d0a04ecc76143fe187580039e6eb3eca4944ea45c62b664b1e67a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-09.json",
+      "bytes": 223372,
+      "sha256": "306c2e0b208051e172f9f013f50ecc18ca7d9803e8af26744e3fcca0bcd035ab"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-10.json",
+      "bytes": 133492,
+      "sha256": "65234b1173aed2e0da3f86a7c33b40133c7a7642390b29bf036c1535be9ad446"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2/page-10.png",
+      "bytes": 166462,
+      "sha256": "e313922a32b2aa4d94c10486345d3f792ab4bc6008d11b1ef41202ca30598571"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-08.jpg",
+      "bytes": 282371,
+      "sha256": "fdb6dee8104604bf7c92d4361b42c2b942412f261e52a1d234bde0880e72e63b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-08.json",
+      "bytes": 544041,
+      "sha256": "68347cf108a14ee0ed9ef897b6d0f2a5b1744d79fedc5eae370ba579668df0ea"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-09.jpg",
+      "bytes": 307677,
+      "sha256": "fd4dd006f283dd8e76e8705d4dc187c054d752f054b97641eb476af8fefbbb5b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-09.json",
+      "bytes": 551856,
+      "sha256": "6a5f69b0e9c57333c8a809dbf66d6c097605cfe13803099988320b941e78210c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-10.jpg",
+      "bytes": 322494,
+      "sha256": "e55b17c0c52bf4967dbe1c35ae2af45297ed475ae32dfea633fb7f9cb201f163"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-10.json",
+      "bytes": 631439,
+      "sha256": "068757e94387a09c73072d86b9560436a2e8fd76136accaee9a18eb48bfd99da"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-11.jpg",
+      "bytes": 305650,
+      "sha256": "90272ff0e628205b34d72f7bb9268c4236f8e91d0c8e2a12bd516dac03f79870"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-11.json",
+      "bytes": 598802,
+      "sha256": "92d1893358a4cc4fd62b6727e6f485bcdc44e237c26102a1bba9897e11ca4bcd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-12.jpg",
+      "bytes": 333302,
+      "sha256": "1de632d3cd660a433c5232ab2213a6ce53983f0f25020b3507ba15c1db6fc8e6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-12.json",
+      "bytes": 701589,
+      "sha256": "f0f6a683b13c4da067eca1e5446b8da543f1c0ca3446f1e4aa631a32141608ff"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-13.jpg",
+      "bytes": 278090,
+      "sha256": "6fdf25dad13eb2005e97f18ee69662d0f7bb613ddfa27068f4661a15701b76f7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-13.json",
+      "bytes": 525494,
+      "sha256": "f7583a807936966990ab1f51954b06c1708476353422f056cb711c8bbba6b9aa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-14.jpg",
+      "bytes": 339696,
+      "sha256": "b3d43fcbad971700be5c7e6e55abbe8a1a31412fd5f223b400abca67e2398ead"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-14.json",
+      "bytes": 672187,
+      "sha256": "178c07deab47925331f9dc794fc5aa619d2a432ae64cf29355817d802873bd4a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-15.jpg",
+      "bytes": 150584,
+      "sha256": "83ede6da5bc08a78a6e8890988ccfd71e9c4537cb5230c9458f5df9adfd6d0a7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_2_ans/page-15.json",
+      "bytes": 194176,
+      "sha256": "a2df3f509ace05834aea833026808e9d0defd6a14a7e459cdc09a208ffebfa4c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-01.jpg",
+      "bytes": 207408,
+      "sha256": "cfd8c31681ef477334091ee2abedb86ebc205b79515835ad193da6e6e8df3f0f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-01.json",
+      "bytes": 185266,
+      "sha256": "f386bc6e0ddf00adf5d2c5c22e7119b9579dd46717250ddfe4d3dcde140d2730"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-02.json",
+      "bytes": 222213,
+      "sha256": "f0f80a5831950076bd5fd3e3f787a6a08414ab05cafb1e8364bc9d39db3dd0fb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-02.png",
+      "bytes": 231390,
+      "sha256": "2231cfa4fc424806094ed34778af5c77136f8909264a4ac1cd228df9cb362005"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-03.json",
+      "bytes": 284989,
+      "sha256": "0903b0820ee776126995f1b40260d9d21097c57bdaf5964fa12422bde630aff3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-03.png",
+      "bytes": 288201,
+      "sha256": "204efcaa078064dc7d81db157180052b5387b9aec6d10ed2e79ef5106c8cd736"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-04.json",
+      "bytes": 249135,
+      "sha256": "cc6de0790a8a6fe56ca3755ecea47df577d8649ea1fced71ec045bd8358a65d8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-04.png",
+      "bytes": 246168,
+      "sha256": "51e37458562abc43034e3403d7289a7f8a748878b70c9ff5531b12c911572bbe"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-05.json",
+      "bytes": 234967,
+      "sha256": "20e99449a11835ef1b5001b8d48c0198bfbe56f21659b30f14669a812e1e8fdd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-05.png",
+      "bytes": 246635,
+      "sha256": "dbd501295a8b38af346e9131205d2306da12db21f6133444959243b6b76fcc2c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-06.json",
+      "bytes": 225210,
+      "sha256": "2d193daf4cd2c06d92ed45ffd713952cc35c8f1e50920f526f8a6d456768c264"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-06.png",
+      "bytes": 255423,
+      "sha256": "edd488bff3f23d86541ad74339efe7df0bf02d811381cc61784303ce6cf22a72"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-07.jpg",
+      "bytes": 135399,
+      "sha256": "c7a717be5dfd9b2e7b02c4d183a00f7eb89131dfce707091c059b04db22db10b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-07.json",
+      "bytes": 151043,
+      "sha256": "0ced11a7c2795ad8eb87f41a5049efbe6f1edba3a28b9b4d8c77f34c07d5d4c2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-08.json",
+      "bytes": 157850,
+      "sha256": "f81bd758b29dac1984acd0719a7f81a541f71781625a300d3fae3983ec094afb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3/page-08.png",
+      "bytes": 185783,
+      "sha256": "4b27d7a704016314cf44dc1217654f4ddadf6d8b63d95e619cfed842a80dd338"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-02.jpg",
+      "bytes": 282549,
+      "sha256": "b8ff8e775eeb788c398be7ff6b5001b75e5876a6bcaf35746703ec23b3dc9e07"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-02.json",
+      "bytes": 570069,
+      "sha256": "585071c7cf7ff394fad572b8c6f599de27edb31fd11fd3c8130640554ed82979"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-03.jpg",
+      "bytes": 299413,
+      "sha256": "8261fa37938dc5e99d4743ec8235606a25e9e2d4ad25b85702b3220d97fde085"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-03.json",
+      "bytes": 601853,
+      "sha256": "d52a6b49334afc8c46ca9d08bc9201955970b475953c3aa6795c5c81a0dfbaaf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-04.jpg",
+      "bytes": 329999,
+      "sha256": "5922ed842c08188ced4c2b3424a7c777adf55e2af41ba0c06788eb51c8a650bd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-04.json",
+      "bytes": 594260,
+      "sha256": "d732664ab79b3fa73fa31214115877ba99c4ee9fb1d57a3a6a7fbfdb40427ff2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-05.jpg",
+      "bytes": 357125,
+      "sha256": "85eef65e855db298769eb0f0c3ac1221afb15d496ad4ec7928401a7c72b86802"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-05.json",
+      "bytes": 752286,
+      "sha256": "5d480e5b7f91cfcf17cd029e85bb9a873e959a0670ef1b79f90ee16264225a35"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-06.jpg",
+      "bytes": 290080,
+      "sha256": "263e268fff5442220f7284b64aa5cb797e8b6f6cf80c65923819d2dd736894b8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-06.json",
+      "bytes": 579194,
+      "sha256": "250d872a1e853a56729a91b8ba7e1825fee3353e686fdbaf6a7e77b7ab1ad5ad"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-07.jpg",
+      "bytes": 315763,
+      "sha256": "f7b6cf0329c1cd4066d95375b643a3a0213a3fdfe910df63abf41c80f3668b20"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-07.json",
+      "bytes": 620553,
+      "sha256": "9f9482592b19e879f395dc7edd570b59ee0394afa2ef50099cc48ba2d02ecd0d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-08.jpg",
+      "bytes": 333391,
+      "sha256": "109c67cfd801dd9206b7aa17c22be0a302f7271c91732faeb875e638b330ed9a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-08.json",
+      "bytes": 723949,
+      "sha256": "83c478a3273d0bd667b654520be3f307d917b8fff742739d245213c61f437584"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-09.jpg",
+      "bytes": 172378,
+      "sha256": "f4694e359b5053fcddcde65aad5b5f4c8f3e581f86ed63e727ae95e7f0e96150"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_06_3_ans/page-09.json",
+      "bytes": 224500,
+      "sha256": "6d32227171bec0b59fb890265281b41270af09a10e40a33159664ed624086ec2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-01.jpg",
+      "bytes": 190071,
+      "sha256": "84eca26cd04d0f743f04f6fa131025fe8b2aa169df2efd406b33d3913153117f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-01.json",
+      "bytes": 199199,
+      "sha256": "75c8da3ab76147b062aeafa101f76c67d45c0064d4a844885dfa9c5b1f2a18f8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-02.jpg",
+      "bytes": 200724,
+      "sha256": "b134b3b15886aa37d2fded1e3313eba423eecd4943f8c94d24711fa2bb6aed4b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-02.json",
+      "bytes": 210760,
+      "sha256": "7981f0f4d08487f0f2a1b878d99da22b30964dd24a450f43ec16de9f2d324573"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-03.jpg",
+      "bytes": 198386,
+      "sha256": "92c2cab4e74e860f950ba1b921a0b3b579ecbd44b3e4ae5de143041eb4acc5c8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-03.json",
+      "bytes": 197960,
+      "sha256": "460daa8b475eddd293509fa0513a04fa098c4592e6464f30f4e5c3bbf38e6b01"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-04.jpg",
+      "bytes": 222525,
+      "sha256": "a897513fdfc85ecebc849af0fc78984eceaf476e391073bca9844ec5ad34057f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-04.json",
+      "bytes": 217869,
+      "sha256": "f4be6ebf471ac2804527dddecb58d124e07a0b6d17dc81def7b095d6f2d5fcdc"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-05.json",
+      "bytes": 287434,
+      "sha256": "ec0032c7fcfa8aa2b3084e9a9c6c248272d2cf83aba359355107fa133c1034ab"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-05.png",
+      "bytes": 292378,
+      "sha256": "67616576afa17e8dbd8e95151260ab46ef31c6648b298b94ceadc613617b4853"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-06.json",
+      "bytes": 254275,
+      "sha256": "e45a64d74ae71a9340ded1c2182da9349858cc332b419462f1acb6c1ed4cc7fa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-06.png",
+      "bytes": 263725,
+      "sha256": "a4a2f72efd10ff60f9220fc3eb666904d2523472895e148cd1ecdd8096f1fdae"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-07.json",
+      "bytes": 226982,
+      "sha256": "fa734b154c1e7f67a9fbc511962de545ff9dcf703c19961587525e5337b9caf7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-07.png",
+      "bytes": 240475,
+      "sha256": "941185c0ba83b0f613aa702ce9afdd1b44e4e11a5b3caa79d0a5ecbcfdc39e44"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-08.json",
+      "bytes": 221025,
+      "sha256": "ea5028e755b02d1a0ed6b3c3d5c3b431d9e1216fbdb3f5ffaa723495564c65ba"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-08.png",
+      "bytes": 248300,
+      "sha256": "73bfdba2eabe77cabda6bcb5a100e1083766990b22a70b0b6e20bf35932eaa49"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-09.json",
+      "bytes": 188332,
+      "sha256": "b1ae61bf445848ac26b73faa522542eaca9f909d018cd87e9651cf74e4eb2707"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-09.png",
+      "bytes": 218109,
+      "sha256": "4cd5cf9dfea7e714f0ffedb8f34c164c73cc7dfb1daab685a6a2a80786720f65"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-10.jpg",
+      "bytes": 76162,
+      "sha256": "2097b2c1a4dc6e38449543e10769a9790ef9b6ff319e514621dd2fae2b30eb4a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-10.json",
+      "bytes": 93743,
+      "sha256": "f235432aef2a4ef1bae76eb02b3b8cc7f55b2ca0d7de60b6c083ef115dbea1d0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-11.json",
+      "bytes": 135910,
+      "sha256": "190ab0f61d98b1b068d6887a7694fdf1904bb9639f3eb2ccb134bddecc71a68b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1/page-11.png",
+      "bytes": 171066,
+      "sha256": "9ea857fc160d27dc262445f8119bc995a651ea9aeed5da72148b1be2841e21b1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-13.jpg",
+      "bytes": 279554,
+      "sha256": "5e96e6b20d79566d914e968f3772045c6383d0c0ea44afd77857c1e29fade2d4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-13.json",
+      "bytes": 570797,
+      "sha256": "38f1051c6b9613b145d009013284267376e3ca6678a6b9575ff4cd2a82a0850d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-14.jpg",
+      "bytes": 257284,
+      "sha256": "672edeca702353eeb062aa7bbd21389aee5e0d099254158f2a5c092007792676"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-14.json",
+      "bytes": 457768,
+      "sha256": "a20bba6a712c55437edd3537bbe1074a5789c72a3d71e5efb799b06bf219de56"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-15.jpg",
+      "bytes": 238053,
+      "sha256": "e2041fade78a85f76d98dc27f5b9dc5cd4adecbde9b786271fcd57c1a15502dd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-15.json",
+      "bytes": 469572,
+      "sha256": "1e7d1bcc71fecaaea8c0db97a5e3250704a9f5928ceabdcb9d7c30405a5d7362"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-16.jpg",
+      "bytes": 250099,
+      "sha256": "f404b948630422a77eb59163fa8b6e4c0fa2f74f4aecb0b25b01843fd5ac1314"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-16.json",
+      "bytes": 500648,
+      "sha256": "38ebb69b724d71d4750b4890de885255ccb89f2d489f14370b8c12e11c07846b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-17.jpg",
+      "bytes": 235393,
+      "sha256": "40c66a31273b5dea39f7b094e1603014171645378a9051c07f6321669fcf41a0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-17.json",
+      "bytes": 468411,
+      "sha256": "d680edb03b97faa4cba41ab23e738614913112a5c7dd3dbcc42a70179b50c528"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-18.jpg",
+      "bytes": 235332,
+      "sha256": "4f54f5c3e73dd4f85a36e6fc7d88e9971f556107603faafdfbcb615d726f02c2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-18.json",
+      "bytes": 453118,
+      "sha256": "9b51015484c883254ff25f83ffe71e66fea3263ce255991137952f8b688ed392"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-19.jpg",
+      "bytes": 215201,
+      "sha256": "9593b2b4f72dea7fbd2f0618368d3ff89d1de9c0dc9dc04356cfa924f7de3fc8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-19.json",
+      "bytes": 362991,
+      "sha256": "95b5c9d6064e566eb9c2218513593df00e3a2e5ece8797d2c92988185b7a383a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-20.jpg",
+      "bytes": 99429,
+      "sha256": "198e6b90536e15a4d25e5c7a5fd03ae8ccff30b31c9fd502f6f3f53196ebcbf6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_1_ans/page-20.json",
+      "bytes": 164457,
+      "sha256": "e7f2bb918ffccefa0957aaa38bbe37f5fffaed8571f16cd445602787aabcab55"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-01.jpg",
+      "bytes": 194575,
+      "sha256": "98c35b13b52eed55a5a7cf3fc7d411f26e0a3e3092153018e340105698ea03ec"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-01.json",
+      "bytes": 185429,
+      "sha256": "419d253abfcf532109e48533f0de95d811006ab72811a51cd06e051f1d134b94"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-02.jpg",
+      "bytes": 185347,
+      "sha256": "857699b76eca582e3dad08f6a7ec99abc919030436ae66899aa1895d0716cf1e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-02.json",
+      "bytes": 199855,
+      "sha256": "c393cae359cfa57bb588f1a7a0850ee2aef31c3a174e7d4309c8895a568eae19"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-03.json",
+      "bytes": 195846,
+      "sha256": "3c8d6e4671695fab3dbc7a73480b247535bcb180a4061520a79cb737063802b0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-03.png",
+      "bytes": 198858,
+      "sha256": "463131f5aa47584a4132b89eb1b4bf8ceb96b20edc776f04dfd59c0dd1cbdb2b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-04.jpg",
+      "bytes": 226571,
+      "sha256": "5760f727baa46fc50b9e692ed1d5cc33eddaf71ab1a942f0fcafcff5e6bf418a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-04.json",
+      "bytes": 216710,
+      "sha256": "c7847d2911482aa4ce870281ff6746c6844b7bd5f406d55978eb7e38f63df536"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-05.json",
+      "bytes": 272887,
+      "sha256": "41cd2b8851abf2a17bb89e236b3bc8bc47e1196894c7f1a56471f5f81d314ef0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-05.png",
+      "bytes": 290283,
+      "sha256": "d319066ee2f884cbd760b2f89128fafdeabff6b930558e908d9ac6d9863b0cc7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-06.json",
+      "bytes": 251525,
+      "sha256": "1a5842f6bb114934af4cd25898e52f55bb83fde36cdf72f652ae06245f7510d9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-06.png",
+      "bytes": 273042,
+      "sha256": "1b370f4f2a146db06e8ce4ead6ab9e2633b8c7622978de2b980f9317d5065d9c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-07.json",
+      "bytes": 245695,
+      "sha256": "9de68ac35462e2c415dd123b57023fddaaafe0e8cd7387bddb99e38d3094d619"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-07.png",
+      "bytes": 257967,
+      "sha256": "08a6e3b09bae76ac89d663d399f7e077839772d01b1b13dffb5536603a2126f0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-08.json",
+      "bytes": 216552,
+      "sha256": "ee51df38448118ad3e848e4d0c80e1ccfbd4ab958fe6b9242c1d9e362ae2c0ea"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-08.png",
+      "bytes": 233503,
+      "sha256": "01b4d4a95b60f2c1fcc6690e39c0514a2ca8cbff7f870a1ba6ed62f8bd29f6fc"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-09.json",
+      "bytes": 218477,
+      "sha256": "6e26a284e38637d6a7d21c2851579987d1d7ecfd94fa774cf69847ba7ce65771"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-09.png",
+      "bytes": 243725,
+      "sha256": "9994d0900eed67b028dfabcae3628a283c6490298358e4b493712130cf63c2a9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-10.jpg",
+      "bytes": 83098,
+      "sha256": "48eebfadfb296e3c6b556b5ac4a2bc05c11a1d5b2ced295c2c7b94ede7bf9f0b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-10.json",
+      "bytes": 95541,
+      "sha256": "93cdc663b940ab898058e3652e3b2d3ceabd40565f53f2fb25c834be9d6246aa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-11.json",
+      "bytes": 140259,
+      "sha256": "f7d3e96a83718588151bc1ef4e565b08abb1e0957f84634db130ff52418dc3b3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-11.png",
+      "bytes": 181173,
+      "sha256": "e1d4495704def68d4083a0c42e06cf17cfbee526f512dd4f7272396d78462271"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-12.jpg",
+      "bytes": 33932,
+      "sha256": "992f5c041ae0e68f78337b2e1c86149118dbedca5c758d18ae2cbb94ce6a921f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2/page-12.json",
+      "bytes": 11586,
+      "sha256": "8ee5320e24150e9a8d4862f0e60bb049284459ab14cde2e9afb795b4366d3581"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-12.jpg",
+      "bytes": 242496,
+      "sha256": "78aca67757e2906d0ca34c457ef6eef564350e8798cec77a8a6bd44fb87de3a5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-12.json",
+      "bytes": 481059,
+      "sha256": "f6e79e0258b5d55b9b5169f9da3af492a3b9127b404d429e07254a675cd928b8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-13.jpg",
+      "bytes": 291724,
+      "sha256": "a2c78161a77ef0975a2bcd94cf3e566d38f81ddbf3a2e7dccbfb2362e9cb62c8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-13.json",
+      "bytes": 634083,
+      "sha256": "39b660310300b5b2cb6ed366f9b30225b2f905780fcd043a6b08afd3c02e2a2e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-14.jpg",
+      "bytes": 265067,
+      "sha256": "9ba926ba2a45d3f5ce52cd6abe04d55f033bedf364889af630ccc593924ba11e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-14.json",
+      "bytes": 503348,
+      "sha256": "74f74badb4e9322b35310003fc7c475ccec2b6ad3d8e779843d830e1d3c63a56"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-15.jpg",
+      "bytes": 234787,
+      "sha256": "444b7361a9de147a3953e663241e6153483db928f37cd91163c749472c8e5a85"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-15.json",
+      "bytes": 447326,
+      "sha256": "27dcb5e7c627b9293be7123347cc5d50c66c7af11868e4eef107159f21081c7d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-16.jpg",
+      "bytes": 235634,
+      "sha256": "9b647337ebf8ade10896c7cde9db3f07653aa4de771a64fe8a2584acade34718"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-16.json",
+      "bytes": 460465,
+      "sha256": "fe597067a388f15e2a282e24b5ad34311ef390772cfd6ee76b2a4e6787f2b78d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-17.jpg",
+      "bytes": 250784,
+      "sha256": "87c4d3da8481f9e5fd06e2c315a6a52a5332b004e82496b801d02aee633395fe"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-17.json",
+      "bytes": 498973,
+      "sha256": "0e373b040de01e0386401f3bc83c4c519e935d87ca200419dfdec8e23dc97aee"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-18.jpg",
+      "bytes": 253881,
+      "sha256": "1badaa941f0dd245c99eae24a66536b249a27e17537e79f1bd4e5d6e94f8f55e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-18.json",
+      "bytes": 504880,
+      "sha256": "13c2413082ae7067a4dd7e0920af2c6d979845c61ec1a928616c05d08bf1186a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-19.jpg",
+      "bytes": 165310,
+      "sha256": "d4d725e23495885bea0716c5ed4b7f8b0eacf5b45f95faf47df806dbef782671"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_2_ans/page-19.json",
+      "bytes": 246085,
+      "sha256": "d22b42eecfd1d356457001a7f9902b1f2c9ddfc1064416b96ca9797116d5ec5e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-01.json",
+      "bytes": 182992,
+      "sha256": "eee748296cf39c2a79b6ebda2f0dcaeeafda3fb6ccb2517eead40f1e7d162878"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-01.png",
+      "bytes": 202803,
+      "sha256": "745160619a5c3cb4681f86a3893ba8de67a134f77980e682fb9244a0320d408d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-02.json",
+      "bytes": 233254,
+      "sha256": "90ce4120dd68aef249c8579c0f34484537b73d7bae9e1c9e165792ebfd8cb58a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-02.png",
+      "bytes": 226946,
+      "sha256": "5834053866e384e9d00cb5d9a1d05aa0e279c429ce99a1a2bf9f57fdd3d0f24c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-03.json",
+      "bytes": 258250,
+      "sha256": "218ae6a5b1886148e1b3d131f68fbaae75e057a2c032fd735b8b9660fe341f63"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-03.png",
+      "bytes": 293102,
+      "sha256": "10405e99ee0253bece9c07bf7619c28b104ff2ebe9bc3cc32b41b85e6cb5456b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-04.json",
+      "bytes": 227112,
+      "sha256": "c198ae3bc262c479cd2d21b15fae8d2f02f1c0361c6334d7316f3ec6f6c49b57"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-04.png",
+      "bytes": 233106,
+      "sha256": "84cc513ffba4e9635c3c6fe0e387d109989f671b1bb47e1ba16869d17a2695ad"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-05.json",
+      "bytes": 201591,
+      "sha256": "0a67848a6359c6887e8c8140fe430e3b1586b17cc9b9471c0c06d8a35cc9eaf4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-05.png",
+      "bytes": 239218,
+      "sha256": "6a37b8eaec1e8178b0cf6d8b6024aaba2a5ecf8f935ece979913cbdb3816a7cb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-06.json",
+      "bytes": 226209,
+      "sha256": "ecfaefe95fbf2147ff441cf895df05ae0c67c63d5ce774ede41b4d718a4639b7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-06.png",
+      "bytes": 252714,
+      "sha256": "d81f490867697e57197a26f8e9f2f517921e92c7e654379476949caf1dace8dd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-07.jpg",
+      "bytes": 162261,
+      "sha256": "b0f3a41e4f3640da3e782e727dcf89526cd84d5f291da4eb4d48bdbe10896b4d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-07.json",
+      "bytes": 180548,
+      "sha256": "ef1ebcc2b71481bc560b7c5c4f24eb965b3b37004a0bd255cf034eddda689d1b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-08.json",
+      "bytes": 157340,
+      "sha256": "58857cee4fa39dd0c2e1655a8322602e9bb6a987cc3a7c6e3fb47ba1b031970f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3/page-08.png",
+      "bytes": 186156,
+      "sha256": "596b4ce6a43a278b7f28b5a4222387ff2e1c200d5af0c676709d3b991918bea6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-05.jpg",
+      "bytes": 301031,
+      "sha256": "6cccc44d3bab4589b5976a65e981d222ca654bcc190a6115a87de61dc5b8d665"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-05.json",
+      "bytes": 654256,
+      "sha256": "aadd765832fd8980a13abd97fe0afed1a14b9189406a51b075beff0839a36f50"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-06.jpg",
+      "bytes": 252281,
+      "sha256": "67b37e99f84c65a96e30c6f225b372a8f996819439afa7f99707596a6e93ae25"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-06.json",
+      "bytes": 489697,
+      "sha256": "40ed2b8caf67846b449f4958031cd07310cfba99b0c0bb1c57d9800269e7b718"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-07.jpg",
+      "bytes": 241775,
+      "sha256": "736f975b7584a3e23bdd070674b99435b700a0786f3d3d19ba55e800b7418095"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-07.json",
+      "bytes": 459791,
+      "sha256": "ddf3f72d818a7b7c953c02d53cc3e310e6c9a7b54fc29ec11cc2d50452e5a041"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-08.jpg",
+      "bytes": 249341,
+      "sha256": "b13b6b163ef93db0bbe497227994bf0064add2d57082a063c030a9be5245ce0f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-08.json",
+      "bytes": 482105,
+      "sha256": "86642a40a4a432248273bc13f30d4f7f2215889d46de7177e0fa6f7ca3868ba7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-09.jpg",
+      "bytes": 258031,
+      "sha256": "50dc980b1bfc92e8e566b3c57e3655a119c4109be6fd70df182be1d153209b57"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-09.json",
+      "bytes": 517039,
+      "sha256": "d56ed5066c9a5e1e09e2da70ed83d43c7f6656bcddce71e625c41ff976e50db3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-10.jpg",
+      "bytes": 228434,
+      "sha256": "21ed4c3e7737f2c57e99a127db2d2e1ea3ae27f79a0b6412da50c49407f549ef"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-10.json",
+      "bytes": 458876,
+      "sha256": "7460abe3f44f970a419fb59ce8d924cfaaa2e14947fefe98eb82244b167a3084"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-11.jpg",
+      "bytes": 215428,
+      "sha256": "d00a3bb27ff85b5ab2a5500fd20c40fec713d1df9d3d5362fe5502fccf9300ab"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-11.json",
+      "bytes": 334750,
+      "sha256": "3ab758b3233c6a8cec1156d4cd626622bd4ced5aaf24f74f61ab468d0883904c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-12.jpg",
+      "bytes": 85373,
+      "sha256": "ba963c09688d6cde452c68a250fbd2e5247a419b01bc1f57447389d0c732f6f9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2023_12_3_ans/page-12.json",
+      "bytes": 127619,
+      "sha256": "d33578e0925735aa1ba1fb68717cca795ae46459f39dfc1451646d071cbce370"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-13.jpg",
+      "bytes": 266326,
+      "sha256": "6fe5669312ed8d27046d5c6c2d1ceab7e7242206719c79cc0651681dcd25ae24"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-13.json",
+      "bytes": 606445,
+      "sha256": "778857f61d4cb5e64a929608255e50c0c89f4f4cca9a1aa0a6f234f76c4533b6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-14.jpg",
+      "bytes": 235331,
+      "sha256": "120d2a54a5ce4c4580b97a22a15efcdfc4a8c717919081058c88ad65494122dd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-14.json",
+      "bytes": 519652,
+      "sha256": "76e36658f120961e9432c3b234b10881c53802d2d59086f304f077a5024fd645"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-15.jpg",
+      "bytes": 212099,
+      "sha256": "235989520e659d2a89340ab9ae9e6941636a2de0495074181d34777c802d60d0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-15.json",
+      "bytes": 444446,
+      "sha256": "2064c25ad906e5130f9b610245f5fb378de46a61a5b8b80457daec38d96d2e19"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-16.jpg",
+      "bytes": 231339,
+      "sha256": "3a6d6748b47a1b1f1d7e3e97c3f78a4311728be5f08dc5176031db7c63aa4a35"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-16.json",
+      "bytes": 512070,
+      "sha256": "f708944d00ece142d2f05c160ae049ea8d222053cb3a87882dcc2faba4047f77"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-17.jpg",
+      "bytes": 225279,
+      "sha256": "887fdccedd74ce0219a277a42920801738db720f0682ed40a743f03a8e93a5fe"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-17.json",
+      "bytes": 470502,
+      "sha256": "a0fa07c25cdfb9f84eda946a1340d6662a4eab1d337f9f1fd61669450abc280e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-18.jpg",
+      "bytes": 244302,
+      "sha256": "020136d288152ddf2c318c3f2647bbcf134c98f9ea6181ac158b4dc4706117f8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-18.json",
+      "bytes": 531217,
+      "sha256": "c740c6ac4a8eb08a4b4588a7ad51c82295e1ee09830aa064e630060245f8f92a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-19.jpg",
+      "bytes": 204412,
+      "sha256": "9d3c6ecba58c921109509cc2e71e7c509da693629499a48e1f5d2810e1dc94b9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-19.json",
+      "bytes": 418934,
+      "sha256": "38ba79b0e1db95e54083cf2412fab20d50624ae7d26ee31dac54c3a0792b0188"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-20.jpg",
+      "bytes": 168961,
+      "sha256": "f9eef78b4d20d16064b9ee8a60ec63d76ce6663af74d03b3866340528cb73fec"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_1_ans/page-20.json",
+      "bytes": 288489,
+      "sha256": "6dffb834328cb89a5ad39b0277dadd3bb130ed3a1f33364b73e7f81258d31d5d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-13.jpg",
+      "bytes": 268616,
+      "sha256": "2db2c81bb06097dee1f436edd68714a8519a6b75aa76a9db69813535ceedfbdb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-13.json",
+      "bytes": 634095,
+      "sha256": "927bc5c07bbdacdc42140efda1dafb4d37d02cbfeb4055ecc798d2c40bab188b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-14.jpg",
+      "bytes": 238474,
+      "sha256": "a34220abcf817df95f9be77e5a5d81e5695183428606d5d9c53c37b6dfd8b2fa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-14.json",
+      "bytes": 506560,
+      "sha256": "4656f0654e733eb6340405e6e4281e5329959529793e405f5fce17aca4c4a9ea"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-15.jpg",
+      "bytes": 215380,
+      "sha256": "372cc043279e85da942bcf195ca2033247ed5e7b9eab2ef49536b3929853617e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-15.json",
+      "bytes": 421096,
+      "sha256": "a35023686a0d42124d48c33bff615daf29efb889812d690b064df2d95e69ff4a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-16.jpg",
+      "bytes": 227197,
+      "sha256": "62b5fe8cc482273850aaa30100a5c89d45dd8a59b2d69a970064d94fc5e0ce20"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-16.json",
+      "bytes": 504023,
+      "sha256": "894297ef3dac2da4845ae284779433ffc733606093510b0d1773adeb5e451999"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-17.jpg",
+      "bytes": 238415,
+      "sha256": "78b487bd7e8162035fb963772b3a188f79f31c4677014ae70a92095cd2c729bb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-17.json",
+      "bytes": 498930,
+      "sha256": "e14fc8605cf0d4c5d8b430d38ef6395359d5b2b7f7ed0181b636e65467e245ce"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-18.jpg",
+      "bytes": 241858,
+      "sha256": "0ccd5519695fdf224ddaaabcf692bfa0235fa0aa2ca5817227d45ed3c62ac80a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-18.json",
+      "bytes": 541499,
+      "sha256": "519220613b15f5ff853620f189c79aa6b55ec242a58d4d7e0b565de8c1607602"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-19.jpg",
+      "bytes": 204110,
+      "sha256": "40301a8ad6d4bc8b375c7337554d025bf8a71305acce18aa801aaa1bf35f646b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-19.json",
+      "bytes": 373716,
+      "sha256": "75b488406c662e601eeb589d256891cd824d0c65aa846d50dc6b2367670896d1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-20.jpg",
+      "bytes": 140154,
+      "sha256": "629c125161ca72e21248f0f11a6586d969385a519976ce38abe8d6904e761572"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_2_ans/page-20.json",
+      "bytes": 251573,
+      "sha256": "7e4d4d8a1d2c7255a86a9d7aad49cde9f3b572e65cbb5de77b0d0285b2717b59"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-05.jpg",
+      "bytes": 263925,
+      "sha256": "e3279249c045a4047edc3f546a0627160ddf81be2511f1ddf2e01bea015dc2c9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-05.json",
+      "bytes": 608378,
+      "sha256": "61c8a7fcb83506e0ad613939d789bf90f1b48ba31e3d6a42a556819cde3cbc70"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-06.jpg",
+      "bytes": 235330,
+      "sha256": "f37b44153f02bba4ede55fc3df29c4cb8a6d62556ebebc92143b81dd1363cf89"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-06.json",
+      "bytes": 437909,
+      "sha256": "b912943ec5ee30603b7b65218e593f1ba8aa5b052425058e69fe9968d6a5f9f7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-07.jpg",
+      "bytes": 218338,
+      "sha256": "d46eb6bdeed63fea3cec21189bfaa1f31e600cb4d35c5f0a5a993ef3798e6720"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-07.json",
+      "bytes": 452067,
+      "sha256": "7c9ea3eda2b882a8e8d19af276c3c5545b440bcf42c9c14d8059f577cf7eab06"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-08.jpg",
+      "bytes": 215838,
+      "sha256": "637c7f2b5bfa76d17c5e929a06c0fbf399646a22a0446eea9e939fa8dbf6ef8d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-08.json",
+      "bytes": 454921,
+      "sha256": "f64546be8dbb85d9d16ac9ee06e26c1a7895e9b2db7ff97f5b03d4fbb5eb8677"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-09.jpg",
+      "bytes": 227174,
+      "sha256": "b57f285f519955b658e976fd023ed316d1a5cfa390b0d40d79a7a9e8e50bd5d0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-09.json",
+      "bytes": 495285,
+      "sha256": "ec9c7142c4c726288133a91067889bf06282ea3d7804f89588c9007468863879"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-10.jpg",
+      "bytes": 222753,
+      "sha256": "40dbff090fad63db3d76b6f80d0be11ac0961258faf61f169d5b241dc551bdf5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-10.json",
+      "bytes": 487612,
+      "sha256": "075513540111d4159429b9ee8fd7108fac203b6f61d68068de2afec68ba8771b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-11.jpg",
+      "bytes": 192302,
+      "sha256": "d5bfbce7feff3284bf739de318d773d7f358fc2ec1e7644ad3e071ccfbefa66f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-11.json",
+      "bytes": 346098,
+      "sha256": "15f84d284db1d5e9d9b39d9d9de93015d83c97a60fe8847362c87957cbdda0e0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-12.jpg",
+      "bytes": 61274,
+      "sha256": "48f3b0b7177f5ffeb2b3227738b196a212bb874536d7c13ccb96200317a92705"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_06_3_ans/page-12.json",
+      "bytes": 87278,
+      "sha256": "aac07013849b9730479f6ea2fc32f814306c16082776950fa9a0105215d7d7d9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-08.jpg",
+      "bytes": 284624,
+      "sha256": "7b9d18b74ef1f7d5aa52e8ae73eea77bd362512419dc31c9893867e6ea74e75d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-08.json",
+      "bytes": 581817,
+      "sha256": "a6b366858bc15edf42e4607adc70a3b95b852a31cc1f619e1551b011ad30f28e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-09.jpg",
+      "bytes": 326409,
+      "sha256": "bda963e0efeb1ac9b67da97cd48926c9d522052028f6147d62907b7e18b98a18"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-09.json",
+      "bytes": 581880,
+      "sha256": "e8e740ecbac190e4e6ad545e3c50a85f1c665905900c4140dde6643129ea3d85"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-10.jpg",
+      "bytes": 328193,
+      "sha256": "7d34fba6f0909a49d256ec822ef2ac022310546fd9ecbdbee7f66508322a5f25"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-10.json",
+      "bytes": 642153,
+      "sha256": "09adfec9af8d29025816d81f42f4169b1af2349eb8a807f02c5aed5decc9dd98"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-11.jpg",
+      "bytes": 298784,
+      "sha256": "f78b8aaabd6fcf73487b2d0540219a9855bfc624d8fd55fc1b08892fc6d11fcf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-11.json",
+      "bytes": 563928,
+      "sha256": "4c31827ee7b421e9fd59ac0c69a80883aba79d6f7c0ce70791afb694f0ab38b2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-12.jpg",
+      "bytes": 321893,
+      "sha256": "e92c68b6771ce0d629d3734de2bbae137fc02cb7827c25520c4e1358ee8f540b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-12.json",
+      "bytes": 616458,
+      "sha256": "7d1edd1c25a4d975299fcd50b5f99aa556a33ef19e2115e5a3645eb5cee48229"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-13.jpg",
+      "bytes": 290213,
+      "sha256": "d76e1e69ea2a79398ae4a4717d7a7b3849b0d25a406b93b1cf9ae7f8e8fac84a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-13.json",
+      "bytes": 532876,
+      "sha256": "58149a5a71c2016f1e817ba2cc4e22f7d06522e2c003f35c134756946fb2effa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-14.jpg",
+      "bytes": 303662,
+      "sha256": "f01b628b2b700d52bd01b5370eaf543a8bcdfe518d6446f5f33b8e20ad402ca6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-14.json",
+      "bytes": 594541,
+      "sha256": "a7909ca24bc75462f4928f64383799b03919852e797a68fe6325c85d7e32fb8e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-15.jpg",
+      "bytes": 229772,
+      "sha256": "3efcf29fbf41c98867b0d0f71f8e38a246e3e12ec9a62717e381227b0d788d2d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_1_ans/page-15.json",
+      "bytes": 355360,
+      "sha256": "b4aa70f56c6be0249a45a56404136709463a9113edd63c650fb95aa1f0cb9eff"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-08.jpg",
+      "bytes": 299013,
+      "sha256": "a03e88eccc98910b264c18da5cf6fb1604de363a8994ad80dd308657f396d575"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-08.json",
+      "bytes": 601674,
+      "sha256": "42e45fc2307928242175596abd4218cd345ec44196ef6e4c3ecaedb566c77aec"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-09.jpg",
+      "bytes": 282348,
+      "sha256": "388f0cb95fc5de6da0a4e63583f4064934379889dcf6ffae73ae41f7d1b89b04"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-09.json",
+      "bytes": 511140,
+      "sha256": "b739be36e8e29f5943d7bb5b5aa7bffcc97fdf77356c9d2b86db607a8819c110"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-10.jpg",
+      "bytes": 331289,
+      "sha256": "2d26b3daeb8d823012bbdb3a3673a536a13d8f594ce0a99a0a302f51a3437cb8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-10.json",
+      "bytes": 638811,
+      "sha256": "381d779d783d29514df3f620a77c54772ae2a63ed51518ccd8bf3fec36ebafd9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-11.jpg",
+      "bytes": 294325,
+      "sha256": "bb0b624cd7c7d1de321b2bbda5a88a616d671f4e48c708a9ddb86fdae6cfa329"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-11.json",
+      "bytes": 553309,
+      "sha256": "59ff885257a0b42d176a7fc6c64ea55b922d5d1004bacad87b101052f4a60263"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-12.jpg",
+      "bytes": 322046,
+      "sha256": "c34c8845cf543d3b2a0d0fd8e218bbbc635480477f79f9842e7132d944a069cb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-12.json",
+      "bytes": 638711,
+      "sha256": "b0f1e6ed5cd57e21dd0d78e1862c4d47619ade4b743527468be3b19435c6bdc4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-13.jpg",
+      "bytes": 283971,
+      "sha256": "91dc73f7a773d84fa28ac56837b32da604af2dfe75168cc57c3c905d8a044c0f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-13.json",
+      "bytes": 562168,
+      "sha256": "e3a7fca13211c6939801325cb48db1b1d8673073c15b4e9f465a2d8d8de256c4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-14.jpg",
+      "bytes": 308684,
+      "sha256": "58cd1c26ea036a8360477155ca4f7bbfb3d8bde04c6922a31bad0eb54e97e28d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-14.json",
+      "bytes": 630821,
+      "sha256": "6f8764d8fb1203a529517dece58a2b9a8a439cbf01167b0c1027f991a9dbb0a9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-15.jpg",
+      "bytes": 229606,
+      "sha256": "5648fb70f5170087d16d79eb390ffe8ed3e74e5ba59e77099f69c5bd1c0eb9ff"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_2_ans/page-15.json",
+      "bytes": 363770,
+      "sha256": "57ee6aab775b2b17cf6c98d74cb0eafe1b1237caa15b2afcbc5749704bbb657e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-02.jpg",
+      "bytes": 318512,
+      "sha256": "b16e0fdd54c19640120801224f763d3acb05d040673a965712899f48c3f3ac0d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-02.json",
+      "bytes": 632858,
+      "sha256": "e036c7b988f7d839a947b0e9be985a917a0d7ab13eaaaaa9688e8d9d6d5610b7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-03.jpg",
+      "bytes": 302769,
+      "sha256": "2d992490cae32b588cfad57c78a631f8104424772079970ca33f714c7c0c7793"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-03.json",
+      "bytes": 584594,
+      "sha256": "b2f12fd5d4ec33cd844964e0635a07d52be029bedd1f9889835bc53684350a43"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-04.jpg",
+      "bytes": 351539,
+      "sha256": "7af2807a75ad93fa7152934e31b4a766daa7dcd93eef310d2e80ce63e23995f3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-04.json",
+      "bytes": 667779,
+      "sha256": "5e85e71c17a94f415acbe4210203040d194b4309389777cb65bee9f7b48f7daf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-05.jpg",
+      "bytes": 347934,
+      "sha256": "cc6872df5b5a24f210f98f343cb33d0505eba413d87f41185a792c0d00c6cb1f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-05.json",
+      "bytes": 739307,
+      "sha256": "87f0d3320a1a8c209a8decf21bf1356dde3a134cea285c599cbd5d86baa2d4cd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-06.jpg",
+      "bytes": 313616,
+      "sha256": "1394f55d74e376f853856f71c7ccec49f823531d62b3da2d53ceeaa835e12357"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-06.json",
+      "bytes": 633788,
+      "sha256": "9e6777b7a2ff7a32238a17348518f8126e2ea25b080c158790ed56b84ffe2743"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-07.jpg",
+      "bytes": 297833,
+      "sha256": "a8469d1cda5aff020a0afc085d9365a69eacc3d16679be000ceec81c08222b78"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-07.json",
+      "bytes": 580074,
+      "sha256": "fd7a14f278df37154a9ff13eacdf47670ad2400eaefbaf1e5f5fff0e93eb9689"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-08.jpg",
+      "bytes": 355104,
+      "sha256": "63a11dadc1438734f62206b6826b7e96c250ef9b69c2da09714f0c55357af9b6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-08.json",
+      "bytes": 772626,
+      "sha256": "505bf076ee26743948be1aa05a4736bb47079d532932ed5a4cbf7650199c1a65"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-09.jpg",
+      "bytes": 232100,
+      "sha256": "2414c44a45d6b37205e0242d747ce28300104eb7638a265ff9abe11ba7430eea"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2024_12_3_ans/page-09.json",
+      "bytes": 386293,
+      "sha256": "fe08dc18d3ac62c50928a6e9699a9e4f0b3518192bd9ef69571c8afcaf2268fa"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-13.jpg",
+      "bytes": 297574,
+      "sha256": "40d44e8ceb4947bb578534bd9871667401d5804c930cb33be0451b24294f60ae"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-13.json",
+      "bytes": 589435,
+      "sha256": "b15ab8ccdef8b40b0ed292b1056aab9c252232d902926810d77f134096462846"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-14.jpg",
+      "bytes": 283336,
+      "sha256": "31dbec986063d26d74ee67e40cd192383e4f9a0acf37ff1cfcdee8cdc5f8ea33"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-14.json",
+      "bytes": 489669,
+      "sha256": "a3392bf929b49a7da85b459e566125a1f5989206b09fd0c04e3c9445bd3980eb"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-15.jpg",
+      "bytes": 237304,
+      "sha256": "735c0f7a51b3c8e3ed9dea9706fbf391682d0ee904b72652c3d16d2d8ca7a4a9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-15.json",
+      "bytes": 449987,
+      "sha256": "91c7885c348ecb4da188d256308506f6ebf09a9ee8fabe8c9131b380dcf9193a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-16.jpg",
+      "bytes": 261123,
+      "sha256": "936ba7161930f52df1f807af55b78e0a87bacd61c1724a48e5b2ee45044ff9c1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-16.json",
+      "bytes": 491518,
+      "sha256": "cb598e376cd79be317a1b33169932f5cb33f75d4707db54e2d90c26526bc21b9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-17.jpg",
+      "bytes": 264203,
+      "sha256": "d2eff30588a4cf4b13830d736849413764464d4bd0e29b99f802f949ea8a6653"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-17.json",
+      "bytes": 493966,
+      "sha256": "0cbfd5ce26ce368e051dbf36d508fb42d80d940824272f2395105b95bf5fe6cd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-18.jpg",
+      "bytes": 276943,
+      "sha256": "e09dfae37ac6ea2c484d7f7d8cb1f2830176dd5b0eb4b56a818cef1f0af1bcd4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-18.json",
+      "bytes": 509399,
+      "sha256": "f97bcebebabc3f9125d0692c00ded85426bf10853aebbbf23503d94c961d8d11"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-19.jpg",
+      "bytes": 214054,
+      "sha256": "0ce42477c68a6397cd9ad8b1534fd4667b015fe2be62cee09a0888b973c4366c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-19.json",
+      "bytes": 343617,
+      "sha256": "5a08587ff941dcfb4ea7493a86991eb3544e1bd00b580d961937461ec2cb0330"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-20.jpg",
+      "bytes": 139371,
+      "sha256": "e4fcf2d808a35765d757e1474b98d968326cdacb935384e1ce0f17183cdc42c1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_1_ans/page-20.json",
+      "bytes": 214421,
+      "sha256": "dba3e712a85249758a784b62b4520e46e4b8938e001fd76b1d75075b41b80e40"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-13.jpg",
+      "bytes": 333038,
+      "sha256": "c366a7688439c57d778804e4d0a73c46770b9033e97fed69c999d0df37c746ba"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-13.json",
+      "bytes": 691061,
+      "sha256": "cd21b62f66e5c5bdc07cda0ba49fc0fb225dbf6e2cc7fdd8e494ed96f76e7945"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-14.jpg",
+      "bytes": 268068,
+      "sha256": "15163893794fddf8b2c33d66b925247a2d2bdd7efa50b2102bf706b13ce16559"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-14.json",
+      "bytes": 467143,
+      "sha256": "a2410f7d69dadbfd146c973c674e307ec79508ec1d584216e6e79a698c23bcfd"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-15.jpg",
+      "bytes": 244192,
+      "sha256": "674225fc4a3d7cfbea38663ab2b50c73216a79488972a1f3ecd09b17384bd855"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-15.json",
+      "bytes": 407970,
+      "sha256": "97a25e473924497a39e33d13eefb22ddef45bf3a5ad1dcf8abb6ffeaf9199e7c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-16.jpg",
+      "bytes": 253167,
+      "sha256": "a3327696d38f1421167429a16f0a64df5f4b3c6005e144d1515867ec8c1a0415"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-16.json",
+      "bytes": 477388,
+      "sha256": "2ea249e97619794207aa9789c00e4adea8974915a8abc471886644b46f4141ac"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-17.jpg",
+      "bytes": 247666,
+      "sha256": "e1ead7633f866a30f0e2ca71225452fe52dafe0a36d32906af3e3a05cf1a01a1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-17.json",
+      "bytes": 463565,
+      "sha256": "59c657c09ae38287f8054ab56c24ff609e03d631446d4b07f9e9daf541a82a2c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-18.jpg",
+      "bytes": 260856,
+      "sha256": "75439101e70fa328c352ea41552775ce4e17b39ee18e9e7daed353afd71637b0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-18.json",
+      "bytes": 489178,
+      "sha256": "8b0bf528104fb21c17557ee0beb4e42fc6733558d4014433661b5ecdba78cce0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-19.jpg",
+      "bytes": 238192,
+      "sha256": "a41d51cdc4712b79db72321ea88ddb519824a3ca4ed5e534df0b023124943bd5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-19.json",
+      "bytes": 371904,
+      "sha256": "52ce7284db11dc631c74791c468e96f951dd3d97b1b220332602e4f964f95346"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-20.jpg",
+      "bytes": 116395,
+      "sha256": "e671f7c82dc183b4b617b8355fa1365d0478719a7ef6536c80a0f0a128c932f7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_2_ans/page-20.json",
+      "bytes": 167867,
+      "sha256": "902c73b6e87ebf79faadb155c3794b8fdeecb1f1a455f4b01cfd7d2888b96a14"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-05.jpg",
+      "bytes": 312567,
+      "sha256": "d004a4d439a6920fe67aeb98cdac81ab60e62f3d28cf3049496939a32bf61803"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-05.json",
+      "bytes": 633526,
+      "sha256": "57721f421bb7fa229cc64884323f18eb35d02c9b7c5834d03946bd0bceb3e790"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-06.jpg",
+      "bytes": 269127,
+      "sha256": "a926245787238aa4b173935a2e5644cc45cde1049d9161562d8fd2f06bb57867"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-06.json",
+      "bytes": 477004,
+      "sha256": "3166804c106f472f107e84e82ccfeeaf4faf3108fe539f6d6945089b1d7e4131"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-07.jpg",
+      "bytes": 253816,
+      "sha256": "22dbf16b79112652841f3bfd66a06de86869044dd81f6830e6e1970282db33b1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-07.json",
+      "bytes": 430243,
+      "sha256": "8fea3306802ad028a6243bce2f868dd69cfe5929b6d10198ca9b5e560b0f1b93"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-08.jpg",
+      "bytes": 265802,
+      "sha256": "92f0004f0e99388982cc17101969006511c23f4051e11350e98896d11a8cee1c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-08.json",
+      "bytes": 513047,
+      "sha256": "3f73ec6d0b922f091b00fa657a5da08c5e0cc6cbdae3d69db8cd40b73daf61cc"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-09.jpg",
+      "bytes": 238374,
+      "sha256": "7bf57a3d284623a8534e184fae1a7acabf8ca723fea12027cdf5e02d2c9fe4de"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-09.json",
+      "bytes": 443410,
+      "sha256": "fe4e1fa2d53e3ed5127b0e58dc103a147ad722353c117f23d0701872c1cfa2ec"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-10.jpg",
+      "bytes": 265943,
+      "sha256": "9811962a1311d21ca9698e652afadc5f5d91fb2d7bd1b41cb4b38b48b4d71f2a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-10.json",
+      "bytes": 480051,
+      "sha256": "9dea43547a57389e47e13cdb04901afab8cf7f73f7dafb7d265e8037582aa26f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-11.jpg",
+      "bytes": 253677,
+      "sha256": "cb4e421fd8e0af58d4125d939e781433a3549056eb5bc3cd5834de6a094bb74b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-11.json",
+      "bytes": 471443,
+      "sha256": "8427a1513416d11248c99dabcacdcb5871374bc6e24034cd98c569e29d7d9961"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-12.jpg",
+      "bytes": 216925,
+      "sha256": "da037b1d8336d82620844f75a841f73f579e18ff61b5faba7753d35e2cea4d6d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_06_3_ans/page-12.json",
+      "bytes": 315927,
+      "sha256": "e19e7b88ee81a98d442bdaf014de16e96abab1a71370a9012c5ebf0bb02f2ac4"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-11.jpg",
+      "bytes": 255067,
+      "sha256": "de48132e785663d33949988f47220975e7b70d61795ef4c3c3e7302e86bba9c7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-11.json",
+      "bytes": 498852,
+      "sha256": "74c89d22128e26a07e9603e1f7e8a4957a54c1251ef896e59cbc7eae63533597"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-12.jpg",
+      "bytes": 308087,
+      "sha256": "da9a64543b4db6d85e3d27c4034f0d05224114ea5a6ad41b2bb84be4f6114d24"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-12.json",
+      "bytes": 612269,
+      "sha256": "bad4b00f23ba2560f66c77181ec8eb4639fb3b6f47a314a46cebe9b4e9db76e0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-13.jpg",
+      "bytes": 277479,
+      "sha256": "0aff7c4696ec342176e216fe0c68f8536d62c2d283fb4b892b19456861ff86b9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-13.json",
+      "bytes": 470307,
+      "sha256": "7b97dc1dc70a304370ab0c1f1b9a25d3c5bfbacc2f24b768abb72601c1066dd5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-14.jpg",
+      "bytes": 263100,
+      "sha256": "cb2863e9bfa8e1da5158256eb4dd62013cdbaf98cd431ae6d34ec95b30682ea0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-14.json",
+      "bytes": 499935,
+      "sha256": "81cab0bc7448e4c0933f1c24bb1f34360aa529917cf73dce23a3061720a14d9e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-15.jpg",
+      "bytes": 249892,
+      "sha256": "fee5e688eeda6fcefa3a3f084c82599bb43cbfd40ce8a5e7ac6b4033154b5919"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-15.json",
+      "bytes": 473372,
+      "sha256": "4b378ee28796206e8d316d94af5e72f3c6647f34fa670d33b8afcd0e13e05109"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-16.jpg",
+      "bytes": 276465,
+      "sha256": "c744d50c8ce7dc356e427a822728f8dbb9ca92bb59bc4dc08cbb0ae8091639ae"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-16.json",
+      "bytes": 540201,
+      "sha256": "e5edf9ee98212c38b94c346d1145a0b1abba848183ade75c13cbdf870d225322"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-17.jpg",
+      "bytes": 251262,
+      "sha256": "d548ab6b34aa8eced0796e4cc95e34994fe4c1e201f6a520cd9bcdac6edb1c04"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-17.json",
+      "bytes": 478030,
+      "sha256": "38a4db6d271233d02ed00581719a0812a50d8e291bab47c6e8a9bf8f13b38f1c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-18.jpg",
+      "bytes": 202623,
+      "sha256": "e3bc385c194cfa57f5e5e6f9bd6fcf4f28d1bf33cb07d60e584ae3fc7d3ba2b8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_1_ans/page-18.json",
+      "bytes": 307581,
+      "sha256": "d0c87bdb1b14aa48c6db55610df2202e4645b94b1fcee239b37b57c91e64308a"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-12.jpg",
+      "bytes": 318527,
+      "sha256": "67200a36f37e6526ede838ce4447abef0c6194e24f4c7a55e07e9533de065eae"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-12.json",
+      "bytes": 654773,
+      "sha256": "9ab0c26bb638fbe1b53b6d570c7e0499c4df941ec6383607428408191e637ae8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-13.jpg",
+      "bytes": 265072,
+      "sha256": "216e9d8820e3a88a299a71296cdc51284186319137604f069229501626f77482"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-13.json",
+      "bytes": 507375,
+      "sha256": "58116088e311bcd50690c05cbf2ca35828cb6e14a1a65b67a83cdb2e55d526ef"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-14.jpg",
+      "bytes": 252309,
+      "sha256": "c16a480f3f275f80e3dc161a8b4449f60ee931977ff632ead2e589bfc571cb93"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-14.json",
+      "bytes": 442368,
+      "sha256": "3f694c7633887af9c273f440591bf1e28fec4ce939b5a43b8fc612cf88868410"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-15.jpg",
+      "bytes": 252612,
+      "sha256": "4e7578b166293b1d4f0c6f4e5c197947f261855268e0b4240daa6b0f24b25669"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-15.json",
+      "bytes": 494333,
+      "sha256": "09f4f86979765249587436e2b6401ca33aa645cee8fb6c20906dd144726888be"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-16.jpg",
+      "bytes": 251787,
+      "sha256": "e56f263c0a81188a779e8b9d5e3dedccb6b8b3f35171e840ea978858d17d8836"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-16.json",
+      "bytes": 477647,
+      "sha256": "91240a29ddcfb49500146ebc145f439931b97947854cff3e7a98f64725013a4c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-17.jpg",
+      "bytes": 264129,
+      "sha256": "801a64b558aad7d822f63f15ff6ad7e7409b0ef16f0a3c68d0391f3d211c83a9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-17.json",
+      "bytes": 506419,
+      "sha256": "7e2f2f54b989a82eafc218d525c2e317d774b5bd05abce42bca19542094519a0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-18.jpg",
+      "bytes": 245645,
+      "sha256": "e37b2e949a335d618eccc8862c6d8616df6d0ccd4ac6a58fe33bec9b6884dea6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-18.json",
+      "bytes": 389505,
+      "sha256": "f44f773840bbbb71da64b44d9f501e4e13bdd3032225ce8914a17af0c8003733"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-19.jpg",
+      "bytes": 132326,
+      "sha256": "70e9d41b8cc043e62604ccd0de7f05cd7fe564c9cc3cdc652576ff324dbc2a94"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_2_ans/page-19.json",
+      "bytes": 214348,
+      "sha256": "4a796466b9b37c66a6061c7458638ad1018eb5f730857238efcdedf3984d244b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-04.jpg",
+      "bytes": 313074,
+      "sha256": "62d89aba42ebbc42f08e01d1d9706676b51e831b907322fa472b67e621aaa246"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-04.json",
+      "bytes": 644055,
+      "sha256": "1d5d4ee6599a4bb8b6e4b1b2a30508b7f71927ca4c74a025da100f73e40939bf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-05.jpg",
+      "bytes": 264524,
+      "sha256": "f628fd3c83843c0ae80d7189f6e36b341244dcbcc91d46b034d995f865a82cd8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-05.json",
+      "bytes": 493131,
+      "sha256": "4048849938d5681046f3daa74aa254dca741f6f3c5a0698e44ba22cb10c221b8"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-06.jpg",
+      "bytes": 247441,
+      "sha256": "3fa6fdae4adf0fffcfc31d541539a340b4c81d847ed0b8f2d615e697c5c8046f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-06.json",
+      "bytes": 438834,
+      "sha256": "ec9131f04b0b389659e75ae39a447640a3ee52e905ef60f4b239ba286fb3d075"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-07.jpg",
+      "bytes": 256120,
+      "sha256": "9bda17d23b6578ab51c735369d7febbe1807c4fffba9ca618be8947bcaa55d89"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-07.json",
+      "bytes": 489961,
+      "sha256": "e3c5d39938fda9f083d31c62f31a148331506d3e868e43d5a832cd60773a2b17"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-08.jpg",
+      "bytes": 262417,
+      "sha256": "d1c9880b1cf298e4df2140d244f97516973839bdb1b97bd23c91536a79e642ad"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-08.json",
+      "bytes": 502598,
+      "sha256": "a75afc3e7f8276797aac31fbcbe5a421be26fe511771d6f22c1884db051bf9a5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-09.jpg",
+      "bytes": 244076,
+      "sha256": "3a33f9402af9376239b745a6818632108bd6afda97a2eed577fa3aaddcba19b0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-09.json",
+      "bytes": 470300,
+      "sha256": "d9e9771b4bb54a95e5262cb0ceaeb44ed3a7a738eff9054d2e6937c811fb9f8d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-10.jpg",
+      "bytes": 223663,
+      "sha256": "e5427fe5ca71d47e6767e13907af94b7766a9db5c7299ddbc9790e8b02df2c93"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-10.json",
+      "bytes": 358182,
+      "sha256": "fdefc6c747144047e5321b1f8efc06bf4b021885036cfb0bd584171c062cafa5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-11.jpg",
+      "bytes": 102342,
+      "sha256": "f504624b857534097dabcaa38d39081a6400aa229f61da6e52376ede8a90d22b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2025_12_3_ans/page-11.json",
+      "bytes": 164621,
+      "sha256": "47f7bc6e567dac26e54c157bb3203ce076d236f7621e72b6cb3b3dfcde8c7d9b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-14.jpg",
+      "bytes": 208900,
+      "sha256": "16fb3210e81f180f2fd8d5c0da2f8cc0d8dfbc82b5d03af3daf5a9ff70a2e249"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-14.json",
+      "bytes": 546407,
+      "sha256": "b5c41b93297ba676d116479cf403c42b87714f5053916b3b8b89a7fa33af6181"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-15.jpg",
+      "bytes": 207967,
+      "sha256": "0c47e12c4718d99d474dd51a6b7aabe8d5bf0e112e3b7970a090c974e1b3abad"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-15.json",
+      "bytes": 510902,
+      "sha256": "522d5a1142d437c8f1e8ebe185216eb4886488547a6d8200f78a48d50eda5f5f"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-16.jpg",
+      "bytes": 214440,
+      "sha256": "a98b3fa2560da31ef4cec3140b21fdb28f492a3b8a9e1e5b436ac2e7fc518ce1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-16.json",
+      "bytes": 551492,
+      "sha256": "9b3e05f7481488b91bb5e34dbf07c50cfacb040e9e1f5b85b5cfa3f7a09f2354"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-17.jpg",
+      "bytes": 207544,
+      "sha256": "17e89fc3fa550f0b32a9a0bd2cae7e52966e2e6ed9de657796e471f3bccd1947"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-17.json",
+      "bytes": 522088,
+      "sha256": "fe083ce0792b2e3a66b0875382ffe2c9e2715579b0fcdc3c822fc21a53fb7590"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-18.jpg",
+      "bytes": 198470,
+      "sha256": "12d1ddcc2316b0e8a522dd51d67349495024a7eaacf998c299a1be4e10720bea"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-18.json",
+      "bytes": 517307,
+      "sha256": "b1ef01b2bdf655ea02ae934f7ae2f60e3518b2c100a4e779373d322960efc76b"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-19.jpg",
+      "bytes": 208434,
+      "sha256": "6cf9b467e3113964ad3e020dc9db45c5ddbd6bac61c7c4f2d7d8b1df40ac38f6"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-19.json",
+      "bytes": 510036,
+      "sha256": "47be23999c54251e2e8082c19671fe90c09d6fc160ef46c9e2463de64d0d2be9"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-20.jpg",
+      "bytes": 219430,
+      "sha256": "38173354273a3d7a9ec5136e913bbc0adbeeece99475ae830abc92c9b14d95a5"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-20.json",
+      "bytes": 598305,
+      "sha256": "42465a3b53ebb97a666413cd44d3c8a47e12fd2fdd7ab650b512bf62e7f3f3a0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-21.jpg",
+      "bytes": 211726,
+      "sha256": "58038ec8aad37f0ceb5688864b8a3fb93729f678a3fb6450614610780afb8d89"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_1_ans/page-21.json",
+      "bytes": 475211,
+      "sha256": "c1828d68b960302548276ef6fe97ab4d909910d6aef4ca5593edc5c6a5fec8ca"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-15.jpg",
+      "bytes": 194483,
+      "sha256": "7626e78611b69bc1f12c15bf18b662a18b2324ab6620a74f3d6b58b9e1102680"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-15.json",
+      "bytes": 463039,
+      "sha256": "77f594ccfcc7d82c1f6fa1a2a8a5acbd1c05db11805d7c766d1bf6ff177b7ddc"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-16.jpg",
+      "bytes": 194452,
+      "sha256": "9358a8f625877390924ad093b761573a94f7d59fd1107621db5cfaf35de541b3"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-16.json",
+      "bytes": 489553,
+      "sha256": "340eeeceb97a3142d6ed0d52ee0a2b14b3b08773e4cc7a8ea3587f502acd9e94"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-17.jpg",
+      "bytes": 190698,
+      "sha256": "33c2fe53407829e674cdc9869c6b64a47993be16e57a131b5f67538b224066a1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-17.json",
+      "bytes": 487770,
+      "sha256": "a0fe1ff69321786839ab09bb95f1def0cad5c549b2ce50f86dbe955abc7b66ce"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-18.jpg",
+      "bytes": 216724,
+      "sha256": "2601d28310585900f1ddc191685312c518a4f535ea08b37d9f50c118211c8121"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-18.json",
+      "bytes": 581804,
+      "sha256": "7e8d433bb43647d8c13792fa69d8c90b70205166d5ea5564c804fe6cf9dd1c0e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-19.jpg",
+      "bytes": 206557,
+      "sha256": "e627a420f36f27c0b59923484928ac647e2a3081c5f53e03022959cca715da3c"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-19.json",
+      "bytes": 585932,
+      "sha256": "9f4f60493c68d5605e1a47b7d373a54d15c4768d5a9b4c0064c89543f4ff81f0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-20.jpg",
+      "bytes": 199894,
+      "sha256": "734d38d6abacde051a5f3c1816b661d14f95d11db29bc996b22ef520fa015426"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-20.json",
+      "bytes": 488729,
+      "sha256": "31680b46f85e63ddf71af77f85c7dd9008b4e1e9cd85df34de625ee89e7faead"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-21.jpg",
+      "bytes": 183037,
+      "sha256": "1b0543b53fa084ba854a35870a96e2395b763233eb5c1aee518d9e91e89e9eac"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-21.json",
+      "bytes": 455020,
+      "sha256": "f0134f672b15505c484446193bf137361ae90e1a87d3c237559e586a8c77e3e1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-22.jpg",
+      "bytes": 192627,
+      "sha256": "3c0ae643be21fa252a44980025b7830e5102a0ffa6d9babccf9bfe974e52fbf2"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_2_ans/page-22.json",
+      "bytes": 410324,
+      "sha256": "ff8ca1128647ddc70415d1f668581588f4189828790d857c045d399ba5c23929"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-06.jpg",
+      "bytes": 213170,
+      "sha256": "7e0a8eb67b1cccef963d5171459e785914d88fad4225f658ac9dfb05c2be8b8e"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-06.json",
+      "bytes": 529154,
+      "sha256": "c803cf42cd34d5644d2667002f693a64d7d8bd457f7e28d2d68db56304e06201"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-07.jpg",
+      "bytes": 204874,
+      "sha256": "687b40c49a7c28bf1f8c113f1de9336e32c43a537855367c30f5ce4d179cca12"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-07.json",
+      "bytes": 533395,
+      "sha256": "f36a3e669c70f62536152f1d19b9b7145f4d125e681ffd171fc465aad0b82c05"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-08.jpg",
+      "bytes": 199498,
+      "sha256": "40d53b0c8dd0382ecbd9f33188115e025713b62009e4c5cafede451bae040156"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-08.json",
+      "bytes": 464556,
+      "sha256": "4727aa877669f0160b30e47b20ec2bb4b23d9fa89dfbf2f2eaee0e218d2caca1"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-09.jpg",
+      "bytes": 208066,
+      "sha256": "411f0cacadf57cb0c5fcff8677f0dba9d6c0fe62a73b258e37feeef1182febdf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-09.json",
+      "bytes": 539755,
+      "sha256": "373e7198de601ea181fb7f40e523f9a054a902015125a22c84e16c518225b1a0"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-10.jpg",
+      "bytes": 202098,
+      "sha256": "ce7be6c63ba9ec95952e59cc2efdfce89244d79b09191a7eea296eb22d9e8e17"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-10.json",
+      "bytes": 543344,
+      "sha256": "080c1b8a327c8beea89d32433d667e08474090745018fe7aaf9664188be18eaf"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-11.jpg",
+      "bytes": 206278,
+      "sha256": "0c4f7871c4efd6766767f2973e3b8853b2abcb33a788e398d27c5c1f2188b233"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-11.json",
+      "bytes": 493788,
+      "sha256": "1e74a1329d2024445f8ff973894a7dd6cfef4f996f288269baac86e54fe0816d"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-12.jpg",
+      "bytes": 191048,
+      "sha256": "1633e7fb8b76851e5c5cd97c3a8341a3f37a74ce9e0f5988a7f9a595129adfbe"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-12.json",
+      "bytes": 472996,
+      "sha256": "4ee73f385e02267d480d16dafe0f0fea1d665f38078d5b0f7223280e6df427e7"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-13.jpg",
+      "bytes": 192373,
+      "sha256": "a5302e2a29759e89e7eaa25c1def5b2a202459eb44c104ad64f52a5ddcf81f25"
+    },
+    {
+      "path": ".tools/private-exams/ocr/cet6_2026_06_3_ans/page-13.json",
+      "bytes": 406819,
+      "sha256": "b63b55ffd01ae10dd988d5182139f0ba600e545dfea7efa5814a67fd893f44c3"
+    },
+    {
+      "path": ".tools/private-exams/other-agent-files-sha256.json",
+      "bytes": 40055,
+      "sha256": "e67138a3db69432a139995ac40a2934409202a4295bb3291fe23c73eef6d208b"
+    },
+    {
+      "path": ".tools/private-exams/per-paper-report.json",
+      "bytes": 99374,
+      "sha256": "26bcd6c9687a053428247f647085758f80ee734a6825d58983bf0cc3b652ea5f"
+    },
+    {
+      "path": ".tools/private-exams/private-study-pack.json",
+      "bytes": 280767,
+      "sha256": "f7f1c58e08f173bf8e9eea42db8416e46bde2ce277bb2624c238463f3a0a647f"
+    },
+    {
+      "path": ".tools/private-exams/probe-manifest.json",
+      "bytes": 598,
+      "sha256": "d1272a381992534c36f7b1f68b410e13b6406f01a2cef7bf1e327788575ac59b"
+    },
+    {
+      "path": ".tools/private-exams/renders/2024-06-1-original-page8.png",
+      "bytes": 429706,
+      "sha256": "4001d2868920df133d2ee04cc67cd6df7943fa7c33d065cc77b5cdb49492b864"
+    },
+    {
+      "path": ".tools/private-exams/renders/2026-06-1-ans-page1.ocr.json",
+      "bytes": 384383,
+      "sha256": "b08b07a685900a13185ef305afcb8061ecc910b1f750e4124c5cea24e31a9500"
+    },
+    {
+      "path": ".tools/private-exams/renders/2026-06-1-ans-page1.png",
+      "bytes": 964265,
+      "sha256": "f269d753d2c86a6f11322225c84a28174fa9a647f888daf158d079b55834505a"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_03_1.html",
+      "bytes": 16783,
+      "sha256": "49e4edbf9531ac04f45bed45d31fa1508c2e7815cab43975ac3c2c98758afa8c"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_03_1_ans.html",
+      "bytes": 16405,
+      "sha256": "23edec77b796dca2248d97df3f539da12c59574c387a95e1cbe9cc851bc83078"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_03_2-3.html",
+      "bytes": 16341,
+      "sha256": "76ed9e89a39756af1fc27e70c540c810188bbe39b5f7f79f81204cf9ebf6064c"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_03_2-3_ans.html",
+      "bytes": 16453,
+      "sha256": "adfcb101436692c87433639d1e4779eb0fc792100119d2c04109a0faddd7bcf4"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_06_1.html",
+      "bytes": 16783,
+      "sha256": "f9ed2f7ea03ad3151d43f303adaf277bedc6cae1545c5dbe162723ae85f19c40"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_06_1_ans.html",
+      "bytes": 16405,
+      "sha256": "e4adc349fb69d3129919f0338e8a8a080e3ab3766d5416a6b0fc1d938f66e5a7"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_06_2.html",
+      "bytes": 16783,
+      "sha256": "76361269e3dc5a3e33feec65ddddf5e1d8b5b911b462bcc0e21657afd27e7418"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_06_2_ans.html",
+      "bytes": 16405,
+      "sha256": "e04820fff58bfd79e02736be16369c60e98dff5c9a427668e6294483609f615f"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_06_3.html",
+      "bytes": 16293,
+      "sha256": "06f58aa90e30fc93726e94d3a615c0be3a4a22c31668be9521ca65d0a630966d"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_06_3_ans.html",
+      "bytes": 16405,
+      "sha256": "cfc3a8fcd7636c9bc4f40c2e2c26032f8250b67adc9cd1ed7adbdf8ff062b70a"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_12_1.html",
+      "bytes": 16783,
+      "sha256": "39a83e35454df488aa654d74abbb6c092d99c2014230fc848bdec70ea17636fa"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_12_1_ans.html",
+      "bytes": 16405,
+      "sha256": "7c68c519bcf9cf832f746f8bcc5014d58b17b6dc6cfa5e8b06145a156c6b36e1"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_12_2.html",
+      "bytes": 16783,
+      "sha256": "b76d0c282bdce165706823e23954a25453e3dc8e3458b75036820c9292150c4c"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_12_2_ans.html",
+      "bytes": 16405,
+      "sha256": "215ece99b535e7b388698928d9b9fcd7c3d0fbf54131a4bf729ce78e00363cd3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_12_3.html",
+      "bytes": 16293,
+      "sha256": "07260ebf459763cc1179bad9c9c902dd0d1ff8f611a2594d54da0584268ee69f"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2023_12_3_ans.html",
+      "bytes": 16405,
+      "sha256": "03ea9a66e4646f1980a8f73a534ede351541c9f11c4c0a20803a8833bf9fa097"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_06_1.html",
+      "bytes": 16783,
+      "sha256": "cbd0e3592c182d72b4caf8686f7129d4d663a73d6301230db09b7cea977aff1b"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_06_1_ans.html",
+      "bytes": 16405,
+      "sha256": "40393f5fb450019833719095f0c0d28258aa1af2f947db27c7c51f35bf35d709"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_06_2.html",
+      "bytes": 16783,
+      "sha256": "3d56817cd1b88a3cac3c65bea9450f562b10bc80a4703227718c165adf4653e3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_06_2_ans.html",
+      "bytes": 16405,
+      "sha256": "b7f891eb3bb41a927b8fa4269fe4866425e40aae5ab7cc65f833462e393c985e"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_06_3.html",
+      "bytes": 16293,
+      "sha256": "8905d9a52afd9cce4e9e2a463eafd033823340bc24d74d0ea240a0975e90056a"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_06_3_ans.html",
+      "bytes": 16405,
+      "sha256": "7504781ca67cb9f7d03d0fd0d7b2a584811f69c08f70003a605a34d276317501"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_12_1.html",
+      "bytes": 16783,
+      "sha256": "3c00d109a6d76bfe469a22ede9c6e60b202982ffd06d3d727d16da0f12c46ce4"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_12_1_ans.html",
+      "bytes": 16405,
+      "sha256": "fba7bd683551a2ce0bef4cb875d23b3487d47baebfc5c61b4c1c5b81968e894a"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_12_2.html",
+      "bytes": 16783,
+      "sha256": "5204b5cc84821c7705582cbf12bee0deeb0103d514b54b8c7d180ad2bc5267e3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_12_2_ans.html",
+      "bytes": 16405,
+      "sha256": "6634f4915bbc36b4c1de51a46a0c3a91354d3758ca48f87ba43324ea6111c568"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_12_3.html",
+      "bytes": 16293,
+      "sha256": "4f1fdc8f0902800d72389632fb40801f381c994a6a2569b837ea4a8ad06797a3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2024_12_3_ans.html",
+      "bytes": 16405,
+      "sha256": "ea95b807697a7cf5be0bb09d3c0dfdd97db9200241679d5b0aeed5084cf2c232"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_06_1.html",
+      "bytes": 16783,
+      "sha256": "b84be5ad1021f979cfbaa1d4d30c4058d16634823a615e800ea7a07ac5339770"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_06_1_ans.html",
+      "bytes": 16405,
+      "sha256": "a1c086be48d3eaa787f15d4132a198982dafd7466eb838fb36377ad24f69b365"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_06_2.html",
+      "bytes": 16783,
+      "sha256": "88da378ad36e5aef5cdf9a7ac85188312c1cba4026c45782f302af36febb6702"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_06_2_ans.html",
+      "bytes": 16405,
+      "sha256": "942ad1699c71e01f030e8ae49fef7ad0146554c32477fc02d293599817418207"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_06_3.html",
+      "bytes": 16293,
+      "sha256": "e293818d343583fec43ee2b01b820c9b1acb3112b0cac71b8145a67528a4c528"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_06_3_ans.html",
+      "bytes": 16405,
+      "sha256": "dc562933141273924d092c2c22520c845b6ef2972f6ef3ad80fcdd5e1cb070ed"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_12_1.html",
+      "bytes": 16783,
+      "sha256": "ee664cd5c55f909daf2916494e105f45a7110cf269463f8c46c5230b161ee915"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_12_1_ans.html",
+      "bytes": 16405,
+      "sha256": "40e611489dfe34f9f57f8050f075f54bd4c8c49404e310542fc58c0f915f7a28"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_12_2.html",
+      "bytes": 16783,
+      "sha256": "e8d792d165ab424bb4ebacb1286d3590a62fe646ce62450f3aabe47ac98b348d"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_12_2_ans.html",
+      "bytes": 16405,
+      "sha256": "2d8044ea354e39fd46c100370847ff1573f8cdbc5d75a8562a8252d83dc14a27"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_12_3.html",
+      "bytes": 16293,
+      "sha256": "5d7eeeb7d14b30f02f8c5f4b876207f18b5772e5f75af9e6fed394831242e93f"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2025_12_3_ans.html",
+      "bytes": 16405,
+      "sha256": "2b1e891f2c861dcefdc90b5e12a624508f70e327e50601ec9319ffb595fdc54a"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2026_06_1.html",
+      "bytes": 16783,
+      "sha256": "74a611ad83344d5de16799b2ddf1d8566e91e6300e63f65649bba15dde3e650b"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2026_06_1_ans.html",
+      "bytes": 16405,
+      "sha256": "e49d6da1a578d2595e9fa22d9fa4be7071a971818d09a955cb293cd7af34c948"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2026_06_2.html",
+      "bytes": 16783,
+      "sha256": "cbbc96882b31be3b30b4a630d42d29730ba17906c3d55177eafa01a7a7e3a2a4"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2026_06_2_ans.html",
+      "bytes": 16405,
+      "sha256": "2aeb5cd78534b92cfbe34d2c7de47edc4a4cea1aee09e015ccde383bb6ed9261"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2026_06_3.html",
+      "bytes": 16293,
+      "sha256": "8be375bff0763c4efd6ac7302d54a11b2d6ca527e8932a4ed7e6c69320a435a3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/cet6_2026_06_3_ans.html",
+      "bytes": 16405,
+      "sha256": "89380d4775953cfdac058c2ecad16f33e1f10304ada3405bfd187386a04d8c10"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/download-robots.txt",
+      "bytes": 25,
+      "sha256": "1cbdbc6504be7abe1267d01d7f565bfcfe5851ba3f6a3754d1d61c8f8a2c6aa3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/koolearn-links.json",
+      "bytes": 26809,
+      "sha256": "e65ed946da9602abed958e7b15f966589f565754e464efd4cb13dd57619ab083"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/koolearn-robots.txt",
+      "bytes": 2080,
+      "sha256": "3f69819658a11cfac2965b24e6ba930159073e9c0e1e27df6779613eec01d689"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/koolearn.html",
+      "bytes": 62021,
+      "sha256": "026278bee777fcb0ce9eca7e502802ea6c6a6466678b8e024bc9ef30d1b0a191"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/lazy-robots-links.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/lazy-robots.html",
+      "bytes": 1491,
+      "sha256": "cdbe09fc2e32c02bc1e5e4b6db18f542f83023d77fa63ab5ccb394dc3c8fb71d"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/lazynote-links.json",
+      "bytes": 132039,
+      "sha256": "7ee9f63abdbb3993df4e313015c18143598fd18289b6230aa2457faf07f4a03a"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/lazynote.html",
+      "bytes": 350596,
+      "sha256": "8f981f55cb281c21bed5e58400e72360efbc9f34db5a3cc66b8adb8b0c924af5"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/wehuster-links.json",
+      "bytes": 13301,
+      "sha256": "adc6db6e05484177be3822a4d1fb15b0f026cbd62658e897d7493b30a807f8f3"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/wehuster-paper-links.json",
+      "bytes": 1138,
+      "sha256": "3b5684eeea1a69f3f85046c486257eef460b16f0384fe7a0e5bf7ce0d6b58885"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/wehuster-paper.html",
+      "bytes": 16783,
+      "sha256": "74a611ad83344d5de16799b2ddf1d8566e91e6300e63f65649bba15dde3e650b"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/wehuster-robots-links.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/wehuster-robots.html",
+      "bytes": 112,
+      "sha256": "60c1401e4b37155cca3b8c9e70161a8e1b85de710cf278bae8f58e9caaee9c59"
+    },
+    {
+      "path": ".tools/private-exams/source-pages/wehuster.html",
+      "bytes": 91549,
+      "sha256": "c00b1f477722aca9f3a9d4234e44daa6a73ca260b6c741cc039b79cb2a20ba6d"
+    },
+    {
+      "path": ".tools/remote-learning-20261018/cet6_study.db",
+      "bytes": 94208,
+      "sha256": "13d0dda6341c1d1834370b67d3ead024f02a461df43e86f7f68f88afa0191ff1"
+    },
+    {
+      "path": ".tools/remote-learning-20261018/cet6_study.db-shm",
+      "bytes": 32768,
+      "sha256": "acbef31d6c1e14d4432ade26a7cc2d6edefc188c8a645fac22756cc37cd4aefc"
+    },
+    {
+      "path": ".tools/remote-learning-20261018/cet6_study.db-wal",
+      "bytes": 420272,
+      "sha256": "54809d119b183c371fdfe92929266cbcf0cf328279086529463ca121530a5424"
+    },
+    {
+      "path": "app/src/main/assets/exam-packs/cet6-recent-years.json",
+      "bytes": 248759,
+      "sha256": "6b5b9c869a1e4b0f1ca2c408a922690ef478e594ed6ff4ff68cddcc03e67fc52"
+    },
+    {
+      "path": "raw-papers/cet6_2022_06_1.mp3",
+      "bytes": 5032072,
+      "sha256": "ea480c968b83583b9832eafa06ad5f607fdac6f11ccdff9746a77832d5eec4dd"
+    },
+    {
+      "path": "raw-papers/cet6_2022_06_1.pdf",
+      "bytes": 2100383,
+      "sha256": "6e102097e911b394171304b8aebf66792fb3cf774c875576b4ecdb1b387def71"
+    },
+    {
+      "path": "raw-papers/cet6_2022_06_1_ans.pdf",
+      "bytes": 4292503,
+      "sha256": "2818b589a4d403654e5c9d9eab784fc5755a521b3c8a40e56c712b4dc5a38d1e"
+    },
+    {
+      "path": "raw-papers/cet6_2022_06_2-3.pdf",
+      "bytes": 2020677,
+      "sha256": "adc7cae0dfb982a3dae2281e2f564f43d6e10459a35f8b8d53ee2605edf4e7ab"
+    },
+    {
+      "path": "raw-papers/cet6_2022_06_2-3_ans.pdf",
+      "bytes": 3175781,
+      "sha256": "f1fbbb704b6a3eeb958a2a97d1ba602bc3dca2b69a7de1ccb450dd038bb0d81d"
+    },
+    {
+      "path": "raw-papers/cet6_2022_09_1.mp3",
+      "bytes": 4836220,
+      "sha256": "abeb24db02d8b325504de83750636b9f8775e0a27a4fc3da7e85b2710d9fe29c"
+    },
+    {
+      "path": "raw-papers/cet6_2022_09_1.pdf",
+      "bytes": 1866299,
+      "sha256": "84803728ee7739994faaeeaa865c236cc41889ebce74d3177daaa8a95e8fdd0f"
+    },
+    {
+      "path": "raw-papers/cet6_2022_09_1_ans.pdf",
+      "bytes": 3818207,
+      "sha256": "b642906ad801e9cbbf54e50889d3aaf5d33ec8ded3dd7ad1df16aa73814333a0"
+    },
+    {
+      "path": "raw-papers/cet6_2022_09_2-3.pdf",
+      "bytes": 189786,
+      "sha256": "1d7f456011fadb345feb1a75cf427b2b448bd0355eff924326f73983f14f28d8"
+    },
+    {
+      "path": "raw-papers/cet6_2022_09_2-3_ans.pdf",
+      "bytes": 442058,
+      "sha256": "ff0e1c8772dbfa52780377bc0f24d47194e8625a13ef965a9aa68c3bcb9d0406"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_1.mp3",
+      "bytes": 4816770,
+      "sha256": "65cc4ccd5c55a0e1d6fb43df47980597e5e7da01005d29702534c5332b652de3"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_1.pdf",
+      "bytes": 2131105,
+      "sha256": "6c321c079ddf8aaf5ed9c3531f33ffe43a1ea3c32008bed82e52b56ecbf50550"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_1_ans.pdf",
+      "bytes": 4311441,
+      "sha256": "a6d828b1861e8a5c4f38790fd79ceacd282a04336f35c6cf7c1592facbfba663"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_2.mp3",
+      "bytes": 4670587,
+      "sha256": "b026cf64f3145d3d03ff2c4a08482cbb1c682e20bfc328bedda41e0141700e18"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_2.pdf",
+      "bytes": 2158961,
+      "sha256": "52a935ceb2113e22e4b3f519635c30b728aedcaeeaf774ca5a0e80f3a88b7966"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_2_ans.pdf",
+      "bytes": 4326216,
+      "sha256": "c342f9415627b0143c951707055234a102354ce9ce9b97b73e2360db94683c58"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_3.pdf",
+      "bytes": 1676136,
+      "sha256": "ea7339fb589c0f9c82a74c8325cd97b8440a979e6d42b831fc0d87b58c5c74cd"
+    },
+    {
+      "path": "raw-papers/cet6_2022_12_3_ans.pdf",
+      "bytes": 2856991,
+      "sha256": "b9f3285855aa6b20c915a237f7f3ad4bea35fec2579244c5331c9ea24871e79a"
+    },
+    {
+      "path": "raw-papers/cet6_2023_03_1.mp3",
+      "bytes": 4638320,
+      "sha256": "62263b74538dbcaf296ce18a9c262d51e342f18f80324a64ace107cf1dddf6e7"
+    },
+    {
+      "path": "raw-papers/cet6_2023_03_1.pdf",
+      "bytes": 2087220,
+      "sha256": "6fb1fd005a0677e2cf8009000562cd30f41351d93eebf5c57519b7b5ba10213a"
+    },
+    {
+      "path": "raw-papers/cet6_2023_03_1_ans.pdf",
+      "bytes": 3952607,
+      "sha256": "bf81c167a635f8120495d77393642b2c8c54ef040bc0239e65a6953a2979b0ec"
+    },
+    {
+      "path": "raw-papers/cet6_2023_03_2-3.pdf",
+      "bytes": 564588,
+      "sha256": "2570952cd5781945f79b1e98a48266fb04f8ab815226d504941c14110683b8ea"
+    },
+    {
+      "path": "raw-papers/cet6_2023_03_2-3_ans.pdf",
+      "bytes": 788629,
+      "sha256": "67cb0dbd2001fc8c9f6d73177c8f9509aa9652b294e017e1f06280cd71aac053"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_1.mp3",
+      "bytes": 4867096,
+      "sha256": "26b738bcfd8064454d207788f225cd5d9efec6007ccb7ab32997992dab1a2583"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_1.pdf",
+      "bytes": 2166290,
+      "sha256": "a64db8e40f453ed492ca11b86a9788e760bac393210809965215082d06256859"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_1_ans.pdf",
+      "bytes": 3998977,
+      "sha256": "10eb0d5fabd474de7a7fa4662b652b7ed346dff955e43639f9ce35d34be12f4b"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_2.mp3",
+      "bytes": 4867191,
+      "sha256": "01589e03c9d336ff2de10491d6e5c52e4cf3dc015dc4bab24bea0b1f113d932f"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_2.pdf",
+      "bytes": 2140027,
+      "sha256": "2eef014b50171097056d0f0f0cff7e115c4202a9299d3e860b9dba15fb56efd9"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_2_ans.pdf",
+      "bytes": 4095971,
+      "sha256": "cad4430dd1077d4fa67ec65b82ab4fe703d16b6e0ba3931469fbb325d8cef201"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_3.pdf",
+      "bytes": 1696021,
+      "sha256": "12c74cd2a8ce94dc3efa2a178af99c36df6d03fe1611f178c89a9392c4e26ca2"
+    },
+    {
+      "path": "raw-papers/cet6_2023_06_3_ans.pdf",
+      "bytes": 2480122,
+      "sha256": "ba703aec961b4fb6f32a9352cd446bf9161a194f73f5d7081b8f82ce1aa54e44"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_1.mp3",
+      "bytes": 4614123,
+      "sha256": "e022f8e815a39bb302fd91669d3a79f674703da61ee0e2589a6af0db48f3eff5"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_1.pdf",
+      "bytes": 2177653,
+      "sha256": "942e09a84d31a40ffd1bc77fcb5bb0611a05a1bb7408e0514ffbc4807ae40a9a"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_1_ans.pdf",
+      "bytes": 4337532,
+      "sha256": "ad69525f548d6cf1d331a50e8e6ede4ae9e7eff98e0fb264ceaba05789b408da"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_2.mp3",
+      "bytes": 4605643,
+      "sha256": "39b8be4ef5e62c70ec3f56bc3143f93ab5de26cba35b7606f234701f87cfaa7d"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_2.pdf",
+      "bytes": 2233496,
+      "sha256": "35f400af8df9a622f257dd9e460513e09d609ddd82716cbba924736cd389c3b9"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_2_ans.pdf",
+      "bytes": 4275436,
+      "sha256": "14fdc572b79c8e05529653653d03c3229c42338d95a79caf4e3f9620397d4262"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_3.pdf",
+      "bytes": 1706154,
+      "sha256": "863dce5f60d8f4dad1b0920e70bcba80542644750f517f634be950c61f4b1fd6"
+    },
+    {
+      "path": "raw-papers/cet6_2023_12_3_ans.pdf",
+      "bytes": 2580492,
+      "sha256": "06d37c126560c340ae2a65728a5bdd8305f621a8a04fc9a52254b96dfae8c158"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_1.mp3",
+      "bytes": 4771487,
+      "sha256": "98f87cce756cf13824d13b3014b9d62294327d7d3d2784f01b8ba83483b73517"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_1.pdf",
+      "bytes": 377948,
+      "sha256": "ef879d945d233082b357ac48a524d9f755b4aa63deffa246c6cb86c32440431f"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_1_ans.pdf",
+      "bytes": 4052285,
+      "sha256": "42f6e5da3395b3dccdb2669e7bc3321f30b7d45f93d862cb3ca30569a31b0425"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_2.mp3",
+      "bytes": 4561348,
+      "sha256": "fac9987f4ecb6ba750134dcb05e6553b8b8afb6d9da8febd3c31cdf0a435b74c"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_2.pdf",
+      "bytes": 263843,
+      "sha256": "3df3ad48a9094dac4cc62aee9b80c05b6cfd3b140ff1d121986ed2edd670c48c"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_2_ans.pdf",
+      "bytes": 4012164,
+      "sha256": "0a21dd50e50577134303fd0e15dece6f16a2ef1d89fb57d1dcda20acc383ef83"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_3.pdf",
+      "bytes": 339662,
+      "sha256": "58bdf2e4cf9ad757887bac3e3901f66e092e8e7d7d0c6b56a6c137c0b2d00d54"
+    },
+    {
+      "path": "raw-papers/cet6_2024_06_3_ans.pdf",
+      "bytes": 2267958,
+      "sha256": "389494605c21e439c776bace09a376274fb7ffe798909cd129ccaf7e3fbb6558"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_1.mp3",
+      "bytes": 4906476,
+      "sha256": "c2b4564130553a8856aff78bef55a0a26449ce40dbdcc3638114771bccac6e36"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_1.pdf",
+      "bytes": 371414,
+      "sha256": "5d71737190c7a6951d25c9ecd8645c0068ceb29f032f5962c94ea8d776e46672"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_1_ans.pdf",
+      "bytes": 4147614,
+      "sha256": "d38117a060c24d64d4155ed94d1d6d53ed359387ce4b42e3fa4c314bbe5be11e"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_2.mp3",
+      "bytes": 4830413,
+      "sha256": "404b8a20d3881ad478e88c62cd9434989182c8c3e45cc8277aab3a3f07a0431b"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_2.pdf",
+      "bytes": 354412,
+      "sha256": "de0f410d0edaa896970727b75cee67960b52459588ad7a7331d18f4c97d0dff4"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_2_ans.pdf",
+      "bytes": 4138091,
+      "sha256": "ba1adaa0c37803dd04a105410cd22c8ca39df1694f8022195bbe69621736b6bd"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_3.pdf",
+      "bytes": 319338,
+      "sha256": "4eff618e3b7b6ab54f2c9c2528b6ac23039c3650af035bd3d4bb3e104a775d8f"
+    },
+    {
+      "path": "raw-papers/cet6_2024_12_3_ans.pdf",
+      "bytes": 2652407,
+      "sha256": "f6469f9b62d2a3e84f20abc697eeb40d89fd1c1a7b5584588e840a30c09036d8"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_1.mp3",
+      "bytes": 4587324,
+      "sha256": "90906779576f8a32d14030d3d394a7bea33322c276c9701728173aff36912703"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_1.pdf",
+      "bytes": 356282,
+      "sha256": "15ac17ef0cf3089ca11c833ecd20b55955b33b4043f27093280222a0d79117b8"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_1_ans.pdf",
+      "bytes": 4745121,
+      "sha256": "19f33693d4e9b6f0d4b709c035bfc37b7a9efedb1c430dd81c383330a7eaabbe"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_2.mp3",
+      "bytes": 4616581,
+      "sha256": "eb99adfdf23c1b7f8ad93d7c30be8d354f104801760c318b9d352ff984fe4196"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_2.pdf",
+      "bytes": 361272,
+      "sha256": "7b6186d254a6910a18e17de09e2112f37f4b4d0d6370626b9fbedbc09e73c11c"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_2_ans.pdf",
+      "bytes": 4586614,
+      "sha256": "572a48d26cc248013f24e8eb456f463cced743877a6f9907f4a7e51ed94a96ac"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_3.pdf",
+      "bytes": 325142,
+      "sha256": "0b517826acf7326d7528bf0f4d92ec24a30a095ec6bf05610d6a3ce1722a1696"
+    },
+    {
+      "path": "raw-papers/cet6_2025_06_3_ans.pdf",
+      "bytes": 2879353,
+      "sha256": "7998dce6589556e93193d7b73b0c4502fb1b8da58bfb3d9daeb394934ae085fe"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_1.mp3",
+      "bytes": 4546308,
+      "sha256": "71db45f76bb1ca6f037986b248f6a31341318e66d93950d52cd8fb3dcc09838c"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_1.pdf",
+      "bytes": 307920,
+      "sha256": "4fac338c84e06f95f341947d9944b3f5434d0074705762eb0a2c8945499dc1a3"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_1_ans.pdf",
+      "bytes": 4262874,
+      "sha256": "62476a894db0d68e6ff94688a7b9fab88479992dc67d53714a17b2a6c14b9fe5"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_2.mp3",
+      "bytes": 4579121,
+      "sha256": "a3b51d42450edaee5d85d6e997251f4c1300b645d0f71529bd103c8c1a5fc2d7"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_2.pdf",
+      "bytes": 303543,
+      "sha256": "ad6b856ce3aa9647344d7ad1caa4bfbcbb074effa49f1ab787f7ab20859d52ed"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_2_ans.pdf",
+      "bytes": 4402707,
+      "sha256": "12c8f46be673a6aefc2b34ec8d093187a3b91ec8f91f65cd45bf5cec8d241b80"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_3.pdf",
+      "bytes": 299050,
+      "sha256": "9151ec800264de84ecee25f07bd37bee283c411ae821259fd6055cbf9b1d7c2b"
+    },
+    {
+      "path": "raw-papers/cet6_2025_12_3_ans.pdf",
+      "bytes": 2465967,
+      "sha256": "0678793832a086d7949e66a6301e453f9f678bf6bd34d990d2f415e1b64b7d05"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_1.mp3",
+      "bytes": 4521972,
+      "sha256": "fae4c613735a246884765eb582afb5dc7ebfdc4f7d815c468e54bf6d8c324eaf"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_1.pdf",
+      "bytes": 143281,
+      "sha256": "bcfa7f21ac278e6e652d03afe9c90d329d6e78bd7289b60f0aee47c561d47adb"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_1_ans.pdf",
+      "bytes": 3951157,
+      "sha256": "711023b3f40c70c3c44238c0db8a7a4b076accf3a7c894f7388baec5633660d8"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_2.mp3",
+      "bytes": 4619865,
+      "sha256": "4a13e1c31a889b27ef0ba6f54aa4d95258f13a3ba7d264d05a32345a73742a14"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_2.pdf",
+      "bytes": 146859,
+      "sha256": "e3c61874e3d089e36ba315c47e3d2b7f4161e65edd01b271ae80f8314a255a3a"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_2_ans.pdf",
+      "bytes": 4034413,
+      "sha256": "84551fb0f1c7244764bb72bd22f65dfe38438a00dc9049c553607e8b0e13332e"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_3.pdf",
+      "bytes": 140114,
+      "sha256": "4dea7771d7bb282f4d0ba7473a89b0e77c4576b101d683906626ef968769e846"
+    },
+    {
+      "path": "raw-papers/cet6_2026_06_3_ans.pdf",
+      "bytes": 2373341,
+      "sha256": "e37e8edb8b1932a506a761d31143c5ef5ca2019bb2d4ef106b40104a27e785de"
+    },
+    {
+      "path": "raw-papers/manifest.json",
+      "bytes": 2600,
+      "sha256": "214cb386d4898c9f2c74bec4682239cc804e1bfbff6267871b1cd95044ba0caf"
+    },
+    {
+      "path": "tools/exam-packs/cet6-recent-years.json",
+      "bytes": 248759,
+      "sha256": "6b5b9c869a1e4b0f1ca2c408a922690ef478e594ed6ff4ff68cddcc03e67fc52"
+    }
+  ],
+  "databaseValidation": "integrity_check=ok on disposable copies; originals untouched",
+  "scope": "Source PDFs/audio, personal content packs, extraction/OCR/provenance and existing learning database snapshots; credentials and shared_prefs excluded"
+}

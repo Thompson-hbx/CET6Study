@@ -1,0 +1,3311 @@
+﻿{
+    "engine":  "Windows.Media.Ocr zh-Hans-CN",
+    "image":  "D:\\Workspace\\projects\\cet6\\CET6Study\\.tools\\private-exams\\ocr\\cet6_2025_06_2_ans\\page-20.jpg",
+    "unverifiedOCR":  true,
+    "text":  "0 · 译 点 精 析 。 1. 第 一 句 ： “ 具 有 ． 一 ， ． 的 地 理 位 置 ” 和 “ 拥 有 一 一 的 产 业 资 源 ” 为 并 列 关 系 ， 且 “ 具 有 ” 和 “ 拥 有 ” 两 个 动 作 一 致 ， 故 翻 译 时 共 用 一 个 谓 语 动 词 即 可 ， 翻 译 为 is endowed with exceptional geographic location ， well- developed transponation infrastructure ， and abundant industrial resourceso 2 ． 第 二 句 ： “ 是 中 国 开 放 程 度 最 高 、 经 济 活 力 最 强 的 区 域 之 一 ” 可 作 句 子 的 状 语 ， 用 as 介 词 短 语 进 行 翻 译 ， 即 As one of China ， s most open and econormcally V1brant regions ； “ 在 国 家 经 济 发 展 中 具 有 重 要 的 战 略 地 位 ” 是 句 子 主 体 ， 翻 译 为 holds sigmficant strategic importance in the nation ， s economic developmento 3 ． 第 三 句 ： “ 不 仅 “ ． 一 还 一 一 ” 的 结 构 可 以 用 not only...but 小 o 一 表 达 ； “ 充 满 活 力 的 世 界 级 城 市 群 和 具 有 全 球 影 响 力 的 国 际 科 技 创 新 中 心 \" 是 两 个 并 列 的 名 词 短 语 ， 翻 译 为 a dynamic world-class city cluster and an international technology mnovation hub with global influence ； “ 适 合 工 作 、 购 物 、 旅 游 的 优 质 生 活 圈 ” 的 定 语 较 长 ， 翻 译 时 可 后 置 ， 即 a high-quality li 、 \u0027ing circle ideal forworking ， shopping ， and tounsmo 4 ． 第 四 句 ： “ 随 着 改 革 开 放 的 不 断 深 人 ” 可 作 句 子 的 伴 随 状 语 ， 翻 译 为 with 介 词 短 语 ， 即 With the of reformandopemng-up ； “ 大 湾 区 的 建 设 将 进 一 步 推 动 区 域 经 济 发 展 ” 翻 译 为 the construction ofthe Greater Bay Area will further propel reyonal econormc growth 5 ． 第 五 句 ： “ 到 2035 年 ， 大 湾 区 将 实 现 ． 应 使 用 将 来 时 来 表 达 ， 即 By 2035 ， the Greater Bay will achieve its goal ofbecoming a world-class bay area 40 六 级 2025 ． 6 二",
+    "lines":  [
+                  {
+                      "text":  "0 · 译 点 精 析 。",
+                      "words":  [
+                                    {
+                                        "text":  "0",
+                                        "x":  61,
+                                        "y":  60,
+                                        "width":  37,
+                                        "height":  39
+                                    },
+                                    {
+                                        "text":  "·",
+                                        "x":  106,
+                                        "y":  77,
+                                        "width":  7,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  118,
+                                        "y":  71,
+                                        "width":  21,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "点",
+                                        "x":  141,
+                                        "y":  71,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "精",
+                                        "x":  162,
+                                        "y":  70,
+                                        "width":  21,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "析",
+                                        "x":  184,
+                                        "y":  71,
+                                        "width":  22,
+                                        "height":  21
+                                    },
+                                    {
+                                        "text":  "。",
+                                        "x":  213,
+                                        "y":  77,
+                                        "width":  7,
+                                        "height":  7
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "1. 第 一 句 ： “ 具 有 ． 一 ， ． 的 地 理 位 置 ” 和 “ 拥 有 一 一 的 产 业 资 源 ” 为 并 列 关 系 ， 且 “ 具 有 ” 和 “ 拥 有 ” 两 个",
+                      "words":  [
+                                    {
+                                        "text":  "1.",
+                                        "x":  63,
+                                        "y":  116,
+                                        "width":  12,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  86,
+                                        "y":  112,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  107,
+                                        "y":  119,
+                                        "width":  18,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  128,
+                                        "y":  113,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  150,
+                                        "y":  120,
+                                        "width":  5,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  170,
+                                        "y":  113,
+                                        "width":  8,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "具",
+                                        "x":  179,
+                                        "y":  113,
+                                        "width":  21,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  201,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  223,
+                                        "y":  121,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  230,
+                                        "y":  120,
+                                        "width":  17,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  250,
+                                        "y":  120,
+                                        "width":  3,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  256,
+                                        "y":  121,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  264,
+                                        "y":  113,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "地",
+                                        "x":  283,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "理",
+                                        "x":  305,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "位",
+                                        "x":  325,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "置",
+                                        "x":  347,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  368,
+                                        "y":  113,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  389,
+                                        "y":  113,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  420,
+                                        "y":  113,
+                                        "width":  8,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "拥",
+                                        "x":  430,
+                                        "y":  113,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  451,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  473,
+                                        "y":  120,
+                                        "width":  17,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  493,
+                                        "y":  120,
+                                        "width":  17,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  514,
+                                        "y":  113,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "产",
+                                        "x":  533,
+                                        "y":  112,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "业",
+                                        "x":  554,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "资",
+                                        "x":  576,
+                                        "y":  112,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "源",
+                                        "x":  596,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  618,
+                                        "y":  113,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  638,
+                                        "y":  113,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "并",
+                                        "x":  658,
+                                        "y":  112,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "列",
+                                        "x":  680,
+                                        "y":  113,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "关",
+                                        "x":  700,
+                                        "y":  112,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "系",
+                                        "x":  722,
+                                        "y":  113,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  745,
+                                        "y":  126,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "且",
+                                        "x":  762,
+                                        "y":  113,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  794,
+                                        "y":  113,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "具",
+                                        "x":  803,
+                                        "y":  113,
+                                        "width":  21,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  825,
+                                        "y":  113,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  846,
+                                        "y":  113,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  867,
+                                        "y":  113,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  898,
+                                        "y":  113,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "拥",
+                                        "x":  907,
+                                        "y":  112,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  929,
+                                        "y":  113,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  950,
+                                        "y":  113,
+                                        "width":  10,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "两",
+                                        "x":  970,
+                                        "y":  113,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "个",
+                                        "x":  991,
+                                        "y":  112,
+                                        "width":  20,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "动 作 一 致 ， 故 翻 译 时 共 用 一 个 谓 语 动 词 即 可 ， 翻 译 为 is endowed with exceptional geographic location ， well-",
+                      "words":  [
+                                    {
+                                        "text":  "动",
+                                        "x":  85,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  106,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  126,
+                                        "y":  152,
+                                        "width":  19,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "致",
+                                        "x":  146,
+                                        "y":  144,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  169,
+                                        "y":  157,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "故",
+                                        "x":  187,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  208,
+                                        "y":  144,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  227,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "时",
+                                        "x":  248,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "共",
+                                        "x":  267,
+                                        "y":  144,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  288,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  308,
+                                        "y":  152,
+                                        "width":  19,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "个",
+                                        "x":  328,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "谓",
+                                        "x":  348,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  369,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "动",
+                                        "x":  390,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  410,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  431,
+                                        "y":  144,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  450,
+                                        "y":  144,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  473,
+                                        "y":  157,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  491,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  510,
+                                        "y":  144,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  531,
+                                        "y":  144,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "x":  551,
+                                        "y":  146,
+                                        "width":  13,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "endowed",
+                                        "x":  570,
+                                        "y":  146,
+                                        "width":  74,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  650,
+                                        "y":  146,
+                                        "width":  36,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "exceptional",
+                                        "x":  692,
+                                        "y":  146,
+                                        "width":  95,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "geographic",
+                                        "x":  793,
+                                        "y":  146,
+                                        "width":  91,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "location",
+                                        "x":  891,
+                                        "y":  145,
+                                        "width":  66,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  958,
+                                        "y":  157,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "well-",
+                                        "x":  968,
+                                        "y":  146,
+                                        "width":  42,
+                                        "height":  15
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "developed transponation infrastructure ， and abundant industrial resourceso",
+                      "words":  [
+                                    {
+                                        "text":  "developed",
+                                        "x":  85,
+                                        "y":  178,
+                                        "width":  82,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "transponation",
+                                        "x":  171,
+                                        "y":  178,
+                                        "width":  111,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "infrastructure",
+                                        "x":  287,
+                                        "y":  178,
+                                        "width":  106,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  394,
+                                        "y":  189,
+                                        "width":  3,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  403,
+                                        "y":  178,
+                                        "width":  29,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "abundant",
+                                        "x":  437,
+                                        "y":  178,
+                                        "width":  73,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "industrial",
+                                        "x":  514,
+                                        "y":  178,
+                                        "width":  74,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "resourceso",
+                                        "x":  594,
+                                        "y":  182,
+                                        "width":  82,
+                                        "height":  10
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "2 ． 第 二 句 ： “ 是 中 国 开 放 程 度 最 高 、 经 济 活 力 最 强 的 区 域 之 一 ” 可 作 句 子 的 状 语 ， 用 as 介 词 短 语 进 行 翻 译 ， 即",
+                      "words":  [
+                                    {
+                                        "text":  "2",
+                                        "x":  61,
+                                        "y":  209,
+                                        "width":  10,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  72,
+                                        "y":  220,
+                                        "width":  4,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  86,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "二",
+                                        "x":  107,
+                                        "y":  207,
+                                        "width":  17,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  126,
+                                        "y":  205,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  148,
+                                        "y":  213,
+                                        "width":  4,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  166,
+                                        "y":  207,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "是",
+                                        "x":  176,
+                                        "y":  206,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  197,
+                                        "y":  205,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  217,
+                                        "y":  206,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "开",
+                                        "x":  236,
+                                        "y":  206,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "放",
+                                        "x":  256,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "程",
+                                        "x":  276,
+                                        "y":  206,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "度",
+                                        "x":  296,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "最",
+                                        "x":  315,
+                                        "y":  206,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "高",
+                                        "x":  336,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  358,
+                                        "y":  218,
+                                        "width":  6,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "经",
+                                        "x":  376,
+                                        "y":  206,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "济",
+                                        "x":  396,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "活",
+                                        "x":  416,
+                                        "y":  206,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  436,
+                                        "y":  205,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "最",
+                                        "x":  456,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "强",
+                                        "x":  476,
+                                        "y":  206,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  497,
+                                        "y":  205,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  517,
+                                        "y":  206,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "域",
+                                        "x":  536,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "之",
+                                        "x":  556,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  576,
+                                        "y":  213,
+                                        "width":  19,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  597,
+                                        "y":  206,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  616,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  636,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  656,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "子",
+                                        "x":  676,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  697,
+                                        "y":  205,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "状",
+                                        "x":  715,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  735,
+                                        "y":  205,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  758,
+                                        "y":  218,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  775,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "as",
+                                        "x":  795,
+                                        "y":  212,
+                                        "width":  16,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "介",
+                                        "x":  812,
+                                        "y":  204,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  832,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "短",
+                                        "x":  852,
+                                        "y":  205,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  871,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "进",
+                                        "x":  891,
+                                        "y":  205,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "行",
+                                        "x":  911,
+                                        "y":  204,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  932,
+                                        "y":  205,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  951,
+                                        "y":  204,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  974,
+                                        "y":  218,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  992,
+                                        "y":  205,
+                                        "width":  17,
+                                        "height":  18
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "As one of China ， s most open and econormcally V1brant regions ； “ 在 国 家 经 济 发 展 中 具 有 重 要 的 战 略 地 位 ” 是 句",
+                      "words":  [
+                                    {
+                                        "text":  "As",
+                                        "x":  85,
+                                        "y":  240,
+                                        "width":  22,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "one",
+                                        "x":  112,
+                                        "y":  244,
+                                        "width":  29,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  146,
+                                        "y":  240,
+                                        "width":  19,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "China",
+                                        "x":  168,
+                                        "y":  240,
+                                        "width":  47,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  216,
+                                        "y":  238,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  222,
+                                        "y":  244,
+                                        "width":  7,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "most",
+                                        "x":  234,
+                                        "y":  242,
+                                        "width":  39,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "open",
+                                        "x":  278,
+                                        "y":  244,
+                                        "width":  38,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  321,
+                                        "y":  239,
+                                        "width":  29,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "econormcally",
+                                        "x":  355,
+                                        "y":  239,
+                                        "width":  107,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "V1brant",
+                                        "x":  467,
+                                        "y":  239,
+                                        "width":  56,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "regions",
+                                        "x":  528,
+                                        "y":  239,
+                                        "width":  58,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  589,
+                                        "y":  244,
+                                        "width":  4,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  607,
+                                        "y":  237,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "在",
+                                        "x":  616,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  638,
+                                        "y":  236,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "家",
+                                        "x":  656,
+                                        "y":  235,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "经",
+                                        "x":  676,
+                                        "y":  237,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "济",
+                                        "x":  696,
+                                        "y":  235,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "发",
+                                        "x":  715,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "展",
+                                        "x":  735,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  756,
+                                        "y":  236,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "具",
+                                        "x":  774,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  794,
+                                        "y":  236,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "重",
+                                        "x":  813,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "要",
+                                        "x":  833,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  854,
+                                        "y":  236,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "战",
+                                        "x":  873,
+                                        "y":  236,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "略",
+                                        "x":  893,
+                                        "y":  236,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "地",
+                                        "x":  912,
+                                        "y":  236,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "位",
+                                        "x":  931,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  952,
+                                        "y":  236,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "是",
+                                        "x":  971,
+                                        "y":  236,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  991,
+                                        "y":  235,
+                                        "width":  19,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "子 主 体 ， 翻 译 为 holds sigmficant strategic importance in the nation ， s economic developmento",
+                      "words":  [
+                                    {
+                                        "text":  "子",
+                                        "x":  85,
+                                        "y":  269,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "主",
+                                        "x":  106,
+                                        "y":  268,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "体",
+                                        "x":  125,
+                                        "y":  268,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  148,
+                                        "y":  281,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  166,
+                                        "y":  268,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  184,
+                                        "y":  268,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  205,
+                                        "y":  268,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "holds",
+                                        "x":  224,
+                                        "y":  271,
+                                        "width":  42,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "sigmficant",
+                                        "x":  272,
+                                        "y":  271,
+                                        "width":  84,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "strategic",
+                                        "x":  361,
+                                        "y":  271,
+                                        "width":  66,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "importance",
+                                        "x":  433,
+                                        "y":  271,
+                                        "width":  89,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "x":  526,
+                                        "y":  270,
+                                        "width":  16,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  546,
+                                        "y":  271,
+                                        "width":  25,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "nation",
+                                        "x":  576,
+                                        "y":  270,
+                                        "width":  49,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  626,
+                                        "y":  269,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "s",
+                                        "x":  632,
+                                        "y":  275,
+                                        "width":  7,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "economic",
+                                        "x":  645,
+                                        "y":  270,
+                                        "width":  75,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "developmento",
+                                        "x":  726,
+                                        "y":  270,
+                                        "width":  110,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "3 ． 第 三 句 ： “ 不 仅 “ ． 一 还 一 一 ” 的 结 构 可 以 用 not only...but 小 o 一 表 达 ； “ 充 满 活 力 的 世 界 级 城 市 群 和 具 有 全",
+                      "words":  [
+                                    {
+                                        "text":  "3",
+                                        "x":  62,
+                                        "y":  302,
+                                        "width":  8,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  72,
+                                        "y":  314,
+                                        "width":  4,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  86,
+                                        "y":  299,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "三",
+                                        "x":  107,
+                                        "y":  299,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  127,
+                                        "y":  299,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  150,
+                                        "y":  307,
+                                        "width":  4,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  168,
+                                        "y":  300,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "不",
+                                        "x":  177,
+                                        "y":  299,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "仅",
+                                        "x":  198,
+                                        "y":  299,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  220,
+                                        "y":  307,
+                                        "width":  11,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  234,
+                                        "y":  307,
+                                        "width":  3,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  240,
+                                        "y":  307,
+                                        "width":  17,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "还",
+                                        "x":  259,
+                                        "y":  300,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  281,
+                                        "y":  307,
+                                        "width":  17,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  301,
+                                        "y":  307,
+                                        "width":  17,
+                                        "height":  4
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  321,
+                                        "y":  299,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  342,
+                                        "y":  299,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "结",
+                                        "x":  361,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "构",
+                                        "x":  382,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  403,
+                                        "y":  299,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "以",
+                                        "x":  424,
+                                        "y":  300,
+                                        "width":  16,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  443,
+                                        "y":  299,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "not",
+                                        "x":  463,
+                                        "y":  304,
+                                        "width":  28,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "only...but",
+                                        "x":  496,
+                                        "y":  301,
+                                        "width":  80,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "小",
+                                        "x":  583,
+                                        "y":  301,
+                                        "width":  23,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "o",
+                                        "x":  607,
+                                        "y":  306,
+                                        "width":  9,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  618,
+                                        "y":  314,
+                                        "width":  14,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  634,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "达",
+                                        "x":  655,
+                                        "y":  299,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  678,
+                                        "y":  307,
+                                        "width":  4,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  696,
+                                        "y":  299,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "充",
+                                        "x":  706,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "满",
+                                        "x":  727,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "活",
+                                        "x":  747,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  767,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  789,
+                                        "y":  298,
+                                        "width":  16,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "世",
+                                        "x":  808,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "界",
+                                        "x":  828,
+                                        "y":  299,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "级",
+                                        "x":  849,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "城",
+                                        "x":  869,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "市",
+                                        "x":  889,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "群",
+                                        "x":  909,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "和",
+                                        "x":  930,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "具",
+                                        "x":  950,
+                                        "y":  298,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "有",
+                                        "x":  970,
+                                        "y":  298,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "全",
+                                        "x":  991,
+                                        "y":  297,
+                                        "width":  19,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "球 影 响 力 的 国 际 科 技 创 新 中 心 \" 是 两 个 并 列 的 名 词 短 语 ， 翻 译 为 a dynamic world-class city cluster and an",
+                      "words":  [
+                                    {
+                                        "text":  "球",
+                                        "x":  85,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "影",
+                                        "x":  106,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "响",
+                                        "x":  127,
+                                        "y":  330,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "力",
+                                        "x":  147,
+                                        "y":  330,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  168,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "国",
+                                        "x":  189,
+                                        "y":  331,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "际",
+                                        "x":  209,
+                                        "y":  331,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "科",
+                                        "x":  228,
+                                        "y":  330,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "技",
+                                        "x":  249,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "创",
+                                        "x":  270,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "新",
+                                        "x":  290,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "中",
+                                        "x":  312,
+                                        "y":  330,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "心",
+                                        "x":  331,
+                                        "y":  331,
+                                        "width":  20,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "\"",
+                                        "x":  353,
+                                        "y":  331,
+                                        "width":  7,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "是",
+                                        "x":  372,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "两",
+                                        "x":  393,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "个",
+                                        "x":  413,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "并",
+                                        "x":  433,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "列",
+                                        "x":  454,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  476,
+                                        "y":  330,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "名",
+                                        "x":  495,
+                                        "y":  330,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  515,
+                                        "y":  330,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "短",
+                                        "x":  536,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  556,
+                                        "y":  330,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  579,
+                                        "y":  343,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  598,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  617,
+                                        "y":  330,
+                                        "width":  20,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  638,
+                                        "y":  330,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  658,
+                                        "y":  337,
+                                        "width":  9,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "dynamic",
+                                        "x":  673,
+                                        "y":  333,
+                                        "width":  72,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "world-class",
+                                        "x":  751,
+                                        "y":  332,
+                                        "width":  97,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "city",
+                                        "x":  855,
+                                        "y":  332,
+                                        "width":  31,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "cluster",
+                                        "x":  892,
+                                        "y":  332,
+                                        "width":  57,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  955,
+                                        "y":  332,
+                                        "width":  29,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "x":  990,
+                                        "y":  337,
+                                        "width":  20,
+                                        "height":  10
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "international technology mnovation hub with global influence ； “ 适 合 工 作 、 购 物 、 旅 游 的 优 质 生 活 圈 ” 的 定 语",
+                      "words":  [
+                                    {
+                                        "text":  "international",
+                                        "x":  85,
+                                        "y":  364,
+                                        "width":  102,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "technology",
+                                        "x":  192,
+                                        "y":  364,
+                                        "width":  90,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "mnovation",
+                                        "x":  287,
+                                        "y":  364,
+                                        "width":  86,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "hub",
+                                        "x":  378,
+                                        "y":  364,
+                                        "width":  30,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  413,
+                                        "y":  364,
+                                        "width":  36,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "global",
+                                        "x":  454,
+                                        "y":  364,
+                                        "width":  50,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "influence",
+                                        "x":  510,
+                                        "y":  364,
+                                        "width":  74,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  587,
+                                        "y":  369,
+                                        "width":  4,
+                                        "height":  11
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  605,
+                                        "y":  362,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "适",
+                                        "x":  614,
+                                        "y":  361,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "合",
+                                        "x":  634,
+                                        "y":  360,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "工",
+                                        "x":  654,
+                                        "y":  362,
+                                        "width":  19,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  674,
+                                        "y":  361,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  697,
+                                        "y":  374,
+                                        "width":  5,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "购",
+                                        "x":  714,
+                                        "y":  361,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "物",
+                                        "x":  734,
+                                        "y":  361,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  756,
+                                        "y":  374,
+                                        "width":  6,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "旅",
+                                        "x":  773,
+                                        "y":  361,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "游",
+                                        "x":  793,
+                                        "y":  361,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  814,
+                                        "y":  361,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "优",
+                                        "x":  832,
+                                        "y":  360,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "质",
+                                        "x":  852,
+                                        "y":  360,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "生",
+                                        "x":  872,
+                                        "y":  361,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "活",
+                                        "x":  892,
+                                        "y":  361,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "圈",
+                                        "x":  912,
+                                        "y":  361,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  932,
+                                        "y":  361,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  952,
+                                        "y":  361,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "定",
+                                        "x":  971,
+                                        "y":  360,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  990,
+                                        "y":  361,
+                                        "width":  20,
+                                        "height":  19
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "较 长 ， 翻 译 时 可 后 置 ， 即 a high-quality li 、 \u0027ing circle ideal forworking ， shopping ， and tounsmo",
+                      "words":  [
+                                    {
+                                        "text":  "较",
+                                        "x":  85,
+                                        "y":  392,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "长",
+                                        "x":  105,
+                                        "y":  392,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  128,
+                                        "y":  405,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  146,
+                                        "y":  392,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  165,
+                                        "y":  392,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "时",
+                                        "x":  185,
+                                        "y":  392,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  205,
+                                        "y":  392,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "后",
+                                        "x":  224,
+                                        "y":  393,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "置",
+                                        "x":  244,
+                                        "y":  393,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  267,
+                                        "y":  405,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  285,
+                                        "y":  392,
+                                        "width":  16,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  303,
+                                        "y":  400,
+                                        "width":  9,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "high-quality",
+                                        "x":  316,
+                                        "y":  395,
+                                        "width":  98,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "li",
+                                        "x":  419,
+                                        "y":  395,
+                                        "width":  10,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "、",
+                                        "x":  430,
+                                        "y":  400,
+                                        "width":  6,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "\u0027ing",
+                                        "x":  436,
+                                        "y":  395,
+                                        "width":  29,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "circle",
+                                        "x":  470,
+                                        "y":  395,
+                                        "width":  43,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "ideal",
+                                        "x":  519,
+                                        "y":  395,
+                                        "width":  38,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "forworking",
+                                        "x":  562,
+                                        "y":  395,
+                                        "width":  94,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  657,
+                                        "y":  406,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "shopping",
+                                        "x":  666,
+                                        "y":  395,
+                                        "width":  72,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  739,
+                                        "y":  406,
+                                        "width":  3,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "x":  748,
+                                        "y":  395,
+                                        "width":  28,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "tounsmo",
+                                        "x":  781,
+                                        "y":  397,
+                                        "width":  68,
+                                        "height":  13
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "4 ． 第 四 句 ： “ 随 着 改 革 开 放 的 不 断 深 人 ” 可 作 句 子 的 伴 随 状 语 ， 翻 译 为 with 介 词 短 语 ， 即 With the of",
+                      "words":  [
+                                    {
+                                        "text":  "4",
+                                        "x":  60,
+                                        "y":  427,
+                                        "width":  11,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  72,
+                                        "y":  438,
+                                        "width":  3,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  86,
+                                        "y":  423,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "四",
+                                        "x":  107,
+                                        "y":  425,
+                                        "width":  16,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  126,
+                                        "y":  424,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  148,
+                                        "y":  431,
+                                        "width":  4,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  167,
+                                        "y":  425,
+                                        "width":  7,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "随",
+                                        "x":  177,
+                                        "y":  424,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "着",
+                                        "x":  196,
+                                        "y":  424,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "改",
+                                        "x":  216,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "革",
+                                        "x":  236,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "开",
+                                        "x":  256,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "放",
+                                        "x":  276,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  297,
+                                        "y":  424,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "不",
+                                        "x":  316,
+                                        "y":  424,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "断",
+                                        "x":  336,
+                                        "y":  423,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "深",
+                                        "x":  356,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "人",
+                                        "x":  376,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  397,
+                                        "y":  424,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "可",
+                                        "x":  417,
+                                        "y":  424,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "作",
+                                        "x":  436,
+                                        "y":  423,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  457,
+                                        "y":  423,
+                                        "width":  17,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "子",
+                                        "x":  476,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  498,
+                                        "y":  424,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "伴",
+                                        "x":  516,
+                                        "y":  423,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "随",
+                                        "x":  537,
+                                        "y":  424,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "状",
+                                        "x":  556,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  576,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  599,
+                                        "y":  436,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  617,
+                                        "y":  424,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  636,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  657,
+                                        "y":  423,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "x":  676,
+                                        "y":  426,
+                                        "width":  35,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "介",
+                                        "x":  712,
+                                        "y":  423,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "词",
+                                        "x":  733,
+                                        "y":  424,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "短",
+                                        "x":  752,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "语",
+                                        "x":  772,
+                                        "y":  424,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  794,
+                                        "y":  436,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  813,
+                                        "y":  424,
+                                        "width":  16,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "With",
+                                        "x":  831,
+                                        "y":  426,
+                                        "width":  39,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  876,
+                                        "y":  426,
+                                        "width":  24,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "of",
+                                        "x":  994,
+                                        "y":  426,
+                                        "width":  18,
+                                        "height":  15
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "reformandopemng-up ； “ 大 湾 区 的 建 设 将 进 一 步 推 动 区 域 经 济 发 展 ” 翻 译 为 the construction ofthe Greater Bay",
+                      "words":  [
+                                    {
+                                        "text":  "reformandopemng-up",
+                                        "x":  85,
+                                        "y":  457,
+                                        "width":  183,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "；",
+                                        "x":  271,
+                                        "y":  462,
+                                        "width":  4,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  289,
+                                        "y":  455,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "大",
+                                        "x":  297,
+                                        "y":  454,
+                                        "width":  20,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "湾",
+                                        "x":  318,
+                                        "y":  454,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  339,
+                                        "y":  454,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "的",
+                                        "x":  359,
+                                        "y":  454,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "建",
+                                        "x":  377,
+                                        "y":  453,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "设",
+                                        "x":  397,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "将",
+                                        "x":  417,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "进",
+                                        "x":  437,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "一",
+                                        "x":  457,
+                                        "y":  462,
+                                        "width":  18,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "步",
+                                        "x":  477,
+                                        "y":  454,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "推",
+                                        "x":  496,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "动",
+                                        "x":  516,
+                                        "y":  454,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  537,
+                                        "y":  455,
+                                        "width":  17,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "域",
+                                        "x":  555,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "经",
+                                        "x":  575,
+                                        "y":  455,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "济",
+                                        "x":  595,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "发",
+                                        "x":  615,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "展",
+                                        "x":  635,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "”",
+                                        "x":  656,
+                                        "y":  454,
+                                        "width":  7,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "翻",
+                                        "x":  675,
+                                        "y":  454,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "译",
+                                        "x":  694,
+                                        "y":  454,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "为",
+                                        "x":  714,
+                                        "y":  454,
+                                        "width":  18,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  733,
+                                        "y":  457,
+                                        "width":  24,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "construction",
+                                        "x":  762,
+                                        "y":  457,
+                                        "width":  97,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "ofthe",
+                                        "x":  864,
+                                        "y":  457,
+                                        "width":  45,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "Greater",
+                                        "x":  914,
+                                        "y":  457,
+                                        "width":  60,
+                                        "height":  14
+                                    },
+                                    {
+                                        "text":  "Bay",
+                                        "x":  978,
+                                        "y":  457,
+                                        "width":  32,
+                                        "height":  18
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "Area will further propel reyonal econormc growth",
+                      "words":  [
+                                    {
+                                        "text":  "Area",
+                                        "x":  85,
+                                        "y":  489,
+                                        "width":  39,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  129,
+                                        "y":  488,
+                                        "width":  30,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "further",
+                                        "x":  165,
+                                        "y":  488,
+                                        "width":  54,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "propel",
+                                        "x":  223,
+                                        "y":  488,
+                                        "width":  50,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "reyonal",
+                                        "x":  278,
+                                        "y":  488,
+                                        "width":  65,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "econormc",
+                                        "x":  349,
+                                        "y":  492,
+                                        "width":  76,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "growth",
+                                        "x":  431,
+                                        "y":  488,
+                                        "width":  56,
+                                        "height":  20
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "5 ． 第 五 句 ： “ 到 2035 年 ， 大 湾 区 将 实 现 ．",
+                      "words":  [
+                                    {
+                                        "text":  "5",
+                                        "x":  62,
+                                        "y":  521,
+                                        "width":  9,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  72,
+                                        "y":  533,
+                                        "width":  4,
+                                        "height":  3
+                                    },
+                                    {
+                                        "text":  "第",
+                                        "x":  86,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "五",
+                                        "x":  106,
+                                        "y":  518,
+                                        "width":  19,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "句",
+                                        "x":  127,
+                                        "y":  517,
+                                        "width":  17,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "：",
+                                        "x":  150,
+                                        "y":  525,
+                                        "width":  4,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "“",
+                                        "x":  168,
+                                        "y":  518,
+                                        "width":  8,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "到",
+                                        "x":  178,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "2035",
+                                        "x":  198,
+                                        "y":  521,
+                                        "width":  40,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "年",
+                                        "x":  241,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  264,
+                                        "y":  530,
+                                        "width":  4,
+                                        "height":  7
+                                    },
+                                    {
+                                        "text":  "大",
+                                        "x":  282,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "湾",
+                                        "x":  302,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "区",
+                                        "x":  323,
+                                        "y":  518,
+                                        "width":  17,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "将",
+                                        "x":  342,
+                                        "y":  517,
+                                        "width":  20,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "实",
+                                        "x":  363,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "现",
+                                        "x":  384,
+                                        "y":  518,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  405,
+                                        "y":  525,
+                                        "width":  4,
+                                        "height":  4
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "应 使 用 将 来 时 来 表 达 ， 即 By 2035 ， the Greater Bay will",
+                      "words":  [
+                                    {
+                                        "text":  "应",
+                                        "x":  486,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "使",
+                                        "x":  506,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "用",
+                                        "x":  526,
+                                        "y":  518,
+                                        "width":  19,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "将",
+                                        "x":  546,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "来",
+                                        "x":  567,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "时",
+                                        "x":  588,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "来",
+                                        "x":  608,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "表",
+                                        "x":  629,
+                                        "y":  517,
+                                        "width":  18,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "达",
+                                        "x":  649,
+                                        "y":  517,
+                                        "width":  19,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  672,
+                                        "y":  531,
+                                        "width":  4,
+                                        "height":  5
+                                    },
+                                    {
+                                        "text":  "即",
+                                        "x":  691,
+                                        "y":  518,
+                                        "width":  17,
+                                        "height":  18
+                                    },
+                                    {
+                                        "text":  "By",
+                                        "x":  710,
+                                        "y":  521,
+                                        "width":  24,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "2035",
+                                        "x":  740,
+                                        "y":  520,
+                                        "width":  40,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "，",
+                                        "x":  782,
+                                        "y":  532,
+                                        "width":  4,
+                                        "height":  6
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "x":  792,
+                                        "y":  520,
+                                        "width":  26,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "Greater",
+                                        "x":  824,
+                                        "y":  520,
+                                        "width":  63,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "Bay",
+                                        "x":  893,
+                                        "y":  521,
+                                        "width":  34,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "x":  977,
+                                        "y":  520,
+                                        "width":  33,
+                                        "height":  15
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "achieve its goal ofbecoming a world-class bay area",
+                      "words":  [
+                                    {
+                                        "text":  "achieve",
+                                        "x":  85,
+                                        "y":  553,
+                                        "width":  61,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "its",
+                                        "x":  151,
+                                        "y":  552,
+                                        "width":  18,
+                                        "height":  17
+                                    },
+                                    {
+                                        "text":  "goal",
+                                        "x":  174,
+                                        "y":  553,
+                                        "width":  34,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "ofbecoming",
+                                        "x":  214,
+                                        "y":  553,
+                                        "width":  99,
+                                        "height":  20
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "x":  318,
+                                        "y":  558,
+                                        "width":  9,
+                                        "height":  10
+                                    },
+                                    {
+                                        "text":  "world-class",
+                                        "x":  331,
+                                        "y":  553,
+                                        "width":  92,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "bay",
+                                        "x":  428,
+                                        "y":  553,
+                                        "width":  28,
+                                        "height":  19
+                                    },
+                                    {
+                                        "text":  "area",
+                                        "x":  462,
+                                        "y":  558,
+                                        "width":  33,
+                                        "height":  10
+                                    }
+                                ]
+                  },
+                  {
+                      "text":  "40 六 级 2025 ． 6 二",
+                      "words":  [
+                                    {
+                                        "text":  "40",
+                                        "x":  52,
+                                        "y":  1500,
+                                        "width":  20,
+                                        "height":  16
+                                    },
+                                    {
+                                        "text":  "六",
+                                        "x":  85,
+                                        "y":  1501,
+                                        "width":  12,
+                                        "height":  13
+                                    },
+                                    {
+                                        "text":  "级",
+                                        "x":  98,
+                                        "y":  1500,
+                                        "width":  13,
+                                        "height":  15
+                                    },
+                                    {
+                                        "text":  "2025",
+                                        "x":  114,
+                                        "y":  1502,
+                                        "width":  27,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "．",
+                                        "x":  142,
+                                        "y":  1511,
+                                        "width":  2,
+                                        "height":  2
+                                    },
+                                    {
+                                        "text":  "6",
+                                        "x":  145,
+                                        "y":  1502,
+                                        "width":  7,
+                                        "height":  12
+                                    },
+                                    {
+                                        "text":  "二",
+                                        "x":  174,
+                                        "y":  1504,
+                                        "width":  9,
+                                        "height":  10
+                                    }
+                                ]
+                  }
+              ]
+}
