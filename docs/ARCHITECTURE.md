@@ -1,14 +1,14 @@
-# 架构决策
+# 架构决策（实现历史与设计依据，非永久技术冻结）
 
 - `CET6Study/` 是 Android 工程，applicationId 为 `com.example.cet6`；存在 OAuth、Responses SSE、Room 和 Compose，符合本次目标。未访问或合并其他项目。
-- 继续 Kotlin、Compose、MVVM + Repository、Room，保留现有 OAuth、Keystore、网络参数、应用 ID 和数据库名。
+- 当前实现采用 Kotlin、Compose、MVVM + Repository、Room、OAuth 与 Keystore。未来允许有依据地重构；触及应用 ID、数据库、认证或网络协议时需迁移方案与针对性回归，不以历史选型构成永久禁令。
 - G3 训练使用独立 Room 表保存阅读、作文、翻译的输入、作答、完整反馈和用户错因。v4→v5 只新增表，v5→v6 追加难句收藏，v6→v7 追加来源练习和训练目标字段，不删除或重建旧表。
 - 草稿本地自动保存，提交前先保存作答。只有点击 AI 按钮才上传本次材料；未完成流不写为完成反馈。离线可保存、浏览和复练。
 - 请求失败的学习提示由 CoachFailures 映射现有传输异常，不修改 OAuth 或 Responses。只识别已知状态及错误码，不展示任意异常内容；临时片段与完整反馈分别显示，失败后保留旧反馈。重试由用户发起，不把额度错误当作能自动恢复的短时限流。分类参考官方错误说明 https://developers.openai.com/api/docs/guides/error-codes ，不据普通 API 文档推断 ChatGPT 套餐账单或具体配额。
 - 阅读第一版以文章、可追加的题目文本和编号作答组成一次训练；参考答案可在题目中提供。无参考答案时 AI 只能给推断和证据，不能声称官方判题。
 - 学习记录与凭证分开；备份只包含白名单学习字段。JSON v4 包含难句收藏、来源关联和训练目标，继续兼容导入 v1/v2/v3。
 - 反馈排版复用 Markwon core / ext-tables 4.6.2（Apache-2.0），避免自行实现 Markdown 解析器；未接入图片加载插件。表格不便复制时可使用原始文本或完整反馈复制入口。实现参考 https://noties.io/Markwon/docs/v4/core/getting-started.html 和 https://noties.io/Markwon/docs/v4/ext-tables/ 。不重写认证网络层。现有词汇、备份等未提交工作保留。
-- 唯一任务清单为 `docs/TODO.md`；旧报告保留测试事实，不构成阶段门槛。后续永久不使用 Notion。
+- `docs/TODO.md` 记录当前待办和未验证项；旧报告保留历史事实，不构成阶段门槛。过去关于 Notion 和“唯一任务文件”的限制已解除，外部服务操作仍需具备用户授权。
 
 - 训练 UI 将资料、讲解、错因和历史分区；切换时复位页面滚动，追问入口置于完整反馈前。此改动不修改数据库或认证接口。
 
