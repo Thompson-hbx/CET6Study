@@ -22,4 +22,4 @@ Tests:
 - `python tools/generate_fsrs_oracle.py` runs the pinned py-fsrs v6.3.1 source and generates the offline fixtures in app/testdata. 31 numeric cases are recalculated; seven Kotlin validation cases are retained. A second fixture contains 30 actual learning/relearning transitions.
 - No pip installation is required. A typing.Self alias replaces a type-only typing_extensions.Self import on Python 3.14. Upstream executable source bytes are unchanged; scheduler Git blob is verified.
 
-See FSRS_AUDIT.md for the rejected FSRS-Kotlin candidate, maintenance assessment and migration design.
+See docs/archive/FSRS_AUDIT.md for the rejected FSRS-Kotlin candidate, maintenance assessment and migration design.

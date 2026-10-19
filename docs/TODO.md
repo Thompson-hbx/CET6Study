@@ -60,3 +60,9 @@
 - 已验证：assembleDebug / assembleDebugAndroidTest、81 项单测、Lint 0 错误 / 7 警告；模拟器隔离 Room/受控请求回归确认上下文限于当前篇章、逐题保存、追问、断流保全、无自动重试、离线提示和重开恢复。没有在真机运行仪器测试。
 - 已核对真机浅深色目录、年月/套卷、两篇五字母录入、单题修改、核对、旧四层、写译页面与新版 AI 入口。原有学习库所有表原行逐字段保留，8 条训练变为 11 条（只新增三个明确标注的原创功能样本），SQLite 完整性正常，Room v7。详见 test-evidence/phone-data-preservation-20261018.log。
 - 用户随后授权测试，已在 vivo 使用 gpt-6.1-sol 完成恰好两次原创样本真实请求：首次分析及一次补充理解追问。真实回答针对 A（书籍费用）解释证据缺失与可能误读，定位 initially concerned → initially worried、reduce opportunities → Fewer opportunities，完整引用原文并说明 C 的依据；追问实际结合新增的“图书馆需要书”理由回应。原文第 1 段展开及引文突出显示、两次完整反馈落盘、冷启动恢复均通过，原有所有学习库原行仍逐字段保留。见 test-evidence/phone-ai-live-preservation-20261018.log 和两份 response 文本；未超出两次请求、未操作真实试卷。仅验证此原创样本，不保证所有模型结果。大字体/TalkBack、所有长题干、真实异常网络或令牌到期刷新仍未验证。
+
+## 2026-10-19 本地目录结构优化
+
+- 根目录整理：将散落在根目录的 15 份早期历史里程碑报告、设计文档及构建日志归档至 `docs/archive/`，保持根目录整洁标准；
+- 文档索引：新增 `docs/README.md` 索引全项目核心文档与归档文档；
+- 链接修复：更新 `third_party/bee-fsrs/README.md` 中指向 `FSRS_AUDIT.md` 的路径至 `docs/archive/FSRS_AUDIT.md`；`docs/archive/` 内部相对链接保持有效。
