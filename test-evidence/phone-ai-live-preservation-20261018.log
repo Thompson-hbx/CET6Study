@@ -1,0 +1,11 @@
+after live requests integrity=ok
+android_metadata: original_rows=1 current_rows=1 original_values_preserved=True
+words: original_rows=81 current_rows=81 original_values_preserved=True
+reading_attempts: original_rows=0 current_rows=0 original_values_preserved=True
+essays: original_rows=0 current_rows=0 original_values_preserved=True
+room_master_table: original_rows=1 current_rows=1 original_values_preserved=True
+word_reviews: original_rows=3 current_rows=3 original_values_preserved=True
+daily_plans: original_rows=3 current_rows=3 original_values_preserved=True
+word_schedules: original_rows=1 current_rows=1 original_values_preserved=True
+coach_practices: original_rows=8 current_rows=11 original_values_preserved=True
+Original sample feedback: first complete response retained; exactly 2 completed diagnosis sections for internal question 47.

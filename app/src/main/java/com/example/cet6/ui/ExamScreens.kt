@@ -264,8 +264,8 @@ fun ExamLibraryScreen(vm: StudyViewModel, onContinue: (CoachPractice) -> Unit,
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("材料来源：${selected.sourceName.ifBlank { "外部考次网页" }}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("查看链接 ↗", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+                        Text("材料来源：${selected.sourceName.ifBlank { "外部考次网页" }}", modifier = Modifier.weight(1f).padding(end = 12.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("查看链接 ↗", maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
                     }
                 }
             }

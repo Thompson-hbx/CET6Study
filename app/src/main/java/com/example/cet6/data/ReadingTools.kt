@@ -49,10 +49,13 @@ object ReadingEvidence {
         return Regex(words.joinToString("\\s+") { Regex.escape(it) }).find(material)?.range
     }
 
+    fun quotations(feedback: String): List<String> =
+        Regex("[“\"「]([^”\"」]{12,600})[”\"」]").findAll(feedback).map { it.groupValues[1] }
+            .distinct().toList()
+
     /** Only offer quotes which actually occur in the material; no semantic/fuzzy matching. */
     fun suggestions(material: String, feedback: String): List<String> =
-        Regex("[“\"「]([^”\"」]{12,600})[”\"」]").findAll(feedback).map { it.groupValues[1] }
-            .filter { find(material, it) != null }.distinct().take(8).toList()
+        quotations(feedback).filter { find(material, it) != null }.take(8)
 
     fun saved(text: String) = text.lineSequence().filter(String::isNotBlank).toList()
     fun add(material: String, savedText: String, quote: String): String {

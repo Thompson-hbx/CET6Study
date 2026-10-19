@@ -76,7 +76,7 @@ class LocalDataInstrumentation : Instrumentation() {
                 finish(-1, results)
                 return
             }
-            runBlocking { ExamInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify() }
+            runBlocking { ExamInstrumentationChecks(targetContext).verify(); ReadingDiagnosisInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify() }
             results.putString("stream", "PASS: v1-v6 to v7 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v4 roundtrip and v1-v3 imports; existing backup and scheduler checks.\n")
             finish(-1, results)
         } catch (e: Throwable) {

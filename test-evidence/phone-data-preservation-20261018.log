@@ -1,0 +1,11 @@
+before integrity=ok version=7
+after integrity=ok version=7
+android_metadata: before=1 after=1 all_original_rows_identical=True
+words: before=81 after=81 all_original_rows_identical=True
+reading_attempts: before=0 after=0 all_original_rows_identical=True
+essays: before=0 after=0 all_original_rows_identical=True
+room_master_table: before=1 after=1 all_original_rows_identical=True
+word_reviews: before=3 after=3 all_original_rows_identical=True
+daily_plans: before=3 after=3 all_original_rows_identical=True
+word_schedules: before=1 after=1 all_original_rows_identical=True
+coach_practices: before=8 after=11 all_original_rows_identical=True

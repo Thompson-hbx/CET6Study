@@ -35,6 +35,8 @@ class CoachState(
         private set
     var partialEntryId by mutableStateOf<String?>(null)
         private set
+    var partialReadingKey by mutableStateOf<String?>(null)
+        private set
     private val writes = mutableMapOf<CoachKind, Job>()
     private val ready = CoachKind.entries.associateWith { CompletableDeferred<Unit>() }
     private val readingReady = ready.getValue(CoachKind.READING)
@@ -228,6 +230,7 @@ class CoachState(
         val selectedModel = model()
         partial = ""
         partialEntryId = current.id
+        partialReadingKey = "$number/hint/$level"
         activeRequest = current.id
         messages[kind] = "正在生成第 $number 题的第 $level 层提示……"
         try {
@@ -239,6 +242,43 @@ class CoachState(
         } catch (e: CancellationException) { throw e
         } catch (e: Exception) { messages[kind] = "提示未完成：${CoachFailures.describe(e)} 已保留答案和此前完整提示。"
         } finally { activeRequest = null }
+    }
+
+    fun readingDiagnosis(number: Int, followUp: String = "") = action(CoachKind.READING) {
+        val kind = CoachKind.READING
+        val current = entries[kind] ?: return@action
+        val prompt = try {
+            require(current.submittedAt > 0) { "先录入并核对答案，再请求 AI 分析" }
+            val passage = ExamCodec.passages(current).firstOrNull { p -> p.questions.any { it.number == number } }
+                ?: throw IllegalArgumentException("找不到对应原题")
+            ReadingDiagnosis.prompt(passage, current.answer, number, followUp, ReadingDiagnosis.saved(current.feedback, number))
+        } catch (e: IllegalArgumentException) { messages[kind] = e.message.orEmpty(); return@action }
+        if (!persist(kind, current)) return@action
+        if (!canRequest()) {
+            messages[kind] = "作答已保存。AI 分析需要在“我的”连接 ChatGPT 并选择模型。"
+            return@action
+        }
+        val selectedModel = model()
+        partial = ""
+        partialEntryId = current.id
+        partialReadingKey = "$number/diagnosis"
+        activeRequest = current.id
+        messages[kind] = "AI 正在结合本篇原文和你的选项分析错因……"
+        try {
+            val completed = request(prompt) { partial += it }
+            check(completed.isNotBlank())
+            val response = if (followUp.isBlank()) completed else "追问：$followUp\n\n$completed"
+            val feedback = listOf(current.feedback, "${ReadingDiagnosis.heading(number)}\n\n$response")
+                .filter(String::isNotBlank).joinToString("\n\n")
+            val next = current.copy(feedback = feedback, model = selectedModel, updatedAt = System.currentTimeMillis())
+            if (persist(kind, next)) {
+                entries[kind] = next
+                partial = ""
+                messages[kind] = "本题 AI 分析已保存；请对照原文核实，错因由你确认。"
+            }
+        } catch (e: CancellationException) { throw e }
+        catch (e: Exception) { messages[kind] = "分析未完成：${CoachFailures.describe(e)} 已保留作答和此前完整分析。" }
+        finally { activeRequest = null }
     }
 
     fun submit(kind: CoachKind, explain: Boolean, followUp: String = "") = action(kind) {
