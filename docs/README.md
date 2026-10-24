@@ -4,15 +4,16 @@
 
 ## 核心文档
 
-- [TODO.md](TODO.md)：任务进展与版本演进记录。
+- [TODO.md](TODO.md)：当前未解决事项及证据边界，不设强制顺序或功能范围上限。
 - [ARCHITECTURE.md](ARCHITECTURE.md)：系统总体架构、技术决策与各阶段技术规范。
-- [product/G3_BLUEPRINT.md](product/G3_BLUEPRINT.md)：产品功能说明。
+- [product/G3_BLUEPRINT.md](product/G3_BLUEPRINT.md)：G3/G4 历史产品决策及修订背景，非永久 Agent 指令。
+
 - [EXAM_IMPORT.md](EXAM_IMPORT.md)：试卷导入工具链路与内容包格式说明。
 - [PRIVATE_BACKUP.md](PRIVATE_BACKUP.md)：私有题库资料与历史学习数据备份说明。
 
 ## 历史归档 (`docs/archive/`)
 
-早期里程碑（P1、0.5.x 原型阶段）的调研、测试报告与方案设计已集中归档于 [docs/archive/](archive/)：
+早期里程碑（P1、0.5.x 原型阶段）的调研、测试报告、方案设计及 G3/G4 任务流水账已集中归档于 [docs/archive/](archive/)：
 
 - [AUTH_REVIEW.md](archive/AUTH_REVIEW.md)：OAuth 鉴权架构审阅与校验。
 - [BACKUP_DESIGN.md](archive/BACKUP_DESIGN.md)：早期 Room 4 本地备份与恢复方案。
@@ -24,4 +25,5 @@
 - [P1_TEST.md](archive/P1_TEST.md)：P1 里程碑验收测试。
 - [PHONE_TEST.md](archive/PHONE_TEST.md)：真机测试实测记录。
 - [PROGRESS.md](archive/PROGRESS.md) & [PROJECT_PLAN.md](archive/PROJECT_PLAN.md)：早期规划与阶段进展。
-- [TTS_RESEARCH.md](archive/TTS_RESEARCH.md)：历史 TTS 方案调研。
+- [TTS_RESEARCH.md](archive/TTS_RESEARCH.md)：历史 TTS 方案调研，暂停记录不代表永久禁令。
+- [TODO_HISTORY_20261019.md](archive/TODO_HISTORY_20261019.md)：2026-10-19 前已完成工作、旧版任务与历史测试记录。
