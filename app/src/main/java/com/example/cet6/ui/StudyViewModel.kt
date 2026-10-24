@@ -9,6 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.example.cet6.ai.AvailableModel
 import com.example.cet6.ai.ResponsesClient
+import com.example.cet6.ai.AiProvider
+import com.example.cet6.ai.ApiConnection
+import com.example.cet6.ai.ChatCompletionsClient
+import com.example.cet6.auth.SecureApiStore
 import com.example.cet6.auth.ChatGptAuth
 import com.example.cet6.auth.SecureSessionStore
 import com.example.cet6.data.*
@@ -31,19 +35,46 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         .build()
     private val auth = ChatGptAuth(http, SecureSessionStore(app))
     private val ai = ResponsesClient(http, auth)
+    private val compatibleAi = ChatCompletionsClient(http)
+    private val apiStore = SecureApiStore(app)
     private val db = StudyDatabase.get(app)
     private val dao = db.dao()
     private val study = StudyRepository(db)
     private val backups = BackupRepository(db)
-    val coach = CoachState(CoachRepository(db), viewModelScope,
-        canRequest = { hasPlan && chosenModel.isNotBlank() && !busy },
+    private val coachRepository = CoachRepository(db)
+    private val prefs = app.getSharedPreferences("study_ui", android.content.Context.MODE_PRIVATE)
+    var provider by androidx.compose.runtime.mutableStateOf(
+        AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.CHATGPT)
+        private set
+    private var apiConnection by androidx.compose.runtime.mutableStateOf<ApiConnection?>(null)
+    val apiBaseUrl: String get() = apiConnection?.baseUrl ?: provider.defaultUrl
+    val hasApiKey: Boolean get() = apiConnection != null
+    val aiReady: Boolean get() = if (provider == AiProvider.CHATGPT) hasPlan else hasApiKey
+    private fun modelPreference(): String = if (provider == AiProvider.CHATGPT) "model" else "model_${provider.name}"
+
+    private suspend fun streamAi(prompt: String, onDelta: suspend (String) -> Unit): String =
+        if (provider == AiProvider.CHATGPT) ai.stream(chosenModel, prompt, onDelta)
+        else compatibleAi.stream(apiConnection ?: error("请先保存 API 配置"), chosenModel, prompt, onDelta)
+    private suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String {
+        busy = true
+        try {
+            return streamAi(prompt) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
+        } finally { syncSessionState(); busy = false }
+    }
+    val coach = CoachState(coachRepository, viewModelScope,
+        canRequest = { aiReady && chosenModel.isNotBlank() && !busy },
         model = { chosenModel },
-        request = { prompt, onDelta ->
-            busy = true
-            try {
-                ai.stream(chosenModel, prompt) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
-            } finally { syncSessionState(); busy = false }
-        })
+        request = ::streamCoach)
+    /** Saved explanations and follow-ups; independent of the practice rows above. */
+    val talk = CoachTalk(coachRepository, viewModelScope,
+        canRequest = { aiReady && chosenModel.isNotBlank() && !busy },
+        model = { chosenModel },
+        request = ::streamCoach)
+    var reviewTurns by androidx.compose.runtime.mutableStateOf<List<CoachTurn>>(emptyList())
+        private set
+    var lastTab: String
+        get() = prefs.getString("tab", "writing") ?: "writing"
+        set(value) { prefs.edit().putString("tab", value).apply() }
     var backupBusy by androidx.compose.runtime.mutableStateOf(false)
         private set
     var backupStatus by androidx.compose.runtime.mutableStateOf("")
@@ -91,7 +122,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var busy by androidx.compose.runtime.mutableStateOf(false)
         private set
-    var status by androidx.compose.runtime.mutableStateOf("先测试 ChatGPT 登录，再发送一条 API 请求。")
+    var status by androidx.compose.runtime.mutableStateOf("选择 AI 服务，连接后可发送测试请求。")
         private set
     var result by androidx.compose.runtime.mutableStateOf("")
         private set
@@ -105,7 +136,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     init {
         viewModelScope.launch {
             try {
-                examPapers = withContext(Dispatchers.IO) { examStore.load() }
+                examPapers = withContext(Dispatchers.IO) { examStore.loadWithBundledContent() }
                 examLoaded = true
             } catch (_: Exception) { examStatus = "本地题库读取失败，已保留原文件；请先导出或联系维护者，不要覆盖导入。" }
         }
@@ -138,15 +169,81 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             while (true) { refreshStudyDay(); delay(30_000) }
         }
+        viewModelScope.launch {
+            try { coachRepository.reviews.collectLatest { reviewTurns = it } }
+            catch (e: CancellationException) { throw e }
+            catch (_: Exception) { examStatus = "批改记录读取失败，请重启应用重试；不要清除数据。" }
+        }
         viewModelScope.launch { dao.readingHistory().collectLatest { readingAttempts = it } }
         viewModelScope.launch { dao.essays().collectLatest { essays = it } }
-        if (hasPlan) refreshModels()
+        restoreApiConnection()
+        chosenModel = prefs.getString(modelPreference(), "").orEmpty()
+        if (aiReady) refreshModels()
     }
 
-    fun selectModel(slug: String) { chosenModel = slug }
+    fun selectModel(slug: String) {
+        if (busy) return
+        chosenModel = slug.trim()
+        prefs.edit().putString(modelPreference(), chosenModel).apply()
+    }
+
+    private fun restoreApiConnection() {
+        apiConnection = null
+        if (provider == AiProvider.CHATGPT) return
+        try { apiConnection = apiStore.load(provider) }
+        catch (_: Exception) { status = "API 配置无法解密，请重新填写并保存；原配置尚未覆盖。" }
+    }
+
+    fun selectProvider(value: AiProvider) {
+        if (busy || value == provider) return
+        provider = value
+        prefs.edit().putString("ai_provider", value.name).apply()
+        models = emptyList()
+        result = ""
+        status = "已切换到 ${value.label}。"
+        restoreApiConnection()
+        chosenModel = prefs.getString(modelPreference(), "").orEmpty()
+        if (aiReady) refreshModels()
+    }
+
+    fun saveApiConnection(baseUrl: String, key: String): Boolean {
+        if (busy || provider == AiProvider.CHATGPT) return false
+        return try {
+            val url = if (provider == AiProvider.DEEPSEEK) provider.defaultUrl else baseUrl
+            // A changed destination always requires a newly entered key.
+            val savedKey = if (key.isBlank() && ApiConnection.validatedBaseUrl(url).toString() == apiConnection?.baseUrl)
+                apiConnection?.apiKey.orEmpty() else key
+            val connection = ApiConnection.create(url, savedKey)
+            apiStore.save(provider, connection)
+            apiConnection = connection
+            models = emptyList()
+            result = ""
+            status = "API 配置已加密保存；请刷新模型或填写模型名称，再发送测试请求。"
+            true
+        } catch (_: IllegalArgumentException) {
+            status = "配置无效：请填写 HTTPS Base URL（不含账号、参数或接口路径）和有效 API Key；更换地址时需重新填写 Key。"
+            false
+        } catch (_: Exception) {
+            status = "API 配置保存失败，请检查设备安全存储后重试。"
+            false
+        }
+    }
+
+    fun clearApiConnection() {
+        if (busy || provider == AiProvider.CHATGPT) return
+        try {
+            apiStore.clear(provider)
+            apiConnection = null
+            models = emptyList()
+            chosenModel = ""
+            prefs.edit().remove(modelPreference()).apply()
+            result = ""
+            status = "已清除本机 ${provider.label} 配置；如需撤销 Key，请到服务商控制台操作。"
+        } catch (_: Exception) { status = "清除 API 配置失败，请重试。" }
+    }
 
     fun signIn() {
-        if (busy) return
+        if (busy || provider != AiProvider.CHATGPT) return
         viewModelScope.launch {
             busy = true
             status = "等待系统浏览器完成 ChatGPT 授权；请不要关闭应用进程。"
@@ -168,7 +265,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun signOut() {
-        if (busy) return
+        if (busy || provider != AiProvider.CHATGPT) return
         viewModelScope.launch {
             busy = true
             status = "正在尝试撤销会话并清除本机凭证……"
@@ -190,41 +287,47 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         val current = auth.session()
         sessionEmail = current?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty()
         hasPlan = current?.canUsePlan == true
-        if (!hasPlan) {
+        if (!aiReady) {
             models = emptyList()
             chosenModel = ""
         }
     }
 
     fun refreshModels() {
-        if (!hasPlan || busy) return
+        if (!aiReady || busy) return
         viewModelScope.launch {
             busy = true
             try {
-                models = ai.models()
-                if (models.none { it.slug == chosenModel }) chosenModel = models.firstOrNull()?.slug.orEmpty()
+                models = if (provider == AiProvider.CHATGPT) ai.models()
+                    else compatibleAi.models(apiConnection ?: error("请先保存 API 配置"))
+                val remembered = prefs.getString(modelPreference(), null)
+                if (provider == AiProvider.CHATGPT || chosenModel.isBlank()) {
+                    if (models.none { it.slug == chosenModel }) chosenModel =
+                        (models.firstOrNull { it.slug == remembered } ?: models.firstOrNull())?.slug.orEmpty()
+                }
+                prefs.edit().putString(modelPreference(), chosenModel).apply()
                 status = "已获取 ${models.size} 个当前账号可见模型。"
-                if (models.isEmpty()) status = "当前账号没有可见模型；请检查套餐资格和授权。"
+                if (models.isEmpty()) status = "没有获取到可用模型；请检查权限，或为兼容接口手动填写模型名称。"
             } catch (e: CancellationException) { throw e
-            } catch (e: Exception) { status = "获取模型失败：${e.message}" }
+            } catch (_: Exception) { status = "获取模型失败，请检查网络、权限与接口配置；兼容接口也可手动填写模型名称。" }
             finally { syncSessionState(); busy = false }
         }
     }
 
     fun ask(prompt: String, saveEssay: Pair<String, String>? = null) {
-        if (busy || !hasPlan || chosenModel.isBlank() || prompt.isBlank()) {
-            status = "请先登录、加载并选择模型。"
+        if (busy || !aiReady || chosenModel.isBlank() || prompt.isBlank()) {
+            status = "请先连接 AI 服务、选择或填写模型。"
             return
         }
         viewModelScope.launch {
             busy = true
             result = ""
-            status = "正在流式请求 Responses API……"
+            status = "正在请求 ${provider.label}……"
             try {
-                val completed = ai.stream(chosenModel, prompt) { delta ->
+                val completed = streamAi(prompt) { delta ->
                     withContext(Dispatchers.Main) { result += delta }
                 }
-                status = "API 测试成功：已收到 response.completed。"
+                status = "API 测试成功：已收到完整回复。"
                 if (saveEssay != null) dao.addEssay(EssayEntity(
                     topic = saveEssay.first, content = saveEssay.second, feedback = completed
                 ))
@@ -277,7 +380,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
                     val text = Charsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()
                     ExamCodec.decode(text).also { examStore.merge(examPapers, it) }
                 }
-                examStatus = "预览 ${examPreview.size} 套；尚未写入。待校对内容不能开始训练。"
+                examStatus = "预览 ${examPreview.size} 套；尚未写入。各专项按资料完整与校对情况开放。"
             } catch (e: CancellationException) { throw e
             } catch (e: IllegalArgumentException) { examStatus = "未导入：${e.message}"
             } catch (_: Exception) { examStatus = "文件无法解析，请选择 UTF-8 CET6ExamPack v1 JSON；PDF / Word 请先使用本地转换工具。"

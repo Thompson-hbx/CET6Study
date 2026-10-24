@@ -4,6 +4,30 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
 }
+val personalExamPack = providers.gradleProperty("personalExamPack")
+val personalExamPdfs = providers.gradleProperty("personalExamPdfs")
+val personalAssets = layout.buildDirectory.dir("generated/personalExamAssets")
+val preparePersonalExamAssets = tasks.register<Sync>("preparePersonalExamAssets") {
+    onlyIf { personalExamPack.isPresent }
+    from(personalExamPack.map { rootProject.file(it) }) { rename { "personal-exam-pack.json" } }
+    if (personalExamPdfs.isPresent) {
+        from(personalExamPdfs.map { rootProject.file(it) }) {
+            include("cet6_*.pdf")
+            into("personal-papers")
+        }
+    }
+    into(personalAssets)
+    doFirst {
+        require(rootProject.file(personalExamPack.get()).isFile) { "Personal exam pack does not exist" }
+        if (personalExamPdfs.isPresent) require(rootProject.file(personalExamPdfs.get()).isDirectory) { "Personal PDF directory does not exist" }
+    }
+}
+tasks.configureEach {
+    if (personalExamPack.isPresent &&
+        ((name.startsWith("merge") && name.endsWith("Assets")) || name.contains("lint", ignoreCase = true))) {
+        dependsOn(preparePersonalExamAssets)
+    }
+}
 android {
     namespace = "com.example.cet6"
     compileSdk = 35
@@ -11,16 +35,17 @@ android {
         applicationId = "com.example.cet6"
         minSdk = 26
         targetSdk = 35
-        versionCode = 15
-        versionName = "0.6.0-paper-ink"
+        versionCode = 16
+        versionName = "0.7.0-desk"
         testInstrumentationRunner = "com.example.cet6.LocalDataInstrumentation"
     }
     buildFeatures { compose = true }
-    // Personal third-party imports must not be distributed inside the APK.
+    // Ordinary builds exclude private material; explicitly requested personal builds add one exact pack.
     androidResources {
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:CVS:thumbs.db:picasa.ini:*~:exam-packs"
     }
     sourceSets.getByName("main").java.srcDir("../third_party/bee-fsrs/src")
+    if (personalExamPack.isPresent) sourceSets.getByName("main").assets.srcDir(personalAssets)
     sourceSets.getByName("androidTest").assets.srcDir("schemas")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -52,4 +77,6 @@ dependencies {
     implementation("io.noties.markwon:core:4.6.2")
     implementation("io.noties.markwon:ext-tables:4.6.2")
     testImplementation("junit:junit:4.13.2")
+    // android.jar only stubs org.json; the reference implementation lets protocol parsers run on the JVM.
+    testImplementation("org.json:json:20240303")
 }

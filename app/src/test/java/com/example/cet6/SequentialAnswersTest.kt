@@ -45,6 +45,15 @@ class SequentialAnswersTest {
         }
     }
 
+    @Test fun aContinuousRunContinuesIntoTheFollowingPassages() {
+        assertEquals(listOf("BCBDB", "ACB"), SequentialAnswers.split("bcbdb acb", 2))
+        assertEquals(listOf("BCBD", ""), SequentialAnswers.split("BCBD", 2))
+        assertEquals(listOf("?C?DB", "ACBDC"), SequentialAnswers.split("?C?DBACBDC", 2))
+        listOf("BCBDBACBDCA", "BCBDE", "46.B").forEach {
+            assertTrue("Must reject $it", runCatching { SequentialAnswers.split(it, 2) }.isFailure)
+        }
+    }
+
     @Test fun missingOrReorderedSourceQuestionsAreHandledExplicitly() {
         assertTrue(runCatching { SequentialAnswers.apply("", "BCAD", questions(46).dropLast(1)) }.isFailure)
         val saved = SequentialAnswers.apply("", "BCADB", questions(46).reversed())

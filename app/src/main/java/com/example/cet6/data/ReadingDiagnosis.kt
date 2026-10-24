@@ -2,8 +2,7 @@ package com.example.cet6.data
 
 /** A passage-specific diagnosis. Generated explanations never change the imported answer key. */
 object ReadingDiagnosis {
-    fun paragraphs(content: String): List<String> = content.trim().split(Regex("\n\\s*\n"))
-        .filter(String::isNotBlank)
+    fun paragraphs(content: String): List<String> = PassageLayout.paragraphs(content)
 
     fun heading(number: Int) = "## 第 $number 题 · AI 错因分析"
 

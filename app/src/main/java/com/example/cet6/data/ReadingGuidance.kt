@@ -10,8 +10,7 @@ object ReadingGuidance {
     }
     fun paragraph(passage: ExamPassage, question: ExamQuestion): Int? {
         if (question.evidence.isBlank() || !passage.content.contains(question.evidence)) return null
-        val offset = passage.content.indexOf(question.evidence)
-        return Regex("\\n\\s*\\n").findAll(passage.content.take(offset)).count() + 1
+        return PassageLayout.paragraphOf(passage.content, question.evidence)
     }
     fun prompt(entry: CoachPractice, number: Int, level: Int): String {
         require(entry.submittedAt > 0 && level in 1..4) { "先录入并核对答案，再逐步提示" }

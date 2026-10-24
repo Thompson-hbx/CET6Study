@@ -63,6 +63,21 @@ class CoachFailureInstrumentationChecks(private val context: Context) {
             val afterRecords = db.dao().allCoach().associateBy { it.id }
             check(afterRecords.keys == beforeRecords.keys) { "retry created an additional practice" }
             check(afterRecords.filterKeys { it != original.id } == beforeRecords.filterKeys { it != original.id })
+            // Writing feedback is additive: a focused second pass must not erase the first.
+            val writing = original.copy(id = "writing-focused-check", kind = CoachKind.WRITING.name,
+                questions = "", title = "原创写作专项保全检查")
+            db.dao().saveCoach(writing)
+            state.open(CoachKind.WRITING, writing)
+            waitFor { !state.working }
+            state.submit(CoachKind.WRITING, true, focus = WritingFocus.STRUCTURE)
+            waitFor { !state.working }
+            val revised = db.dao().coachById(writing.id)!!
+            check(revised.answer == writing.answer && revised.feedback.startsWith(writing.feedback))
+            check(revised.feedback.contains("## 审题与结构"))
+            failure = IOException("controlled writing interruption")
+            state.submit(CoachKind.WRITING, true, focus = WritingFocus.EXPRESSION)
+            waitFor { !state.working }
+            check(db.dao().coachById(writing.id)!!.feedback == revised.feedback)
             job.cancelAndJoin()
             db.close()
             db = open()

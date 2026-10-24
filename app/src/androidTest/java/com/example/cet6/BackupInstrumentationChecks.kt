@@ -36,7 +36,7 @@ class BackupInstrumentationChecks(private val context: Context) {
             check(snapshot == restored) { "codec roundtrip lost learning fields" }
             check(restored.reviews.size == 126 && restored.reading.size == 40 && restored.essays.size == 25)
             val root = JSONObject(encoded)
-            check(root.keys().asSequence().toSet() == setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays", "coach"))
+            check(root.keys().asSequence().toSet() == setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays", "coach", "turns"))
             val invalid = listOf(encoded.dropLast(1), JSONObject(encoded).put("version", 99).toString(),
                 JSONObject(encoded).put("accessToken", "not-a-credential").toString(),
                 JSONObject(encoded).apply { getJSONArray("words").getJSONObject(0).put("repetitions", "5") }.toString(),

@@ -10,6 +10,15 @@ object SequentialAnswers {
     fun sequence(answer: String, questions: List<ExamQuestion>): String = questions.sortedBy { it.number }
         .joinToString("") { ReadingQuestions.selected(answer, "${it.number}").orEmpty().ifBlank { "?" } }.trimEnd('?')
 
+    /** A run typed past one passage's fifth answer continues into the following passages, as on a paper answer sheet. */
+    fun split(text: String, passages: Int): List<String> {
+        val sequence = normalize(text)
+        require(passages >= 1 && sequence.length <= passages * 5 && sequence.matches(Regex("[ABCD?]*"))) {
+            "请按顺序输入最多 ${passages * 5} 个 A/B/C/D；未答用 ? 占位"
+        }
+        return (0 until passages).map { sequence.drop(it * 5).take(5) }
+    }
+
     fun apply(existing: String, text: String, questions: List<ExamQuestion>): String {
         val ordered = questions.sortedBy { it.number }
         require(ordered.size == 5 && ordered.map { it.number }.distinct().size == 5) { "本篇题目不完整，请先核对资料" }

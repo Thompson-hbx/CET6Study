@@ -96,6 +96,15 @@ interface StudyDao {
     @Query("SELECT * FROM coach_practices WHERE kind=:kind AND submittedAt=0 ORDER BY updatedAt DESC LIMIT 1")
     suspend fun coachDraft(kind: String): CoachPractice?
     @Query("SELECT * FROM coach_practices ORDER BY id") suspend fun allCoach(): List<CoachPractice>
+    @Query("SELECT * FROM coach_turns WHERE practiceId=:practiceId ORDER BY createdAt, id")
+    fun turns(practiceId: String): Flow<List<CoachTurn>>
+    @Query("SELECT * FROM coach_turns WHERE role='assistant' AND anchor='review' AND kind IN ('write-review/1','trans-review/1') ORDER BY createdAt, id")
+    fun reviewTurns(): Flow<List<CoachTurn>>
+    @Query("SELECT practiceId, COUNT(*) AS count FROM coach_turns WHERE role='assistant' GROUP BY practiceId")
+    fun turnCounts(): Flow<List<TurnCount>>
+    @Upsert suspend fun saveTurn(turn: CoachTurn)
+    @Query("SELECT * FROM coach_turns ORDER BY createdAt, id") suspend fun allTurns(): List<CoachTurn>
+    @Insert suspend fun addTurns(turns: List<CoachTurn>)
     @Query("SELECT * FROM words ORDER BY word") fun words(): Flow<List<WordEntity>>
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun addWords(words: List<WordEntity>): List<Long>
     @Query("UPDATE words SET dueAt=:due, repetitions=:reps, intervalDays=:days WHERE word=:word")
@@ -142,10 +151,17 @@ interface StudyDao {
 }
 
 @Database(entities = [WordEntity::class, ReadingAttempt::class, EssayEntity::class,
-    WordReview::class, DailyPlan::class, WordSchedule::class, CoachPractice::class], version = 7)
+    WordReview::class, DailyPlan::class, WordSchedule::class, CoachPractice::class, CoachTurn::class], version = 8)
 abstract class StudyDatabase : RoomDatabase() {
     abstract fun dao(): StudyDao
     companion object {
+        /** Additive only: conversations live beside practices, existing rows are untouched. */
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS `coach_turns` (`id` TEXT NOT NULL, `practiceId` TEXT NOT NULL, `anchor` TEXT NOT NULL, `kind` TEXT NOT NULL, `role` TEXT NOT NULL, `content` TEXT NOT NULL, `state` TEXT NOT NULL, `model` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_coach_turns_practiceId` ON `coach_turns` (`practiceId`)")
+            }
+        }
         val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE coach_practices ADD COLUMN sourcePracticeId TEXT NOT NULL DEFAULT ''")
@@ -183,10 +199,12 @@ abstract class StudyDatabase : RoomDatabase() {
                 db.execSQL("ALTER TABLE word_reviews ADD COLUMN elapsedDays INTEGER NOT NULL DEFAULT 0")
             }
         }
+        val ALL_MIGRATIONS get() = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5,
+            MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
         @Volatile private var INSTANCE: StudyDatabase? = null
         fun get(context: Context): StudyDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context.applicationContext, StudyDatabase::class.java,
-                "cet6_study.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7).build().also { INSTANCE = it }
+                "cet6_study.db").addMigrations(*ALL_MIGRATIONS).build().also { INSTANCE = it }
         }
     }
 }

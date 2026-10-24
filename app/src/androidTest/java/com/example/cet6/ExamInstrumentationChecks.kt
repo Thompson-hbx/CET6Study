@@ -20,6 +20,27 @@ class ExamInstrumentationChecks(private val context: Context) {
         val folder = File(context.cacheDir, "exam-store-${System.nanoTime()}").apply { mkdirs() }
         val isolated = object : ContextWrapper(context) { override fun getFilesDir() = folder }
         val store = ExamStore(isolated)
+        if ("personal-exam-pack.json" in context.assets.list("").orEmpty()) {
+            val bundledFolder = File(context.cacheDir, "bundled-exams-${System.nanoTime()}").apply { mkdirs() }
+            val bundledStore = ExamStore(object : ContextWrapper(context) { override fun getFilesDir() = bundledFolder })
+            val expected = context.assets.open("personal-exam-pack.json").bufferedReader().use { ExamCodec.decode(it.readText()) }
+            check(bundledStore.load().isEmpty())
+            check(bundledStore.loadWithBundledContent() == expected)
+            check(bundledStore.load() == expected)
+            check(bundledStore.loadWithBundledContent() == expected)
+            expected.forEach { paper ->
+                CoachKind.entries.filter { paper.issues(it).isEmpty() }.forEach { kind ->
+                    val practice = ExamCodec.practice(paper, kind)
+                    if (kind == CoachKind.READING) {
+                        val questions = ExamCodec.passages(practice).flatMap { it.questions }
+                        check(questions.map { it.number } == (46..55).toList())
+                        check(questions.all {
+                            it.referenceAnswer in setOf("A", "B", "C", "D") && it.answerSource.isNotBlank()
+                        })
+                    }
+                }
+            }
+        }
         val p = sample()
         val privatePack = File(context.getExternalFilesDir(null), "private-study-pack.json")
         if (privatePack.exists()) {
@@ -34,6 +55,20 @@ class ExamInstrumentationChecks(private val context: Context) {
             }
         }
         check(ExamCodec.decode(ExamCodec.encode(listOf(p))) == listOf(p))
+        val withWriting = p.copy(referenceWriting = "Original reference essay.", referenceWritingSource = "local:original")
+        check(ExamCodec.decode(ExamCodec.encode(listOf(withWriting))) == listOf(withWriting))
+        val writingSnapshot = ExamCodec.practice(withWriting, CoachKind.WRITING)
+        check(ExamCodec.metadata(writingSnapshot)?.optString("referenceWriting") == withWriting.referenceWriting)
+        check(ExamCodec.metadata(writingSnapshot)?.optString("referenceWritingSource") == "local:original")
+        check(ExamCodec.metadata(ExamCodec.practice(withWriting, CoachKind.TRANSLATION))?.optString("referenceWriting") == "")
+        val legacyJson = org.json.JSONObject(ExamCodec.encode(listOf(p))).apply {
+            getJSONArray("papers").getJSONObject(0).apply { remove("referenceWriting"); remove("referenceWritingSource") }
+        }.toString()
+        check(ExamCodec.decode(legacyJson) == listOf(p))
+        check(store.combineBundled(emptyList(), listOf(withWriting)) == listOf(withWriting))
+        check(store.combineBundled(listOf(p), listOf(withWriting)) == listOf(p))
+        check(store.combineBundled(listOf(p.copy(revision = 3)), listOf(withWriting.copy(revision = 2))) == listOf(p.copy(revision = 3)))
+        check(store.combineBundled(listOf(p), listOf(withWriting.copy(revision = 2))) == listOf(withWriting.copy(revision = 2)))
         store.save(listOf(p))
         check(store.load() == listOf(p))
         check(store.merge(store.load(), listOf(p)).size == 1)

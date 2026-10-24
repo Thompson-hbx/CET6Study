@@ -2,6 +2,9 @@ package com.example.cet6.ai
 
 import com.example.cet6.auth.ChatGptAuth
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -52,48 +55,56 @@ class ResponsesClient(private val http: OkHttpClient, private val auth: ChatGptA
                 .header("Accept", "text/event-stream")
                 .post(payload.toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
-            http.newCall(request).execute().use { response ->
-                check(response.isSuccessful) { failureMessage("AI", response) }
-                val contentType = response.body?.contentType()
-                val headerMissing = response.header("Content-Type") == null
-                check(headerMissing || contentType?.let { it.type == "text" && it.subtype == "event-stream" } == true) {
-                    unexpectedStreamMessage(response)
-                }
-                val startGuard = ResponsesStreamStart(headerMissing)
-                var complete = false
-                var errorEvent: String? = null
-                val out = StringBuilder()
-                val reader = response.body?.charStream()?.buffered() ?: error("响应流为空")
-                val records = SseReader(reader)
-                while (!complete && errorEvent == null) {
-                    val record = records.next() ?: break
-                    if (record.data == "[DONE]") break
-                    val json = try { JSONObject(record.data) } catch (_: Exception) {
-                        error("响应包含无效 SSE JSON")
-                    }
-                    val type = json.optString("type", record.event)
-                    startGuard.accept(type, json.optJSONObject("response")?.optString("object"))
-                    when (type) {
-                        "response.output_text.delta", "response.refusal.delta" -> {
-                            val delta = json.getString("delta")
-                            out.append(delta)
-                            onDelta(delta)
-                        }
-                        "response.completed" -> complete = true
-                        "response.failed", "response.incomplete", "error" -> {
-                            val terminal = json.optJSONObject("response")
-                            val detail = terminal?.optJSONObject("error")?.optString("code")
-                                ?: terminal?.optJSONObject("incomplete_details")?.optString("reason")
-                                ?: json.optJSONObject("error")?.optString("code")
-                                ?: json.optString("code", "stream_error")
-                            errorEvent = "AI 响应未完成：$detail"
-                        }
-                    }
-                }
-                check(errorEvent == null) { errorEvent ?: "AI 请求失败" }
-                check(complete) { "网络流提前中断，没有收到 response.completed" }
-                out.toString()
+            val call = http.newCall(request)
+            // A blocking read cannot observe coroutine cancellation, so cancelling the caller closes the socket.
+            coroutineScope {
+                val watcher = launch { try { awaitCancellation() } finally { call.cancel() } }
+                try { readStream(call.execute(), onDelta) } finally { watcher.cancel() }
             }
+        }
+
+    private suspend fun readStream(started: Response, onDelta: suspend (String) -> Unit): String =
+        started.use { response ->
+            check(response.isSuccessful) { failureMessage("AI", response) }
+            val contentType = response.body?.contentType()
+            val headerMissing = response.header("Content-Type") == null
+            check(headerMissing || contentType?.let { it.type == "text" && it.subtype == "event-stream" } == true) {
+                unexpectedStreamMessage(response)
+            }
+            val startGuard = ResponsesStreamStart(headerMissing)
+            var complete = false
+            var errorEvent: String? = null
+            val out = StringBuilder()
+            val reader = response.body?.charStream()?.buffered() ?: error("响应流为空")
+            val records = SseReader(reader)
+            while (!complete && errorEvent == null) {
+                val record = records.next() ?: break
+                if (record.data == "[DONE]") break
+                val json = try { JSONObject(record.data) } catch (_: Exception) {
+                    error("响应包含无效 SSE JSON")
+                }
+                val type = json.optString("type", record.event)
+                startGuard.accept(type, json.optJSONObject("response")?.optString("object"))
+                when (type) {
+                    "response.output_text.delta", "response.refusal.delta" -> {
+                        val delta = json.getString("delta")
+                        out.append(delta)
+                        onDelta(delta)
+                    }
+                    "response.completed" -> complete = true
+                    "response.failed", "response.incomplete", "error" -> {
+                        val terminal = json.optJSONObject("response")
+                        val detail = terminal?.optJSONObject("error")?.optString("code")
+                            ?: terminal?.optJSONObject("incomplete_details")?.optString("reason")
+                            ?: json.optJSONObject("error")?.optString("code")
+                            ?: json.optString("code", "stream_error")
+                        errorEvent = "AI 响应未完成：$detail"
+                    }
+                }
+            }
+            check(errorEvent == null) { errorEvent ?: "AI 请求失败" }
+            check(complete) { "网络流提前中断，没有收到 response.completed" }
+            out.toString()
         }
 }
 

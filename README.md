@@ -1,5 +1,20 @@
 # 六级研习室 CET6Study
 
+## AI 服务配置
+
+「我的 → AI 连接」支持 ChatGPT 登录、DeepSeek API 和自定义 Chat Completions 兼容接口。写作批改、翻译、阅读讲解及追问共用当前选择的服务；默认保留原 ChatGPT 连接方式。
+
+- **DeepSeek**：选择 DeepSeek，输入你在 DeepSeek 平台创建的 API Key，点击「加密保存配置」，再刷新并选择模型，发送测试请求。官方服务地址固定为 `https://api.deepseek.com`，模型列表从服务端读取，不固定旧模型名。
+- **自定义兼容接口**：填写服务商的 HTTPS Base URL（例如 `https://服务地址/v1`，不要附加 `/chat/completions` 或 `/models`）和 API Key，保存后刷新模型。若服务不支持模型列表，可直接填写模型 ID，再测试请求。只支持 Bearer Key 的 Chat Completions 文本 SSE 接口，不包含 Anthropic / Gemini 原生协议。
+- 三种服务分别记住所选模型，DeepSeek 与自定义服务分别加密保存一份配置。Key 由 Android Keystore AES-GCM 加密，不进入学习 JSON 备份或系统迁移；清除本机配置不会撤销服务商 Key。更换自定义地址时必须重新输入 Key。
+- API 请求按所选服务商规则计费，使用自己的 API 账户，独立于 ChatGPT 套餐。只有完整结束的文本才保存为学习反馈；推理过程不混入正文，中断、截断或过滤的回复不算完成。
+
+协议参考：[DeepSeek 首次调用](https://api-docs.deepseek.com/zh-cn/)、[Chat Completions](https://api-docs.deepseek.com/api/create-chat-completion/)、[模型列表](https://api-docs.deepseek.com/api/list-models/)（2026-10-23 核对）。
+
+AI 追问会区分等待回复与正文生成，输入栏旁可随时停止。停止或失败后保留原问题，可重新生成或放回输入框修改；半截回复不会保存。完整追问回复显示模型、保存时间并支持一键复制。原问题恢复按钮不会覆盖输入框里另写的草稿。
+
+0.7.0-desk：底部导航为 写作 / 翻译 / 阅读 / 我的，每个练习在全屏工作台中完成。作文与翻译提交后可请求结构化批改：模拟档位（仅供参考）、在原稿上逐处画线、逐条采纳并生成修改稿、与上一稿逐词对照；翻译按句对照并给出重点词语；写作前可审题构思，翻译时可逐句问难词与句式。阅读在纸上做完后录入答案（可一次输入 10 个），核对后逐题讲解定位、同义替换和每个选项，并能跳回原文高亮；原文按段编号，可逐段翻译、拆句、看段意。每处讲解都可继续追问，只保存完整回复。学习库为 Room v8（新增对话表，旧数据原样保留），备份为 JSON v5 并兼容 v1—v4。改动与验证记录见 [TODO](docs/TODO.md) 和 [ARCHITECTURE](docs/ARCHITECTURE.md)；下文保留此前版本的说明。
+
 G4（0.6.0-paper-ink）默认进入真题目录，主导航为题库 / 训练 / 复盘 / 我的。支持个人结构化内容包导入、纸上做题后按篇内1—5输入五个选项、核对与分层提示，以及写译训练；旧自定义练习、单词与历史仍可访问，TTS 已移除。目录包含 8 个已举行考次、24 个整理套次；**APK 不内置第三方试卷正文**。本机私有资源已下载 46 份原卷/参考答案；个人内容包含 24 条，其中 14 套提供有来源的阅读参考键、写作任务和翻译中文，10 套待校对。已在模拟器通过系统选择器导入；不等于官方认证或全部资料校对完成，原创测试样本不是真题。PDF / Word 本地转换与个人题库备份边界见 [导入说明](docs/EXAM_IMPORT.md)。下文保留 G3 使用与验证历史。
 
 > G3.0：个人本地优先的 AI 六级专项助手。产品基准见 [本地蓝图](docs/product/G3_BLUEPRINT.md)，唯一任务清单见 [TODO](docs/TODO.md)，架构见 [ARCHITECTURE](docs/ARCHITECTURE.md)。一次性产品导入已完成，后续永久不使用 Notion。
@@ -30,12 +45,20 @@ G4（0.6.0-paper-ink）默认进入真题目录，主导航为题库 / 训练 / 
 
 ```text
 app/src/main/java/com/example/cet6/
-├── MainActivity.kt                # 今日、单词、阅读、写译、连接
+├── MainActivity.kt                # 入口、分享接收；连接、单词等旧页面
+├── ui/AppRoot.kt                  # 写作 / 翻译 / 阅读 / 我的 导航与返回栈
+├── ui/WritingWorkspace.kt         # 写作工作台、批注批改、构思提纲
+├── ui/TranslationWorkspace.kt     # 翻译工作台、逐句提示与逐句对照
+├── ui/ReadingWorkspace.kt         # 答题卡、逐题讲解、分段原文
+├── ui/CoachTalk.kt                # 讲解与追问请求、停止、失败重试
 ├── ui/StudyViewModel.kt           # 页面状态、业务动作
-├── ui/CoachScreen.kt              # 阅读、作文、翻译训练及历史
-├── ui/CoachState.kt               # 自动保存、提交、断流重试
+├── ui/CoachScreen.kt              # 自定义阅读练习（「自己的文章」）
+├── ui/CoachState.kt               # 自动保存、提交、修改稿、断流重试
+├── data/CoachTurns.kt             # 对话记录实体与锚点
+├── data/CoachReviews.kt           # 批改 / 讲解协议解析
+├── data/WritingCoach.kt 等        # 写作、翻译、阅读提示词
 ├── data/CoachPractice.kt          # 训练实体、Repository、提示词
-├── data/StudyDatabase.kt          # Room v7、兼容迁移和 DAO
+├── data/StudyDatabase.kt          # Room v8、兼容迁移和 DAO
 ├── auth/ChatGptAuth.kt            # PKCE、loopback 回调、token交换/刷新
 ├── auth/OidcVerifier.kt           # OpenAI JWKS RS256 ID Token 验证
 ├── auth/SecureSessionStore.kt     # 加密保存单账号凭证

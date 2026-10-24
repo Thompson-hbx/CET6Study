@@ -151,7 +151,7 @@ class CoachState(
 
     fun save(kind: CoachKind) = action(kind) { entries[kind]?.let { persist(kind, it) } }
 
-    fun startExam(practice: CoachPractice) {
+    fun startExam(practice: CoachPractice, onReady: (CoachPractice) -> Unit = {}) {
         val kind = CoachKind.valueOf(practice.kind)
         action(kind) {
             ready.getValue(kind).await()
@@ -163,7 +163,7 @@ class CoachState(
                 ExamCodec.itemId(it) == meta.optString("itemId") &&
                 ExamCodec.metadata(it)?.optInt("revision") == meta.optInt("revision") }
             val next = draft ?: practice
-            if (persist(kind, next)) { entries[kind] = next; partial = "" }
+            if (persist(kind, next)) { entries[kind] = next; partial = ""; onReady(next) }
         }
     }
 
@@ -177,7 +177,8 @@ class CoachState(
         } finally { working = false }
     }
 
-    fun open(kind: CoachKind, saved: CoachPractice? = null, retry: Boolean = false) = action(kind) {
+    fun open(kind: CoachKind, saved: CoachPractice? = null, retry: Boolean = false, onReady: (CoachPractice) -> Unit = {}) = action(kind) {
+        ready.getValue(kind).await()
         val current = entries[kind] ?: return@action
         if (!persist(kind, current)) return@action
         val latest = saved?.let { repository.get(it.id) ?: it }
@@ -186,8 +187,35 @@ class CoachState(
             retry -> latest.retryCopy()
             else -> latest
         }
-        persist(kind, entries.getValue(kind))
+        if (persist(kind, entries.getValue(kind))) onReady(entries.getValue(kind))
         partial = ""
+    }
+
+    /** A new draft based on a submitted attempt, with the learner's chosen edits already applied. */
+    fun revise(source: CoachPractice, answer: String, onReady: (CoachPractice) -> Unit = {}) {
+        val kind = CoachKind.valueOf(source.kind)
+        action(kind) {
+            val current = entries[kind] ?: return@action
+            if (!persist(kind, current)) return@action
+            val draft = source.retryCopy().copy(answer = answer)
+            if (persist(kind, draft)) {
+                entries[kind] = draft
+                partial = ""
+                messages[kind] = "已生成修改稿，原稿和批改都保留着。"
+                onReady(draft)
+            }
+        }
+    }
+
+    /** Creates an empty practice of [kind] with the learner's own task text, e.g. a self-set essay prompt. */
+    fun startCustom(kind: CoachKind, title: String, material: String, onReady: (CoachPractice) -> Unit = {}) {
+        action(kind) {
+            ready.getValue(kind).await()
+            val current = entries[kind] ?: return@action
+            if (!persist(kind, current)) return@action
+            val draft = CoachPractice(kind = kind.name, title = title.trim(), material = material.trim())
+            if (persist(kind, draft)) { entries[kind] = draft; partial = ""; onReady(draft) }
+        }
     }
 
     fun generate(kind: CoachKind) = action(kind) {
@@ -255,7 +283,7 @@ class CoachState(
         } catch (e: IllegalArgumentException) { messages[kind] = e.message.orEmpty(); return@action }
         if (!persist(kind, current)) return@action
         if (!canRequest()) {
-            messages[kind] = "作答已保存。AI 分析需要在“我的”连接 ChatGPT 并选择模型。"
+            messages[kind] = "作答已保存。AI 分析需要在“我的”连接 AI 服务并选择模型。"
             return@action
         }
         val selectedModel = model()
@@ -281,12 +309,13 @@ class CoachState(
         finally { activeRequest = null }
     }
 
-    fun submit(kind: CoachKind, explain: Boolean, followUp: String = "") = action(kind) {
+    fun submit(kind: CoachKind, explain: Boolean, followUp: String = "", focus: WritingFocus = WritingFocus.COMPLETE) = action(kind) {
         val current = entries[kind] ?: return@action
-        val prompt = try { CoachPrompts.build(current) + if (followUp.isBlank()) "" else {
+        val prompt = try { CoachPrompts.build(current, focus) + if (followUp.isBlank()) "" else {
             require(followUp.length <= 4000) { "追问请控制在 4000 字以内" }
             require(current.feedback.isNotBlank()) { "请先完成一次解析" }
-            "\n---此前 AI 反馈（供核对，可能有误）---\n${current.feedback.takeLast(60_000)}\n---用户追问---\n$followUp\n请结合原文回答，必要时纠正此前错误，不冒充官方答案。"
+            "\n---此前 AI 反馈（供核对，可能有误）---\n${current.feedback.takeLast(60_000)}\n---用户追问---\n$followUp\n请结合原文回答，必要时纠正此前错误，不冒充官方答案。" +
+                "\n本轮是追问，以上完整批改的输出格式不适用于本轮。直接回答当前问题，仅引用相关原句；除非用户明确要求，不重复完整批改、整篇范文或全文重译。"
         } }
         catch (e: IllegalArgumentException) { messages[kind] = e.message.orEmpty(); return@action }
         val submitted = current.copy(submittedAt = current.submittedAt.takeIf { it > 0 } ?: System.currentTimeMillis(),
@@ -294,7 +323,7 @@ class CoachState(
         if (!persist(kind, submitted)) return@action
         entries[kind] = submitted
         if (!explain) { messages[kind] = "作答已保存"; return@action }
-        if (!canRequest()) { messages[kind] = "作答已保存；请到连接页登录并选择模型，再重试 AI。"; return@action }
+        if (!canRequest()) { messages[kind] = "作答已保存；请到连接页配置 AI 服务并选择模型，再重试 AI。"; return@action }
         val selectedModel = model()
         partial = ""
         partialEntryId = submitted.id
@@ -303,7 +332,10 @@ class CoachState(
         try {
             val completed = request(prompt) { partial += it }
             check(completed.isNotBlank()) { "AI 没有返回可用文本" }
-            val feedback = if (followUp.isBlank()) completed else "${submitted.feedback}\n\n追问：$followUp\n\n$completed"
+            val feedback = if (followUp.isNotBlank()) "${submitted.feedback}\n\n追问：$followUp\n\n$completed"
+                else if (kind != CoachKind.READING) listOf(submitted.feedback, "## ${focus.label}\n\n$completed")
+                    .filter(String::isNotBlank).joinToString("\n\n")
+                else completed
             val result = submitted.copy(feedback = feedback, model = selectedModel, updatedAt = System.currentTimeMillis())
             if (persist(kind, result)) {
                 entries[kind] = result

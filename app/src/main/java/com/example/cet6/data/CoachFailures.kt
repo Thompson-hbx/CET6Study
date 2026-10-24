@@ -13,7 +13,8 @@ object CoachFailures {
         return when {
             code in setOf("invalid_grant", "invalid_token", "token_expired") || http == 401 ||
                 message in setOf("请先登录 ChatGPT", "请重新登录 ChatGPT", "授权已过期，请重新登录") ->
-                "登录授权需要检查，请到「连接」页重新连接 ChatGPT 后重试。"
+                "登录授权或 API Key 需要检查，请到「连接」页重新连接所选 AI 服务后重试。"
+            http == 402 -> "API 余额不足，请到服务商平台检查余额；反复重试通常无法解决。"
             code in setOf("insufficient_quota", "credit_balance_exhausted", "usage_limit_exceeded",
                 "organization_usage_limit_exceeded", "organization_spend_limit_exceeded", "project_spend_limit_exceeded") ->
                 "服务返回用量或额度限制，请查看账号用量及具体限制；反复重试通常无法解决。"
@@ -23,7 +24,8 @@ object CoachFailures {
             http != null && http >= 500 -> "AI 服务暂时不可用，请稍后手动重试。"
             error is SocketTimeoutException -> "连接或响应超时，请检查网络，稍后手动重试。"
             error is IOException -> "连接未能完成，请检查网络后手动重试。"
-            message.contains("response.completed") || message.startsWith("AI 响应未完成：") ->
+            message.contains("response.completed") || message.contains("[DONE]") || message.startsWith("AI 响应未完成") ||
+                message == "AI 响应未正常结束" ->
                 "响应尚未完整结束，请稍后重试；已收到的片段只作临时参考。"
             error is IllegalArgumentException || message.contains("SSE JSON") || message.contains("预期流类型") ->
                 "返回内容未通过格式检查，请稍后重试。"

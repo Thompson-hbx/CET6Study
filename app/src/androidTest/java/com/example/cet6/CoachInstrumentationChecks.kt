@@ -72,10 +72,18 @@ class CoachInstrumentationChecks(private val context: Context) {
                 check(revision.feedback.isBlank() && revision.errorReason.isBlank() && revision.submittedAt == 0L)
                 check(db.dao().coachById(previous.id) == previous)
             }
+            val turn = CoachTurn(practiceId = complete.id, anchor = Anchor.question(1), kind = TurnKind.CHAT,
+                role = CoachTurn.ASSISTANT, content = "原文证据：quiet rooms", model = "fake-model")
+            CoachRepository(db).saveTurn(turn)
             val snapshot = BackupRepository(db).snapshot()
+            check(snapshot.turns == listOf(turn)) { "turn missing from snapshot" }
             check(BackupCodec.decode(BackupCodec.encode(snapshot)) == snapshot)
+            val v4 = JSONObject(BackupCodec.encode(snapshot)).apply { put("version", 4); put("databaseVersion", 7); remove("turns") }
+            check(BackupCodec.decode(v4.toString()).turns.isEmpty())
+            val orphan = JSONObject(BackupCodec.encode(snapshot)).apply { getJSONArray("turns").getJSONObject(0).put("practiceId", "missing") }
+            check(runCatching { BackupCodec.decode(orphan.toString()) }.isFailure) { "turn without its practice accepted" }
             val v2 = JSONObject(BackupCodec.encode(snapshot)).apply {
-                put("version", 2); put("databaseVersion", 5)
+                put("version", 2); put("databaseVersion", 5); remove("turns")
                 val rows = getJSONArray("coach")
                 for (i in 0 until rows.length()) rows.getJSONObject(i).remove("savedSentences")
             }
@@ -84,7 +92,7 @@ class CoachInstrumentationChecks(private val context: Context) {
             check(state.flush())
             check(db.dao().coachDraft(CoachKind.WRITING.name)?.answer == "Immediate background save.")
             val legacy = JSONObject(BackupCodec.encode(snapshot)).apply {
-                put("version", 1); put("databaseVersion", 4); remove("coach")
+                put("version", 1); put("databaseVersion", 4); remove("coach"); remove("turns")
             }
             check(BackupCodec.decode(legacy.toString()).coach.isEmpty())
             job.cancelAndJoin()

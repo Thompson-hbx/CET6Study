@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
@@ -34,11 +35,13 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.example.cet6.ui.StudyViewModel
+import com.example.cet6.ai.AiProvider
+import com.example.cet6.ui.ApiConnectionSettings
 import com.example.cet6.ui.VocabularyImportCard
 import com.example.cet6.ui.WordContentLicenses
 import com.example.cet6.ui.BackupCard
-import com.example.cet6.ui.CoachScreen
-import com.example.cet6.ui.WritingAndTranslationScreen
+import com.example.cet6.ui.AppRoot
+import com.example.cet6.ui.LegacyScreens
 import com.example.cet6.ui.theme.CET6Theme
 import com.example.cet6.data.CoachKind
 import com.example.cet6.data.WordRating
@@ -54,7 +57,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CET6Theme { MainContent(vm) }
+            CET6Theme {
+                AppRoot(vm, LegacyScreens(
+                    connection = { ConnectionScreen(vm) },
+                    words = { WordScreen(vm) },
+                    today = { onWords, onReading, onWriting, onReview -> TodayScreen(vm, onWords, onReading, onWriting, onReview) }
+                ))
+            }
         }
         if (savedInstanceState == null) receiveShare(intent)
     }
@@ -79,107 +88,6 @@ class MainActivity : ComponentActivity() {
     }
     override fun onResume() { super.onResume(); vm.refreshStudyClock() }
     override fun onStop() { vm.saveDrafts(); super.onStop() }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun MainContent(vm: StudyViewModel) {
-    var tab by rememberSaveable { mutableIntStateOf(0) }
-    var kind by rememberSaveable { mutableStateOf(CoachKind.READING) }
-    var custom by rememberSaveable { mutableStateOf(false) }
-    var mine by rememberSaveable { mutableStateOf("") }
-    val tabs = listOf("题库", "训练", "复盘", "我的")
-    val scroll = key(tab, kind, mine) { rememberScrollState() }
-    val snackbar = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-    fun open(entry: CoachPractice) {
-        kind = CoachKind.valueOf(entry.kind)
-        vm.coach.open(kind, entry)
-        custom = com.example.cet6.data.ExamCodec.metadata(entry) == null
-        tab = 1
-    }
-    LaunchedEffect(vm.coach.importedReadingId) {
-        vm.coach.importedReadingId?.let { kind = CoachKind.READING; custom = true; tab = 1; vm.coach.consumeReadingImport(it) }
-    }
-    LaunchedEffect(vm.coach.shareStatus) {
-        if (vm.coach.shareStatus.isNotBlank()) snackbar.showSnackbar(vm.coach.shareStatus)
-    }
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
-        floatingActionButton = {
-            if (tab == 1 && scroll.value > scroll.viewportSize && scroll.canScrollForward) SmallFloatingActionButton(onClick = { scope.launch { scroll.animateScrollTo(0) } }) {
-                Icon(Icons.Default.ArrowUpward, contentDescription = "返回训练导航")
-            }
-        },
-        topBar = { if (tab != 1) Column {
-            TopAppBar(title = { Text(if (tab == 0) "历年真题" else tabs[tab],
-                style = MaterialTheme.typography.titleLarge) })
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
-        } },
-        bottomBar = {
-            Column {
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
-                NavigationBar(containerColor = MaterialTheme.colorScheme.background, tonalElevation = 0.dp) {
-                    tabs.forEachIndexed { index, name ->
-                        val isSelected = tab == index
-                        NavigationBarItem(selected = isSelected, onClick = { tab = index; mine = "" },
-                            icon = { Icon(when(index) {
-                                0 -> if (isSelected) Icons.AutoMirrored.Filled.MenuBook else Icons.AutoMirrored.Outlined.MenuBook
-                                1 -> if (isSelected) Icons.Default.EditNote else Icons.Outlined.EditNote
-                                2 -> if (isSelected) Icons.Default.AutoStories else Icons.Outlined.AutoStories
-                                else -> if (isSelected) Icons.Default.Hub else Icons.Outlined.Hub
-                            }, null) }, label = { Text(name, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal) })
-                    }
-                }
-            }
-        }
-    ) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding).imePadding()
-            .verticalScroll(scroll).padding(horizontal = 24.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            when (tab) {
-                0 -> com.example.cet6.ui.ExamLibraryScreen(vm, onContinue = { open(it) }, onStart = { paper, selected, passage ->
-                    kind = selected; custom = false
-                    vm.coach.startExam(com.example.cet6.data.ExamCodec.practice(paper, selected, passage)); tab = 1
-                })
-                1 -> {
-                    val entry = vm.coach.entries[kind]
-                    if (entry == null || com.example.cet6.data.ExamCodec.metadata(entry) == null || custom) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            CoachKind.entries.forEach { k -> FilterChip(selected = kind == k, onClick = { kind = k }, label = { Text(k.label) }) }
-                        }
-                    }
-                    if (entry != null && com.example.cet6.data.ExamCodec.metadata(entry) != null && !custom) {
-                        com.example.cet6.ui.ExamTrainingScreen(vm, kind, scroll)
-                    } else {
-                        CoachScreen(vm, kind, scroll)
-                    }
-                    OutlinedButton(onClick = { tab = 0 }, shape = MaterialTheme.shapes.small,
-                        modifier = Modifier.fillMaxWidth().height(44.dp)) { Text("返回题库") }
-                }
-                2 -> {
-                    WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, onReview = { open(it) })
-                    com.example.cet6.ui.ExamHistory(vm, onOpen = { open(it) })
-                }
-                else -> when (mine) {
-                    "essays" -> { TextButton(onClick = { mine = "" }) { Text("返回我的") }; WritingAndTranslationScreen(vm, scroll) }
-                    "connection" -> { TextButton(onClick = { mine = "" }) { Text("返回我的") }; ConnectionScreen(vm) }
-                    "words" -> { TextButton(onClick = { mine = "" }) { Text("返回我的") }; WordScreen(vm) }
-                    "legacy" -> { TextButton(onClick = { mine = "" }) { Text("返回我的") }
-                        TodayScreen(vm, onWords = { mine = "words" }, onReading = { kind = CoachKind.READING; custom = true; tab = 1 },
-                            onWriting = { kind = CoachKind.WRITING; custom = true; tab = 1 }, onReview = { open(it) }) }
-                    else -> {
-                        com.example.cet6.ui.PaperRow("ChatGPT 与模型", if (vm.hasPlan) "已连接 · 管理模型与授权" else "连接后可请求 AI 讲解", { mine = "connection" })
-                        BackupCard(vm)
-                        Text("题库内容与作答分开保存，请在题库页单独导出个人题库。", style = MaterialTheme.typography.bodySmall)
-                        com.example.cet6.ui.PaperRow("历史功能", "单词记录、FSRS、旧版作文与学习计划", { mine = "legacy" })
-                        com.example.cet6.ui.PaperRow("旧版写译与作文记录", "查看保留的旧版作文批改", { mine = "essays" })
-                        com.example.cet6.ui.PaperRow("自定义练习", "手动粘贴阅读、作文或翻译材料", { vm.coach.open(kind); custom = true; tab = 1 })
-                    }
-                }
-            }
-        }
-    }
 }
 
 @Composable
@@ -315,68 +223,78 @@ private fun SectionTitle(title: String, subtitle: String) {
 @Composable
 private fun ConnectionScreen(vm: StudyViewModel) {
     var message by rememberSaveable { mutableStateOf("请只回答：六级研习室 API 测试成功。") }
-    SectionTitle("连接 ChatGPT", "OAuth 登录 → 模型列表 → 流式 API 调用")
-    ElevatedCard(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    if (vm.sessionEmail.isBlank()) "未连接" else "已登录：${vm.sessionEmail}",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Surface(
-                    shape = MaterialTheme.shapes.extraSmall,
-                    color = if (vm.sessionEmail.isNotBlank()) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant
+    SectionTitle("AI 连接", "选择服务与模型，用于批改、讲解和追问")
+    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        AiProvider.entries.forEach { provider ->
+            FilterChip(selected = vm.provider == provider, onClick = { vm.selectProvider(provider) },
+                enabled = !vm.busy, label = { Text(provider.label) })
+        }
+    }
+    if (vm.provider != AiProvider.CHATGPT) {
+        ApiConnectionSettings(vm)
+    } else {
+        ElevatedCard(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+        ) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        if (vm.sessionEmail.isNotBlank()) "有效会话" else "离线",
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (vm.sessionEmail.isNotBlank()) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                        if (vm.sessionEmail.isBlank()) "未连接" else "已登录：${vm.sessionEmail}",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold
                     )
+                    Surface(
+                        shape = MaterialTheme.shapes.extraSmall,
+                        color = if (vm.sessionEmail.isNotBlank()) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant
+                    ) {
+                        Text(
+                            if (vm.sessionEmail.isNotBlank()) "有效会话" else "离线",
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (vm.sessionEmail.isNotBlank()) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
-            }
-            Text(
-                if (vm.hasPlan) "套餐 scope：已授予（实际调用待验证）" else "套餐 scope：未授予",
-                style = MaterialTheme.typography.bodySmall,
-                color = if (vm.hasPlan) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
-            )
-            Button(
-                onClick = vm::signIn,
-                enabled = !vm.busy,
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(Icons.Outlined.Hub, contentDescription = null, modifier = Modifier.size(18.dp))
-                Spacer(Modifier.width(8.dp))
-                Text("Continue with ChatGPT", fontWeight = FontWeight.SemiBold)
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(
-                    onClick = vm::refreshModels,
-                    enabled = vm.hasPlan && !vm.busy,
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(Icons.Outlined.Refresh, contentDescription = null, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text("刷新模型")
-                }
-                OutlinedButton(
-                    onClick = vm::signOut,
+                Text(
+                    if (vm.hasPlan) "套餐 scope：已授予（实际调用待验证）" else "套餐 scope：未授予",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (vm.hasPlan) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
+                )
+                Button(
+                    onClick = vm::signIn,
                     enabled = !vm.busy,
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("退出连接")
+                    Icon(Icons.Outlined.Hub, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text("Continue with ChatGPT", fontWeight = FontWeight.SemiBold)
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(
+                        onClick = vm::refreshModels,
+                        enabled = vm.hasPlan && !vm.busy,
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Icon(Icons.Outlined.Refresh, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text("刷新模型")
+                    }
+                    OutlinedButton(
+                        onClick = vm::signOut,
+                        enabled = !vm.busy,
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("退出连接")
+                    }
                 }
             }
         }
@@ -393,7 +311,7 @@ private fun ConnectionScreen(vm: StudyViewModel) {
     )
     Button(
         onClick = { vm.ask(message) },
-        enabled = vm.hasPlan && vm.chosenModel.isNotBlank() && message.isNotBlank() && !vm.busy,
+        enabled = vm.aiReady && vm.chosenModel.isNotBlank() && message.isNotBlank() && !vm.busy,
         shape = MaterialTheme.shapes.small,
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -403,7 +321,8 @@ private fun ConnectionScreen(vm: StudyViewModel) {
     }
     StatusCard(vm)
     Text(
-        "授权过程由系统浏览器完成。此应用不收集密码、不使用 ChatGPT Cookie。",
+        if (vm.provider == AiProvider.CHATGPT) "授权过程由系统浏览器完成。此应用不收集密码、不使用 ChatGPT Cookie。"
+        else "请求会把当前练习相关内容发送给所选服务，按服务商 API 规则计费。API Key 不包含在学习备份中。",
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
@@ -416,7 +335,7 @@ private fun ModelSelector(vm: StudyViewModel) {
         Text("推理模型", fontWeight = FontWeight.Medium)
         Box {
             OutlinedButton(onClick = { expanded = true }, enabled = vm.models.isNotEmpty() && !vm.busy) {
-                Text(vm.models.find { it.slug == vm.chosenModel }?.displayName ?: "请先获取模型")
+                Text(vm.models.find { it.slug == vm.chosenModel }?.displayName ?: vm.chosenModel.ifBlank { "请先获取模型" })
                 Text(" ▾")
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {

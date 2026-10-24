@@ -27,6 +27,14 @@ class WeaknessReviewTest {
         assertEquals(listOf(older), WeaknessReview.records(input, "语法"))
     }
 
+    @Test fun specialtyNotesAreCountedAndLegacyCategoriesRemainAvailable() {
+        assertEquals(setOf("遗漏", "误译", "语法"), WeaknessReview.categoriesOf(note(today, "遗漏：第二句；误译：主语；语法")))
+        assertEquals(setOf("审题", "论证"), WeaknessReview.categoriesOf(note(today, "审题；论证：例证不支持观点")))
+        assertTrue("选项陷阱" in WeaknessReview.categories)
+        assertFalse("选项陷阱" in WeaknessReview.choices(CoachKind.WRITING))
+        assertEquals(setOf("其他笔记"), WeaknessReview.categoriesOf(note(today, "没有遗漏或误译")))
+    }
+
     @Test fun usesLocalCalendarBoundariesAndExcludesFutureDates() {
         val records = listOf(0L, 6L, 7L, 13L, 14L, -1L).map { note(today.minusDays(it)) }
         assertEquals(WeaknessReview.PeriodCounts(2, 2), WeaknessReview.periods(records, today, zone))

@@ -5,6 +5,13 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ExamContentTest {
+    @Test fun writingReferenceNeedsItsOwnSourceWithoutBlockingOtherSubjects() {
+        val p = complete().copy(referenceWriting = "Original reference essay.")
+        assertTrue(p.issues(CoachKind.WRITING).contains("参考范文缺少来源"))
+        assertTrue(p.issues(CoachKind.TRANSLATION).isEmpty())
+        assertTrue(p.issues(CoachKind.READING).isEmpty())
+        assertTrue(p.copy(referenceWritingSource = "local:original").issues().isEmpty())
+    }
     private fun complete() = ExamPaper("cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "User material", sourceUrl = "local:owned",
         licenseStatus = "personal-use", reviewed = true, passages = (1..2).map { code ->
             ExamPassage("$code", "Test", "Libraries offer quiet rooms.", (if (code == 1) 46..50 else 51..55).map { n ->

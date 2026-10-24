@@ -1,12 +1,12 @@
 # 项目文档索引
 
-本目录包含「六级研习室 CET6Study」的核心设计、产品规划、技术规约与归档文档。
+本目录包含「六级研习室 CET6Study」的产品说明、实现记录与历史资料。开发约定和流程限制已于 2026-10-20 按用户要求移除；历史记录不作为当前工作指令。
 
 ## 核心文档
 
-- [TODO.md](TODO.md)：**唯一进行中任务清单**与版本演进记录。
+- [TODO.md](TODO.md)：任务进展与版本演进记录。
 - [ARCHITECTURE.md](ARCHITECTURE.md)：系统总体架构、技术决策与各阶段技术规范。
-- [product/G3_BLUEPRINT.md](product/G3_BLUEPRINT.md)：当前产品设计基准（真题优先、AI 引导、弱项归因）。
+- [product/G3_BLUEPRINT.md](product/G3_BLUEPRINT.md)：产品功能说明。
 - [EXAM_IMPORT.md](EXAM_IMPORT.md)：试卷导入工具链路与内容包格式说明。
 - [PRIVATE_BACKUP.md](PRIVATE_BACKUP.md)：私有题库资料与历史学习数据备份说明。
 
@@ -24,5 +24,4 @@
 - [P1_TEST.md](archive/P1_TEST.md)：P1 里程碑验收测试。
 - [PHONE_TEST.md](archive/PHONE_TEST.md)：真机测试实测记录。
 - [PROGRESS.md](archive/PROGRESS.md) & [PROJECT_PLAN.md](archive/PROJECT_PLAN.md)：早期规划与阶段进展。
-- [SEVEN_DAY_ACCEPTANCE.md](archive/SEVEN_DAY_ACCEPTANCE.md)：旧版七天验收（已被 AGENTS.md 废止并保留历史记录）。
-- [TTS_RESEARCH.md](archive/TTS_RESEARCH.md)：TTS 方案调研（已暂停该功能）。
+- [TTS_RESEARCH.md](archive/TTS_RESEARCH.md)：历史 TTS 方案调研。

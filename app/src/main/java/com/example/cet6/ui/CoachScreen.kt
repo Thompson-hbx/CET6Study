@@ -12,13 +12,11 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Send
-import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -40,9 +38,10 @@ private val englishWords = Regex("[A-Za-z]+(?:['’\\-][A-Za-z]+)*")
 fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? = null, reviewId: String? = null) {
     val state = vm.coach
     val entry = state.entries[kind]
-    // Structured snapshots contain reference answers. Every legacy route must use the gated exam UI.
+    // Structured snapshots contain reference answers. Every legacy route must use the gated exam UI;
+    // only reading reaches this screen (its history can reopen an exam attempt).
     if (entry != null && ExamCodec.metadata(entry) != null) {
-        ExamTrainingScreen(vm, kind, scrollState ?: androidx.compose.foundation.rememberScrollState())
+        if (kind == CoachKind.READING) PaperAnswerScreen(vm, entry, scrollState ?: androidx.compose.foundation.rememberScrollState())
         return
     }
     if (entry == null) {
@@ -223,7 +222,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         }
     }
 
-    if (panel == 0 || panel == 1) {
+    if (panel == 0 || (panel == 1 && kind == CoachKind.READING)) {
         ElevatedCard(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
@@ -270,7 +269,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     )
                 }
 
-                if (!vm.hasPlan || vm.chosenModel.isBlank()) {
+                if (!vm.aiReady || vm.chosenModel.isBlank()) {
                     Text(
                         "AI 未连接，请到「我的」连接并选择模型。",
                         style = MaterialTheme.typography.bodySmall,
@@ -281,7 +280,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         }
     }
 
-    if (panel == 1 && entry.feedback.isBlank()) {
+    if (panel == 1 && kind == CoachKind.READING && entry.feedback.isBlank()) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
@@ -307,7 +306,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         }
     }
 
-    if (panel == 1 && state.partial.isNotBlank() && state.partialEntryId == entry.id) {
+    if (panel == 1 && kind == CoachKind.READING && state.partial.isNotBlank() && state.partialEntryId == entry.id) {
         val receiving = state.activeRequest == entry.id
         var showPartial by rememberSaveable(entry.id, receiving) { mutableStateOf(receiving) }
         ElevatedCard(
@@ -342,7 +341,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         }
     }
 
-    if (panel == 1 && entry.feedback.isNotBlank()) {
+    if (panel == 1 && kind == CoachKind.READING && entry.feedback.isNotBlank()) {
         ElevatedCard(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
@@ -402,7 +401,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("错因归档与复习", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    listOf("词汇理解", "长难句", "逻辑推断", "选项陷阱", "语法", "表达").forEach { category ->
+                    WeaknessReview.choices(kind).forEach { category ->
                         val selected = entry.errorReason.contains(category)
                         SuggestionChip(
                             onClick = { state.edit(kind) {
@@ -590,74 +589,6 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     }
                     if (legacy) vm.readingAttempts.forEach { saved ->
                         Text("${saved.questionId} · 作答 ${saved.answer} · ${if (saved.correct) "旧版本地判题正确" else "旧版本地判题有误"}")
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun WritingAndTranslationScreen(
-    vm: StudyViewModel,
-    scrollState: ScrollState? = null,
-    reviewId: String? = null,
-    reviewKind: CoachKind = CoachKind.WRITING
-) {
-    var translation by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(reviewId) { if (reviewId != null) translation = reviewKind == CoachKind.TRANSLATION }
-    Surface(
-        shape = MaterialTheme.shapes.small,
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier.padding(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            FilterChip(
-                selected = !translation,
-                onClick = { translation = false },
-                leadingIcon = { Icon(Icons.Outlined.Edit, contentDescription = null, modifier = Modifier.size(16.dp)) },
-                label = { Text("作文") },
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier.weight(1f)
-            )
-            FilterChip(
-                selected = translation,
-                onClick = { translation = true },
-                leadingIcon = { Icon(Icons.Outlined.Translate, contentDescription = null, modifier = Modifier.size(16.dp)) },
-                label = { Text("中译英") },
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-    CoachScreen(vm, if (translation) CoachKind.TRANSLATION else CoachKind.WRITING, scrollState, reviewId)
-    if (!translation && vm.essays.isNotEmpty()) {
-        ElevatedCard(
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium
-        ) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("旧版作文记录", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                vm.essays.forEach { saved ->
-                    var expanded by remember(saved.id) { mutableStateOf(false) }
-                    OutlinedButton(onClick = { expanded = !expanded }, shape = MaterialTheme.shapes.small) {
-                        Text(saved.topic.ifBlank { "历史作文" })
-                    }
-                    if (expanded) SelectionContainer {
-                        Surface(
-                            shape = MaterialTheme.shapes.small,
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
-                            modifier = Modifier.padding(top = 4.dp).fillMaxWidth()
-                        ) {
-                            Text(
-                                "原文：\n${saved.content}\n\n批改：\n${saved.feedback}",
-                                modifier = Modifier.padding(12.dp),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
                     }
                 }
             }

@@ -47,7 +47,7 @@ def convert(text, metadata):
         if key in blocks:
             raise ValueError(f"Duplicate marker {key}; possible mixed papers")
         blocks[key] = text[match.end():matches[index + 1].start() if index + 1 < len(matches) else len(text)].strip()
-    allowed = {"READING 1", "READING 2", "WRITING", "INSTRUCTIONS", "TRANSLATION", "REFERENCE_TRANSLATION", "REFERENCE_SOURCE"} | {f"Q{n}" for n in range(46, 56)}
+    allowed = {"READING 1", "READING 2", "WRITING", "INSTRUCTIONS", "TRANSLATION", "REFERENCE_TRANSLATION", "REFERENCE_SOURCE", "REFERENCE_WRITING", "REFERENCE_WRITING_SOURCE"} | {f"Q{n}" for n in range(46, 56)}
     if set(blocks) - allowed:
         raise ValueError(f"Unknown markers: {set(blocks) - allowed}")
     passages = []
@@ -68,7 +68,8 @@ def convert(text, metadata):
         passages.append({"code": code, "title": "", "content": content, "questions": questions})
     paper = dict(metadata)
     paper.update(passages=passages, writingPrompt=blocks.get("WRITING", ""), writingInstructions=blocks.get("INSTRUCTIONS", ""),
-                 chineseText=blocks.get("TRANSLATION", ""), referenceTranslation=blocks.get("REFERENCE_TRANSLATION", ""), referenceSource=blocks.get("REFERENCE_SOURCE", ""), reviewed=False)
+                 chineseText=blocks.get("TRANSLATION", ""), referenceTranslation=blocks.get("REFERENCE_TRANSLATION", ""), referenceSource=blocks.get("REFERENCE_SOURCE", ""),
+                 referenceWriting=blocks.get("REFERENCE_WRITING", ""), referenceWritingSource=blocks.get("REFERENCE_WRITING_SOURCE", ""), reviewed=False)
     for name in ("writingPrompt", "writingInstructions", "chineseText"):
         if not paper[name]:
             warnings.append(f"{name}: missing")

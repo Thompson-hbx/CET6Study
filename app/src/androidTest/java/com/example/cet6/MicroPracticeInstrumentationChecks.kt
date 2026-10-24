@@ -79,7 +79,7 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             val snapshot = BackupRepository(db).snapshot()
             check(BackupCodec.decode(BackupCodec.encode(snapshot)) == snapshot)
             val v3 = JSONObject(BackupCodec.encode(snapshot)).apply {
-                put("version", 3); put("databaseVersion", 6)
+                put("version", 3); put("databaseVersion", 6); remove("turns")
                 val rows = getJSONArray("coach")
                 for (i in 0 until rows.length()) rows.getJSONObject(i).apply { remove("sourcePracticeId"); remove("practiceGoal") }
             }

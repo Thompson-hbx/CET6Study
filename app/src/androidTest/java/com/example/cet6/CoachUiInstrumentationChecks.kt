@@ -46,7 +46,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
             if (target != null) {
                 val bounds = Rect().also { target.getBoundsInScreen(it) }
                 val clip = Rect().also { viewport?.getBoundsInScreen(it) }
-                if (text in listOf("阅读", "写译", "连接", "今日") || clip.isEmpty ||
+                if (text in listOf("写作", "翻译", "阅读", "我的") || clip.isEmpty ||
                     (bounds.top >= clip.top + 6 && bounds.bottom <= clip.bottom - 6)) return target
                 scroll(bounds.top >= clip.top)
             } else scroll(true)
@@ -76,7 +76,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         runner.startActivitySync(Intent(runner.targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         automation.waitForIdle(500, 5000)
         click("阅读")
-        click("新建练习")
+        click("粘贴一篇英文文章练习")
         SystemClock.sleep(400)
         check(runBlocking { StudyDatabase.get(runner.targetContext).dao().coachDraft("READING")?.questions?.isBlank() == true }) {
             "New exercise was not opened; stopping before editing existing work"

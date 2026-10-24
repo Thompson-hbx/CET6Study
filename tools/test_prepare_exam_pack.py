@@ -6,6 +6,14 @@ from prepare_exam_pack import extract, convert
 
 
 class ImportTests(unittest.TestCase):
+    def test_writing_reference_keeps_separate_source_and_requires_review(self):
+        pack, _ = convert("[WRITING]\nOriginal task\n[INSTRUCTIONS]\nWrite briefly\n[REFERENCE_WRITING]\nOriginal sample essay.\n[REFERENCE_WRITING_SOURCE]\nlocal:essay\n[REFERENCE_SOURCE]\nlocal:translation", {})
+        paper = pack["papers"][0]
+        self.assertEqual("Original sample essay.", paper["referenceWriting"])
+        self.assertEqual("local:essay", paper["referenceWritingSource"])
+        self.assertEqual("local:translation", paper["referenceSource"])
+        self.assertFalse(paper["reviewed"])
+
     def test_docx_preserves_paragraph_order(self):
         with TemporaryDirectory() as folder:
             path = Path(folder) / "owned.docx"

@@ -5,7 +5,7 @@ import androidx.room.withTransaction
 class BackupRepository(private val db: StudyDatabase) {
     private val dao = db.dao()
     private suspend fun readSnapshot() = StudyBackup(System.currentTimeMillis(), dao.allWords(), dao.allWordReviews(),
-        dao.allSchedules(), dao.allPlans(), dao.allReading(), dao.allEssays(), dao.allCoach())
+        dao.allSchedules(), dao.allPlans(), dao.allReading(), dao.allEssays(), dao.allCoach(), dao.allTurns())
 
     suspend fun snapshot(): StudyBackup = db.withTransaction { readSnapshot() }
 
@@ -20,6 +20,7 @@ class BackupRepository(private val db: StudyDatabase) {
         dao.addReadingAttempts(merge.reading)
         dao.addEssays(merge.essays)
         merge.coach.forEach { dao.saveCoach(it) }
+        dao.addTurns(merge.turns)
         merge.summary
     }
 }

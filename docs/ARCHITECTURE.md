@@ -1,4 +1,13 @@
-# 架构决策
+# 架构实现记录
+
+本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
+
+## 多 AI 服务接入（2026-10-23）
+
+- `StudyViewModel.streamAi` 按 `AiProvider` 分派到原 `ResponsesClient` 或新增 `ChatCompletionsClient`；训练和追问共用 `aiReady` 门槛，不再依赖 ChatGPT 套餐权限。ChatGPT OAuth 与 Responses 协议保持原实现。
+- DeepSeek 固定官方 Base URL；自定义服务仅接受无账号、查询参数及片段的 HTTPS Base URL，保留服务商版本路径。模型通过 `GET /models` 的 `data[].id` 获取，也允许手动填写；模型偏好按服务隔离，原 ChatGPT `model` 偏好继续可读。
+- `ChatCompletionStream` 复用 `SseReader`，只输出首个 choice 的 `delta.content`，忽略 `reasoning_content`；收到 `finish_reason=stop` 与 `[DONE]` 且正文非空才成功。长度截断、内容过滤、工具调用、错误事件和流提前结束均失败；协程取消会关闭 OkHttp 调用。禁用重定向和连接失败自动重试。
+- `SecureApiStore` 将每个 API 服务的地址与 Key 一起用 Android Keystore AES-256-GCM 加密；与 OAuth、Room、学习备份分开，系统云备份和设备迁移显式排除。Key 输入只用 Compose `remember`，不进入保存的界面状态；更换地址时不复用旧 Key。没有新增依赖或数据库迁移。
 
 - `CET6Study/` 是 Android 工程，applicationId 为 `com.example.cet6`；存在 OAuth、Responses SSE、Room 和 Compose，符合本次目标。未访问或合并其他项目。
 - 继续 Kotlin、Compose、MVVM + Repository、Room，保留现有 OAuth、Keystore、网络参数、应用 ID 和数据库名。
@@ -8,7 +17,6 @@
 - 阅读第一版以文章、可追加的题目文本和编号作答组成一次训练；参考答案可在题目中提供。无参考答案时 AI 只能给推断和证据，不能声称官方判题。
 - 学习记录与凭证分开；备份只包含白名单学习字段。JSON v4 包含难句收藏、来源关联和训练目标，继续兼容导入 v1/v2/v3。
 - 反馈排版复用 Markwon core / ext-tables 4.6.2（Apache-2.0），避免自行实现 Markdown 解析器；未接入图片加载插件。表格不便复制时可使用原始文本或完整反馈复制入口。实现参考 https://noties.io/Markwon/docs/v4/core/getting-started.html 和 https://noties.io/Markwon/docs/v4/ext-tables/ 。不重写认证网络层。现有词汇、备份等未提交工作保留。
-- 唯一任务清单为 `docs/TODO.md`；旧报告保留测试事实，不构成阶段门槛。后续永久不使用 Notion。
 
 - 训练 UI 将资料、讲解、错因和历史分区；切换时复位页面滚动，追问入口置于完整反馈前。此改动不修改数据库或认证接口。
 
@@ -30,3 +38,14 @@
 - 2026-10-18 用户修订：阅读不再默认在 App 内做题。核对仅使用有来源答案，未知参考答案不判对错；前三级本地提示不展示正确选项。`ReadingGuidance` 只从导入证据精确定位段落，找不到就声明未知，不猜证据。第四级由用户主动揭示选项和答案。`CoachState.readingHint` 单独构造当前题当前层的引导提示，沿用既有请求回调和失败保全；前三层请求不附带选项答案键，逐层完整结果追加到旧反馈字段并保留历史。
 
 - 阅读录入显示每篇1—5与独立五选项输入框；`SequentialAnswers`只按篇内顺序映射原题号，原题号保留在既有作答格式和快照中，便于兼容备份与来源追溯。更新一篇不覆盖另一篇，未知/超长输入不落盘，?保留空位。界面和核对列表均按篇内1—5显示。
+
+## 0.7.0 写译工作台与对话（2026-10-21）
+
+- 讲解与追问保存在 `coach_turns`（`CoachTurns.kt`），按 practiceId + anchor 归属：`review`、`plan`、`q:题号`、`para:篇章×100+段号`、`over:篇章`、`sent:句号`。Room v7→v8 只执行 CREATE TABLE / CREATE INDEX，不改旧表。
+- `CoachTalk` 负责这些请求：只写 turn，不改写练习行，所以生成期间编辑不会被覆盖；只有收到完整回复才保存（用户问题与回复一起写入），停止或失败不留下半截内容。停止通过取消协程关闭 OkHttp 调用（`ResponsesClient` 中的取消监听），请求参数与 OAuth 流程未改。旧的 `CoachState.submit / readingDiagnosis / readingHint` 及 feedback 字段继续可读，旧记录在新页面以「早期批改 / 早期讲解」显示。
+- 批改、阅读讲解、结构梳理使用逐行 JSON（`WritingCoach`、`TranslationCoach`、`ReadingCoach` 中的提示词，`CoachReviews.kt` 解析）。`JsonLines` 按括号扫描完整对象，容忍代码围栏和多行排版，流式过程中只显示已完整的对象；没有任何可识别对象时按 Markdown 原文显示。用户对每条建议的采纳 / 忽略存于该 turn 的 state 字段。
+- `TextMarks` 先找原文完全一致的位置，再做空白、引号和大小写宽松匹配，并保证多条引用不重叠；找不到的建议标为「未定位」，采纳时不改原稿。修改稿通过 `CoachState.revise` 新建草稿，原稿与批改保持不变；`WordDiff` 做逐词对照。
+- `PassageLayout` 按句末标点重排 PDF 提取文本中的换行，空行始终分段；阅读器、提示词段号和原文定位共用这一分段。`TranslationCoach.sentences` 去掉中文原文的打印换行后按句号、问号、叹号分句，供翻译编号和逐句对照。
+- 导航由 `AppRoot` 管理：四个首页标签和一个以字符串保存的返回栈，进程重建后可恢复。上次所在标签和所选模型存于 `study_ui` SharedPreferences（不含凭证）。
+- 新导航不再进入的旧页面已删除：考次目录 `ExamLibraryScreen`，以及写译训练页 `ExamTrainingScreen`、`WritingAndTranslationScreen`、`WritingFeedbackPanel`。`CoachScreen` 只用于「自己的文章」；从它的历史打开的真题阅读记录仍交给 `PaperAnswerScreen`，不在可编辑页面显示含参考答案的快照。
+- 备份 JSON v5 增加 `turns`；校验每条 turn 的类型、锚点、长度以及所引用的练习存在于同一备份；同标识内容冲突时整份拒绝。v1—v4 照旧导入。

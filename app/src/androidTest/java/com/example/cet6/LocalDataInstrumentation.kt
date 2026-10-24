@@ -17,21 +17,31 @@ import org.json.JSONObject
 /** Default suite uses isolated databases. Explicit fixture mode only adds a new practice; never reads credentials. */
 class LocalDataInstrumentation : Instrumentation() {
     private var uiScenario = false
+    private var aiInteractionScenario = false
     private var translationFixture = false
     private var longFeedbackFixture = false
     private var examFixture = false
+    private var reviewFixture = false
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
         uiScenario = arguments?.getString("scenario") == "ui"
+        aiInteractionScenario = arguments?.getString("scenario") == "ai-interaction"
         translationFixture = arguments?.getString("fixture") == "translation"
         longFeedbackFixture = arguments?.getString("fixture") == "long-feedback"
         examFixture = arguments?.getString("fixture") == "g4-sample"
+        reviewFixture = arguments?.getString("fixture") == "review-layout"
         start()
     }
 
     override fun onStart() {
         val results = Bundle()
         try {
+            if (aiInteractionScenario) {
+                runBlocking { AiInteractionChecks(targetContext).verify() }
+                results.putString("stream", "PASS: stop retains question; partial replies are not saved; explicit retry succeeds; failure preserves complete replies.\n")
+                finish(-1, results)
+                return
+            }
             if (examFixture) {
                 check(android.os.Build.MODEL.contains("sdk_gphone") || android.os.Build.FINGERPRINT.contains("generic")) { "Exam sample fixture requires emulator" }
                 val input = File(targetContext.getExternalFilesDir(null), "exam-sample.json")
@@ -40,6 +50,11 @@ class LocalDataInstrumentation : Instrumentation() {
                 val store = ExamStore(targetContext)
                 store.save(store.merge(store.load(), papers))
                 results.putString("stream", "SEEDED: labelled original workflow sample, not genuine exam content.\n")
+                finish(-1, results)
+                return
+            }
+            if (reviewFixture) {
+                results.putString("stream", runBlocking { CoachTurnFixtures.seed(targetContext) })
                 finish(-1, results)
                 return
             }
@@ -77,7 +92,7 @@ class LocalDataInstrumentation : Instrumentation() {
                 return
             }
             runBlocking { ExamInstrumentationChecks(targetContext).verify(); ReadingDiagnosisInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify() }
-            results.putString("stream", "PASS: v1-v6 to v7 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v4 roundtrip and v1-v3 imports; existing backup and scheduler checks.\n")
+            results.putString("stream", "PASS: v1-v7 to v8 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v5 roundtrip with turns and v1-v4 imports; existing backup and scheduler checks.\n")
             finish(-1, results)
         } catch (e: Throwable) {
             if (uiScenario) {
@@ -92,7 +107,7 @@ class LocalDataInstrumentation : Instrumentation() {
     }
 
     private suspend fun verifyReleasedSchemas() {
-        for (version in 1..6) {
+        for (version in 1..7) {
             val file = File(targetContext.cacheDir, "released-$version-${System.nanoTime()}.db")
             val schema = context.assets.open("com.example.cet6.data.StudyDatabase/$version.json")
                 .bufferedReader().use { JSONObject(it.readText()).getJSONObject("database") }
@@ -116,7 +131,7 @@ class LocalDataInstrumentation : Instrumentation() {
                 old.version = version
             }
             val upgraded = Room.databaseBuilder(targetContext, StudyDatabase::class.java, file.absolutePath)
-                .addMigrations(StudyDatabase.MIGRATION_1_2, StudyDatabase.MIGRATION_2_3, StudyDatabase.MIGRATION_3_4, StudyDatabase.MIGRATION_4_5, StudyDatabase.MIGRATION_5_6, StudyDatabase.MIGRATION_6_7).build()
+                .addMigrations(*StudyDatabase.ALL_MIGRATIONS).build()
             try {
                 val word = upgraded.dao().word("preserved")!!
                 check(word.dueAt == 1_800_000_000_000L && word.repetitions == 5 && word.intervalDays == 30)
@@ -124,6 +139,7 @@ class LocalDataInstrumentation : Instrumentation() {
                 check(upgraded.dao().schedule(word.word) == null) { "migration fabricated FSRS memory" }
                 check(upgraded.dao().readingHistory().first().single().answer == "C")
                 check(upgraded.dao().essays().first().single().content == "original draft")
+                check(upgraded.dao().allTurns().isEmpty()) { "migration fabricated coach turns" }
                 if (version >= 5) {
                     val preserved = upgraded.dao().allCoach().single()
                     check(preserved.answer == "A" && preserved.feedback == "Original feedback.")
@@ -152,7 +168,7 @@ class LocalDataInstrumentation : Instrumentation() {
             old.version = 1
         }
         fun open() = Room.databaseBuilder(targetContext, StudyDatabase::class.java, file.absolutePath)
-            .addMigrations(StudyDatabase.MIGRATION_1_2, StudyDatabase.MIGRATION_2_3, StudyDatabase.MIGRATION_3_4, StudyDatabase.MIGRATION_4_5, StudyDatabase.MIGRATION_5_6, StudyDatabase.MIGRATION_6_7).build()
+            .addMigrations(*StudyDatabase.ALL_MIGRATIONS).build()
         var db = open()
         try {
             check(db.dao().word("legacy") == legacyWord) { "legacy word changed" }

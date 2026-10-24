@@ -11,7 +11,8 @@ data class StudyBackup(
     val plans: List<DailyPlan>,
     val reading: List<ReadingAttempt>,
     val essays: List<EssayEntity>,
-    val coach: List<CoachPractice> = emptyList()
+    val coach: List<CoachPractice> = emptyList(),
+    val turns: List<CoachTurn> = emptyList()
 )
 
 object BackupValidation {
@@ -20,17 +21,23 @@ object BackupValidation {
     fun validate(data: StudyBackup) {
         require(data.createdAt in 0..MAX_TIME) { "备份时间无效" }
         require(data.words.size <= 20_000 && data.reviews.size <= 100_000 && data.schedules.size <= 20_000 &&
-            data.plans.size <= 20_000 && data.reading.size <= 100_000 && data.essays.size <= 20_000 && data.coach.size <= 20_000) { "备份记录数量超限" }
+            data.plans.size <= 20_000 && data.reading.size <= 100_000 && data.essays.size <= 20_000 && data.coach.size <= 20_000 &&
+            data.turns.size <= 200_000) { "备份记录数量超限" }
         fun <T> unique(rows: List<T>, key: (T) -> Any) {
             require(rows.map(key).toSet().size == rows.size) { "备份包含重复标识" }
         }
         unique(data.words) { it.word }; unique(data.reviews) { it.id }; unique(data.schedules) { it.word }
         unique(data.plans) { it.date }; unique(data.reading) { it.id }; unique(data.essays) { it.id }
-        unique(data.coach) { it.id }
+        unique(data.coach) { it.id }; unique(data.turns) { it.id }
         data.coach.forEach {
             CoachPrompts.validate(it)
             require(it.id.length in 1..100 && it.model.length <= 200 && it.updatedAt in 0..MAX_TIME &&
                 it.submittedAt in 0..it.updatedAt) { "训练标识或时间无效" }
+        }
+        val practiceIds = data.coach.map { it.id }.toSet()
+        data.turns.forEach {
+            CoachTurns.validate(it)
+            require(it.practiceId in practiceIds && it.createdAt in 0..MAX_TIME) { "对话记录引用或时间无效" }
         }
         val words = data.words.associateBy { it.word }
         val wordPattern = Regex("[a-z]+(?:[ '-][a-z]+)*")
@@ -76,9 +83,9 @@ object BackupValidation {
 data class RestoreSummary(
     val newWords: Int, val updatedProgress: Int, val keptUnknownProgress: Int,
     val newReviews: Int, val writtenPlans: Int, val newReading: Int, val newEssays: Int,
-    val newCoach: Int = 0
+    val newCoach: Int = 0, val newTurns: Int = 0
 ) {
-    fun message() = "新增词汇 $newWords，更新进度 $updatedProgress，新增学习日志 $newReviews、阅读 $newReading、作文 $newEssays、G3 训练 $newCoach、目标 $writtenPlans。" +
+    fun message() = "新增词汇 $newWords，更新进度 $updatedProgress，新增学习日志 $newReviews、阅读 $newReading、作文 $newEssays、G3 训练 $newCoach、讲解与对话 $newTurns、目标 $writtenPlans。" +
         if (keptUnknownProgress > 0) "另有 $keptUnknownProgress 个旧版进度无法比较时间，已保留本机。" else ""
 }
 
@@ -86,7 +93,7 @@ data class BackupMerge(
     val words: List<WordEntity>, val schedules: List<WordSchedule>, val clearSchedules: List<String>,
     val reviews: List<WordReview>, val plans: List<DailyPlan>, val reading: List<ReadingAttempt>,
     val essays: List<EssayEntity>, val summary: RestoreSummary,
-    val coach: List<CoachPractice> = emptyList()
+    val coach: List<CoachPractice> = emptyList(), val turns: List<CoachTurn> = emptyList()
 )
 
 /** Pure merge decisions; database writes are applied later as one transaction. */
@@ -140,7 +147,12 @@ object BackupMerger {
             require(currentCoach[it.id]?.let { local -> local == it } != false) { "相同训练标识内容冲突，未恢复任何数据；本机练习已保留" }
         }
         val coach = incoming.coach.filter { it.id !in currentCoach }
+        val currentTurns = current.turns.associateBy { it.id }
+        incoming.turns.forEach {
+            require(currentTurns[it.id]?.let { local -> local == it } != false) { "相同对话标识内容冲突，未恢复任何数据；本机记录已保留" }
+        }
+        val turns = incoming.turns.filter { it.id !in currentTurns }
         return BackupMerge(words, schedules, clears, reviews, plans, reading, essays,
-            RestoreSummary(added, updated, unknown, reviews.size, plans.size, reading.size, essays.size, coach.size), coach)
+            RestoreSummary(added, updated, unknown, reviews.size, plans.size, reading.size, essays.size, coach.size, turns.size), coach, turns)
     }
 }

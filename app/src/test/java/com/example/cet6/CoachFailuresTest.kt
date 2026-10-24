@@ -34,4 +34,12 @@ class CoachFailuresTest {
             assertFalse(CoachFailures.describe(it).contains(privateText))
         }
     }
+
+    @Test fun apiFailuresOfferProviderNeutralRecovery() {
+        val unauthorized = CoachFailures.describe(IllegalStateException("API 请求失败：HTTP 401"))
+        assertTrue(unauthorized.contains("API Key"))
+        assertFalse(unauthorized.contains("ChatGPT"))
+        assertTrue(CoachFailures.describe(IllegalStateException("API 请求失败：HTTP 402")).contains("余额不足"))
+        assertTrue(CoachFailures.describe(IllegalStateException("网络流提前中断，没有收到 [DONE]")).contains("尚未完整结束"))
+    }
 }

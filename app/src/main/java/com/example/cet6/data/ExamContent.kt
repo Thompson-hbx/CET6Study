@@ -36,7 +36,8 @@ data class ExamPaper(
     val sourceName: String = "", val sourceUrl: String = "", val licenseStatus: String = "unknown",
     val reviewed: Boolean = false, val sample: Boolean = false,
     val passages: List<ExamPassage> = emptyList(), val writingPrompt: String = "", val writingInstructions: String = "",
-    val chineseText: String = "", val referenceTranslation: String = "", val referenceSource: String = ""
+    val chineseText: String = "", val referenceTranslation: String = "", val referenceSource: String = "",
+    val referenceWriting: String = "", val referenceWritingSource: String = ""
 ) {
     val label get() = if (sample) "原创功能样本 · 非真题" else "${examDate.take(4)} 年 ${examDate.substring(5, 7).toInt()} 月 · 第 $setCode 套"
     fun issues(kind: CoachKind? = null): List<String> = buildList {
@@ -57,10 +58,17 @@ data class ExamPaper(
         }
         }
         if ((kind == null || kind == CoachKind.WRITING) && (writingPrompt.isBlank() || writingInstructions.isBlank())) add("写作任务或要求缺失")
+        if ((kind == null || kind == CoachKind.WRITING) && referenceWriting.isNotBlank() && referenceWritingSource.isBlank()) add("参考范文缺少来源")
         if ((kind == null || kind == CoachKind.TRANSLATION) && chineseText.isBlank()) add("翻译中文原文缺失")
         if ((kind == null || kind == CoachKind.TRANSLATION) && referenceTranslation.isNotBlank() && referenceSource.isBlank()) add("参考译文缺少来源")
     }
-    val status get() = if (licenseStatus == "unknown" && passages.isEmpty()) "待导入" else if (issues().isEmpty()) "已导入" else "待校对"
+    val status get() = when {
+        licenseStatus == "unknown" && passages.isEmpty() -> "待导入"
+        PaperDocuments.sharedReadingPaperId(this) != null &&
+            issues(CoachKind.WRITING).isEmpty() && issues(CoachKind.TRANSLATION).isEmpty() -> "阅读共用"
+        issues().isEmpty() -> "已导入"
+        else -> "待校对"
+    }
     fun identityIssues() {
         require(revision > 0 && setCode in setOf("1", "2", "3")) { "版本或套次无效" }
         require(ExamCatalog.sessions.any { it.date == examDate }) { "考次不在已核实的已举行目录中" }
