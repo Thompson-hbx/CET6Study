@@ -1,0 +1,40 @@
+{
+  "version": "0.7.0-desk (versionCode 16)",
+  "apk": ".tools\\CET6Study-personal-desk070-20261021.apk",
+  "apkSha256": "ca60df4f7f78fc7b0fee67d9e668f58944e5fae98744cb3a26a1a8d782a5df96",
+  "apkBytes": 118106308,
+  "bundled": {"examPack": ".tools/private-exams/private-study-pack-reading22-20261020.json (byte-identical in APK)", "pdfs": 46},
+  "device": "vivo V2359A / Android 16 (10AE5X1ZA3000YU)",
+  "install": "adb install -r: Success; launch OK; data kept",
+  "database": {
+    "before": ".tools/backup-phone-before-070-20261020 (Room v7, integrity ok)",
+    "afterUpgrade": ".tools/backup-phone-after-070-20261021 (Room v8, integrity ok, coach_turns empty, all 7 old tables row-for-row identical except one new daily_plans row for the new day)",
+    "afterLiveChecks": ".tools/backup-phone-after-live-070-20261021 (integrity ok)",
+    "preservedUnchanged": {"words": 81, "word_reviews": 3, "word_schedules": 1, "daily_plans": 5, "coach_practices": 15},
+    "changedByThisTest": "two original-sample drafts (translation 677e1dff, reading bad866d5): only answer/submittedAt/updatedAt",
+    "addedByThisTest": "one custom writing practice titled 'Original test 1021, not an exam item'; later one original-sample reading retry draft",
+    "turnsSaved": 5
+  },
+  "liveAiRequests": {
+    "model": "gpt-6.1-sol",
+    "content": "original test essay / original samples only, no real exam item",
+    "results": [
+      "writing full review: structured lines parsed (8 band, 4 aspects, 7 issues, tips, rewrite); marks placed in the essay",
+      "writing follow-up #1: transport failure (shown as 连接未能完成); nothing saved",
+      "writing follow-up retry: reply saved with the question",
+      "translation full review: score + 2 sentence segments + issues + terms",
+      "reading explanation (sample Q48): locate quote, paraphrases, 4 option notes, misread, self-check; jump to passage highlighted the quote"
+    ]
+  },
+  "uiChecks": [
+    "writing: custom task, word target 150-200 parsed, under-length warning on submit, streamed review, follow-up thread",
+    "translation: numbered source sentences, sentence-aligned review",
+    "reading: answer card entry, check 9/10 with wrong item preselected, explanation, 在原文中看",
+    "reading: one run of 10 letters fills both passages (after fix)"
+  ],
+  "notVerifiedOnDevice": [
+    "chat failure shown beside the composer (code changed after the observed failure; not re-triggered)",
+    "paragraph sheet and sentence-hint sheet live requests",
+    "large font / TalkBack, dark theme on the phone"
+  ]
+}

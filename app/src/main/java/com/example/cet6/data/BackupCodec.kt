@@ -11,9 +11,12 @@ import java.nio.charset.CodingErrorAction
 object BackupCodec {
     private fun obj(vararg values: Pair<String, Any>) = JSONObject().apply { values.forEach { put(it.first, it.second) } }
     private fun <T> array(items: List<T>, encode: (T) -> JSONObject) = JSONArray().apply { items.forEach { put(encode(it)) } }
-    fun encode(data: StudyBackup): String {
+    fun encode(data: StudyBackup): String = json(data).toString().also {
+        require(it.toByteArray(Charsets.UTF_8).size <= BackupValidation.MAX_BYTES) { "备份大于 32 MiB，请使用分段完整备份" }
+    }
+    internal fun json(data: StudyBackup): JSONObject {
         BackupValidation.validate(data)
-        val root = obj("format" to "CET6StudyBackup", "version" to 5, "databaseVersion" to 8, "createdAt" to data.createdAt,
+        return obj("format" to "CET6StudyBackup", "version" to 5, "databaseVersion" to 8, "createdAt" to data.createdAt,
             "coach" to array(data.coach) { obj("id" to it.id, "kind" to it.kind, "title" to it.title,
                 "material" to it.material, "questions" to it.questions, "answer" to it.answer, "feedback" to it.feedback,
                 "model" to it.model, "errorReason" to it.errorReason, "submittedAt" to it.submittedAt, "updatedAt" to it.updatedAt,
@@ -32,7 +35,6 @@ object BackupCodec {
                 "correct" to it.correct, "createdAt" to it.createdAt) },
             "essays" to array(data.essays) { obj("id" to it.id, "topic" to it.topic, "content" to it.content,
                 "feedback" to it.feedback, "createdAt" to it.createdAt) })
-        return root.toString().also { require(it.toByteArray(Charsets.UTF_8).size <= BackupValidation.MAX_BYTES) { "备份大于 32 MiB，未导出；请保留本机数据并联系维护者" } }
     }
     fun read(input: InputStream): StudyBackup {
         val bytes = ByteArrayOutputStream()
@@ -49,7 +51,9 @@ object BackupCodec {
     }
     fun decode(text: String): StudyBackup {
         require(text.toByteArray(Charsets.UTF_8).size <= BackupValidation.MAX_BYTES) { "备份文件大于 32 MiB" }
-        val root = JSONObject(text.removePrefix("\uFEFF"))
+        return decodeRoot(JSONObject(text.removePrefix("\uFEFF")))
+    }
+    internal fun decodeRoot(root: JSONObject): StudyBackup {
         val version = root.int("version")
         val fields = setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays")
         require(root.keys().asSequence().toSet() == when (version) {
@@ -82,14 +86,14 @@ object BackupCodec {
                 it.string("model"), it.long("createdAt")) }
         ).also(BackupValidation::validate)
     }
-    private fun JSONObject.string(key: String) = get(key).also { require(it is String) { "$key 必须是文本" } } as String
+    internal fun JSONObject.string(key: String) = get(key).also { require(it is String) { "$key 必须是文本" } } as String
     private fun JSONObject.bool(key: String) = get(key).also { require(it is Boolean) { "$key 必须是布尔值" } } as Boolean
-    private fun JSONObject.long(key: String): Long {
+    internal fun JSONObject.long(key: String): Long {
         val value = get(key)
         require(value is Int || value is Long) { "$key 必须是整数" }
         return (value as Number).toLong()
     }
-    private fun JSONObject.int(key: String): Int = long(key).also { require(it in Int.MIN_VALUE..Int.MAX_VALUE) { "$key 超出范围" } }.toInt()
+    internal fun JSONObject.int(key: String): Int = long(key).also { require(it in Int.MIN_VALUE..Int.MAX_VALUE) { "$key 超出范围" } }.toInt()
     private fun JSONObject.number(key: String): Double {
         val value = get(key)
         require(value is Number && value.toDouble().isFinite()) { "$key 必须是有限数值" }

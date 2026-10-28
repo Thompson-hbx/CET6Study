@@ -1,0 +1,10 @@
+{
+  "provider": "DEEPSEEK",
+  "model": "deepseek-flash",
+  "createdAt": 1793167047828,
+  "runId": "b589bb2c-9d70-4c8d-8f7d-72dcef60fb8e",
+  "datasetVersion": 2,
+  "fixtureSha256": "5975178a561026d5eb7e75d2b2be2c4f4cc9517f51d546eeb553c20b9e443249",
+  "requestCountLimit": 12,
+  "calibrationStatus": "Author-provisional; independent review pending"
+}

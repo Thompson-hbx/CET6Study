@@ -1,6 +1,7 @@
 package com.example.cet6
 
 import com.example.cet6.data.*
+import com.example.cet6.ui.versionsOf
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -35,5 +36,14 @@ class PracticeRevisionTest {
 
     @Test fun selfReferencingPracticeIsRejected() {
         assertTrue(runCatching { CoachPrompts.validate(source.copy(sourcePracticeId = source.id)) }.isFailure)
+    }
+
+    @Test fun versionsOfKeepsRevisionsAndSeparatesTargetedMicroPractices() {
+        val first = source.copy(id = "w-1", kind = CoachKind.WRITING.name, material = "Topic A", answer = "Draft 1", submittedAt = 100, updatedAt = 100)
+        val second = first.retryCopy().copy(id = "w-2", answer = "Draft 2", submittedAt = 0, updatedAt = 200)
+        val targeted = first.copy(id = "w-3", sourcePracticeId = first.id, material = "Topic B (Targeted)", practiceGoal = "语法", answer = "New task", submittedAt = 0, updatedAt = 300)
+        val history = listOf(targeted, second, first)
+        assertEquals(listOf("w-1", "w-2"), versionsOf(history, second).map { it.id })
+        assertEquals(listOf("w-3"), versionsOf(history, targeted).map { it.id })
     }
 }

@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-24",
+  "device": "emulator-5554 / Pixel_7_API_36",
+  "font_scale": 1.3,
+  "night_mode": "yes",
+  "fixture": "ReadingAccessibilityFixture: fresh labelled original attempt, existing drafts preserved",
+  "functional_checks": {
+    "option_picker": "PASS: selected B in first cell",
+    "continuous_input": "PASS: CADCBADCBA split into five letters per passage",
+    "offline_submission": "PASS: all ten answers and submittedAt preserved, feedback remains empty",
+    "clear_button": "PASS: wraps onto next line without clipping at font 1.3",
+    "explanation_navigation": "PASS: selected passage 2 question 4 through UI"
+  },
+  "fix": {
+    "problem": "Locked input cells were still enabled/clickable in accessibility metadata although taps could not edit answers",
+    "change": "Disable input cells when submitted or working; retain enabled cells in explanation pane",
+    "disabled_input_controls_after_fix": 10
+  },
+  "talkback": {
+    "version": "16.0.0.738667889",
+    "service_bound": true,
+    "touch_exploration_enabled": true,
+    "answer_card_tab_focus_observed": true,
+    "full_focus_order_verified": false,
+    "speech_verified": false,
+    "navigation_attempt": "Next-item key/gesture attempts did not provide reliable application focus progression; not counted as a pass"
+  },
+  "settings_restored": {
+    "font_scale": "1.0",
+    "night_mode": "no",
+    "accessibility_enabled": "0",
+    "enabled_accessibility_services": "null"
+  },
+  "jvm": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 7
+  },
+  "ordinary_apk_sha256": "1205973d261dd73f0698d952280b5b7dec0a72fa36f55fab9ef454669405bf29",
+  "screenshots": [
+    "emulator-structured-reading-picker-font130-dark-20261024.png",
+    "emulator-structured-reading-clear-font130-dark-20261024.png",
+    "emulator-structured-reading-locked-font130-dark-20261024.png",
+    "emulator-structured-reading-talkback-focus-20261024.png"
+  ],
+  "data_preservation": "No existing exercise edited or removed; no new AI requests; physical phone unchanged by these tests",
+  "remaining": [
+    "Full TalkBack focus/speech and activation checks",
+    "Complete annotation/chat and physical-device accessibility matrix"
+  ]
+}

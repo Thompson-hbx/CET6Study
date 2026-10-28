@@ -1,0 +1,207 @@
+{
+  "date": "2026-10-28",
+  "scope": "Current version acceptance continuation; TalkBack/speech validation paused by user; listening and long-term outcomes deferred",
+  "complete_device_accessibility_acceptance": false,
+  "production_code_changed_this_turn": false,
+  "new_dependencies": false,
+  "database_schema_changed": false,
+  "learning_data_cleared": false,
+  "committed_or_pushed": false,
+  "remote_ci_run": false,
+  "validation": {
+    "documented_entry": "tools/verify.ps1",
+    "result": "PASS",
+    "jvm_tests": 149,
+    "jvm_failures_or_errors": 0,
+    "forced_jvm_lint_rerun": "BUILD SUCCESSFUL; 34 tasks executed",
+    "python_tests": 31,
+    "schema_migrations": "1-7 to 8 PASS",
+    "lint_errors": 0,
+    "lint_existing_warnings": 7,
+    "android_protocol_cases": 94,
+    "android_complete_isolated_suite": "PASS",
+    "ordinary_ui": "PASS",
+    "large_font_dark_ui": "PASS",
+    "lifecycle": "PASS",
+    "journal_first_write_failure_preserves_stores_and_retries": "PASS",
+    "emulator_settings_restored": {
+      "font_scale": 1.0,
+      "night_mode": "no"
+    }
+  },
+  "live_evaluation": {
+    "run_id": "b589bb2c-9d70-4c8d-8f7d-72dcef60fb8e",
+    "provider": "DEEPSEEK",
+    "model": "deepseek-flash",
+    "authorized_max": 12,
+    "actual_requests": 12,
+    "completed": 12,
+    "automatic_retries": 0,
+    "initial_preflight_failure_requests": 0,
+    "same_run_id_after_preflight_fix": true,
+    "semantic_review_is_independent_human_calibration": false
+  },
+  "phone": {
+    "date": "2026-10-28",
+    "phoneInstalledApkSha256": "87d761013f886b97d8b94d647f4203daa289b36ffee1067f016f0bf7502ba089",
+    "ordinaryApkSha256": "2a1c7b58d4ec060927b2b4e71b57c32e9e3de019a80e99703337f2c6448ad501",
+    "dexEqual": {
+      "classes.dex": true,
+      "classes10.dex": true,
+      "classes11.dex": true,
+      "classes2.dex": true,
+      "classes3.dex": true,
+      "classes4.dex": true,
+      "classes5.dex": true,
+      "classes6.dex": true,
+      "classes7.dex": true,
+      "classes8.dex": true,
+      "classes9.dex": true
+    },
+    "phonePersonalPdfCount": 46,
+    "ordinaryContainsPersonalAssets": false,
+    "matchedOrdinaryArtifact": ".tools\\CET6Study-restore-draft-20261027-ordinary.apk",
+    "laterForcedRebuildSha256": "47f217861315695a934aadc70a093a021a03aac687488ee02f3d29e5994acaad",
+    "laterForcedRebuildDexIdenticalToPhone": false,
+    "laterForcedRebuildInstalled": false
+  },
+  "pending": [
+    "Real OAuth expiry/device transfer",
+    "Actual LMKD/power-loss evidence",
+    "Independent human gold calibration"
+  ],
+  "file_sha256": {
+    "app/src/androidTest/java/com/example/cet6/AiEvaluationChecks.kt": "dc2b2daa880396b354932d46de557b5a5f4314a2da43feec369dac7e906bf327",
+    "app/src/androidTest/java/com/example/cet6/EvaluationOfflineChecks.kt": "94e7873ac58c2681cd1d3a4bf7f6543e7c9ce25640c8d638db6d67c1be6af4ad",
+    "app/src/androidTest/java/com/example/cet6/CompleteRestoreChecks.kt": "3898baa7d23f3e115e39b672a8efd4b12958be5ed5d1ef3c43dde825a30415ec",
+    "app/testdata/coach-protocol-regression-v1.json": "92c70d8e36fea173e489ec27b3f0d8910ce04ce4833296700a920e3deaadf134",
+    "app/testdata/coach-evaluation-v2.json": "5975178a561026d5eb7e75d2b2be2c4f4cc9517f51d546eeb553c20b9e443249",
+    "test-evidence/coach-evaluation-v2-20261028.json": "ad6e4e56f9a5e1aa14d4c4809c0923d1a65c9f3061158c28eb52fb515fcb311b",
+    "test-evidence/coach-evaluation-v2-20261028.metadata.json": "9b3c78a17b1c407226417d4e4d41243e23a947615f2bc135b200417b36d4e492",
+    "test-evidence/coach-evaluation-v2-20261028.metrics.json": "e516353a67ee5b6e953ee17daa9622a4cbd9cbd845f56a737f6a8a0f1ce3f278"
+  },
+  "paused_by_user": [
+    "Complete TalkBack spoken/navigation/activation regression"
+  ],
+  "continuation": {
+    "recorded_at_asia_shanghai": "2026-10-28T18:08:50+08:00",
+    "talkback_speech_validation": "PAUSED_BY_USER",
+    "production_code_changed": false,
+    "test_code_changed": [
+      "app/src/androidTest/java/com/example/cet6/CoachUiInstrumentationChecks.kt"
+    ],
+    "ui_failure_before_fix": "No scrollable viewport after selecting the review tab; the page had already replaced its scrollable tree",
+    "ui_fix": "Lookup target and viewport on the same tree; scroll the viewport already found; all business assertions retained",
+    "emulator": {
+      "serial": "emulator-5554",
+      "avd": "Pixel_7_API_36",
+      "launched_without_audio": true,
+      "complete_isolated_suite": "PASS",
+      "real_viewmodel_lifecycle": "PASS",
+      "ordinary_reading_ui_after_fix": "PASS",
+      "font_1_3_dark_reading_ui_after_fix": "PASS",
+      "settings_restored": {
+        "font_scale": "1.0",
+        "night_mode": "no",
+        "accessibility_enabled": "0",
+        "enabled_accessibility_services": null
+      },
+      "stopped_after_validation": true
+    },
+    "verified_installed_apk_sha256": {
+      "com.example.cet6": "47f217861315695a934aadc70a093a021a03aac687488ee02f3d29e5994acaad",
+      "com.example.cet6.test": "d94ab37dc2c9cc729591cd0a40acf6c52fd47c8b79707ff04ab05a0dc895e52a"
+    },
+    "host_verification": {
+      "entry": "tools/verify.ps1",
+      "result": "PASS",
+      "gradle_tasks_executed": 1,
+      "gradle_tasks_up_to_date": 79,
+      "jvm_test_task": "UP-TO-DATE; earlier actual rerun report retained",
+      "jvm_report_tests": 149,
+      "jvm_report_failures_errors_skipped": 0,
+      "python_tests_executed": 31,
+      "schema_migrations_executed": "1-7 to 8 PASS",
+      "lint_errors": 0,
+      "lint_warnings": 7,
+      "after_test_fix": "assembleDebugAndroidTest lintDebug PASS; 11 tasks executed, 45 up-to-date"
+    },
+    "original_evaluation_metrics_reproduced_exactly": true,
+    "new_live_model_requests": 0,
+    "physical_phone_modified": false,
+    "existing_evidence_hashes_verified": [
+      "app/src/androidTest/java/com/example/cet6/AiEvaluationChecks.kt",
+      "app/src/androidTest/java/com/example/cet6/EvaluationOfflineChecks.kt",
+      "app/src/androidTest/java/com/example/cet6/CompleteRestoreChecks.kt",
+      "app/testdata/coach-protocol-regression-v1.json",
+      "app/testdata/coach-evaluation-v2.json",
+      "test-evidence/coach-evaluation-v2-20261028.json",
+      "test-evidence/coach-evaluation-v2-20261028.metadata.json",
+      "test-evidence/coach-evaluation-v2-20261028.metrics.json"
+    ],
+    "final_ui_fixture_sha256": "99a0abf9f32cb2b19aa8aeb5a48202510898d048baed2bbf614059cd08055d17",
+    "logs": {
+      ".tools/continuation-verify-20261028.log": {
+        "sha256": "500a1c1506b936892efe64cbfc1bf34d0e4fc08f3fdb7146ecec6cf5dc8a6ae8",
+        "observed": [
+          "BUILD SUCCESSFUL",
+          "Ran 31 tests",
+          "PASS: actual migration SQL 7->8"
+        ]
+      },
+      ".tools/continuation-isolated-20261028.log": {
+        "sha256": "61288f6f521c386bc56147b66d693c3e2916498679b6574c89318fc2f2c437e4",
+        "observed": [
+          "PASS: v1-v7 to v8"
+        ]
+      },
+      ".tools/continuation-lifecycle-20261028.log": {
+        "sha256": "0f05ed15ae05a1b419ddcf20f45df3686be445cb2afad65eecad7ffa4883533d",
+        "observed": [
+          "PASS: real ViewModel"
+        ]
+      },
+      ".tools/continuation-ui-normal-20261028.log": {
+        "sha256": "ca51274a6b1b52eea043a6ab19581a4ebc7409bd14a174887b736e9114ef0521",
+        "observed": [
+          "FAIL: IllegalStateException: No scrollable viewport"
+        ]
+      },
+      ".tools/continuation-ui-fix-build-20261028.log": {
+        "sha256": "54a3b7fd17d6f65cc75fac8ffb51d5c69c729b3b5f0b310b089aed5c8d918c52",
+        "observed": [
+          "BUILD SUCCESSFUL"
+        ]
+      },
+      ".tools/continuation-ui-fixed-normal-20261028.log": {
+        "sha256": "b59bce864057cfc6ec4d43cc3d77df096b4a8d254a33c0db35b5dc3624d679ad",
+        "observed": [
+          "PASS: emulator UI article entry"
+        ]
+      },
+      ".tools/continuation-ui-fixed-large-dark-20261028.log": {
+        "sha256": "b59bce864057cfc6ec4d43cc3d77df096b4a8d254a33c0db35b5dc3624d679ad",
+        "observed": [
+          "PASS: emulator UI article entry"
+        ]
+      },
+      ".tools/continuation-final-isolated-20261028.log": {
+        "sha256": "61288f6f521c386bc56147b66d693c3e2916498679b6574c89318fc2f2c437e4",
+        "observed": [
+          "PASS: v1-v7 to v8"
+        ]
+      }
+    },
+    "review": {
+      "scope": "Evaluation readiness, restore journal first-write failure, UI tree consistency, artifact/evidence correspondence",
+      "result": "PASS within stated scope; git diff --check, document links/paused status, JSON and Lint report consistency verified",
+      "scope_is_repository_wide_audit": false
+    },
+    "user_follow_up": {
+      "second_android_test_device_available": false,
+      "user_decision": "Retain device-transfer and real power-loss checks as unaccepted",
+      "independent_human_calibration": "Still pending; no new evidence",
+      "completed_scope": "Local continuation, test fixture fix, final emulator verification and acceptance record closure; full release acceptance remains incomplete"
+    }
+  }
+}

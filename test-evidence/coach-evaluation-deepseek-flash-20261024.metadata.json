@@ -1,0 +1,6 @@
+{
+  "provider": "DEEPSEEK",
+  "model": "deepseek-flash",
+  "createdAt": 1792826497641,
+  "fixtureSha256": "5a52a82a827d30f060a94c09b95ded459955eae7b7879a10e11138686ee9dcd3"
+}

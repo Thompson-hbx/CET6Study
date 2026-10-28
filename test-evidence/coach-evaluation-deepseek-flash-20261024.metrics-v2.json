@@ -1,0 +1,618 @@
+{
+  "scoring_version": 2,
+  "gold_cases_sha256": "7ecd88ee070de392ff5a89bb0ff756b40eb6cff60323a9243dfb60cf0b7cfc73",
+  "format_scope": "JSON records and fields consumed by the scorer; app protocol validation is separate",
+  "semantic_scope": "Literal span and enumerated fix matches are not human-adjudicated semantic accuracy",
+  "counts": {
+    "quotes": 18,
+    "exact_quotes": 17,
+    "suggestions": 14,
+    "required_suggestions": 9,
+    "optional_suggestions": 5,
+    "located": 6,
+    "required_located": 6,
+    "applicable_located": 4,
+    "expected_errors": 6,
+    "detected_errors": 6,
+    "applicable_detected_errors": 4,
+    "applied": 7,
+    "successful_fixes": 4,
+    "no_ops": 1,
+    "overlap_skipped": 6,
+    "ambiguous_quotes": 0,
+    "reading_cases": 4,
+    "correct_reading": 4,
+    "full_options_correct": 4,
+    "option_labels": 16,
+    "expected_option_labels": 16,
+    "expected_evidence": 0,
+    "cited_evidence": 0,
+    "format_failures": 0,
+    "request_failures": 0,
+    "negative_controls": 0,
+    "controls_with_required_suggestions": 0,
+    "clean_controls_passed": 0,
+    "valid_cases": 11
+  },
+  "metrics": {
+    "quote_accuracy": {
+      "value": 0.9444444444444444,
+      "numerator": 17,
+      "denominator": 18
+    },
+    "exact_gold_span_match_rate": {
+      "value": 0.42857142857142855,
+      "numerator": 6,
+      "denominator": 14
+    },
+    "applicable_gold_span_match_rate": {
+      "value": 0.2857142857142857,
+      "numerator": 4,
+      "denominator": 14
+    },
+    "required_gold_span_match_rate": {
+      "value": 0.6666666666666666,
+      "numerator": 6,
+      "denominator": 9
+    },
+    "exact_gold_span_miss_rate": {
+      "value": 0.0,
+      "numerator": 0,
+      "denominator": 6
+    },
+    "applicable_gold_span_miss_rate": {
+      "value": 0.3333333333333333,
+      "numerator": 2,
+      "denominator": 6
+    },
+    "enumerated_fix_match_rate": {
+      "value": 0.5714285714285714,
+      "numerator": 4,
+      "denominator": 7
+    },
+    "gold_fix_coverage": {
+      "value": 0.6666666666666666,
+      "numerator": 4,
+      "denominator": 6
+    },
+    "reading_answer_accuracy": {
+      "value": 1.0,
+      "numerator": 4,
+      "denominator": 4
+    },
+    "full_options_reading_accuracy": {
+      "value": 1.0,
+      "numerator": 4,
+      "denominator": 4
+    },
+    "reading_option_coverage": {
+      "value": 1.0,
+      "numerator": 16,
+      "denominator": 16
+    },
+    "evidence_span_coverage": {
+      "value": null,
+      "numerator": 0,
+      "denominator": 0
+    },
+    "clean_control_success": {
+      "value": null,
+      "numerator": 0,
+      "denominator": 0
+    },
+    "valid_case_rate": {
+      "value": 1.0,
+      "numerator": 11,
+      "denominator": 11
+    }
+  },
+  "cases": [
+    {
+      "caseId": "writing-basic",
+      "counts": {
+        "quotes": 4,
+        "exact_quotes": 4,
+        "suggestions": 4,
+        "required_suggestions": 3,
+        "optional_suggestions": 1,
+        "located": 2,
+        "required_located": 2,
+        "applicable_located": 0,
+        "expected_errors": 2,
+        "detected_errors": 2,
+        "applicable_detected_errors": 0,
+        "applied": 1,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 3,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [
+        {
+          "row": 5,
+          "reason": "unlisted_span_requires_review"
+        },
+        {
+          "row": 5,
+          "reason": "unenumerated_fix_requires_review"
+        },
+        {
+          "row": 6,
+          "reason": "overlapping_quote"
+        },
+        {
+          "row": 7,
+          "reason": "overlapping_quote"
+        },
+        {
+          "row": 8,
+          "reason": "overlapping_quote"
+        }
+      ],
+      "detected": [
+        0,
+        1
+      ],
+      "applicable": [],
+      "fixed": []
+    },
+    {
+      "caseId": "writing-intermediate",
+      "counts": {
+        "quotes": 2,
+        "exact_quotes": 2,
+        "suggestions": 2,
+        "required_suggestions": 1,
+        "optional_suggestions": 1,
+        "located": 1,
+        "required_located": 1,
+        "applicable_located": 1,
+        "expected_errors": 1,
+        "detected_errors": 1,
+        "applicable_detected_errors": 1,
+        "applied": 2,
+        "successful_fixes": 1,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [
+        {
+          "row": 6,
+          "reason": "unlisted_span_requires_review"
+        },
+        {
+          "row": 6,
+          "reason": "unenumerated_fix_requires_review"
+        }
+      ],
+      "detected": [
+        0
+      ],
+      "applicable": [
+        0
+      ],
+      "fixed": [
+        0
+      ]
+    },
+    {
+      "caseId": "writing-strong",
+      "counts": {
+        "quotes": 3,
+        "exact_quotes": 3,
+        "suggestions": 3,
+        "required_suggestions": 2,
+        "optional_suggestions": 1,
+        "located": 0,
+        "required_located": 0,
+        "applicable_located": 0,
+        "expected_errors": 0,
+        "detected_errors": 0,
+        "applicable_detected_errors": 0,
+        "applied": 1,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 2,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [
+        {
+          "row": 5,
+          "reason": "unlisted_span_requires_review"
+        },
+        {
+          "row": 5,
+          "reason": "unenumerated_fix_requires_review"
+        },
+        {
+          "row": 6,
+          "reason": "overlapping_quote"
+        },
+        {
+          "row": 7,
+          "reason": "overlapping_quote"
+        }
+      ],
+      "detected": [],
+      "applicable": [],
+      "fixed": []
+    },
+    {
+      "caseId": "translation-omission",
+      "counts": {
+        "quotes": 2,
+        "exact_quotes": 2,
+        "suggestions": 2,
+        "required_suggestions": 1,
+        "optional_suggestions": 1,
+        "located": 1,
+        "required_located": 1,
+        "applicable_located": 1,
+        "expected_errors": 1,
+        "detected_errors": 1,
+        "applicable_detected_errors": 1,
+        "applied": 1,
+        "successful_fixes": 1,
+        "no_ops": 0,
+        "overlap_skipped": 1,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [
+        {
+          "row": 3,
+          "reason": "overlapping_quote"
+        }
+      ],
+      "detected": [
+        0
+      ],
+      "applicable": [
+        0
+      ],
+      "fixed": [
+        0
+      ]
+    },
+    {
+      "caseId": "translation-negation",
+      "counts": {
+        "quotes": 1,
+        "exact_quotes": 1,
+        "suggestions": 1,
+        "required_suggestions": 1,
+        "optional_suggestions": 0,
+        "located": 1,
+        "required_located": 1,
+        "applicable_located": 1,
+        "expected_errors": 1,
+        "detected_errors": 1,
+        "applicable_detected_errors": 1,
+        "applied": 1,
+        "successful_fixes": 1,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [],
+      "detected": [
+        0
+      ],
+      "applicable": [
+        0
+      ],
+      "fixed": [
+        0
+      ]
+    },
+    {
+      "caseId": "translation-number",
+      "counts": {
+        "quotes": 2,
+        "exact_quotes": 1,
+        "suggestions": 2,
+        "required_suggestions": 1,
+        "optional_suggestions": 1,
+        "located": 1,
+        "required_located": 1,
+        "applicable_located": 1,
+        "expected_errors": 1,
+        "detected_errors": 1,
+        "applicable_detected_errors": 1,
+        "applied": 1,
+        "successful_fixes": 1,
+        "no_ops": 1,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [
+        {
+          "row": 3,
+          "reason": "unanchored_quote"
+        }
+      ],
+      "detected": [
+        0
+      ],
+      "applicable": [
+        0
+      ],
+      "fixed": [
+        0
+      ]
+    },
+    {
+      "caseId": "translation-strong",
+      "counts": {
+        "quotes": 0,
+        "exact_quotes": 0,
+        "suggestions": 0,
+        "required_suggestions": 0,
+        "optional_suggestions": 0,
+        "located": 0,
+        "required_located": 0,
+        "applicable_located": 0,
+        "expected_errors": 0,
+        "detected_errors": 0,
+        "applicable_detected_errors": 0,
+        "applied": 0,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 0,
+        "correct_reading": 0,
+        "full_options_correct": 0,
+        "option_labels": 0,
+        "expected_option_labels": 0,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [],
+      "detected": [],
+      "applicable": [],
+      "fixed": []
+    },
+    {
+      "caseId": "reading-scope",
+      "counts": {
+        "quotes": 1,
+        "exact_quotes": 1,
+        "suggestions": 0,
+        "required_suggestions": 0,
+        "optional_suggestions": 0,
+        "located": 0,
+        "required_located": 0,
+        "applicable_located": 0,
+        "expected_errors": 0,
+        "detected_errors": 0,
+        "applicable_detected_errors": 0,
+        "applied": 0,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 1,
+        "correct_reading": 1,
+        "full_options_correct": 1,
+        "option_labels": 4,
+        "expected_option_labels": 4,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [],
+      "detected": [],
+      "applicable": [],
+      "fixed": []
+    },
+    {
+      "caseId": "reading-negation",
+      "counts": {
+        "quotes": 1,
+        "exact_quotes": 1,
+        "suggestions": 0,
+        "required_suggestions": 0,
+        "optional_suggestions": 0,
+        "located": 0,
+        "required_located": 0,
+        "applicable_located": 0,
+        "expected_errors": 0,
+        "detected_errors": 0,
+        "applicable_detected_errors": 0,
+        "applied": 0,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 1,
+        "correct_reading": 1,
+        "full_options_correct": 1,
+        "option_labels": 4,
+        "expected_option_labels": 4,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [],
+      "detected": [],
+      "applicable": [],
+      "fixed": []
+    },
+    {
+      "caseId": "reading-causation",
+      "counts": {
+        "quotes": 1,
+        "exact_quotes": 1,
+        "suggestions": 0,
+        "required_suggestions": 0,
+        "optional_suggestions": 0,
+        "located": 0,
+        "required_located": 0,
+        "applicable_located": 0,
+        "expected_errors": 0,
+        "detected_errors": 0,
+        "applicable_detected_errors": 0,
+        "applied": 0,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 1,
+        "correct_reading": 1,
+        "full_options_correct": 1,
+        "option_labels": 4,
+        "expected_option_labels": 4,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [],
+      "detected": [],
+      "applicable": [],
+      "fixed": []
+    },
+    {
+      "caseId": "reading-paraphrase",
+      "counts": {
+        "quotes": 1,
+        "exact_quotes": 1,
+        "suggestions": 0,
+        "required_suggestions": 0,
+        "optional_suggestions": 0,
+        "located": 0,
+        "required_located": 0,
+        "applicable_located": 0,
+        "expected_errors": 0,
+        "detected_errors": 0,
+        "applicable_detected_errors": 0,
+        "applied": 0,
+        "successful_fixes": 0,
+        "no_ops": 0,
+        "overlap_skipped": 0,
+        "ambiguous_quotes": 0,
+        "reading_cases": 1,
+        "correct_reading": 1,
+        "full_options_correct": 1,
+        "option_labels": 4,
+        "expected_option_labels": 4,
+        "expected_evidence": 0,
+        "cited_evidence": 0,
+        "format_failures": 0,
+        "request_failures": 0,
+        "negative_controls": 0,
+        "controls_with_required_suggestions": 0,
+        "clean_controls_passed": 0,
+        "valid_cases": 1
+      },
+      "review": [],
+      "detected": [],
+      "applicable": [],
+      "fixed": []
+    }
+  ],
+  "dataset_version": 1,
+  "scored_on": "2026-10-25",
+  "source_predictions": "test-evidence\\coach-evaluation-deepseek-flash-20261024.json",
+  "source_predictions_sha256": "d35ff20c35f553e089c534f1b19b178e20e4f40beede399b776fa83b15bb86a8",
+  "historical_v1_reproduced_exactly": true
+}

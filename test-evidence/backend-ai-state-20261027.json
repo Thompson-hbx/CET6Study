@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-27",
+  "scope": "P2-11 backend AI state extraction",
+  "changes": {
+    "new_state": "app/src/main/java/com/example/cet6/ui/AiConnectionState.kt",
+    "viewmodel_lines_before": 630,
+    "viewmodel_lines_after": 446,
+    "preserved": [
+      "public ViewModel getters/actions",
+      "study_ui provider/model preference keys",
+      "Keystore stores and formats",
+      "HTTP timeout policy",
+      "shared busy gate",
+      "main-thread deltas",
+      "cancellation propagation",
+      "completed-only essay writes"
+    ],
+    "migration": false,
+    "dependency_change": false
+  },
+  "verification": {
+    "gradle_command": "assembleDebug testDebugUnitTest lintDebug assembleDebugAndroidTest",
+    "gradle_pass": true,
+    "jvm": {
+      "tests": 149,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lint": {
+      "errors": 0,
+      "fatal": 0,
+      "existing_warnings": 7
+    },
+    "android_targeted": "PASS",
+    "android_full_isolated_suite": "PASS",
+    "android_real_activity_viewmodel_lifecycle": "PASS",
+    "offline_cases": [
+      "legacy ChatGPT model preference",
+      "per-provider model preferences",
+      "fixed DeepSeek URL",
+      "manual compatible model retained",
+      "complete response persisted",
+      "partial response not persisted",
+      "HTTP 429 does not change history or retry",
+      "cancel resets busy and retains configuration",
+      "busy blocks provider/model/profile edits",
+      "main-thread delta callback",
+      "new destination requires new key",
+      "encrypted profile reloaded by a fresh component",
+      "clear current profile preserves other provider"
+    ],
+    "isolation": "all HTTP intercepted without proceed; unique test preference names; in-memory database; test preferences removed afterwards",
+    "new_live_model_requests": 0,
+    "real_credentials_read": false,
+    "logs": [
+      ".tools/ai-state-full-gradle-20261027.log",
+      ".tools/ai-state-android-targeted-20261027.txt",
+      ".tools/ai-state-android-full-20261027.txt",
+      ".tools/ai-state-android-lifecycle-20261027.txt"
+    ],
+    "new_source_whitespace_check": "PASS"
+  },
+  "ordinary_apk": {
+    "path": ".tools/CET6Study-ai-state-20261027-ordinary.apk",
+    "sha256": "9b5a3e4ebe79c53f077dbb58d848800b8087f643d30b8bb7a37e3b57de5bf9ac",
+    "private_assets_absent": true
+  },
+  "personal_apk": {
+    "path": ".tools/CET6Study-ai-state-20261027-personal.apk",
+    "sha256": "c256fb3b47bf4a3fa36c2b003a5f2a214bcac40548ad860dd013edfe7f8f8dd8",
+    "dex_matches_tested_ordinary": true,
+    "pack_sha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+    "pack_bytes_match": true,
+    "pdf_count": 46,
+    "all_pdf_bytes_match": true,
+    "installed": true,
+    "installation_attempt": {
+      "device": "10AE5X1ZA3000YU",
+      "success": false,
+      "error": "INSTALL_FAILED_ABORTED: User rejected permissions",
+      "automatic_retry": false,
+      "user_authorized_retry": "允许覆盖安装",
+      "retry_success": true
+    },
+    "previous_installed_sha256_after_rejection": "26909774ad913b05491624a6a203175a47286d01c90e8855ec8d1b28562075fc",
+    "installed_sha256": "c256fb3b47bf4a3fa36c2b003a5f2a214bcac40548ad860dd013edfe7f8f8dd8"
+  },
+  "limits": [
+    "No new live AI requests or real OAuth authorization tests",
+    "Fresh component restoration is not a process-death test",
+    "Large UI files and remaining ViewModel study/backup operations still need gradual separation"
+  ]
+}

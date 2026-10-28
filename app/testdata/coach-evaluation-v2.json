@@ -1,0 +1,252 @@
+{
+  "format": "CET6CoachEvaluation",
+  "version": 2,
+  "provenance": "Project-original text; fictional institutions and situations; no private work or third-party exams",
+  "goldStatus": "Author-provisional; not independently calibrated; no live predictions collected",
+  "scope": "Full essays, multi-sentence translation and long reading; targeted language spans and evidence, not holistic scoring",
+  "cases": [
+    {
+      "id": "essay-library-basic",
+      "kind": "writing",
+      "level": "basic",
+      "material": "Write an essay of 150-200 words. Explain how a campus library can support independent learning.",
+      "answer": "A campus library is more than a place where students borrow books. It is also a place where they can build habits that help them study without constant instruction. For this reason, universities should treat the library as an important part of daily learning.\n\nThe library provide a quiet room for students who cannot concentrate in a crowded dormitory. Students can studies there after class and compare several sources before forming an opinion. When they meet an unfamiliar term, a librarian can show them how to search for reliable information instead of giving them a ready answer.\n\nThe library provide workshops as well. A short session about planning a research project can help beginners divide a large task into manageable steps. However, workshops should remain optional, since students have different schedules and levels of experience.\n\nTo make these services useful, the university should ask students what they need and publish clear opening hours. With suitable support and enough freedom to choose their own methods, students can gradually become more responsible for their learning.",
+      "errors": [
+        {
+          "quote": "The library provide",
+          "start": 261,
+          "fixes": [
+            "The library provides"
+          ]
+        },
+        {
+          "quote": "can studies",
+          "start": 363,
+          "fixes": [
+            "can study"
+          ]
+        },
+        {
+          "quote": "The library provide",
+          "start": 588,
+          "fixes": [
+            "The library provides"
+          ]
+        }
+      ],
+      "negativeControl": false,
+      "goldScope": "Targeted language errors; holistic argument quality requires human review"
+    },
+    {
+      "id": "essay-group-basic",
+      "kind": "writing",
+      "level": "basic",
+      "material": "Write an essay of 150-200 words. Discuss one benefit and one limitation of group study.",
+      "answer": "Group study can be useful when students are learning a difficult subject. A group gives them a chance to explain ideas aloud and notice gaps in their understanding. However, simply sitting at the same table does not guarantee that everyone will learn.\n\nIn a well organised session, each member prepares a question before the meeting. Each student have time to describe a problem, while the others listen and ask for clarification. Explaining a solution can make a concept more easier to remember because the speaker has to connect the separate steps.\n\nThere are also limits. One confident member may answer every question, leaving quieter students with little opportunity to think. A meeting can become a social conversation if the group has no clear goal. These problems are especially serious when an examination is close and study time is limited.\n\nI would therefore combine group sessions with individual practice. Members could agree on a short agenda, take turns leading the discussion and finish by solving a new problem alone. This approach keeps the benefits of cooperation while allowing each student to check personal progress.",
+      "errors": [
+        {
+          "quote": "Each student have",
+          "start": 334,
+          "fixes": [
+            "Each student has"
+          ]
+        },
+        {
+          "quote": "more easier",
+          "start": 472,
+          "fixes": [
+            "easier",
+            "much easier"
+          ]
+        }
+      ],
+      "negativeControl": false,
+      "goldScope": "Targeted language errors; holistic argument quality requires human review"
+    },
+    {
+      "id": "essay-feedback-intermediate",
+      "kind": "writing",
+      "level": "intermediate",
+      "material": "Write an essay of 150-200 words. Discuss how students should use online feedback.",
+      "answer": "Online feedback has become a common part of university study. Students can receive comments on a draft before the next class, and teachers can respond to questions that would otherwise remain unanswered. These opportunities are valuable, but the usefulness of feedback depends of how it is interpreted.\n\nA short response can give a useful informations about a specific sentence or calculation. It cannot always explain why the student made the mistake. If learners copy a suggested answer without considering the reason behind it, they may repeat the same problem in another task.\n\nStudents should therefore compare a comment with the original question, identify the part that needs attention and try to produce a new answer in their own words. When a suggestion seems unclear or conflicts with course materials, asking the teacher is more useful than guessing what was intended.\n\nTeachers also have a role. Clear comments and a small number of priorities can help students focus their effort. In my view, online feedback works best as the beginning of a conversation, followed by revision and independent practice, rather than as a final judgement of ability.",
+      "errors": [
+        {
+          "quote": "depends of",
+          "start": 269,
+          "fixes": [
+            "depends on"
+          ]
+        },
+        {
+          "quote": "a useful informations",
+          "start": 330,
+          "fixes": [
+            "useful information"
+          ]
+        }
+      ],
+      "negativeControl": false,
+      "goldScope": "Targeted language errors; holistic argument quality requires human review"
+    },
+    {
+      "id": "essay-public-space-strong",
+      "kind": "writing",
+      "level": "strong",
+      "material": "Write an essay of 150-200 words. Discuss how universities can balance quiet study and social activity.",
+      "answer": "A university needs spaces for both quiet concentration and informal conversation. Students do not all work in the same way, and their needs can change during the day. A successful campus should recognise these differences instead of expecting one room to serve every purpose.\n\nQuiet study areas allow students to read demanding material, prepare for examinations and work without interruption. Social spaces support discussion and help new students form friendships. When these activities share a poorly planned area, ordinary conversation may disturb readers while requests for silence discourage useful exchange.\n\nOne practical solution is to separate spaces by purpose and make the rules visible. A library could reserve some floors for silent work while offering rooms where small groups can discuss a project. Students should also have a way to report problems and suggest improvements, since a rule that looks sensible on paper may be inconvenient in practice.\n\nThe aim is to provide reliable choices. By reviewing how rooms are used and listening to different groups, a university can protect concentration without treating social activity as a nuisance. Both forms of campus life deserve thoughtful support.",
+      "errors": [],
+      "negativeControl": true,
+      "goldScope": "Targeted language errors; holistic argument quality requires human review"
+    },
+    {
+      "id": "translation-community-omission",
+      "kind": "translation",
+      "level": "omission",
+      "material": "这家社区图书馆过去只在工作日开放。去年，工作人员在听取居民意见后，试行了周末开放。志愿者帮助整理书籍，但借阅规则仍由正式工作人员负责解释。居民可以根据自己的日程选择到访时间。此外，图书馆为第一次到访的老年人提供免费的使用指导。",
+      "answer": "The community library used to open only on weekdays. Last year, after listening to residents, its staff began a trial of weekend opening. Volunteers help organise the books, but regular staff members are still responsible for explaining the borrowing rules. Residents can choose a visiting time that suits their own schedules.",
+      "errors": [
+        {
+          "quote": "Residents can choose a visiting time that suits their own schedules.",
+          "start": 258,
+          "fixes": [
+            "Residents can choose a visiting time that suits their own schedules. In addition, the library offers free guidance to older people visiting for the first time."
+          ]
+        }
+      ],
+      "negativeControl": false,
+      "goldScope": "Targeted meaning/language errors; alternatives are provisional author references"
+    },
+    {
+      "id": "translation-workshop-negation",
+      "kind": "translation",
+      "level": "negation",
+      "material": "一所大学为新生开设了研究方法工作坊。报名是自愿的，学生不需要提前选定研究题目。并非每位参加者都认为讨论时间足够。一些学生希望获得更多独立练习的机会。组织者计划在下次活动前收集意见，但尚未决定是否增加课时。",
+      "answer": "A university has introduced workshops on research methods for new students. Registration is voluntary, and students do not need to choose a research topic in advance. Every participant thought that there was enough time for discussion. Some students wanted more opportunities for independent practice. The organisers plan to collect feedback before the next event, but they have not decided whether to add more teaching hours.",
+      "errors": [
+        {
+          "quote": "Every participant thought that there was enough time for discussion.",
+          "start": 167,
+          "fixes": [
+            "Not every participant thought that there was enough time for discussion.",
+            "Not all participants thought that there was enough time for discussion."
+          ]
+        }
+      ],
+      "negativeControl": false,
+      "goldScope": "Targeted meaning/language errors; alternatives are provisional author references"
+    },
+    {
+      "id": "translation-route-number",
+      "kind": "translation",
+      "level": "number",
+      "material": "去年，这座虚构城市对三条公交线路进行了调整。高峰时段的班次增加了百分之三十，而票价保持不变。调查只收集了经常乘车者的意见，因此不能代表所有居民。交通部门表示，还需要了解夜间乘客的需求，再决定是否扩大试点。",
+      "answer": "Last year, this fictional city adjusted three bus routes. The number of services during peak hours increased by three percent, while fares remained unchanged. The survey collected responses only from regular passengers, so it cannot represent all residents. The transport department said it also needed to understand the needs of night passengers before deciding whether to expand the pilot programme.",
+      "errors": [
+        {
+          "quote": "by three percent",
+          "start": 109,
+          "fixes": [
+            "by thirty percent",
+            "by 30 percent"
+          ]
+        }
+      ],
+      "negativeControl": false,
+      "goldScope": "Targeted meaning/language errors; alternatives are provisional author references"
+    },
+    {
+      "id": "translation-bridge-control",
+      "kind": "translation",
+      "level": "strong",
+      "material": "这座步行桥连接了校园的两个区域。过去，学生必须绕过一条繁忙的道路才能到达实验室。新桥为他们提供了另一条路线，但没有改变实验室的开放时间。学校还将在雨季检查桥面情况，并根据使用者的意见改善照明。",
+      "answer": "The pedestrian bridge connects two parts of the campus. In the past, students had to go around a busy road to reach the laboratories. The new bridge offers them another route, but it has not changed the laboratories' opening hours. The university will also inspect the bridge surface during the rainy season and improve the lighting in response to users' comments.",
+      "errors": [],
+      "negativeControl": true,
+      "goldScope": "Targeted meaning/language errors; alternatives are provisional author references"
+    },
+    {
+      "id": "reading-pilot-scope",
+      "kind": "reading",
+      "level": "pilot-scope",
+      "material": "At the fictional Northbank University, the library tested longer opening hours during a six-week project. Students had often asked for a place to study after evening classes. The library could not afford to keep every floor open, so it used a small reading room near the main entrance. Books from the other floors had to be requested before the usual closing time.\n\nThe room stayed open until eleven on Tuesdays and Thursdays. Entry required a student card, and a member of staff remained at the desk. Group meetings were not permitted because the room was intended for quiet work. These conditions were explained on a notice outside the room and in a message sent to students.\n\nThe library recorded the number of visits and invited visitors to complete a short questionnaire. Most respondents liked the extra hours, although several mentioned a lack of charging points. The report did not compare examination results or measure how much work students completed. It also noted that the visitors might have different needs from students who never used the room.\n\nAfter reviewing the results, the university decided to continue the arrangement for one more term. It would add charging points and keep the same two evenings while gathering further feedback. The other library floors would continue to close at the usual time.\n\nThe library director described the decision as a limited continuation, not a promise to introduce late opening everywhere. Expanding the service would require a separate decision about staffing and cost. Students were encouraged to comment even if the present schedule did not suit them, so that later planning would not rely only on the views of current visitors.",
+      "question": "What did the university decide after the trial?",
+      "options": {
+        "A": "To keep all library floors open every evening",
+        "B": "To continue the limited arrangement while gathering more feedback",
+        "C": "To end all evening access immediately",
+        "D": "To claim that longer opening improved examination results"
+      },
+      "correct": "B",
+      "errors": [],
+      "evidence": [
+        {
+          "quote": "It would add charging points and keep the same two evenings while gathering further feedback.",
+          "start": 1161
+        }
+      ]
+    },
+    {
+      "id": "reading-correlation-long",
+      "kind": "reading",
+      "level": "correlation-long",
+      "material": "A student research group at a fictional college wanted to understand how its classmates used a newly renovated reading room. For eight weeks, volunteers recorded how often they visited the room and how long they stayed. Participation was optional, and the group made clear that the project would not affect anyone's grades.\n\nAt the end of the period, the volunteers also reported the marks they had received in one course. Students who visited the reading room more often tended to report higher marks. The researchers initially found the pattern encouraging, since the room had been designed to support study. However, their supervisor asked them to consider other possible explanations before making a recommendation.\n\nStudents chose for themselves whether to visit the room. Those with stronger study habits might have used it more often, and students taking different courses might have faced different assessments. The group had not measured these differences at the start. It had also relied on volunteers to report their own visits and marks, which introduced another source of uncertainty.\n\nThe final report presented the association but did not claim that the room caused better academic performance. It recommended a larger study that would collect information about previous attainment and study habits. A comparison with students who used other places might also help, provided their circumstances were considered carefully.\n\nThe college still regarded the room as a useful facility. Students described it as comfortable, and demand for its seats remained high. Yet the report separated these observations from the question of academic effects. A popular service can have practical value even when a particular causal claim has not been established. The researchers therefore suggested improving the room in response to users' comments while continuing to investigate its possible educational benefits.",
+      "question": "Which conclusion is justified by the study as described?",
+      "options": {
+        "A": "Using the room necessarily raises every student's marks",
+        "B": "Higher marks prevent students from visiting the room",
+        "C": "Visits and marks were associated, but the cause remained uncertain",
+        "D": "The room had no practical value for any student"
+      },
+      "correct": "C",
+      "errors": [],
+      "evidence": [
+        {
+          "quote": "The final report presented the association but did not claim that the room caused better academic performance.",
+          "start": 1099
+        }
+      ]
+    },
+    {
+      "id": "reading-price-contrast",
+      "kind": "reading",
+      "level": "price-contrast",
+      "material": "The fictional town of Elmbridge introduced a weekend bus pass as part of a small transport trial. The pass allowed unlimited travel on two local routes between Saturday morning and Sunday evening. It did not include the express service to the airport, which continued to use its normal ticket system. The town published a map to make the difference clear.\n\nRegular weekday commuters were not the main target. Officials hoped the pass would make it easier for residents to visit the market, the sports centre and relatives in nearby neighbourhoods. The price was set low enough for occasional travellers to consider, but the buses followed their existing routes and timetables. Buying a pass did not guarantee a seat.\n\nDuring the first month, more passes were sold than officials had expected. Several shop owners reported busier weekends, although the town had not designed a study to determine why sales changed. Some residents said that the pass was useful, while others wanted buses to run later on Sunday. Drivers also asked for clearer instructions about how to check the new tickets.\n\nThe council decided to keep the price unchanged during the second month. Instead of extending the pass to the airport, it would first improve the information given to passengers and collect more comments from drivers. Any change to the airport service would involve a different operator and would need a separate agreement.\n\nA local newspaper described the trial as an attempt to make ordinary weekend journeys more convenient. The council agreed with that description but warned against treating early ticket sales as proof that every resident benefited. It planned to ask people who had not bought a pass about the barriers they faced. That information could be important when deciding whether the trial should continue.",
+      "question": "Which statement about the pass is supported?",
+      "options": {
+        "A": "It covered two local routes but not the airport express",
+        "B": "It guaranteed a seat on every journey",
+        "C": "It replaced the tickets used by all weekday commuters",
+        "D": "It was extended to the airport during the second month"
+      },
+      "correct": "A",
+      "errors": [],
+      "evidence": [
+        {
+          "quote": "It did not include the express service to the airport, which continued to use its normal ticket system.",
+          "start": 197
+        }
+      ]
+    },
+    {
+      "id": "reading-retention-policy",
+      "kind": "reading",
+      "level": "retention-policy",
+      "material": "A fictional university archive collected interviews with former students for an exhibition about campus life. The project team wanted the interviews to be useful for future researchers as well as for visitors to the exhibition. Before recording began, participants received a form explaining how their contributions could be stored and displayed.\n\nParticipants could choose between two levels of access. Some agreed that their recordings could be made available to the public. Others allowed researchers to consult the recordings in the archive but did not permit publication online. The team kept these choices with each recording so that staff would not have to rely on memory when responding to a request.\n\nThe exhibition included only extracts that met the participants' stated conditions. A short extract still required permission for public use; removing most of a recording did not remove that requirement. The team also checked names and dates with the speakers where possible. When an account remained uncertain, the exhibition described it as a personal recollection rather than a confirmed institutional fact.\n\nAfter the exhibition closed, the archive kept the recordings under the original access conditions. Closing the exhibition did not automatically make restricted interviews public. Researchers who wanted to quote from a recording had to follow the relevant permission process, even if they had already listened to it in the reading room.\n\nThe archive later reviewed its cataloguing system to make these restrictions easier to understand. Staff suggested adding clearer notes and training volunteers to explain the difference between consultation and publication. The aim was to improve access without making promises that the participants had never agreed to. The project showed that preserving an interview and making it freely available are separate decisions, each requiring careful records and clear communication.",
+      "question": "What principle guided the archive after the exhibition?",
+      "options": {
+        "A": "Every preserved recording had to become freely available online",
+        "B": "Listening in the archive automatically allowed online publication",
+        "C": "Closing the exhibition removed all earlier restrictions",
+        "D": "Access and publication continued to follow the participants' permissions"
+      },
+      "correct": "D",
+      "errors": [],
+      "evidence": [
+        {
+          "quote": "After the exhibition closed, the archive kept the recordings under the original access conditions.",
+          "start": 1122
+        }
+      ]
+    }
+  ]
+}

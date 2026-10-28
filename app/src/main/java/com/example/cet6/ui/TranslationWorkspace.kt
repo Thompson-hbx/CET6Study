@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -123,7 +124,8 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
                         label = { Text("要翻译的中文") }, minLines = 3, maxLines = 10, modifier = Modifier.fillMaxWidth())
                 }
             }
-        } else {
+        }
+        if (sentences.isNotEmpty()) {
             Note("点一句，可以看难词和句式提示", Modifier.padding(horizontal = PageGutter))
             RowCard {
                 sentences.forEachIndexed { i, sentence ->
@@ -134,7 +136,15 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
             }
         }
         val source = entry.sourcePracticeId.takeIf(String::isNotBlank)?.let { id -> state.history.firstOrNull { it.id == id } }
-        if (source != null && source.answer.isNotBlank()) {
+        if (entry.practiceGoal.isNotBlank()) {
+            Row(Modifier.padding(start = PageGutter, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Note("训练目标：${entry.practiceGoal}", Modifier.weight(1f), tone = Tone.Ink)
+                if (source != null && source.material != entry.material) {
+                    TextButton(onClick = { state.open(CoachKind.TRANSLATION, source) }) { Text("查看原练习") }
+                }
+            }
+        }
+        if (source != null && source.answer.isNotBlank() && source.material == entry.material) {
             var compare by rememberSaveable(entry.id) { mutableStateOf(false) }
             Row(Modifier.padding(start = PageGutter, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Note("修改自 ${shortTime(if (source.submittedAt > 0) source.submittedAt else source.updatedAt)} 的一稿", Modifier.weight(1f))
@@ -190,6 +200,7 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
             talk.send(entry, Anchor.REVIEW, TurnKind.TRANSLATION_REVIEW) { TranslationCoach.reviewPrompt(entry, focus) }
         }
         LegacyFeedback(entry.feedback)
+        SkillErrorNote(vm, entry, CoachKind.TRANSLATION)
         return
     }
     if (reviewing) WorkingLine("正在逐句对照 · ${review.segments.size} / ${sentences.size} 句", talk::stop,
@@ -198,6 +209,7 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
         Spacer(Modifier.height(16.dp))
         PaperCard {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Note("回复未完整通过结构检查，以下保留全部原文；请核对后使用。")
                 MarkdownBody(review.raw)
                 Provenance(reviewTurn?.model.orEmpty())
             }
@@ -272,9 +284,9 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
         }
         if (selected != null && reviewTurn != null) IssueSheet(placed, selected!!, onIndex = { selected = it.coerceIn(0, placed.lastIndex) },
             onDismissSheet = { selected = null },
-            onAccept = { talk.updateState(reviewTurn, decisions.accept(it.id).encode()) },
-            onReject = { talk.updateState(reviewTurn, decisions.dismiss(it.id).encode()) },
-            onReset = { talk.updateState(reviewTurn, decisions.reset(it.id).encode()) },
+            onAccept = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.ACCEPT) },
+            onReject = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.DISMISS) },
+            onReset = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.RESET) },
             onAsk = { issue -> selected = null; onAsk(CoachChat.aboutIssue(issue)) }, askBusy = talk.busy)
     }
     if (!reviewing) {
@@ -282,6 +294,7 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
         SectionLabel("继续问")
         QuickAsks(CoachChat.suggestions(CoachKind.TRANSLATION, Anchor.REVIEW), enabled = !talk.busy, onPick = onAsk, edge = PageGutter)
         ThreadView(CoachTurns.thread(turns, Anchor.REVIEW), pending, talk::stop, Modifier.padding(start = PageGutter, end = PageGutter, top = 12.dp))
+        SkillErrorNote(vm, entry, CoachKind.TRANSLATION)
     }
 }
 
@@ -316,7 +329,7 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
                 TextButton(onClick = { showSuggestion = !showSuggestion }, contentPadding = PaddingValues(0.dp)) {
                     Text(if (showSuggestion) "收起建议译法" else "看建议译法")
                 }
-                if (showSuggestion) Text(segment.suggestion, style = PassageText, color = MaterialTheme.colorScheme.primary)
+                if (showSuggestion) SelectionContainer { Text(segment.suggestion, style = PassageText, color = MaterialTheme.colorScheme.primary) }
             }
         }
     }
@@ -326,9 +339,9 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
 private fun TranslationReference(sentences: List<String>, reference: String, source: String) {
     Column(Modifier.padding(vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         PaperCard(padding = PaddingValues(horizontal = 18.dp, vertical = 16.dp)) {
-            Text(sentences.joinToString(""), style = SourceText, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            SelectionContainer { Text(sentences.joinToString(""), style = SourceText, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             Hairline(Modifier.padding(vertical = 14.dp))
-            Text(reference, style = PassageText)
+            SelectionContainer { Text(reference, style = PassageText) }
         }
         Column(Modifier.padding(horizontal = PageGutter), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             if (source.isNotBlank()) Note("来源：" + source.substringBefore(" (").substringBefore(";").take(120))

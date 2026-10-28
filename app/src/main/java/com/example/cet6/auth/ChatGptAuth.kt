@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Base64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.sync.Mutex
@@ -20,7 +21,9 @@ import java.security.MessageDigest
 import java.security.SecureRandom
 
 /** Single-account, on-device OSS OAuth flow. No embedded WebView, secret, or API key. */
-class ChatGptAuth(http: OkHttpClient, private val store: SecureSessionStore) {
+class ChatGptAuth internal constructor(http: OkHttpClient, private val store: SessionStorage) {
+    constructor(http: OkHttpClient, store: SecureSessionStore) : this(http, KeystoreSessionStorage(store))
+
     private val http = http.newBuilder().followRedirects(false).followSslRedirects(false)
         .callTimeout(20, java.util.concurrent.TimeUnit.SECONDS).build()
     private val refreshLock = Mutex()
@@ -159,24 +162,24 @@ class ChatGptAuth(http: OkHttpClient, private val store: SecureSessionStore) {
             .add("client_id", saved.clientId)
             .add("refresh_token", saved.refreshToken)
             .add("resource", resource).build()
-        val tokens = try {
-            withContext(Dispatchers.IO) { postToken(body) }
-        } catch (e: OAuthTokenException) {
-            if (isTerminalRefreshError(e.code)) withContext(Dispatchers.IO) { store.clear() }
-            throw e
+        // Once rotation starts, caller cancellation must not discard its replacement credentials.
+        // The existing HTTP call timeout still bounds the operation; the caller remains cancelled.
+        withContext(NonCancellable + Dispatchers.IO) {
+            val tokens = try { postToken(body) } catch (e: OAuthTokenException) {
+                if (isTerminalRefreshError(e.code)) store.clear()
+                throw e
+            }
+            val updated = saved.copy(
+                accessToken = tokens.getString("access_token"),
+                refreshToken = tokens.getString("refresh_token"),
+                // Retain the previously verified identity; refresh does not verify a new ID token.
+                idToken = saved.idToken,
+                scopes = tokens.optString("scope", saved.scopes),
+                expiresAtMillis = System.currentTimeMillis() + tokens.getLong("expires_in") * 1000
+            )
+            store.save(updated)
+            updated
         }
-        // Token refresh is atomic because refreshLock serializes rotation.
-        val updated = saved.copy(
-            accessToken = tokens.getString("access_token"),
-            refreshToken = tokens.getString("refresh_token"),
-            // A refreshed ID token would need independent signature verification;
-            // retain the previously verified token only as an authorization hint.
-            idToken = saved.idToken,
-            scopes = tokens.optString("scope", saved.scopes),
-            expiresAtMillis = System.currentTimeMillis() + tokens.getLong("expires_in") * 1000
-        )
-        withContext(Dispatchers.IO) { store.save(updated) }
-        updated
     }
 
     private fun postToken(body: FormBody): JSONObject {
@@ -193,10 +196,7 @@ class ChatGptAuth(http: OkHttpClient, private val store: SecureSessionStore) {
                 val code = rawCode.takeIf { it.matches(Regex("[a-zA-Z0-9_]{1,100}")) } ?: "oauth_error"
                 throw OAuthTokenException(code, response.code)
             }
-            JSONObject(text).also {
-                validateTokenFields(it.getString("access_token"), it.getString("refresh_token"),
-                    it.getString("token_type"), it.getLong("expires_in"))
-            }
+            parseTokenResponse(text)
         }
     }
 

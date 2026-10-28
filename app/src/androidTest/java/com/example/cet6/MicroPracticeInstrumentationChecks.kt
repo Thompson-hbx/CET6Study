@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.cet6.data.*
 import com.example.cet6.ui.CoachState
+import com.example.cet6.ui.CoachTalk
+import com.example.cet6.ui.versionsOf
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.io.File
@@ -76,6 +78,7 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
                 check(MicroPractice.prompt(writingSource).contains("questions为空字符串"))
             }
             check(runCatching { MicroPractice.prompt(source.copy(errorReason = "")) }.isFailure)
+            for (kind in listOf(CoachKind.WRITING, CoachKind.TRANSLATION)) verifySkillWorkflow(db, kind)
             val snapshot = BackupRepository(db).snapshot()
             check(BackupCodec.decode(BackupCodec.encode(snapshot)) == snapshot)
             val v3 = JSONObject(BackupCodec.encode(snapshot)).apply {
@@ -89,6 +92,84 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             db = open()
             check(db.dao().coachById(source.id) == source)
             check(db.dao().coachById(generated.id) == generated)
+            check(BackupRepository(db).snapshot().copy(createdAt = 0) == snapshot.copy(createdAt = 0))
         } finally { job.cancelAndJoin(); db.close() }
+    }
+
+    /** Exercise the unchanged screen-facing interfaces with fake requests and real Room writes. */
+    private suspend fun verifySkillWorkflow(db: StudyDatabase, kind: CoachKind) {
+        val job = SupervisorJob()
+        val scope = CoroutineScope(job + Dispatchers.Main)
+        try {
+            val repository = CoachRepository(db)
+            val original = CoachPractice(id = "skill-source-${kind.name}", kind = kind.name,
+                title = "原创后端联调样本", material = "原练习：说明图书馆的作用。", answer = "Libraries helps students.",
+                errorReason = "语法", submittedAt = 100)
+            repository.save(original)
+            var response = JSONObject().put("title", "重复原题").put("material", original.material).put("questions", "").toString()
+            val confirmedGoal = "表达：连接原因与结果"
+            var requests = 0
+            val state = CoachState(repository, scope, { true }, { "offline-workflow" }) { prompt, _ ->
+                check(prompt.contains(confirmedGoal))
+                requests++
+                response
+            }
+            suspend fun await(test: () -> Boolean) = withTimeout(10_000) { while (!test()) delay(20) }
+            await { state.entries.size == 3 }
+            state.open(kind, original)
+            await { !state.working }
+            val countBefore = db.dao().allCoach().size
+            check(state.edit(kind) { it.copy(errorReason = confirmedGoal) })
+            state.generate(kind)
+            await { !state.working }
+            check(requests == 1 && db.dao().allCoach().size == countBefore)
+            check(state.entries.getValue(kind).id == original.id)
+            check(db.dao().coachById(original.id)?.let { it.answer == original.answer && it.errorReason == confirmedGoal } == true)
+            check(state.messages.getValue(kind).contains("微练习未生成"))
+
+            response = JSONObject().put("title", "原创专项练习").put("material",
+                if (kind == CoachKind.WRITING) "用3–5句英文说明校园步道如何帮助学生休息。" else
+                    "图书馆扩大了学生使用学习资源的机会。因此，学生可以更好地完成研究。")
+                .put("questions", "").toString()
+            state.generate(kind)
+            await { !state.working }
+            val generated = state.entries.getValue(kind)
+            check(requests == 2 && generated.sourcePracticeId == original.id && generated.practiceGoal == confirmedGoal)
+            check(generated.answer.isBlank() && generated.feedback.isBlank() && generated.submittedAt == 0L)
+            check(state.edit(kind) { it.copy(answer = "Libraries widen access and improve cohesion.") })
+            state.submit(kind, explain = false)
+            await { !state.working }
+            val submitted = state.entries.getValue(kind)
+            check(submitted.id == generated.id && submitted.submittedAt > 0 && requests == 2)
+            val reviewKind = if (kind == CoachKind.WRITING) TurnKind.WRITING_REVIEW else TurnKind.TRANSLATION_REVIEW
+            val talk = CoachTalk(repository, scope, { true }, { "offline-workflow" }) { prompt, _ ->
+                check(prompt.contains(confirmedGoal) && prompt.contains(submitted.answer))
+                "{\"type\":\"tip\",\"text\":\"原创离线联调回复\"}"
+            }
+            talk.send(submitted, Anchor.REVIEW, reviewKind) {
+                if (kind == CoachKind.WRITING) WritingCoach.reviewPrompt(submitted, WritingFocus.COMPLETE)
+                else TranslationCoach.reviewPrompt(submitted, WritingFocus.COMPLETE)
+            }
+            await { !talk.busy }
+            check(talk.failure == null && db.dao().allTurns().any { it.practiceId == submitted.id && it.kind == reviewKind })
+            check(db.dao().coachById(submitted.id) == submitted)
+            state.open(kind, submitted, retry = true)
+            await { !state.working }
+            val revision = state.entries.getValue(kind)
+            check(revision.sourcePracticeId == submitted.id && revision.practiceGoal == confirmedGoal && revision.answer == submitted.answer)
+            check(versionsOf(db.dao().allCoach(), revision).map { it.id }.toSet() == setOf(submitted.id, revision.id))
+
+            val word = if (kind == CoachKind.WRITING) "cohesion" else "access"
+            val quote = PracticeVocabulary.candidates(submitted, word).single()
+            val candidate = PracticeVocabulary.word(submitted, word, "用户确认的原创释义", quote)
+            val study = StudyRepository(db)
+            check(study.importWords(listOf(candidate)) == 1)
+            check(study.review(word, WordRating.GOOD, System.currentTimeMillis()))
+            val reviewed = db.dao().word(word)
+            val schedule = db.dao().schedule(word)
+            check(study.importWords(listOf(candidate.copy(meaning = "不可覆盖旧释义"))) == 0)
+            check(db.dao().word(word) == reviewed && db.dao().schedule(word) == schedule)
+            check(reviewed?.example == quote && reviewed.source.contains(submitted.id))
+        } finally { job.cancelAndJoin() }
     }
 }

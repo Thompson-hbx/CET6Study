@@ -1,22 +1,16 @@
 package com.example.cet6.ui
 
 import android.app.Application
-import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.example.cet6.ai.AvailableModel
-import com.example.cet6.ai.ResponsesClient
 import com.example.cet6.ai.AiProvider
-import com.example.cet6.ai.ApiConnection
-import com.example.cet6.ai.ChatCompletionsClient
-import com.example.cet6.auth.SecureApiStore
-import com.example.cet6.auth.ChatGptAuth
-import com.example.cet6.auth.SecureSessionStore
 import com.example.cet6.data.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,49 +19,47 @@ import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.Instant
-import okhttp3.OkHttpClient
-import java.util.concurrent.TimeUnit
 
 class StudyViewModel(app: Application) : AndroidViewModel(app) {
-    private val http = OkHttpClient.Builder()
-        .connectTimeout(20, TimeUnit.SECONDS)
-        .readTimeout(180, TimeUnit.SECONDS)
-        .build()
-    private val auth = ChatGptAuth(http, SecureSessionStore(app))
-    private val ai = ResponsesClient(http, auth)
-    private val compatibleAi = ChatCompletionsClient(http)
-    private val apiStore = SecureApiStore(app)
     private val db = StudyDatabase.get(app)
     private val dao = db.dao()
     private val study = StudyRepository(db)
     private val backups = BackupRepository(db)
+    private val examStore = ExamStore(app)
+    private val restoreJournal = RestoreJournal(app)
+    private val completeRestores = CompleteRestoreRepository(backups, examStore, restoreJournal)
+    private val restoreStartupReady = CompletableDeferred<Unit>()
+    var backupRestorePending by androidx.compose.runtime.mutableStateOf(restoreJournal.hasPending())
+        private set
+    var backupRecoveryRunning by androidx.compose.runtime.mutableStateOf(backupRestorePending)
+        private set
     private val coachRepository = CoachRepository(db)
     private val prefs = app.getSharedPreferences("study_ui", android.content.Context.MODE_PRIVATE)
-    var provider by androidx.compose.runtime.mutableStateOf(
-        AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.CHATGPT)
-        private set
-    private var apiConnection by androidx.compose.runtime.mutableStateOf<ApiConnection?>(null)
-    val apiBaseUrl: String get() = apiConnection?.baseUrl ?: provider.defaultUrl
-    val hasApiKey: Boolean get() = apiConnection != null
-    val aiReady: Boolean get() = if (provider == AiProvider.CHATGPT) hasPlan else hasApiKey
-    private fun modelPreference(): String = if (provider == AiProvider.CHATGPT) "model" else "model_${provider.name}"
-
-    private suspend fun streamAi(prompt: String, onDelta: suspend (String) -> Unit): String =
-        if (provider == AiProvider.CHATGPT) ai.stream(chosenModel, prompt, onDelta)
-        else compatibleAi.stream(apiConnection ?: error("请先保存 API 配置"), chosenModel, prompt, onDelta)
-    private suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String {
-        busy = true
-        try {
-            return streamAi(prompt) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
-        } finally { syncSessionState(); busy = false }
+    private val aiConnection = AiConnectionState(app, viewModelScope) { essay, feedback ->
+        dao.addEssay(EssayEntity(topic = essay.first, content = essay.second, feedback = feedback))
     }
+    val provider: AiProvider get() = aiConnection.provider
+    val apiBaseUrl: String get() = aiConnection.apiBaseUrl
+    val hasApiKey: Boolean get() = aiConnection.hasApiKey
+    val aiReady: Boolean get() = aiConnection.aiReady
+    val sessionEmail: String get() = aiConnection.sessionEmail
+    val hasPlan: Boolean get() = aiConnection.hasPlan
+    val models: List<AvailableModel> get() = aiConnection.models
+    val chosenModel: String get() = aiConnection.chosenModel
+    val busy: Boolean get() = aiConnection.busy
+    val status: String get() = aiConnection.status
+    val result: String get() = aiConnection.result
+
+    internal suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String =
+        aiConnection.streamCoach(prompt, onDelta)
     val coach = CoachState(coachRepository, viewModelScope,
-        canRequest = { aiReady && chosenModel.isNotBlank() && !busy },
+        canRequest = { aiReady && chosenModel.isNotBlank() && !busy && !backupBusy && !backupRecoveryRunning },
         model = { chosenModel },
+        startupReady = restoreStartupReady.takeIf { backupRestorePending },
         request = ::streamCoach)
     /** Saved explanations and follow-ups; independent of the practice rows above. */
     val talk = CoachTalk(coachRepository, viewModelScope,
-        canRequest = { aiReady && chosenModel.isNotBlank() && !busy },
+        canRequest = { aiReady && chosenModel.isNotBlank() && !busy && !backupBusy && !backupRecoveryRunning },
         model = { chosenModel },
         request = ::streamCoach)
     var reviewTurns by androidx.compose.runtime.mutableStateOf<List<CoachTurn>>(emptyList())
@@ -81,7 +73,8 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var backupPreview by androidx.compose.runtime.mutableStateOf<StudyBackup?>(null)
         private set
-    private val examStore = ExamStore(app)
+    var backupPaperPreview by androidx.compose.runtime.mutableStateOf<List<ExamPaper>?>(null)
+        private set
     var examPapers by androidx.compose.runtime.mutableStateOf<List<ExamPaper>>(emptyList())
         private set
     var examPreview by androidx.compose.runtime.mutableStateOf<List<ExamPaper>>(emptyList())
@@ -111,21 +104,6 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     val today: String get() = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate().toString()
     val todayProgress: DailyWordProgress? get() = dailyProgress.find { it.date == today }
 
-    var sessionEmail by androidx.compose.runtime.mutableStateOf(
-        auth.session()?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty())
-        private set
-    var hasPlan by androidx.compose.runtime.mutableStateOf(auth.session()?.canUsePlan == true)
-        private set
-    var models by androidx.compose.runtime.mutableStateOf<List<AvailableModel>>(emptyList())
-        private set
-    var chosenModel by androidx.compose.runtime.mutableStateOf("")
-        private set
-    var busy by androidx.compose.runtime.mutableStateOf(false)
-        private set
-    var status by androidx.compose.runtime.mutableStateOf("选择 AI 服务，连接后可发送测试请求。")
-        private set
-    var result by androidx.compose.runtime.mutableStateOf("")
-        private set
     var words by androidx.compose.runtime.mutableStateOf<List<WordEntity>>(emptyList())
         private set
     var readingAttempts by androidx.compose.runtime.mutableStateOf<List<ReadingAttempt>>(emptyList())
@@ -136,11 +114,17 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     init {
         viewModelScope.launch {
             try {
-                examPapers = withContext(Dispatchers.IO) { examStore.loadWithBundledContent() }
+                if (backupRestorePending) performBackupRestore(null, false, flushDrafts = false)
+                examPapers = withContext(Dispatchers.IO) {
+                    if (backupRestorePending) examStore.load() else examStore.loadWithBundledContent()
+                }
                 examLoaded = true
-            } catch (_: Exception) { examStatus = "本地题库读取失败，已保留原文件；请先导出或联系维护者，不要覆盖导入。" }
+            } catch (e: CancellationException) { throw e
+            } catch (_: Exception) { examStatus = "本地题库读取失败，已保留原文件；请先导出或联系维护者，不要覆盖导入。"
+            } finally { restoreStartupReady.complete(Unit) }
         }
         viewModelScope.launch {
+            restoreStartupReady.await()
             try {
                 study.initialize()
                 val bundled = withContext(Dispatchers.IO) {
@@ -167,6 +151,7 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch { study.dailyProgress.collectLatest { dailyProgress = it } }
         viewModelScope.launch { study.schedules.collectLatest { schedules = it.associateBy(WordSchedule::word) } }
         viewModelScope.launch {
+            restoreStartupReady.await()
             while (true) { refreshStudyDay(); delay(30_000) }
         }
         viewModelScope.launch {
@@ -176,167 +161,16 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         }
         viewModelScope.launch { dao.readingHistory().collectLatest { readingAttempts = it } }
         viewModelScope.launch { dao.essays().collectLatest { essays = it } }
-        restoreApiConnection()
-        chosenModel = prefs.getString(modelPreference(), "").orEmpty()
-        if (aiReady) refreshModels()
     }
 
-    fun selectModel(slug: String) {
-        if (busy) return
-        chosenModel = slug.trim()
-        prefs.edit().putString(modelPreference(), chosenModel).apply()
-    }
-
-    private fun restoreApiConnection() {
-        apiConnection = null
-        if (provider == AiProvider.CHATGPT) return
-        try { apiConnection = apiStore.load(provider) }
-        catch (_: Exception) { status = "API 配置无法解密，请重新填写并保存；原配置尚未覆盖。" }
-    }
-
-    fun selectProvider(value: AiProvider) {
-        if (busy || value == provider) return
-        provider = value
-        prefs.edit().putString("ai_provider", value.name).apply()
-        models = emptyList()
-        result = ""
-        status = "已切换到 ${value.label}。"
-        restoreApiConnection()
-        chosenModel = prefs.getString(modelPreference(), "").orEmpty()
-        if (aiReady) refreshModels()
-    }
-
-    fun saveApiConnection(baseUrl: String, key: String): Boolean {
-        if (busy || provider == AiProvider.CHATGPT) return false
-        return try {
-            val url = if (provider == AiProvider.DEEPSEEK) provider.defaultUrl else baseUrl
-            // A changed destination always requires a newly entered key.
-            val savedKey = if (key.isBlank() && ApiConnection.validatedBaseUrl(url).toString() == apiConnection?.baseUrl)
-                apiConnection?.apiKey.orEmpty() else key
-            val connection = ApiConnection.create(url, savedKey)
-            apiStore.save(provider, connection)
-            apiConnection = connection
-            models = emptyList()
-            result = ""
-            status = "API 配置已加密保存；请刷新模型或填写模型名称，再发送测试请求。"
-            true
-        } catch (_: IllegalArgumentException) {
-            status = "配置无效：请填写 HTTPS Base URL（不含账号、参数或接口路径）和有效 API Key；更换地址时需重新填写 Key。"
-            false
-        } catch (_: Exception) {
-            status = "API 配置保存失败，请检查设备安全存储后重试。"
-            false
-        }
-    }
-
-    fun clearApiConnection() {
-        if (busy || provider == AiProvider.CHATGPT) return
-        try {
-            apiStore.clear(provider)
-            apiConnection = null
-            models = emptyList()
-            chosenModel = ""
-            prefs.edit().remove(modelPreference()).apply()
-            result = ""
-            status = "已清除本机 ${provider.label} 配置；如需撤销 Key，请到服务商控制台操作。"
-        } catch (_: Exception) { status = "清除 API 配置失败，请重试。" }
-    }
-
-    fun signIn() {
-        if (busy || provider != AiProvider.CHATGPT) return
-        viewModelScope.launch {
-            busy = true
-            status = "等待系统浏览器完成 ChatGPT 授权；请不要关闭应用进程。"
-            try {
-                val session = auth.signIn { uri: Uri ->
-                    getApplication<Application>().startActivity(
-                        Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                }
-                sessionEmail = session.email.ifBlank { "已验证 ChatGPT 身份" }
-                hasPlan = session.canUsePlan
-                status = if (hasPlan) "OAuth 登录成功，已授予套餐调用权限。" else
-                    "登录成功，但没有授予套餐额度权限，请重新授权。"
-            } catch (e: CancellationException) { throw e
-            } catch (e: Exception) {
-                status = "登录失败：${e.message ?: "未知错误"}"
-            } finally { busy = false }
-            if (hasPlan) refreshModels()
-        }
-    }
-
-    fun signOut() {
-        if (busy || provider != AiProvider.CHATGPT) return
-        viewModelScope.launch {
-            busy = true
-            status = "正在尝试撤销会话并清除本机凭证……"
-            try {
-                val revoked = auth.signOut()
-                result = ""
-                status = if (revoked) "已撤销远端会话并清除本机令牌。" else
-                    "已清除本机令牌；未确认远端撤销，请到 ChatGPT 设置检查。"
-            } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { status = "退出未完全成功，请重试并检查 ChatGPT 设置。"
-            } finally {
-                syncSessionState()
-                busy = false
-            }
-        }
-    }
-
-    private fun syncSessionState() {
-        val current = auth.session()
-        sessionEmail = current?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty()
-        hasPlan = current?.canUsePlan == true
-        if (!aiReady) {
-            models = emptyList()
-            chosenModel = ""
-        }
-    }
-
-    fun refreshModels() {
-        if (!aiReady || busy) return
-        viewModelScope.launch {
-            busy = true
-            try {
-                models = if (provider == AiProvider.CHATGPT) ai.models()
-                    else compatibleAi.models(apiConnection ?: error("请先保存 API 配置"))
-                val remembered = prefs.getString(modelPreference(), null)
-                if (provider == AiProvider.CHATGPT || chosenModel.isBlank()) {
-                    if (models.none { it.slug == chosenModel }) chosenModel =
-                        (models.firstOrNull { it.slug == remembered } ?: models.firstOrNull())?.slug.orEmpty()
-                }
-                prefs.edit().putString(modelPreference(), chosenModel).apply()
-                status = "已获取 ${models.size} 个当前账号可见模型。"
-                if (models.isEmpty()) status = "没有获取到可用模型；请检查权限，或为兼容接口手动填写模型名称。"
-            } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { status = "获取模型失败，请检查网络、权限与接口配置；兼容接口也可手动填写模型名称。" }
-            finally { syncSessionState(); busy = false }
-        }
-    }
-
-    fun ask(prompt: String, saveEssay: Pair<String, String>? = null) {
-        if (busy || !aiReady || chosenModel.isBlank() || prompt.isBlank()) {
-            status = "请先连接 AI 服务、选择或填写模型。"
-            return
-        }
-        viewModelScope.launch {
-            busy = true
-            result = ""
-            status = "正在请求 ${provider.label}……"
-            try {
-                val completed = streamAi(prompt) { delta ->
-                    withContext(Dispatchers.Main) { result += delta }
-                }
-                status = "API 测试成功：已收到完整回复。"
-                if (saveEssay != null) dao.addEssay(EssayEntity(
-                    topic = saveEssay.first, content = saveEssay.second, feedback = completed
-                ))
-            } catch (e: CancellationException) { throw e
-            } catch (e: Exception) {
-                status = "调用失败：${e.message ?: "未知错误"}（已收到的文本不视为完成）"
-            } finally { syncSessionState(); busy = false }
-        }
-    }
+    fun selectModel(slug: String) = aiConnection.selectModel(slug)
+    fun selectProvider(value: AiProvider) = aiConnection.selectProvider(value)
+    fun saveApiConnection(baseUrl: String, key: String): Boolean = aiConnection.saveApiConnection(baseUrl, key)
+    fun clearApiConnection() = aiConnection.clearApiConnection()
+    fun signIn() = aiConnection.signIn()
+    fun signOut() = aiConnection.signOut()
+    fun refreshModels() = aiConnection.refreshModels()
+    fun ask(prompt: String, saveEssay: Pair<String, String>? = null) = aiConnection.ask(prompt, saveEssay)
 
     fun review(word: WordEntity, rating: WordRating) {
         if (savingStudy) return
@@ -354,8 +188,20 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun refreshStudyClock() { viewModelScope.launch { refreshStudyDay() } }
-    fun saveDrafts() { viewModelScope.launch { coach.flush() } }
+    fun refreshStudyClock() { viewModelScope.launch { restoreStartupReady.await(); refreshStudyDay() } }
+    fun readingPosition(id: String): Pair<Int, Int>? {
+        val parts = prefs.getString("reading_position_$id", null)?.split(':') ?: return null
+        if (parts.size != 2) return null
+        val tab = parts[0].toIntOrNull() ?: return null
+        val question = parts[1].toIntOrNull() ?: return null
+        return (tab to question).takeIf { tab in 0..2 && question in 1..9999 }
+    }
+
+    fun rememberReadingPosition(id: String, tab: Int, question: Int) {
+        prefs.edit().putString("reading_position_$id", "$tab:$question").apply()
+    }
+
+    fun saveDrafts() { if (!backupRecoveryRunning) viewModelScope.launch { coach.flush() } }
 
     fun previewExam(uri: Uri) {
         if (examBusy || !examLoaded) return
@@ -467,40 +313,62 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    suspend fun savePracticeWord(entry: CoachPractice, word: String, meaning: String, quote: String): String {
+        check(!savingStudy && !backupBusy) { "正在保存，请稍后重试" }
+        val candidate = PracticeVocabulary.word(entry, word, meaning, quote)
+        savingStudy = true
+        return try {
+            if (study.importWords(listOf(candidate)) == 1) "已加入新词复习，来源练习与原句已保留。"
+            else "词条已存在，原释义与复习进度已保留。"
+        } finally { savingStudy = false }
+    }
+
     fun exportBackup(uri: Uri) {
-        if (backupBusy) return
+        if (backupBusy || examBusy || talk.busy || coach.working) return
+        if (!examLoaded) {
+            backupStatus = "个人题库尚未读取成功，未导出完整备份；请先在题库管理核对读取错误，不要覆盖原文件。"
+            return
+        }
         backupBusy = true
-        backupStatus = "正在导出完整学习快照……"
+        examBusy = true
+        backupStatus = "正在导出学习记录与个人题库……"
         viewModelScope.launch {
             try {
                 check(coach.flush()) { "训练正在处理或草稿保存失败，请稍后重试" }
                 val snapshot = backups.snapshot()
                 withContext(Dispatchers.IO) {
-                    val text = BackupCodec.encode(snapshot)
                     getApplication<Application>().contentResolver.openOutputStream(uri, "wt")?.use { output ->
-                        output.write(text.toByteArray(Charsets.UTF_8)); output.flush()
+                        CompleteBackupCodec.write(CompleteBackup(snapshot, examPapers), output)
                     } ?: error("无法写入所选位置")
                 }
-                backupStatus = "备份已导出：${snapshot.words.size} 词、${snapshot.reviews.size} 条学习日志、${snapshot.reading.size} 条旧阅读、${snapshot.essays.size} 篇旧作文、${snapshot.coach.size} 条 G3 训练。未包含登录凭证。"
+                backupStatus = "备份已导出：${snapshot.words.size} 词、${snapshot.reviews.size} 条学习日志、${snapshot.reading.size} 条旧阅读、${snapshot.essays.size} 篇旧作文、${snapshot.coach.size} 条训练、${snapshot.turns.size} 条对话、${examPapers.size} 套题库。未包含登录凭证或原卷 PDF。"
             } catch (e: CancellationException) { throw e
             } catch (e: IllegalArgumentException) { backupStatus = "未导出：${e.message}"
             } catch (_: Exception) { backupStatus = "备份写入失败，请换位置重试；所选位置可能留下不完整文件。本机学习数据未改变。"
-            } finally { backupBusy = false }
+            } finally { backupBusy = false; examBusy = false }
         }
     }
 
     fun previewBackup(uri: Uri) {
         if (backupBusy) return
+        if (backupRestorePending) {
+            backupStatus = "上次恢复尚未完成，请先重试；本机已保存的内容仍可读取。"
+            return
+        }
         backupBusy = true
         backupPreview = null
+        backupPaperPreview = null
         backupStatus = "正在完整校验备份，尚未修改学习数据……"
         viewModelScope.launch {
             try {
-                backupPreview = withContext(Dispatchers.IO) {
-                    getApplication<Application>().contentResolver.openInputStream(uri)?.use(BackupCodec::read)
+                val incoming = withContext(Dispatchers.IO) {
+                    getApplication<Application>().contentResolver.openInputStream(uri)?.use(CompleteBackupCodec::read)
                         ?: error("无法读取所选文件")
                 }
-                backupStatus = "备份校验通过，请核对预览后确认合并恢复。"
+                backupPreview = incoming.study
+                backupPaperPreview = incoming.papers
+                backupStatus = if (incoming.papers == null) "旧版学习 JSON 校验通过；未包含个人题库，请另行导入题库。"
+                    else "完整性校验通过：学习记录与个人题库均可恢复，请核对预览。"
             } catch (e: CancellationException) { throw e
             } catch (e: IllegalArgumentException) { backupStatus = "未恢复：${e.message}"
             } catch (_: Exception) { backupStatus = "备份读取或格式校验失败，未修改本机数据。"
@@ -508,30 +376,63 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun cancelBackupRestore() { if (!backupBusy) { backupPreview = null; backupStatus = "已取消恢复，本机数据未改变。" } }
+    fun cancelBackupRestore() { if (!backupBusy) { backupPreview = null; backupPaperPreview = null; backupStatus = "已关闭恢复预览。" } }
 
     fun restoreBackup(adoptPlans: Boolean) {
         val incoming = backupPreview ?: return
-        if (backupBusy || savingStudy) return
+        if (backupBusy || savingStudy || examBusy || talk.busy || coach.working) return
+        if (backupRestorePending) {
+            backupStatus = "上次恢复尚未完成，请先重试。"
+            return
+        }
+        if (backupPaperPreview != null && !examLoaded) {
+            backupStatus = "个人题库尚未读取成功，未恢复任何内容；请先核对本机题库读取错误。"
+            return
+        }
+        val backup = CompleteBackup(incoming, backupPaperPreview)
         backupBusy = true
+        viewModelScope.launch { performBackupRestore(backup, adoptPlans) }
+    }
+
+    fun resumeBackupRestore() {
+        if (!backupRestorePending || backupBusy || savingStudy || examBusy || talk.busy || coach.working) return
+        backupBusy = true
+        viewModelScope.launch { performBackupRestore(null, false) }
+    }
+
+    private suspend fun performBackupRestore(incoming: CompleteBackup?, adoptPlans: Boolean, flushDrafts: Boolean = true) {
+        backupBusy = true
+        examBusy = true
         savingStudy = true
-        backupStatus = "正在事务内合并恢复……"
-        viewModelScope.launch {
-            var committed = false
-            try {
-                check(coach.flush()) { "训练正在处理或草稿保存失败，请稍后重试" }
-                val summary = backups.restore(incoming, adoptPlans)
-                committed = true
-                backupPreview = null
-                refreshStudyDay()
-                plan = study.plan(LocalDate.parse(today))
-                backupStatus = "恢复完成。${summary.message()}已有词义、来源和学习历史均保留。"
-            } catch (e: CancellationException) { throw e
-            } catch (e: IllegalArgumentException) {
-                backupStatus = if (committed) "数据已恢复，页面刷新失败，请重新打开应用。" else "未恢复：${e.message}"
-            } catch (_: Exception) {
-                backupStatus = if (committed) "数据已恢复，页面刷新失败，请重新打开应用。" else "恢复未能完成，事务已回滚，请保留备份文件后重试。"
-            } finally { backupBusy = false; savingStudy = false }
+        backupRecoveryRunning = true
+        backupStatus = if (incoming == null) "正在继续上次恢复……" else "正在合并恢复学习记录与题库……"
+        var restoredStores = false
+        try {
+            if (flushDrafts) check(coach.flush()) { "训练正在处理或草稿保存失败，请稍后重试" }
+            val restored = withContext(Dispatchers.IO) {
+                if (incoming == null) completeRestores.resume() else completeRestores.restore(incoming, adoptPlans)
+            }
+            restoredStores = true
+            restored?.papers?.let { examPapers = it; examLoaded = true }
+            backupPreview = null
+            backupPaperPreview = null
+            refreshStudyDay()
+            plan = study.plan(LocalDate.parse(today))
+            backupStatus = "恢复完成。${restored?.summary?.message().orEmpty()}已有词义、来源和学习历史均保留。"
+        } catch (e: CancellationException) { throw e
+        } catch (e: Exception) {
+            if (restoreJournal.hasPending()) { backupPreview = null; backupPaperPreview = null }
+            backupStatus = if (restoredStores) "数据恢复已完成，页面刷新失败，请重新打开应用。"
+            else if (restoreJournal.hasPending())
+                "恢复尚未完成，本机已保留恢复任务；部分内容可能已写入。可继续读取离线记录，在此重试或重启后继续；冲突不会覆盖本机记录。"
+            else if (e is IllegalArgumentException) "未恢复：${e.message}"
+            else "恢复未能完成，请保留原备份后重试；未创建新的恢复任务。"
+        } finally {
+            backupRestorePending = restoreJournal.hasPending()
+            backupRecoveryRunning = false
+            backupBusy = false
+            examBusy = false
+            savingStudy = false
         }
     }
 

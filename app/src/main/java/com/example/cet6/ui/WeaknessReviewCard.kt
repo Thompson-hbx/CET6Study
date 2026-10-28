@@ -20,10 +20,19 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boolean, onReview: (CoachPractice) -> Unit) {
+fun WeaknessReviewCard(
+    history: List<CoachPractice>,
+    today: String,
+    enabled: Boolean,
+    standalone: Boolean = false,
+    onReview: (CoachPractice) -> Unit
+) {
     var category by rememberSaveable { mutableStateOf<String?>(null) }
+    var kindFilter by rememberSaveable { mutableStateOf<String?>(null) }
+    var limit by rememberSaveable(category, kindFilter, standalone) { mutableIntStateOf(if (standalone) 20 else 5) }
     val all = WeaknessReview.records(history)
-    val records = WeaknessReview.records(history, category)
+    val byKind = if (kindFilter == null) all else all.filter { it.kind == kindFilter }
+    val records = WeaknessReview.records(byKind, category)
     val periods = WeaknessReview.periods(records, LocalDate.parse(today), ZoneId.systemDefault())
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -36,7 +45,11 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("错因回顾", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    if (standalone) "按题型与错因筛选" else "错因回顾",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
                 Surface(
                     shape = MaterialTheme.shapes.extraSmall,
                     color = MaterialTheme.colorScheme.tertiaryContainer
@@ -50,15 +63,36 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                     )
                 }
             }
+            if (standalone && all.isNotEmpty()) {
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    FilterChip(
+                        selected = kindFilter == null,
+                        onClick = { kindFilter = null },
+                        label = { Text("全部题型") },
+                        shape = MaterialTheme.shapes.small
+                    )
+                    CoachKind.entries.forEach { kind ->
+                        val count = all.count { it.kind == kind.name }
+                        if (count > 0) {
+                            FilterChip(
+                                selected = kindFilter == kind.name,
+                                onClick = { kindFilter = if (kindFilter == kind.name) null else kind.name },
+                                label = { Text("${kind.label} $count") },
+                                shape = MaterialTheme.shapes.small
+                            )
+                        }
+                    }
+                }
+            }
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 FilterChip(
                     selected = category == null,
                     onClick = { category = null },
-                    label = { Text("全部 ${all.size}") },
+                    label = { Text("全部 ${byKind.size}") },
                     shape = MaterialTheme.shapes.small
                 )
                 WeaknessReview.categories.forEach { label ->
-                    val count = all.count { label in WeaknessReview.categoriesOf(it) }
+                    val count = byKind.count { label in WeaknessReview.categoriesOf(it) }
                     if (count > 0) {
                         FilterChip(
                             selected = category == label,
@@ -83,12 +117,12 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
             }
             if (records.isEmpty()) {
                 Text(
-                    "暂未记录错因。完成练习后，可在「错因难句」中记录自己的问题。",
+                    "暂未记录错因。完成练习后，可在「错因笔记」或「错因难句」中记录自己的问题。",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            records.take(5).forEach { entry ->
+            records.take(limit).forEach { entry ->
                 Surface(
                     shape = MaterialTheme.shapes.small,
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
@@ -142,12 +176,18 @@ fun WeaknessReviewCard(history: List<CoachPractice>, today: String, enabled: Boo
                     }
                 }
             }
-            if (records.size > 5) {
-                Text(
-                    "此处显示最近5条，其余记录可在对应训练页的历史中检索。",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (records.size > limit) {
+                if (standalone) {
+                    TextButton(onClick = { limit += 20 }) {
+                        Text("更多记录（剩余 ${records.size - limit} 条）")
+                    }
+                } else {
+                    Text(
+                        "此处显示最近5条，其余记录可在对应训练页的历史中检索。",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }

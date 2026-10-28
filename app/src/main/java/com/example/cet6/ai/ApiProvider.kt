@@ -61,14 +61,25 @@ internal class ChatCompletionStream {
             check(!json.has("error")) { "AI 服务返回流错误，请检查账号额度或稍后重试" }
             val choices = json.getJSONArray("choices")
             var text = ""
+            val indexes = mutableSetOf<Long>()
             for (i in 0 until choices.length()) {
                 val choice = choices.getJSONObject(i)
-                if (choice.getInt("index") != 0) continue
+                val index = choice.opt("index")
+                check((index is Int || index is Long) && (index as Number).toLong() >= 0) {
+                    "AI 选项编号格式无效"
+                }
+                check(indexes.add((index as Number).toLong())) { "AI 选项编号重复" }
+                if (index.toLong() != 0L) continue
                 check(!stopped) { "AI 在结束后继续返回内容" }
+                check(choice.isNull("delta") || choice.opt("delta") is JSONObject) { "AI 文本增量格式无效" }
                 val delta = choice.optJSONObject("delta")
-                if (delta != null && !delta.isNull("content")) text = delta.getString("content")
+                if (delta != null && !delta.isNull("content")) {
+                    text = delta.opt("content") as? String ?: error("AI 文本增量格式无效")
+                }
                 if (!choice.isNull("finish_reason")) {
-                    check(choice.getString("finish_reason") == "stop") { "AI 响应未完成（长度限制、内容过滤或不支持的结束原因）" }
+                    check(choice.opt("finish_reason") is String && choice.opt("finish_reason") == "stop") {
+                        "AI 响应未完成（长度限制、内容过滤或不支持的结束原因）"
+                    }
                     stopped = true
                 }
             }

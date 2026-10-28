@@ -6,6 +6,7 @@ import com.example.cet6.data.*
 import kotlinx.coroutines.flow.first
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class BackupInstrumentationChecks(private val context: Context) {
@@ -34,6 +35,12 @@ class BackupInstrumentationChecks(private val context: Context) {
             val encoded = BackupCodec.encode(snapshot)
             val restored = BackupCodec.read(ByteArrayInputStream(encoded.toByteArray(Charsets.UTF_8)))
             check(snapshot == restored) { "codec roundtrip lost learning fields" }
+            val paper = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original archive test",
+                sourceUrl = "local:test", licenseStatus = "original", sample = true)
+            val complete = CompleteBackup(snapshot, listOf(paper))
+            val archive = ByteArrayOutputStream().also { CompleteBackupCodec.write(complete, it) }.toByteArray()
+            check(CompleteBackupCodec.read(ByteArrayInputStream(archive)) == complete) { "complete ZIP lost study or unanswered papers" }
+            check(CompleteBackupCodec.read(ByteArrayInputStream(encoded.toByteArray())).papers == null) { "legacy JSON misrepresented as complete" }
             check(restored.reviews.size == 126 && restored.reading.size == 40 && restored.essays.size == 25)
             val root = JSONObject(encoded)
             check(root.keys().asSequence().toSet() == setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays", "coach", "turns"))

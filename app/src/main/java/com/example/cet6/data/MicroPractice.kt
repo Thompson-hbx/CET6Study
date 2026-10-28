@@ -5,6 +5,10 @@ import org.json.JSONTokener
 
 /** Generated material is a new unsolved draft, never a completed attempt or an official question. */
 object MicroPractice {
+    /** Keep the confirmed goal as data when a generated draft is reviewed or discussed later. */
+    fun goalContext(entry: CoachPractice): String = if (entry.practiceGoal.isBlank()) "" else
+        "\n---用户确认的训练目标（仅作背景，不替代原文证据）---\n${entry.practiceGoal}\n"
+
     fun prompt(source: CoachPractice): String {
         CoachPrompts.build(source)
         require(source.submittedAt > 0 && source.errorReason.isNotBlank()) { "请先提交作答并确认自己的错因" }
@@ -42,6 +46,7 @@ object MicroPractice {
             questions = string("questions"), sourcePracticeId = source.id, practiceGoal = source.errorReason.trim())
         CoachPrompts.validate(entry)
         require(entry.title.isNotBlank() && entry.material.isNotBlank()) { "生成材料为空，请重试" }
+        require(entry.material != source.material.trim()) { "生成材料与原练习重复，请重试" }
         val answerLabel = Regex("(?im)^\\s*(?:参考答案|正确答案|答案|answer\\s*key|correct\\s*answer)\\s*[:：]")
         require(!answerLabel.containsMatchIn(entry.material + "\n" + entry.questions)) { "生成材料夹带答案，请重试" }
         if (source.kind == CoachKind.READING.name) {

@@ -12,8 +12,9 @@ source = (ROOT / "app/src/main/java/com/example/cet6/data/StudyDatabase.kt").rea
 migrations = {}
 for start, end, body in re.findall(r"val MIGRATION_(\d+)_(\d+) = (.*?)(?=\n        val MIGRATION_|\n        @Volatile)", source, re.S):
     migrations[int(start)] = (int(end), [json.loads('"' + statement + '"') for statement in re.findall(r'db.execSQL\("((?:[^"\\]|\\.)*)"\)', body)])
-expected = json.loads((SCHEMAS / "4.json").read_text(encoding="utf-8"))["database"]
-for version in (1, 2, 3):
+latest = max(int(path.stem) for path in SCHEMAS.glob("*.json"))
+expected = json.loads((SCHEMAS / f"{latest}.json").read_text(encoding="utf-8"))["database"]
+for version in range(1, latest):
     db = sqlite3.connect(":memory:")
     original = json.loads((SCHEMAS / f"{version}.json").read_text(encoding="utf-8"))["database"]
     for table in original["entities"]:
@@ -25,14 +26,20 @@ for version in (1, 2, 3):
     db.execute("INSERT INTO essays VALUES (11,'topic','draft','feedback',1001)")
     if version >= 2:
         db.execute("INSERT INTO daily_plans VALUES ('2026-10-16',7,15)")
-        db.execute("INSERT INTO word_reviews VALUES ('old-log','preserved',1,0,'2026-10-16',1000,1800000000000)")
+        db.execute("INSERT INTO word_reviews (id,word,remembered,wasNew,studiedOn,createdAt,nextDueAt) VALUES ('old-log','preserved',1,0,'2026-10-16',1000,1800000000000)")
+    if version >= 5:
+        db.execute("INSERT INTO coach_practices (id,kind,title,material,questions,answer,feedback,model,errorReason,submittedAt,updatedAt) VALUES ('preserved-practice','READING','title','material','question','A','feedback','test-model','reason',100,200)")
+    if version >= 6:
+        db.execute("UPDATE coach_practices SET savedSentences='Original evidence.'")
+    if version >= 7:
+        db.execute("UPDATE coach_practices SET sourcePracticeId='older-practice',practiceGoal='Preserved goal'")
     before = {}
     for table in original["entities"]:
         name = table["tableName"]
         columns = [row[1] for row in db.execute(f"PRAGMA table_info({name})")]
         before[name] = (columns, db.execute(f"SELECT {','.join(columns)} FROM {name}").fetchall())
     current = version
-    while current < 4:
+    while current < latest:
         target, statements = migrations[current]
         assert statements, f"No migration SQL for version {current}"
         for sql in statements:
@@ -50,5 +57,5 @@ for version in (1, 2, 3):
         assert db.execute(f"SELECT {','.join(columns)} FROM {name}").fetchall() == rows, f"Lost data: {name}"
     assert db.execute("SELECT count(*) FROM word_schedules").fetchone()[0] == 0, "Fabricated memory"
     assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
-    print(f"PASS: actual migration SQL {version}->4; columns/types/keys match Room 4; all original rows preserved; no fabricated FSRS state.")
+    print(f"PASS: actual migration SQL {version}->{latest}; columns/types/keys match Room {latest}; all original rows preserved; no fabricated FSRS state.")
     db.close()

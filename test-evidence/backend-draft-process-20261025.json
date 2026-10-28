@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-25",
+  "device": "emulator-5554",
+  "scope": "Real Activity/ViewModel draft writes and fresh-process recovery using original fixtures",
+  "method": "Validate live app PID, then run-as com.example.cet6 kill -9; restart instrumentation and real Activity in a different process",
+  "edits_per_kind": 20,
+  "kinds": [
+    "READING",
+    "WRITING",
+    "TRANSLATION"
+  ],
+  "cases": [
+    {
+      "mode": "foreground",
+      "preparedPid": 4216,
+      "verifiedPid": 4326,
+      "acknowledged": true,
+      "stoppedBeforeKill": false,
+      "interactiveBeforeKill": true,
+      "drafts": 3,
+      "unacknowledgedLatestMissing": 0,
+      "previousPracticesUnchanged": 20,
+      "bankUnchanged": true,
+      "preparationLog": ".tools\\draft-3697ed1c-22e1-425e-a9e4-f1a06e6ef35a-foreground-prepare.log",
+      "verificationLog": ".tools\\draft-3697ed1c-22e1-425e-a9e4-f1a06e6ef35a-foreground-verify.log"
+    },
+    {
+      "mode": "background",
+      "preparedPid": 4389,
+      "verifiedPid": 4501,
+      "acknowledged": true,
+      "stoppedBeforeKill": true,
+      "interactiveBeforeKill": true,
+      "drafts": 3,
+      "unacknowledgedLatestMissing": 0,
+      "previousPracticesUnchanged": 23,
+      "bankUnchanged": true,
+      "preparationLog": ".tools\\draft-75612935-4e10-46a6-b73c-0d35debb25d0-background-prepare.log",
+      "verificationLog": ".tools\\draft-75612935-4e10-46a6-b73c-0d35debb25d0-background-verify.log"
+    },
+    {
+      "mode": "screen-off",
+      "preparedPid": 4557,
+      "verifiedPid": 4698,
+      "acknowledged": true,
+      "stoppedBeforeKill": true,
+      "interactiveBeforeKill": false,
+      "drafts": 3,
+      "unacknowledgedLatestMissing": 0,
+      "previousPracticesUnchanged": 26,
+      "bankUnchanged": true,
+      "preparationLog": ".tools\\draft-75612935-4e10-46a6-b73c-0d35debb25d0-screen-off-prepare.log",
+      "verificationLog": ".tools\\draft-75612935-4e10-46a6-b73c-0d35debb25d0-screen-off-verify.log"
+    },
+    {
+      "mode": "pending",
+      "preparedPid": 4763,
+      "verifiedPid": 4857,
+      "acknowledged": false,
+      "stoppedBeforeKill": false,
+      "interactiveBeforeKill": true,
+      "drafts": 3,
+      "unacknowledgedLatestMissing": 3,
+      "previousPracticesUnchanged": 29,
+      "bankUnchanged": true,
+      "preparationLog": ".tools\\draft-75612935-4e10-46a6-b73c-0d35debb25d0-pending-prepare.log",
+      "verificationLog": ".tools\\draft-75612935-4e10-46a6-b73c-0d35debb25d0-pending-verify.log"
+    }
+  ],
+  "findings": {
+    "acknowledged_drafts_preserved": 9,
+    "pending_drafts_tested": 3,
+    "pending_latest_not_persisted": 3,
+    "pending_committed_baselines_preserved": 3,
+    "existing_practices_and_bank_unchanged": true
+  },
+  "limits": [
+    "SIGKILL is abrupt process death, not a measured LMKD event",
+    "Pending writes were held by a controlled Room transaction; this is not a real device storage fault",
+    "No guarantee for text that has not received a saved acknowledgement",
+    "No physical phone lifecycle or power-loss validation"
+  ],
+  "product_code_changes": false,
+  "database_schema_changes": false,
+  "new_dependencies": false,
+  "new_live_ai_requests": 0,
+  "phone_touched": false,
+  "runner": "tools/check_draft_process.ps1",
+  "source": "app/src/androidTest/java/com/example/cet6/DraftProcessChecks.kt",
+  "result_files": [
+    ".tools/draft-process-3697ed1c-22e1-425e-a9e4-f1a06e6ef35a-results.json",
+    ".tools/draft-process-75612935-4e10-46a6-b73c-0d35debb25d0-results.json"
+  ],
+  "full_isolated_suite": "PASS",
+  "gradle_log": ".tools/draft-process-full-gradle-20261025.log",
+  "emulator_screen_restored": "Awake",
+  "verification": {
+    "latest_jvm_report": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lint": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 7
+    },
+    "gradle": "PASS; JVM tasks up to date for unchanged production/JVM test code",
+    "diff_check": "PASS"
+  }
+}

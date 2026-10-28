@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-28",
+  "scope": "Backend integration for the existing frontend workflows; no UI, ViewModel or navigation edits",
+  "frontend_unchanged_files": 35,
+  "frontend_baseline_sha256": {
+    "app/src/main/java/com/example/cet6/ui/AiConnectionState.kt": "795ac6c3b747f7f8ecbe29d23fc20c4b5eeaedab733862719e87191240e7e5de",
+    "app/src/main/java/com/example/cet6/ui/ApiConnectionSettings.kt": "949db16f4a860caabe4b22baedb20a98498ac3eea38a3c266b97e935bbd9db7a",
+    "app/src/main/java/com/example/cet6/ui/AppRoot.kt": "dbf2cf07e3eeac0d31fbf82b4d242ff646adb7d173cbd6f8c149eebe870cf869",
+    "app/src/main/java/com/example/cet6/ui/BackupCard.kt": "873d0724ed9f21962d95e226ce2944cfa892952d88de525774a840737a204838",
+    "app/src/main/java/com/example/cet6/ui/CoachScreen.kt": "0e424897fb974ce9688aa0dcc46947b741fb559fefef9c9c5e61f26979b2716d",
+    "app/src/main/java/com/example/cet6/ui/CoachSourceCard.kt": "144f5e4b53c39b7070d829e4c6c46e7991eff2fc433ce974baabe67777e2e022",
+    "app/src/main/java/com/example/cet6/ui/CoachState.kt": "297bd0c7e1afb0506409af29f05bb715551869f978ac2742e5304c0e02105699",
+    "app/src/main/java/com/example/cet6/ui/CoachTalk.kt": "2fe06b9758b6ac97f70140fd4d0fcb8e27ec637edcdf1c1d817e5dad494b4287",
+    "app/src/main/java/com/example/cet6/ui/CoachWidgets.kt": "712325add91bca170ccc31b4b553c0687cb21b7d5bb306ddb1ea3a98fbad7005",
+    "app/src/main/java/com/example/cet6/ui/ExamClock.kt": "96e1486f85bc2f814198c8af68044dea5f1e90ad97f1cb1f596402388291e1a4",
+    "app/src/main/java/com/example/cet6/ui/ExamScreens.kt": "b426f543b70895511743fcdfa3f0783b2ddfaf172a75142473358624703f3177",
+    "app/src/main/java/com/example/cet6/ui/LearningTrendsScreen.kt": "8c60032a436a3b0db1e21475a34eb7a8ece980e10ce389361cec09cf22abbb30",
+    "app/src/main/java/com/example/cet6/ui/MarkdownFeedback.kt": "d96475646ee0f61873fc1c88dadeeaedea4b8fa73ce7703c4062fff3ac0d6017",
+    "app/src/main/java/com/example/cet6/ui/PaperAnswerScreen.kt": "39fe6d5782a52cafc6b0caa867e1c376f8944fc01963a15eba3d5953ddaa846e",
+    "app/src/main/java/com/example/cet6/ui/PracticeWordDialog.kt": "e8ee8cdb99a6dd8385229b5cb19e966592b9ecfddf77f18152ef061543361e59",
+    "app/src/main/java/com/example/cet6/ui/ReadingDiagnosisPanel.kt": "fde293981e96c3716d835419cb322d474e6ab8c2170634f69ed2764a1263ea93",
+    "app/src/main/java/com/example/cet6/ui/ReadingToolsCard.kt": "6501dc02ff301e61e768b0ae6101086ce1ea634e4e5a1f1a35d201d9cc78627f",
+    "app/src/main/java/com/example/cet6/ui/ReadingWorkspace.kt": "ae9c6a6cb5b3f92207d53531919f1fc2139b4900a7471389fed5c12e74d5f2a7",
+    "app/src/main/java/com/example/cet6/ui/ReviewParts.kt": "9f6ac36ba668d4a30d2b959112a4833ea7992c180a1022f3af8aad3ab2dbcfec",
+    "app/src/main/java/com/example/cet6/ui/SkillHomes.kt": "17ccce985369b31eb5a1101a769adab8972566295571755558942fd0a5048c6e",
+    "app/src/main/java/com/example/cet6/ui/StudyDocumentPicker.kt": "07328753e2aa5eea0dd317ac5e21d986eb1d439ac7c9b55e6ef7fcc5a5689868",
+    "app/src/main/java/com/example/cet6/ui/StudyViewModel.kt": "32eaa0aaa233732f5a6065d7b9576aff36b89a6fafe1cd0569d82130c6b97b44",
+    "app/src/main/java/com/example/cet6/ui/TranslationWorkspace.kt": "36313bb0a7c46cfede7517804cb2591ca38face9f26dadb6f73b965dc7ce70a7",
+    "app/src/main/java/com/example/cet6/ui/VocabularyImportCard.kt": "47b4c00cb261d9cb9f994e1124543844ae5cb64537dff83a6c3f95c24d57b84d",
+    "app/src/main/java/com/example/cet6/ui/WeaknessReviewCard.kt": "0d4fc78f643b6bea01d56d3e4705fe6d5f5f41b6b394af045f343a0bbe6f6d4f",
+    "app/src/main/java/com/example/cet6/ui/WordContentLicenses.kt": "f7dd1d47ce98c14b55ad2af2be16ccdb4af0ec9adba07d368e6aab93cc08ba3f",
+    "app/src/main/java/com/example/cet6/ui/WorkspaceCommon.kt": "371d7d0f9ad6926b8b1cdcfde6ece1964b9656b1eeb916a6efcf6e9b01517da1",
+    "app/src/main/java/com/example/cet6/ui/WritingWorkspace.kt": "16098524abec821e67ac51b2f53328519350000e0bdfe8aa6edd328d7ac60d44",
+    "app/src/main/java/com/example/cet6/ui/components/CommonUi.kt": "7e52d5486f333a63d9c5ca21003de562b2f612757eaa6319a6fb6d8a13bcacc6",
+    "app/src/main/java/com/example/cet6/ui/components/Paper.kt": "c3436f67add1b4e0e32664d879e3cffe9fcb11d6c06b888fa447891eeab27ebb",
+    "app/src/main/java/com/example/cet6/ui/theme/Color.kt": "6eae3f84f24d00aa24bff13ac85caf66a8e58f63ccad3e47193140347ace38d6",
+    "app/src/main/java/com/example/cet6/ui/theme/Shape.kt": "961efdae84409a824fe14366e2295030f26084c672f941670b75893169306ae1",
+    "app/src/main/java/com/example/cet6/ui/theme/Theme.kt": "1db77717a311a9513f6bc95b0bf07e5dff34f5073abc98dc668c0ccf6ae30a21",
+    "app/src/main/java/com/example/cet6/ui/theme/Type.kt": "4fc3ce3c4bcf82471863f5c5a9cad16782055f46f5bcdcf5d74aa7f67d765fc2",
+    "app/src/main/java/com/example/cet6/MainActivity.kt": "663af70b35c1f8119fc379eae76d03c53b5d50dfc6342d949eb3eec0656cc18c"
+  },
+  "backend_changes": {
+    "goal_context": "Preserve the confirmed practice goal in writing review/planning, translation review/hints and follow-up prompts as background data",
+    "writing_length": "Respect actual task word/sentence requirements rather than forcing every rewrite to 150-200 words",
+    "generated_task_identity": "Reject material identical to its source so a new targeted task cannot masquerade as a revision"
+  },
+  "changed_backend_sha256": {
+    "app/src/main/java/com/example/cet6/data/MicroPractice.kt": "1329e85b95f17e221d09b83027ed255a7cd74e6980062260616c327fb11f592b",
+    "app/src/main/java/com/example/cet6/data/WritingCoach.kt": "e785d45258b32af44d6d22a10339566a2100ba94dd337857b0f6b6d4e768f82c",
+    "app/src/main/java/com/example/cet6/data/TranslationCoach.kt": "038aef62b5edb52b8fe27ac0ca4c4810c908ac6368d840abbe47eabcb53fbbc6",
+    "app/src/main/java/com/example/cet6/data/CoachChat.kt": "0f53cfb538f83dfdc186c10f34b4d38c9c81ad1cb9d216b75786c47f8fcf281e"
+  },
+  "test_sha256": {
+    "app/src/test/java/com/example/cet6/PracticeBackendTest.kt": "870b89e34b2f88785a8bbda76412728b9883d7c2f0c8b0ad8afbb5b4a1908f16",
+    "app/src/androidTest/java/com/example/cet6/MicroPracticeInstrumentationChecks.kt": "a7c0cd33682cffa49e6ead9d3d67d18ab20328049c777d24a9e8ecb9114af2df"
+  },
+  "validation": {
+    "six_new_backend_tests": {
+      "before_fix_failed": 4,
+      "after_fix_passed": 6
+    },
+    "jvm_actual_execution": true,
+    "jvm": {
+      "tests": 157,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "python_tests": 31,
+    "migrations": "1-7 to 8 PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 6
+    },
+    "android_complete_isolated_suite": "PASS",
+    "writing_translation_workflows": [
+      "Save latest confirmed error note before generation",
+      "Reject duplicate source material and retain original attempt",
+      "Generate an independent unsolved draft with provenance and goal",
+      "Submit without an AI call; save a completed fake review through the existing CoachTalk interface",
+      "Retry retains parent and goal; existing frontend version helper separates the new task from its source",
+      "Add confirmed source-sentence vocabulary through existing StudyRepository; duplicate import preserves word and FSRS state",
+      "Backup roundtrip and real database close/reopen preserve practices, turns, words and schedules"
+    ]
+  },
+  "emulator": {
+    "serial": "emulator-5556",
+    "avd": "Pixel_7_API_36",
+    "no_audio": true,
+    "settings_after": {
+      "font_scale": "1.0",
+      "night_mode": "no",
+      "accessibility_enabled": "0"
+    },
+    "stopped_after_validation": true,
+    "installed_apk_sha256": {
+      "com.example.cet6": "a6391452729dee575f215faa2d45a91c697e8667e877121d718a4aee243207d5",
+      "com.example.cet6.test": "58c8b35313370e652a37676d744c9584ee2a54805286fae753c159ca57e582e8"
+    }
+  },
+  "live_model_requests": 0,
+  "physical_phone_modified": false,
+  "database_schema_changed": false,
+  "backup_format_changed": false,
+  "new_dependencies": false,
+  "committed_or_pushed": false,
+  "limitations": [
+    "All AI integration checks use fake offline transports; new prompt quality has not been tested on a live model",
+    "No full frontend UI acceptance in this backend-only scope; TalkBack/speech validation remains paused"
+  ],
+  "logs": {
+    ".tools/backend-integration-before-20261028.log": {
+      "sha256": "6348ec0fea3623aa9a55b340b5e21137e2b466a3d8ad6f8eaf88eeee1983ce44",
+      "observed": [
+        "6 tests completed, 4 failed"
+      ]
+    },
+    ".tools/backend-integration-after-20261028.log": {
+      "sha256": "fa7c25613ae1054bc603306a5c4889c2dcc8e6299228a6a1e7752346380189e3",
+      "observed": [
+        "BUILD SUCCESSFUL"
+      ]
+    },
+    ".tools/backend-integration-verify-20261028.log": {
+      "sha256": "564cecfd649a168b5bf8eb9a6aacb48ec6c09f2037aee09a2742f0ed5a9175ee",
+      "observed": [
+        "BUILD SUCCESSFUL",
+        "Ran 31 tests",
+        "PASS: actual migration SQL 7->8"
+      ]
+    },
+    ".tools/backend-integration-isolated-20261028.log": {
+      "sha256": "61288f6f521c386bc56147b66d693c3e2916498679b6574c89318fc2f2c437e4",
+      "observed": [
+        "PASS: v1-v7 to v8"
+      ]
+    }
+  }
+}

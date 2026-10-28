@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-24",
+  "device": "emulator-5554 / sdk_gphone64_x86_64",
+  "scenario": "ui / LocalDataInstrumentation",
+  "results": {
+    "font1.0_light": "PASS",
+    "font1.3_dark": "PASS"
+  },
+  "checks": [
+    "new reading draft id differs before editing",
+    "original title/material and question entered through UI",
+    "question parses and is saved",
+    "radio option persists as 1. A",
+    "offline submission timestamp persists with no AI feedback",
+    "original quotation is found and saved",
+    "logic error reason survives immediate background",
+    "application returns to foreground"
+  ],
+  "test_fixes": [
+    "semantic click instead of stale text coordinates",
+    "selected Compose tab is a valid destination without click action",
+    "refresh text/button accessibility nodes and wait for enabled/selected states",
+    "wait on persisted state instead of fixed save delays",
+    "nonblocking existing Activity relaunch with foreground assertion"
+  ],
+  "assertions": "All original business assertions retained; new draft/submission checks added",
+  "display_settings_restored": {
+    "font_scale": "1.0",
+    "night_mode": "no"
+  },
+  "screenshot": "emulator-reading-evidence-font130-dark-20261024.png",
+  "logs": [
+    ".tools/ui-complete-final-20261024.txt",
+    ".tools/ui-font130-dark-final-20261024.txt"
+  ],
+  "android_test_apk_sha256": "371757a8ae8af15784a5eb91cb2b99fbbd45ff11488f4f96282ceaffc17ec21c",
+  "limits": [
+    "Original custom article flow, not the structured exam answer card",
+    "No TalkBack speech/focus-order verification",
+    "No live AI requests",
+    "No full physical-device display/accessibility matrix"
+  ],
+  "side_effects": "Labelled original emulator exercises added; no existing work removed or changed; no physical phone data touched by this UI test",
+  "screenshot_timing": "Before final error-reason click; the click is followed immediately by HOME without screenshot work in between"
+}

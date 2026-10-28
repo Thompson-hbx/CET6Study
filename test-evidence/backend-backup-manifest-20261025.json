@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-25",
+  "scope": "Complete ZIP manifest metadata integrity before restoration",
+  "before_fix": "Coerced manifest metadata was accepted: version/string",
+  "change": "Reuse strict JSON field readers for ZIP manifest version, timestamp, paper/table counts, descriptor bytes and text fields",
+  "corpus": {
+    "invalid": 35,
+    "variants": [
+      "numeric strings",
+      "fractional numbers",
+      "integer values wrapping to valid Int counts"
+    ],
+    "shared_source": "app/src/testShared/java/com/example/cet6/CompleteManifestChecks.kt"
+  },
+  "jvm": {
+    "tests": 149,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 7
+  },
+  "android": "PASS: all 35 rejected; decoded archive restore attempts leave isolated study snapshot and bank bytes unchanged and create no journal",
+  "full_isolated_suite": "PASS",
+  "valid_archives": "PASS: nonempty and empty library ZIP plus legacy learning JSON",
+  "logs": [
+    ".tools/backup-manifest-before-20261025.xml",
+    ".tools/backup-manifest-targeted-20261025.log",
+    ".tools/backup-manifest-android-20261025.txt",
+    ".tools/backup-manifest-full-isolated-20261025.txt",
+    ".tools/backup-manifest-full-gradle-20261025.log"
+  ],
+  "backup_format_version_change": false,
+  "database_schema_change": false,
+  "new_dependencies": false,
+  "new_live_ai_requests": 0,
+  "limits": [
+    "This validates manifest field types, not every possible malformed archive or real storage fault",
+    "No physical device backup restore was attempted"
+  ],
+  "personal_apk": {
+    "path": ".tools\\CET6Study-backup-manifest-20261025-personal.apk",
+    "sha256": "26909774ad913b05491624a6a203175a47286d01c90e8855ec8d1b28562075fc",
+    "pack_sha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+    "pdfs_byte_identical": 46,
+    "code_identical_to_tested_ordinary": true,
+    "installed": true,
+    "launch_after_install": false,
+    "installed_sha256": "26909774ad913b05491624a6a203175a47286d01c90e8855ec8d1b28562075fc",
+    "device": "10AE5X1ZA3000YU",
+    "initial_install_error": "INSTALL_FAILED_ABORTED: User rejected permissions",
+    "retry_after_user_ready": "Success"
+  },
+  "diff_check": "PASS"
+}

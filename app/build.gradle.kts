@@ -47,6 +47,9 @@ android {
     sourceSets.getByName("main").java.srcDir("../third_party/bee-fsrs/src")
     if (personalExamPack.isPresent) sourceSets.getByName("main").assets.srcDir(personalAssets)
     sourceSets.getByName("androidTest").assets.srcDir("schemas")
+    sourceSets.getByName("androidTest").assets.srcDir("testdata")
+    sourceSets.getByName("test").java.srcDir("src/testShared/java")
+    sourceSets.getByName("androidTest").java.srcDir("src/testShared/java")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

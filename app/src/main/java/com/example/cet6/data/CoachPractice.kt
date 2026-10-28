@@ -57,20 +57,3 @@ object CoachPrompts {
             "---阅读题目---\n${entry.questions}\n---我的独立作答---\n${entry.answer}\n---数据结束---"
     }
 }
-
-class CoachRepository(private val db: StudyDatabase) {
-    val history = db.dao().coachHistory()
-    val reviews = db.dao().reviewTurns()
-    val turnCounts = db.dao().turnCounts()
-    fun turns(practiceId: String) = db.dao().turns(practiceId)
-    suspend fun draft(kind: CoachKind) = db.dao().coachDraft(kind.name)
-    suspend fun get(id: String) = db.dao().coachById(id)
-    suspend fun save(entry: CoachPractice) {
-        CoachPrompts.validate(entry)
-        db.dao().saveCoach(entry)
-    }
-    suspend fun saveTurn(turn: CoachTurn) {
-        CoachTurns.validate(turn)
-        db.dao().saveTurn(turn)
-    }
-}

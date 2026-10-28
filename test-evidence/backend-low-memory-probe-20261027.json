@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-27",
+  "scope": "P1-04 emulator-only low-memory probe",
+  "outcome": "LOW_MEMORY exit not verified; data-only inspection passed",
+  "actual_low_memory_exit_verified": false,
+  "production_code_changed": false,
+  "phone_changed": false,
+  "new_model_requests": 0,
+  "new_dependencies": false,
+  "emulator": {
+    "serial": "emulator-5554",
+    "sdk": 36,
+    "total_ram_kib": 2531832,
+    "host_emulator_process_stayed_live": true
+  },
+  "attempts": [
+    {
+      "run_id": "b99eaf43-c194-44e4-b114-091da503521a",
+      "normal_app_pid": 5630,
+      "cached_oom_score_adj": 900,
+      "result": "Standalone Kotlin fixture crashed before allocating memory; corrected to platform Java without new dependencies",
+      "error": "NoClassDefFoundError: kotlin/jvm/internal/Intrinsics",
+      "live_target_was_not_manually_signalled": true
+    },
+    {
+      "run_id": "e6589b91-b958-4c47-8d6a-21dd16ee0bd5",
+      "normal_app_pid": 6820,
+      "cached_oom_score_adj": 900,
+      "pressure_pid": 7540,
+      "last_reported_allocated_bytes": 1543503872,
+      "legacy_budget_bytes": 1944446976,
+      "result": "Bounded-window driver did not verify target reclamation; activity service timed out and later restarted",
+      "cleanup": "Only pressure UID process was killed; target was still observed live at cleanup",
+      "system_server_observed_pids_before_after": [
+        723,
+        8152
+      ],
+      "matching_target_exit_report_after_system_recovery": false,
+      "logs": [
+        ".tools/low-memory-java-resume-20261027.log",
+        ".tools/low-memory-legacy-pressure-20261027.json",
+        ".tools/low-memory-after-system-recovery-exit-20261027.log"
+      ]
+    }
+  ],
+  "data_inspection": {
+    "result": "DATA ONLY; not an LMKD pass",
+    "prepared_pid": 6757,
+    "cold_verified_pid": 10863,
+    "acknowledged_drafts_restored": 3,
+    "latest_missing": 0,
+    "previous_practices_hashes_unchanged": 42,
+    "bank_hash_unchanged": true,
+    "low_memory_verified_marker": false,
+    "log": ".tools/low-memory-data-inspection-20261027.txt",
+    "bank_existed_during_probe": true
+  },
+  "final_harness": {
+    "test_apk_component": "com.example.cet6.MemoryPressureActivity",
+    "component_permission": "android.permission.DUMP",
+    "emulator_and_api30_guards": true,
+    "nonce_required": true,
+    "allocation_deadline_seconds": 35,
+    "budget_max_bytes": 536870912,
+    "budget_fraction_of_emulator_ram_max": 0.25,
+    "cleanup": "Native run-as signal constrained to the separate test package UID; no ActivityManager dependency",
+    "normal_target_is_never_manually_signalled_by_low_memory_driver": true,
+    "only_success_condition": "Matching normal PID and timestamp with ApplicationExitInfo.REASON_LOW_MEMORY, plus new-process draft/hash verification",
+    "no_successful_low_memory_run_yet": true,
+    "smoke": {
+      "run_id": "eaf69ee6-6369-4f81-8db4-046d794ae3a8",
+      "phase": "deadline",
+      "allocated_bytes": 33554432,
+      "budget_bytes": 33554432,
+      "mappings_released_at_deadline": true,
+      "uid_cleanup_completed": true,
+      "tests_low_memory_reclamation": false
+    }
+  },
+  "verification": {
+    "build_and_lint": "PASS",
+    "lint": {
+      "Warning": 7
+    },
+    "full_android_isolated_suite": "PASS",
+    "original_foreground_sigkill_driver": "PASS",
+    "original_driver_evidence": ".tools/draft-process-69ba8b86-855a-4097-9d24-9460463b4286-results.json",
+    "jvm_rerun": false,
+    "jvm_rerun_reason": "Only instrumentation fixtures, driver and docs changed",
+    "main_apk_sha256": "2a1c7b58d4ec060927b2b4e71b57c32e9e3de019a80e99703337f2c6448ad501",
+    "main_dex_matches_previously_tested_ordinary": true,
+    "pressure_component_absent_from_main_apk": true,
+    "logs": [
+      ".tools/low-memory-final-build-20261027.log",
+      ".tools/low-memory-full-isolated-20261027.txt",
+      ".tools/low-memory-original-driver-regression-20261027.log"
+    ],
+    "source_diff_review": "PASS; changes confined to instrumentation fixtures, new driver and documentation",
+    "powershell_parser": "PASS",
+    "git_diff_check": "PASS",
+    "final_activity_service": "found",
+    "pressure_package_process_remaining": false
+  },
+  "references": [
+    "https://developer.android.com/reference/android/app/ApplicationExitInfo#REASON_LOW_MEMORY",
+    "https://developer.android.com/reference/android/os/SharedMemory"
+  ],
+  "limits": [
+    "No verified LMKD exit or physical-phone low-memory result",
+    "System-service restart is not classified as a confirmed low-memory app exit",
+    "The 32MiB smoke only validates the fixture cap/deadline/cleanup path",
+    "No physical power-loss or storage failure coverage"
+  ]
+}

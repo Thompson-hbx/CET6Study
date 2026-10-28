@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "broken-json",
+      "state": "{\"accepted\":[0",
+      "valid": false
+    },
+    {
+      "id": "object-array",
+      "state": "{\"accepted\": {\"0\": true}, \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "coerced-string",
+      "state": "{\"accepted\": [\"0\"], \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "coerced-decimal",
+      "state": "{\"accepted\": [0.5], \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "unknown-id",
+      "state": "{\"accepted\": [99], \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "negative-id",
+      "state": "{\"accepted\": [-1], \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "duplicate-id",
+      "state": "{\"accepted\": [0, 0], \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "overlap",
+      "state": "{\"accepted\": [0], \"dismissed\": [0]}",
+      "valid": false
+    },
+    {
+      "id": "unknown-field",
+      "state": "{\"accepted\": [0], \"dismissed\": [], \"origin\": \"Original fixture metadata\"}",
+      "valid": false
+    },
+    {
+      "id": "null-array",
+      "state": "{\"accepted\": null, \"dismissed\": []}",
+      "valid": false
+    },
+    {
+      "id": "empty",
+      "state": "",
+      "valid": true,
+      "accepted": [],
+      "dismissed": [],
+      "afterAccepted": [
+        1
+      ],
+      "afterDismissed": []
+    },
+    {
+      "id": "empty-object",
+      "state": "{}",
+      "valid": true,
+      "accepted": [],
+      "dismissed": [],
+      "afterAccepted": [
+        1
+      ],
+      "afterDismissed": []
+    },
+    {
+      "id": "legacy-one-field",
+      "state": "{\"accepted\":[0]}",
+      "valid": true,
+      "accepted": [
+        0
+      ],
+      "dismissed": [],
+      "afterAccepted": [
+        0,
+        1
+      ],
+      "afterDismissed": []
+    },
+    {
+      "id": "both-fields",
+      "state": "{\"accepted\":[0],\"dismissed\":[1]}",
+      "valid": true,
+      "accepted": [
+        0
+      ],
+      "dismissed": [
+        1
+      ],
+      "afterAccepted": [
+        0,
+        1
+      ],
+      "afterDismissed": []
+    },
+    {
+      "id": "trailing-record",
+      "state": "{\"accepted\":[0]}{\"dismissed\":[1]}",
+      "valid": false
+    },
+    {
+      "id": "duplicate-key",
+      "state": "{\"accepted\":[0],\"accepted\":[1]}",
+      "valid": false
+    },
+    {
+      "id": "root-array",
+      "state": "[{\"accepted\":[0]}]",
+      "valid": false
+    },
+    {
+      "id": "overflow-id",
+      "state": "{\"accepted\":[2147483648]}",
+      "valid": false
+    }
+  ]
+}

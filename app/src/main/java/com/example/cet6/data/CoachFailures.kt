@@ -11,6 +11,8 @@ object CoachFailures {
         val code = Regex("(?:code=|OAuth Token 请求失败：HTTP [0-9]{3}，|AI 响应未完成：)([a-z_]+)\\b")
             .find(message)?.groupValues?.get(1)
         return when {
+            error is CoachReplyTooLongException ->
+                "回复超过 60,000 字符，本次问答未保存，也未截断为完整回复；请缩小问题范围后重试。"
             code in setOf("invalid_grant", "invalid_token", "token_expired") || http == 401 ||
                 message in setOf("请先登录 ChatGPT", "请重新登录 ChatGPT", "授权已过期，请重新登录") ->
                 "登录授权或 API Key 需要检查，请到「连接」页重新连接所选 AI 服务后重试。"

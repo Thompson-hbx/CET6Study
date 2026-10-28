@@ -113,7 +113,16 @@ class ExamStore(private val context: Context) {
         val text = ExamCodec.encode(papers)
         ExamCodec.decode(text)
         val output = file.startWrite()
-        try { output.write(text.toByteArray(Charsets.UTF_8)); file.finishWrite(output) }
-        catch (e: Throwable) { file.failWrite(output); throw e }
+        var finished = false
+        try {
+            output.write(text.toByteArray(Charsets.UTF_8))
+            file.finishWrite(output)
+            finished = true
+            // AtomicFile may log a failed rename without throwing; do not report a false success.
+            check(load() == papers) { "题库未能完整保存，原文件或恢复任务已保留" }
+        } catch (e: Throwable) {
+            if (!finished) file.failWrite(output)
+            throw e
+        }
     }
 }

@@ -2,9 +2,18 @@
 
 本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
 
+## AI 连接职责拆分（2026-10-27）
+
+- `AiConnectionState` 持有服务配置、模型偏好、OAuth 可用状态、模型列表、测试回复和共享请求状态；其协程仍使用 `StudyViewModel.viewModelScope`。`StudyViewModel` 保留原公开读取/操作接口及 `streamCoach`，训练与追问继续共享同一请求门槛；旧作文写入通过回调留在 ViewModel 的数据层。
+- 原 `study_ui` 偏好键、API/会话加密存储、超时、传输协议和取消行为沿用原实现，没有数据库或存储格式迁移。ViewModel 在此次拆分时从 630 行降至 446 行；学习、题库和备份操作仍待后续按职责逐步迁出。
+- `AiConnectionStateChecks` 使用唯一命名的隔离偏好、内存 Room 和不转发网络的 HTTP 拦截器，验证服务间模型偏好、加密配置重新读取、完整回复落盘、断流/429 保全、请求中配置锁定及取消后释放。重建组件检查不等于进程死亡恢复。另通过既有真实 Activity/ViewModel 生命周期回归；证据见 [backend-ai-state-20261027.json](../test-evidence/backend-ai-state-20261027.json)。
+- 重跑：构建并向模拟器安装普通包/测试包后，运行 `adb -s <emulator-serial> shell am instrument --user 0 -w -e scenario ai-connection com.example.cet6.test/com.example.cet6.LocalDataInstrumentation`。默认隔离套件也包含此检查；不需要真实凭证或模型额度。
+
+下列按日期保留早期实现记录；当前备份、协议与计时边界以 [STATUS.md](STATUS.md) 及其关联文档为准。
+
 ## 多 AI 服务接入（2026-10-23）
 
-- `StudyViewModel.streamAi` 按 `AiProvider` 分派到原 `ResponsesClient` 或新增 `ChatCompletionsClient`；训练和追问共用 `aiReady` 门槛，不再依赖 ChatGPT 套餐权限。ChatGPT OAuth 与 Responses 协议保持原实现。
+- `AiConnectionState.streamAi`（2026-10-27 从 ViewModel 迁出）按 `AiProvider` 分派到原 `ResponsesClient` 或新增 `ChatCompletionsClient`；训练和追问共用 `aiReady` 门槛，不再依赖 ChatGPT 套餐权限。ChatGPT OAuth 与 Responses 协议保持原实现。
 - DeepSeek 固定官方 Base URL；自定义服务仅接受无账号、查询参数及片段的 HTTPS Base URL，保留服务商版本路径。模型通过 `GET /models` 的 `data[].id` 获取，也允许手动填写；模型偏好按服务隔离，原 ChatGPT `model` 偏好继续可读。
 - `ChatCompletionStream` 复用 `SseReader`，只输出首个 choice 的 `delta.content`，忽略 `reasoning_content`；收到 `finish_reason=stop` 与 `[DONE]` 且正文非空才成功。长度截断、内容过滤、工具调用、错误事件和流提前结束均失败；协程取消会关闭 OkHttp 调用。禁用重定向和连接失败自动重试。
 - `SecureApiStore` 将每个 API 服务的地址与 Key 一起用 Android Keystore AES-256-GCM 加密；与 OAuth、Room、学习备份分开，系统云备份和设备迁移显式排除。Key 输入只用 Compose `remember`，不进入保存的界面状态；更换地址时不复用旧 Key。没有新增依赖或数据库迁移。

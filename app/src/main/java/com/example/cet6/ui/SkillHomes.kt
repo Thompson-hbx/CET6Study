@@ -126,8 +126,23 @@ fun ReadingHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPracti
     val papers = allPapers(vm)
     val bySession = papers.filter { !it.sample }.groupBy { it.examDate }.toSortedMap(compareByDescending { it })
     val samples = papers.filter { it.sample && it.issues(CoachKind.READING).isEmpty() }
+    val draft = vm.coach.entries[CoachKind.READING]?.takeIf {
+        it.submittedAt == 0L && (it.answer.isNotBlank() || (ExamCodec.metadata(it) == null && it.material.isNotBlank()))
+    }
+    val mine = history.filter {
+        it.kind == CoachKind.READING.name && (it.answer.isNotBlank() || (ExamCodec.metadata(it) == null && it.material.isNotBlank()))
+    }.take(3)
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { TabTitle("阅读", "仔细阅读 · 纸上做完，再来核对和弄懂") }
+        if (draft != null) item {
+            val status = if (ExamCodec.metadata(draft) != null) readingStatus(draft) else TaskStatus("草稿", Tone.Better)
+            SectionLabel("继续")
+            RowCard {
+                ListRow(draft.title.ifBlank { "自己的文章" },
+                    subtitle = "${shortTime(draft.updatedAt)} 保存",
+                    trailing = status.label, trailingTone = status.tone, trailingDescription = status.spoken) { onOpen(draft) }
+            }
+        }
         bySession.forEach { (date, sets) ->
             item(key = "session-$date") {
                 SectionLabel(sessionTitle(date))
@@ -153,6 +168,23 @@ fun ReadingHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPracti
             SectionLabel("自己的文章")
             RowCard {
                 ListRow("粘贴一篇英文文章练习", subtitle = "添加题目、独立作答后可请求讲解", enabled = !vm.coach.working, onClick = onCustom)
+            }
+        }
+        if (mine.isNotEmpty()) item {
+            SectionLabel("最近读的")
+            RowCard {
+                mine.forEachIndexed { i, practice ->
+                    val status = if (ExamCodec.metadata(practice) != null) readingStatus(practice)
+                        else TaskStatus(if (practice.submittedAt > 0) "已提交" else "草稿", if (practice.submittedAt > 0) Tone.Ink else Tone.Better)
+                    ListRow(practice.title.ifBlank { "自己的文章" },
+                        subtitle = listOfNotNull(
+                            practice.practiceGoal.takeIf(String::isNotBlank)?.let { "目标：$it" },
+                            shortTime(practice.updatedAt)
+                        ).joinToString(" · "),
+                        trailing = status.label, trailingTone = status.tone, trailingDescription = status.spoken,
+                        enabled = !vm.coach.working) { onOpen(practice) }
+                    if (i < mine.lastIndex) RowDivider()
+                }
             }
         }
     }
@@ -218,13 +250,29 @@ fun MeHome(vm: StudyViewModel, padding: PaddingValues, onRoute: (String) -> Unit
                 ListRow("错因回顾", subtitle = if (reviews.isEmpty()) "记录过错因的练习会出现在这里" else "${reviews.size} 条记录",
                     onClick = { onRoute("me/review") })
                 RowDivider()
+                ListRow("学习趋势", subtitle = "按周查看阅读核对、修改稿与复习自评", onClick = { onRoute("me/trends") })
+                RowDivider()
                 ListRow("练习记录", subtitle = "全部阅读、写作和翻译练习", onClick = { onRoute("me/records") })
+            }
+        }
+        item {
+            val dueCount = vm.words.count { it.dueAt in 1..vm.now }
+            val totalCount = vm.words.size
+            SectionLabel("词汇")
+            RowCard {
+                ListRow(
+                    "六级词汇",
+                    subtitle = if (totalCount == 0) "导入词库或在练习中加入生词" else "词库 $totalCount 词 · 今日待复习 $dueCount 词",
+                    trailing = if (dueCount > 0) "待复习 $dueCount" else if (totalCount > 0) "已完成" else null,
+                    trailingTone = if (dueCount > 0) Tone.Better else Tone.Good,
+                    onClick = { onRoute("me/words") }
+                )
             }
         }
         item {
             SectionLabel("数据")
             RowCard {
-                ListRow("备份与恢复", subtitle = "学习数据导出为文件，不含登录凭证", onClick = { onRoute("me/backup") })
+                ListRow("备份与恢复", subtitle = "完整导出学习记录与个人题库，不含凭证", onClick = { onRoute("me/backup") })
                 RowDivider()
                 ListRow("题库管理", subtitle = "导入或导出个人题库", onClick = { onRoute("me/exams") })
             }

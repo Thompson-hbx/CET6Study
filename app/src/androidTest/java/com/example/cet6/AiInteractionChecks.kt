@@ -26,6 +26,9 @@ class AiInteractionChecks(private val context: Context) {
                 when (mode) {
                     "wait" -> awaitCancellation()
                     "fail" -> throw IOException("controlled failure")
+                    "limit" -> "x".repeat(CoachTurns.MAX_CONTENT)
+                    "oversized" -> "x".repeat(CoachTurns.MAX_CONTENT + 1)
+                    "stream-oversized" -> { delta("x".repeat(CoachTurns.MAX_CONTENT + 1)); "unreachable" }
                     else -> "Complete reply"
                 }
             }
@@ -51,6 +54,57 @@ class AiInteractionChecks(private val context: Context) {
             check(talk.failure?.stopped == false && talk.failure?.question == "Retry question")
             check(db.dao().allTurns().toSet() == saved.toSet()) { "Failure changed complete replies" }
             check(calls == 3)
+            db.openHelper.writableDatabase.execSQL("""
+                CREATE TEMP TRIGGER fail_assistant BEFORE INSERT ON coach_turns
+                WHEN NEW.role = 'assistant' BEGIN SELECT RAISE(ABORT, 'controlled insert failure'); END
+            """.trimIndent())
+            mode = "success"
+            talk.send(practice, Anchor.REVIEW, TurnKind.CHAT, "Rollback question") { "prompt" }
+            withTimeout(5000) { while (talk.busy) yield() }
+            check(talk.failure != null)
+            check(db.dao().allTurns().toSet() == saved.toSet()) { "Reply insert failure left an orphan question" }
+            db.openHelper.writableDatabase.execSQL("DROP TRIGGER fail_assistant")
+            talk.failure!!.retry!!.invoke()
+            withTimeout(5000) { while (talk.busy) yield() }
+            check(db.dao().allTurns().count { it.content == "Rollback question" } == 1)
+            val completeBeforeLimit = db.dao().allTurns().toSet()
+            for (oversized in listOf("oversized", "stream-oversized")) {
+                mode = oversized
+                talk.send(practice, Anchor.REVIEW, TurnKind.CHAT, "Long question") { "prompt" }
+                withTimeout(5000) { while (talk.busy) yield() }
+                check(talk.failure?.message?.contains("60,000") == true)
+                check(talk.failure?.question == "Long question")
+                check(db.dao().allTurns().toSet() == completeBeforeLimit) { "Oversized reply was saved or truncated" }
+            }
+            mode = "limit"
+            talk.send(practice, Anchor.REVIEW, TurnKind.CHAT) { "prompt" }
+            withTimeout(5000) { while (talk.busy) yield() }
+            check(talk.failure == null)
+            check(db.dao().allTurns().single { it.content.length == CoachTurns.MAX_CONTENT }.content == "x".repeat(CoachTurns.MAX_CONTENT))
+            val review = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT, content = (0..39).joinToString("\n") {
+                    """{"type":"issue","quote":"sample $it","fix":"fixed $it","reason":"test","level":"must"}"""
+                })
+            repository.saveTurn(review)
+            // Every click deliberately retains the same old turn; no intervening recomposition.
+            val clicks = (0..39).map { id -> talk.updateDecision(review, id,
+                if (id % 2 == 0) ReviewDecision.ACCEPT else ReviewDecision.DISMISS) }
+            clicks.joinAll()
+            talk.updateDecision(review, 0, ReviewDecision.DISMISS).join()
+            talk.updateDecision(review, 1, ReviewDecision.RESET).join()
+            val storedReview = db.dao().turnById(review.id)!!
+            val decisions = ReviewDecisions.decode(storedReview.state)
+            check(decisions.accepted == (2..38 step 2).toSet())
+            check(decisions.dismissed == (3..39 step 2).toSet() + 0)
+            check(storedReview.copy(state = "") == review) { "Decision update rewrote review content" }
+            val invalidReview = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT, content = review.content + "\n" + """{"type":"score","band":"11"}""",
+                state = ReviewDecisions().dismiss(0).encode())
+            repository.saveTurn(invalidReview)
+            check(runCatching { repository.updateDecision(invalidReview.id, 1, ReviewDecision.ACCEPT) }.isFailure) {
+                "Malformed mixed review accepted a decision"
+            }
+            check(db.dao().turnById(invalidReview.id) == invalidReview) { "Rejected decision changed raw review or existing state" }
         } finally {
             scope.cancel()
             db.close()

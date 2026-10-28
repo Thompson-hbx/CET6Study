@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.room.Room
 import com.example.cet6.data.*
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -16,7 +17,25 @@ import org.json.JSONObject
 
 /** Default suite uses isolated databases. Explicit fixture mode only adds a new practice; never reads credentials. */
 class LocalDataInstrumentation : Instrumentation() {
+    private var aiConnectionScenario = false
+    private var manifestScenario = false
+    private var draftProcessScenario = ""
+    private var draftProcessMode = ""
+    private var draftProcessRun = ""
+    private var draftKilledPid = 0
+    private var oauthRefreshScenario = false
+    private var aiStreamScenario = false
+    private var decisionStateScenario = false
+    private var schemaScenario = false
+    private var readingAccessMode = ""
     private var uiScenario = false
+    private var restoreStartupScenario = ""
+    private var restoreProcessScenario = ""
+    private var restoreScenario = false
+    private var lifecycleScenario = false
+    private var evaluationMode = ""
+    private var evaluationConsent = ""
+    private var evaluationRunId = ""
     private var aiInteractionScenario = false
     private var translationFixture = false
     private var longFeedbackFixture = false
@@ -24,6 +43,36 @@ class LocalDataInstrumentation : Instrumentation() {
     private var reviewFixture = false
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
+        aiConnectionScenario = arguments?.getString("scenario") == "ai-connection"
+        manifestScenario = arguments?.getString("scenario") == "backup-manifest"
+        draftProcessScenario = arguments?.getString("scenario")?.takeIf {
+            it in setOf("draft-process-prepare", "draft-process-verify", "draft-process-inspect")
+        }.orEmpty()
+        draftProcessMode = arguments?.getString("mode").orEmpty()
+        draftProcessRun = arguments?.getString("run-id").orEmpty()
+        draftKilledPid = arguments?.getString("killed-pid")?.toIntOrNull() ?: 0
+        oauthRefreshScenario = arguments?.getString("scenario") == "oauth-refresh"
+        aiStreamScenario = arguments?.getString("scenario") == "ai-stream"
+        decisionStateScenario = arguments?.getString("scenario") == "coach-decision-state"
+        schemaScenario = arguments?.getString("scenario") == "coach-output-schema"
+        readingAccessMode = when {
+            arguments?.getString("fixture") == "reading-accessibility" -> "seed"
+            arguments?.getString("scenario") == "reading-accessibility-verify" -> "verify"
+            else -> ""
+        }
+        evaluationMode = arguments?.getString("scenario")?.takeIf {
+            it in setOf("coach-evaluation", "coach-evaluation-v2", "coach-evaluation-offline")
+        }.orEmpty()
+        evaluationConsent = arguments?.getString("consent").orEmpty()
+        evaluationRunId = arguments?.getString("run-id").orEmpty()
+        restoreStartupScenario = arguments?.getString("scenario")?.takeIf {
+            it in setOf("restore-startup-prepare", "restore-startup-pending-prepare", "restore-startup-resume", "restore-startup-share-resume")
+        }.orEmpty()
+        restoreProcessScenario = arguments?.getString("scenario")?.takeIf {
+            it == "restore-process-prepare" || it == "restore-process-resume"
+        }.orEmpty()
+        restoreScenario = arguments?.getString("scenario") == "restore-recovery"
+        lifecycleScenario = arguments?.getString("scenario") == "lifecycle"
         uiScenario = arguments?.getString("scenario") == "ui"
         aiInteractionScenario = arguments?.getString("scenario") == "ai-interaction"
         translationFixture = arguments?.getString("fixture") == "translation"
@@ -36,9 +85,121 @@ class LocalDataInstrumentation : Instrumentation() {
     override fun onStart() {
         val results = Bundle()
         try {
+            if (aiConnectionScenario) {
+                runBlocking { AiConnectionStateChecks(targetContext).verify() }
+                results.putString("stream", "PASS: isolated AI provider/model preferences, encrypted profile restoration, busy/cancellation, partial/429 failures and completed-only essay persistence.\n")
+                finish(-1, results)
+                return
+            }
+            if (manifestScenario) {
+                val count = runBlocking { CompleteRestoreChecks(targetContext).verifyManifestRejection() }
+                results.putString("stream", "PASS: $count invalid manifest types rejected before study/bank writes or a restore journal; valid and legacy backups preserved.\n")
+                finish(-1, results)
+                return
+            }
+            if (draftProcessScenario.isNotEmpty()) {
+                val checks = DraftProcessChecks(this, draftProcessMode, draftProcessRun)
+                val report = runBlocking {
+                    when (draftProcessScenario) {
+                        "draft-process-prepare" -> checks.prepare()
+                        "draft-process-inspect" -> checks.inspectData()
+                        else -> checks.verify(draftKilledPid)
+                    }
+                }
+                results.putString("stream", report)
+                finish(-1, results)
+                return
+            }
+            if (oauthRefreshScenario) {
+                runBlocking { OAuthRefreshChecks().verify() }
+                results.putString("stream", "PASS: offline OAuth refresh rotation, cancellation, failure and malformed response preservation.\n")
+                finish(-1, results)
+                return
+            }
+            if (aiStreamScenario) {
+                val count = AiStreamChecks(context).verify()
+                results.putString("stream", "PASS: $count offline AI stream field types and completion cases validated on Android.\n")
+                finish(-1, results)
+                return
+            }
+            if (decisionStateScenario) {
+                runBlocking { CoachDecisionStateChecks(targetContext, context).verify() }
+                results.putString("stream", "PASS: invalid decision state preserved; legacy state supported; two repositories keep all 40 concurrent decisions.\n")
+                finish(-1, results)
+                return
+            }
+            if (schemaScenario) {
+                val count = CoachOutputSchemaChecks(context).verify()
+                results.putString("stream", "PASS: $count protocol cases validated with Android JSON; malformed fields preserve raw text and expose no edit actions.\n")
+                finish(-1, results)
+                return
+            }
+            if (evaluationMode == "coach-evaluation-offline") {
+                val count = runBlocking { EvaluationOfflineChecks(this@LocalDataInstrumentation).verify() }
+                results.putString("stream", "PASS: $count original prompts, gold isolation, once-only checkpoints, failures/cancellation; zero live requests.\n")
+                finish(-1, results)
+                return
+            }
+            if (evaluationMode.isNotEmpty()) {
+                val expected = if (evaluationMode == "coach-evaluation-v2") "12-full-original-cases" else "11-original-cases"
+                check(evaluationConsent == expected) { "Explicit matching evaluation consent required; no live requests sent" }
+                val checks = AiEvaluationChecks(this)
+                results.putString("stream", if (evaluationMode == "coach-evaluation-v2") checks.verifyV2(evaluationRunId) else checks.verify())
+                finish(-1, results)
+                return
+            }
+            if (restoreStartupScenario.isNotEmpty()) {
+                check(android.os.Build.MODEL.contains("sdk_gphone") || android.os.Build.FINGERPRINT.contains("generic")) { "Startup recovery fixture requires emulator" }
+                val checks = CompleteRestoreStartupChecks(this)
+                if (restoreStartupScenario.endsWith("-prepare")) runBlocking {
+                    checks.prepare(commitStudy = restoreStartupScenario == "restore-startup-prepare")
+                    results.putString("stream", "PREPARED: original restore task saved; selected commit stage waiting for process stop and real Activity startup.\n")
+                    sendStatus(1, results)
+                    awaitCancellation()
+                } else checks.verify(shareReading = restoreStartupScenario == "restore-startup-share-resume")
+                results.putString("stream", "PASS: real Activity/ViewModel startup resumes pending restore after force-stop; restored drafts loaded, existing practices/bank preserved and recovery-time sharing retained when requested.\n")
+                finish(-1, results)
+                return
+            }
+            if (restoreProcessScenario.isNotEmpty()) {
+                check(android.os.Build.MODEL.contains("sdk_gphone") || android.os.Build.FINGERPRINT.contains("generic")) { "Process recovery checks require emulator" }
+                runBlocking {
+                    val checks = CompleteRestoreChecks(targetContext)
+                    if (restoreProcessScenario == "restore-process-prepare") {
+                        checks.prepareProcessRetry()
+                        results.putString("stream", "PREPARED: isolated database committed; bank not saved; durable task retained; waiting for external process stop.\n")
+                        sendStatus(1, results)
+                        awaitCancellation()
+                    } else checks.resumeProcessRetry()
+                }
+                results.putString("stream", "PASS: fresh process resumes retained restore task; bank saved; imported history is not duplicated.\n")
+                finish(-1, results)
+                return
+            }
+            if (restoreScenario) {
+                runBlocking { CompleteRestoreChecks(targetContext).verify() }
+                results.putString("stream", "PASS: empty/legacy restore; durable retry after database rollback and post-commit bank failure; no duplicate history; conflicting/corrupt pending tasks preserve local data.\n")
+                finish(-1, results)
+                return
+            }
+            if (lifecycleScenario) {
+                CoachLifecycleChecks(this).verify()
+                results.putString("stream", "PASS: real ViewModel initializes idle; new original draft edits persist on background.\n")
+                finish(-1, results)
+                return
+            }
             if (aiInteractionScenario) {
                 runBlocking { AiInteractionChecks(targetContext).verify() }
-                results.putString("stream", "PASS: stop retains question; partial replies are not saved; explicit retry succeeds; failure preserves complete replies.\n")
+                results.putString("stream", "PASS: atomic exchange rollback/retry; 40 rapid decisions retain prior choices; oversize replies rejected without truncation; stop/failure preserve complete replies.\n")
+                finish(-1, results)
+                return
+            }
+            if (readingAccessMode.isNotEmpty()) {
+                check(android.os.Build.MODEL.contains("sdk_gphone") || android.os.Build.FINGERPRINT.contains("generic")) { "Reading accessibility fixture requires emulator" }
+                val checks = ReadingAccessibilityFixture(targetContext)
+                runBlocking { if (readingAccessMode == "seed") checks.seed() else checks.verify() }
+                results.putString("stream", if (readingAccessMode == "seed") "SEEDED: fresh labelled original reading attempt; existing drafts preserved.\n"
+                    else "PASS: ten UI-entered answers and offline submission preserved for the original accessibility fixture.\n")
                 finish(-1, results)
                 return
             }
@@ -91,7 +252,7 @@ class LocalDataInstrumentation : Instrumentation() {
                 finish(-1, results)
                 return
             }
-            runBlocking { ExamInstrumentationChecks(targetContext).verify(); ReadingDiagnosisInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify() }
+            runBlocking { EvaluationOfflineChecks(this@LocalDataInstrumentation).verify(); AiConnectionStateChecks(targetContext).verify(); OAuthRefreshChecks().verify(); AiStreamChecks(context).verify(); CoachOutputSchemaChecks(context).verify(); ExamInstrumentationChecks(targetContext).verify(); ReadingDiagnosisInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CompleteRestoreChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify(); AiInteractionChecks(targetContext).verify(); CoachDecisionStateChecks(targetContext, context).verify() }
             results.putString("stream", "PASS: v1-v7 to v8 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v5 roundtrip with turns and v1-v4 imports; existing backup and scheduler checks.\n")
             finish(-1, results)
         } catch (e: Throwable) {

@@ -1,0 +1,110 @@
+{
+  "counts": {
+    "quotes": 18,
+    "exact_quotes": 17,
+    "suggestions": 14,
+    "located": 6,
+    "expected_errors": 6,
+    "detected_errors": 6,
+    "applied": 7,
+    "successful_fixes": 4,
+    "reading_cases": 4,
+    "correct_reading": 4,
+    "format_failures": 0
+  },
+  "metrics": {
+    "quote_accuracy": {
+      "value": 0.9444444444444444,
+      "numerator": 17,
+      "denominator": 18
+    },
+    "localization_precision": {
+      "value": 0.42857142857142855,
+      "numerator": 6,
+      "denominator": 14
+    },
+    "omission_rate": {
+      "value": 0.0,
+      "numerator": 0,
+      "denominator": 6
+    },
+    "accepted_fix_success": {
+      "value": 0.5714285714285714,
+      "numerator": 4,
+      "denominator": 7
+    },
+    "reading_answer_accuracy": {
+      "value": 1.0,
+      "numerator": 4,
+      "denominator": 4
+    }
+  },
+  "cases": [
+    {
+      "caseId": "writing-basic",
+      "detected": 2,
+      "expected": 2,
+      "successfulFixes": 0
+    },
+    {
+      "caseId": "writing-intermediate",
+      "detected": 1,
+      "expected": 1,
+      "successfulFixes": 1
+    },
+    {
+      "caseId": "writing-strong",
+      "detected": 0,
+      "expected": 0,
+      "successfulFixes": 0
+    },
+    {
+      "caseId": "translation-omission",
+      "detected": 1,
+      "expected": 1,
+      "successfulFixes": 1
+    },
+    {
+      "caseId": "translation-negation",
+      "detected": 1,
+      "expected": 1,
+      "successfulFixes": 1
+    },
+    {
+      "caseId": "translation-number",
+      "detected": 1,
+      "expected": 1,
+      "successfulFixes": 1
+    },
+    {
+      "caseId": "translation-strong",
+      "detected": 0,
+      "expected": 0,
+      "successfulFixes": 0
+    },
+    {
+      "caseId": "reading-scope",
+      "detected": 0,
+      "expected": 0,
+      "successfulFixes": 0
+    },
+    {
+      "caseId": "reading-negation",
+      "detected": 0,
+      "expected": 0,
+      "successfulFixes": 0
+    },
+    {
+      "caseId": "reading-causation",
+      "detected": 0,
+      "expected": 0,
+      "successfulFixes": 0
+    },
+    {
+      "caseId": "reading-paraphrase",
+      "detected": 0,
+      "expected": 0,
+      "successfulFixes": 0
+    }
+  ]
+}

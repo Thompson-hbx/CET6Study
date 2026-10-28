@@ -20,8 +20,8 @@ import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.Hub
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
+import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.SelectionContainer
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -147,7 +148,7 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
         }
     }
     BackupCard(vm)
-    WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working && !vm.busy, onReview)
+    WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working && !vm.busy, onReview = onReview)
     var legacyWords by rememberSaveable { mutableStateOf(false) }
     OutlinedButton(
         onClick = { legacyWords = !legacyWords },
@@ -223,7 +224,11 @@ private fun SectionTitle(title: String, subtitle: String) {
 @Composable
 private fun ConnectionScreen(vm: StudyViewModel) {
     var message by rememberSaveable { mutableStateOf("请只回答：六级研习室 API 测试成功。") }
-    SectionTitle("AI 连接", "选择服务与模型，用于批改、讲解和追问")
+    Text(
+        "选择服务与模型，用于批改、讲解和追问",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
     Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         AiProvider.entries.forEach { provider ->
             FilterChip(selected = vm.provider == provider, onClick = { vm.selectProvider(provider) },
@@ -299,7 +304,9 @@ private fun ConnectionScreen(vm: StudyViewModel) {
             }
         }
     }
-    ModelSelector(vm)
+    if (vm.provider == AiProvider.CHATGPT || vm.models.isNotEmpty()) {
+        ModelSelector(vm)
+    }
     OutlinedTextField(
         value = message,
         onValueChange = { message = it },
@@ -315,7 +322,7 @@ private fun ConnectionScreen(vm: StudyViewModel) {
         shape = MaterialTheme.shapes.small,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Icon(Icons.Outlined.Send, contentDescription = null, modifier = Modifier.size(18.dp))
+        Icon(Icons.AutoMirrored.Outlined.Send, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(8.dp))
         Text("发送一条测试请求", fontWeight = FontWeight.SemiBold)
     }
@@ -357,7 +364,9 @@ private fun StatusCard(vm: StudyViewModel) {
             Text("状态：${vm.status}", style = MaterialTheme.typography.bodyMedium)
             if (vm.result.isNotBlank()) {
                 HorizontalDivider()
-                Text(vm.result, style = MaterialTheme.typography.bodyLarge)
+                SelectionContainer {
+                    Text(vm.result, style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
     }
@@ -365,41 +374,121 @@ private fun StatusCard(vm: StudyViewModel) {
 
 @Composable
 private fun WordScreen(vm: StudyViewModel) {
-    SectionTitle("六级词汇", "FSRS-6 离线复习 · 先看语境，再回忆词义。内置原创学术词汇练习，可导入有权使用的词库。")
+    Text(
+        "FSRS-6 离线复习 · 先看语境，再回忆词义。内置原创学术词汇练习，可导入有权使用的词库。",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
     val due = vm.words.filter { it.dueAt <= vm.now }.sortedWith(compareBy({ it.dueAt == 0L }, { it.dueAt }, { it.word }))
     val progress = vm.todayProgress
+    val plan = vm.plan
+    val newCount = progress?.newCount ?: 0
+    val reviewCount = progress?.reviewCount ?: 0
+    val dueReviewCount = due.count { it.dueAt > 0 }
+    val newAvailableCount = due.count { it.dueAt == 0L }
     var extra by rememberSaveable(vm.today) { mutableStateOf(false) }
-    val planned = due.filter { word -> extra || vm.schedules[word.word]?.phase?.let { it != WordScheduler.REVIEW } == true || vm.plan?.let {
-        if (word.dueAt == 0L) (progress?.newCount ?: 0) < it.newGoal else (progress?.reviewCount ?: 0) < it.reviewGoal
+    val planned = due.filter { word -> extra || vm.schedules[word.word]?.phase?.let { it != WordScheduler.REVIEW } == true || plan?.let {
+        if (word.dueAt == 0L) newCount < it.newGoal else reviewCount < it.reviewGoal
     } == true }
-    Text("当前到期 ${due.count { it.dueAt > 0 }} · 未学 ${due.count { it.dueAt == 0L }} · 词库 ${vm.words.size}")
-    if (planned.isEmpty()) {
-        Text(if (due.isEmpty()) "当前没有到期单词，可浏览词库或稍后再来。" else "今日计划已完成。")
-        if (due.isNotEmpty()) OutlinedButton(onClick = { extra = true }) { Text("继续额外学习") }
-        vm.words.filter { it.dueAt > vm.now }.minOfOrNull { it.dueAt }?.let {
-            Text("下次到期：${Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}")
+    ElevatedCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("今日复习进度", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(
+                    "新词 $newCount/${plan?.newGoal ?: "…"} · 复习 $reviewCount/${plan?.reviewGoal ?: "…"}",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            if (plan != null) {
+                val availableNewGoal = minOf(plan.newGoal, newCount + newAvailableCount)
+                val availableReviewGoal = minOf(plan.reviewGoal, reviewCount + dueReviewCount)
+                val total = availableNewGoal + availableReviewGoal
+                val done = minOf(newCount, availableNewGoal) + minOf(reviewCount, availableReviewGoal)
+                LinearProgressIndicator(
+                    progress = { if (total == 0) 1f else done.toFloat() / total },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            Text(
+                "当前到期 $dueReviewCount · 未学 $newAvailableCount · 词库 ${vm.words.size}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
-        OutlinedButton(onClick = vm::refreshStudyClock) { Text("刷新到期任务") }
+    }
+    if (planned.isEmpty()) {
+        ElevatedCard(Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(if (due.isEmpty()) "当前没有到期单词，可浏览词库或稍后再来。" else "今日计划已完成。", fontWeight = FontWeight.Medium)
+                vm.words.filter { it.dueAt > vm.now }.minOfOrNull { it.dueAt }?.let {
+                    Text(
+                        "下次到期：${Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (due.isNotEmpty()) OutlinedButton(onClick = { extra = true }) { Text("继续额外学习") }
+                    OutlinedButton(onClick = vm::refreshStudyClock) { Text("刷新到期任务") }
+                }
+            }
+        }
     }
     planned.take(1).forEach { word ->
         var reveal by remember(word.word) { mutableStateOf(false) }
         ElevatedCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(word.word, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                vm.pronunciations[word.word]?.let { Text("美式参考音标：$it") }
-                Text(word.example, style = MaterialTheme.typography.bodyMedium)
+            Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    SelectionContainer {
+                        Text(word.word, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                    }
+                    Surface(
+                        shape = MaterialTheme.shapes.extraSmall,
+                        color = if (word.dueAt == 0L) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
+                    ) {
+                        Text(
+                            if (word.dueAt == 0L) "新词" else "复习",
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (word.dueAt == 0L) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
+                }
+                vm.pronunciations[word.word]?.let {
+                    Text("美式参考音标：$it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Surface(
+                    shape = MaterialTheme.shapes.small,
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    SelectionContainer {
+                        Text(word.example, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(12.dp))
+                    }
+                }
                 if (!reveal) {
-                    OutlinedButton(onClick = { reveal = true }) { Text("显示释义") }
+                    Button(onClick = { reveal = true }, modifier = Modifier.fillMaxWidth()) { Text("显示释义") }
                 } else {
-                    Text(word.meaning)
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        WordRating.entries.forEach { rating ->
-                            val interval = runCatching {
-                                WordScheduler.next(word, vm.schedules[word.word], rating, vm.now).card.dueAt - vm.now
-                            }.getOrNull()
-                            OutlinedButton(onClick = { vm.review(word, rating) }, enabled = !vm.savingStudy,
-                                modifier = Modifier.fillMaxWidth()) {
-                                Text("${rating.label} · ${interval?.let(WordScheduler::intervalText) ?: "保存后安排"}")
+                    SelectionContainer {
+                        Text(word.meaning, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+                    }
+                    Text("来源：${word.source}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        WordRating.entries.chunked(2).forEach { rowRatings ->
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                rowRatings.forEach { rating ->
+                                    val interval = runCatching {
+                                        WordScheduler.next(word, vm.schedules[word.word], rating, vm.now).card.dueAt - vm.now
+                                    }.getOrNull()
+                                    OutlinedButton(
+                                        onClick = { vm.review(word, rating) },
+                                        enabled = !vm.savingStudy,
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Text("${rating.label} · ${interval?.let(WordScheduler::intervalText) ?: "保存后安排"}")
+                                    }
+                                }
                             }
                         }
                     }
