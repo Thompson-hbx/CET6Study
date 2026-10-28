@@ -35,7 +35,6 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val submitted = entry.submittedAt > 0
     val sentences = remember(entry.material) { TranslationCoach.sentences(entry.material) }
     val reference = meta?.optString("referenceTranslation").orEmpty()
-    val tabs = if (reference.isNotBlank()) listOf("翻译", "批改", "参考译文") else listOf("翻译", "批改")
     var tab by rememberSaveable(entry.id) { mutableIntStateOf(if (submitted) 1 else 0) }
     var sentenceSheet by rememberSaveable(entry.id) { mutableStateOf<Int?>(null) }
     var showVersions by remember { mutableStateOf(false) }
@@ -64,13 +63,14 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     if (submitted) "已提交" else null).joinToString(" · "),
                 onBack = onBack,
                 actions = {
-                    if (!submitted) ExamClock(entry.id)
-                    WorkspaceMenu(vm, entry, listOfNotNull(if (versions.size > 1) "各稿" to { showVersions = true } else null))
+                    WorkspaceMenu(vm, entry, listOfNotNull(if (reference.isNotBlank()) "参考译文" to { tab = 2 } else null,
+                        if (versions.size > 1) "各稿" to { showVersions = true } else null))
                 })
         },
         bottomBar = {
             when {
                 tab == 0 -> BottomBar {
+                    if (!submitted) ExamClock(entry.id)
                     Column(Modifier.weight(1f)) {
                         WordCount(words, null, null)
                         Note(saveLabel(state.messages[CoachKind.TRANSLATION]))
@@ -80,18 +80,16 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     else Button(onClick = { state.revise(entry, entry.answer) }, enabled = !state.working,
                         modifier = Modifier.height(48.dp)) { Text("写修改稿") }
                 }
-                tab == 1 && submitted && (reviewTurn != null || pending != null) -> BottomBar {
-                    AskBar("问问这段译文…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop,
-                        modifier = Modifier.weight(1f), draftKey = entry.id,
-                        failure = talk.failureFor(entry.id, Anchor.REVIEW, chat = true), onDismissFailure = talk::dismissFailure)
-                }
+                tab == 1 && submitted && pending?.kind != TurnKind.TRANSLATION_REVIEW && (reviewTurn != null || pending != null) ->
+                    ReviewFooter(vm, entry, "问问这段译文…", placedReview(entry.answer, reviewTurn), canAsk = true, onAsk = ::ask)
             }
         }
     ) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
-            SecondaryTabRow(selectedTabIndex = tab, containerColor = MaterialTheme.colorScheme.background) {
-                tabs.forEachIndexed { i, label -> Tab(selected = tab == i, onClick = { tab = i }, text = { Text(label) }) }
-            }
+            DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
+                state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
+            })
+            Hairline()
             Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
                 when (tab) {
                     0 -> TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted) { sentenceSheet = it }
@@ -233,19 +231,13 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
                 if (i < sentences.lastIndex) RowDivider()
             }
         }
-        if (!reviewing && reviewTurn != null) {
-            val accepted = placed.count { it.accepted && it.range != null }
-            FilledTonalButton(onClick = { vm.coach.revise(entry, applyAccepted(entry.answer, placed)) }, enabled = !vm.coach.working,
-                modifier = Modifier.fillMaxWidth().padding(start = CardMargin, end = CardMargin, top = 14.dp).height(48.dp)) {
-                Text(if (accepted > 0) "用采纳的 $accepted 处生成修改稿" else "不采纳，直接写修改稿")
-            }
-        }
         val loose = placed.withIndex().filter { it.value.issue.segment == null || it.value.issue.segment!! > sentences.size }
         if (loose.isNotEmpty()) {
             SectionLabel("其他修改")
             RowCard {
                 loose.forEachIndexed { n, (i, p) ->
-                    IssueRow(p, i + 1) { selected = i }
+                    IssueRow(p, i + 1, onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
+                        { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) } }) { selected = i }
                     if (n < loose.lastIndex) RowDivider()
                 }
             }

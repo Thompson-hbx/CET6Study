@@ -1,20 +1,24 @@
 package com.example.cet6.ui
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
 import com.example.cet6.ui.theme.PassageText
@@ -33,7 +37,6 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val task = remember(entry.material) { WritingTask.of(entry.material) }
     val submitted = entry.submittedAt > 0
     val reference = meta?.optString("referenceWriting").orEmpty()
-    val tabs = if (reference.isNotBlank()) listOf("写作", "批改", "范文") else listOf("写作", "批改")
     var tab by rememberSaveable(entry.id) { mutableIntStateOf(if (submitted) 1 else 0) }
     var showPlan by rememberSaveable(entry.id) { mutableStateOf(false) }
     var showVersions by remember { mutableStateOf(false) }
@@ -62,14 +65,15 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     if (submitted) "已提交" else null).joinToString(" · "),
                 onBack = onBack,
                 actions = {
-                    if (!submitted) ExamClock(entry.id)
                     WorkspaceMenu(vm, entry, listOfNotNull("构思提纲" to { showPlan = true },
+                        if (reference.isNotBlank()) "参考范文" to { tab = 2 } else null,
                         if (versions.size > 1) "各稿" to { showVersions = true } else null))
                 })
         },
         bottomBar = {
             when {
                 tab == 0 -> BottomBar {
+                    if (!submitted) ExamClock(entry.id)
                     Column(Modifier.weight(1f)) {
                         WordCount(words, task.minWords, task.maxWords)
                         Note(saveLabel(state.messages[CoachKind.WRITING]))
@@ -79,18 +83,16 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     else Button(onClick = { state.revise(entry, entry.answer) }, enabled = !state.working,
                         modifier = Modifier.height(48.dp)) { Text("写修改稿") }
                 }
-                tab == 1 && submitted && (reviewTurn != null || pending != null) -> BottomBar {
-                    AskBar("问问这篇作文…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop,
-                        modifier = Modifier.weight(1f), draftKey = entry.id,
-                        failure = talk.failureFor(entry.id, Anchor.REVIEW, chat = true), onDismissFailure = talk::dismissFailure)
-                }
+                tab == 1 && submitted && pending?.kind != TurnKind.WRITING_REVIEW && (reviewTurn != null || pending != null) ->
+                    ReviewFooter(vm, entry, "问问这篇作文…", placedReview(entry.answer, reviewTurn), canAsk = true, onAsk = ::ask)
             }
         }
     ) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
-            SecondaryTabRow(selectedTabIndex = tab, containerColor = MaterialTheme.colorScheme.background) {
-                tabs.forEachIndexed { i, label -> Tab(selected = tab == i, onClick = { tab = i }, text = { Text(label) }) }
-            }
+            DeskSteps("写作", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
+                state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
+            })
+            Hairline()
             Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
                 when (tab) {
                     0 -> DraftPane(vm, entry, task, meta == null, submitted)
@@ -134,7 +136,7 @@ fun LoadingScreen(onBack: () -> Unit) {
 @Composable
 private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTask, custom: Boolean, submitted: Boolean) {
     val state = vm.coach
-    var expanded by rememberSaveable(entry.id) { mutableStateOf(entry.answer.isBlank()) }
+    var expanded by rememberSaveable(entry.id) { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().padding(vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (custom && !submitted && entry.sourcePracticeId.isBlank()) {
             PaperCard {
@@ -146,18 +148,21 @@ private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTas
                 }
             }
         } else {
-            PaperCard(padding = PaddingValues(start = CardPadding, end = CardPadding, top = CardPadding, bottom = 4.dp)) {
-                task.opening?.let { opening ->
-                    Surface(color = MaterialTheme.colorScheme.primaryContainer, shape = MaterialTheme.shapes.medium,
-                        modifier = Modifier.padding(bottom = 10.dp)) {
-                        Text(opening, style = PassageText.copy(fontStyle = FontStyle.Italic), color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp))
-                    }
+            // The task folds to one line so the first screen belongs to the essay; the opening sentence stays in view.
+            PaperCard(padding = PaddingValues(start = CardPadding, end = 4.dp, top = 4.dp, bottom = 4.dp)) {
+                Row(Modifier.fillMaxWidth().clickable(onClickLabel = if (expanded) "收起题目" else "展开题目") { expanded = !expanded }
+                    .heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(taskSummary(task), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                    Icon(if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(12.dp))
                 }
-                Text(entry.material, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = if (expanded) Int.MAX_VALUE else 2, overflow = TextOverflow.Ellipsis)
-                TextButton(onClick = { expanded = !expanded }, contentPadding = PaddingValues(0.dp)) {
-                    Text(if (expanded) "收起要求" else "展开完整要求")
+                Column(Modifier.padding(end = CardPadding - 4.dp, bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    task.opening?.let { opening -> SelectionContainer { Text(opening, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)) } }
+                    if (expanded || task.opening == null) Text(entry.material, style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = if (expanded) Int.MAX_VALUE else 2, overflow = TextOverflow.Ellipsis)
+                    if (!submitted && entry.answer.isBlank() && task.opening != null) TextButton(
+                        onClick = { state.edit(CoachKind.WRITING) { it.copy(answer = task.opening + " ") } },
+                        contentPadding = PaddingValues(0.dp)) { Text("插入开头句") }
                 }
             }
         }
@@ -178,12 +183,6 @@ private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTas
             }
             if (compare) ComparePanel(source.answer, entry.answer)
         }
-        if (!submitted && entry.answer.isBlank() && task.opening != null) {
-            Row(Modifier.padding(start = PageGutter, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Note("题目要求用给定的句子开头", Modifier.weight(1f))
-                TextButton(onClick = { state.edit(CoachKind.WRITING) { it.copy(answer = task.opening + " ") } }) { Text("插入开头句") }
-            }
-        }
         PaperCard(padding = PaddingValues(horizontal = 18.dp, vertical = 16.dp)) {
             Editor(entry.answer, readOnly = submitted, placeholder = "在这里写作…") { text ->
                 state.edit(CoachKind.WRITING) { it.copy(answer = text) }
@@ -192,6 +191,12 @@ private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTas
         if (submitted) Note("这一稿已提交，可以在「批改」里查看批注；想继续改，点下方「写修改稿」。", Modifier.padding(horizontal = PageGutter))
     }
 }
+
+/** One line naming what the task asks, e.g. 以给定句开头 · 150–200 词. */
+private fun taskSummary(task: WritingTask): String = listOfNotNull(
+    if (task.opening != null) "以给定句开头" else "题目与要求",
+    if (task.minWords != null && task.maxWords != null) "${task.minWords}–${task.maxWords} 词" else task.minWords?.let { "至少 $it 词" }
+).joinToString(" · ")
 
 /** Borderless editor that reads like the page it will be printed on. */
 @Composable
@@ -250,6 +255,8 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
         Spacer(Modifier.height(16.dp))
         BandHeader(review.score, review.aspects)
         val placed = remember(entry.answer, review, decisions) { placeIssues(entry.answer, review, decisions) }
+        IssueList(placed, onOpen = { selected = it }, onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
+            { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) } })
         SectionLabel("原稿批注")
         PaperCard(padding = PaddingValues(horizontal = 18.dp, vertical = 16.dp)) {
             MarkedText(entry.answer, placed.filter { !it.dismissed }.mapNotNull { p -> p.range?.let { TextMark(p.issue.id, it, p.tone) } },
@@ -261,23 +268,8 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
                 DotStatus("已采纳 ${placed.count { it.accepted }}", Tone.Good)
             }
         }
-        if (!reviewing && reviewTurn != null) {
-            val accepted = placed.count { it.accepted && it.range != null }
-            FilledTonalButton(onClick = { vm.coach.revise(entry, applyAccepted(entry.answer, placed)) }, enabled = !vm.coach.working,
-                modifier = Modifier.fillMaxWidth().padding(start = CardMargin, end = CardMargin, top = 14.dp).height(48.dp)) {
-                Text(if (accepted > 0) "用采纳的 $accepted 处生成修改稿" else "不采纳，直接写修改稿")
-            }
-            Note("点画线处或下面的条目，逐条决定采纳还是忽略。", Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
-        }
-        if (placed.isNotEmpty()) {
-            SectionLabel("逐条修改 · ${placed.size}")
-            RowCard {
-                placed.forEachIndexed { i, p ->
-                    IssueRow(p, i + 1) { selected = i }
-                    if (i < placed.lastIndex) RowDivider()
-                }
-            }
-        }
+        if (!reviewing && reviewTurn != null) Note("点画线处或上面的条目，逐条决定采纳还是忽略；采纳的会带进修改稿。",
+            Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
         if (review.tips.isNotEmpty()) {
             SectionLabel("写作建议")
             PaperCard {

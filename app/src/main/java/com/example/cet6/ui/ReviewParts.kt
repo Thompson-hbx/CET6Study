@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -56,27 +57,30 @@ fun BandHeader(score: ReviewScore?, aspects: List<ReviewAspect>, modifier: Modif
     if (score == null && aspects.isEmpty()) return
     PaperCard(modifier) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            if (score != null) {
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(if (score.band == 0) "未评档" else "${score.band} 分档", style = MaterialTheme.typography.headlineMedium,
+            if (score != null) Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.semantics(mergeDescendants = true) {}) {
+                    Text(if (score.band == 0) "—" else "${score.band}", style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.primary)
-                    Note("参照六级评分标准的模拟档位，仅供参考")
+                    Note(if (score.band == 0) "未评档" else "分档 · 参考")
                 }
-                if (score.summary.isNotBlank()) Text(score.summary, style = MaterialTheme.typography.bodyLarge)
+                Text(score.summary.ifBlank { "参照六级评分标准的模拟档位，仅供参考" }, style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.weight(1f).padding(top = 4.dp))
             }
             if (aspects.isNotEmpty()) {
                 if (score != null) Hairline()
                 // Columns are as wide as their widest entry, so names and levels never wrap or clip at large font sizes.
                 val levels = aspects.map { it.level.ifBlank { "—" } }
                 val nameWidth = labelWidth(aspects.map { it.name }, MaterialTheme.typography.labelLarge)
-                val levelWidth = pillWidth(levels)
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                val levelWidth = labelWidth(levels, MaterialTheme.typography.labelLarge)
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     aspects.forEachIndexed { i, aspect ->
                         Row(Modifier.semantics(mergeDescendants = true) {}, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text(aspect.name, style = MaterialTheme.typography.labelLarge, modifier = Modifier.width(nameWidth).padding(top = 3.dp))
-                            Box(Modifier.width(levelWidth)) { StatusPill(levels[i], levelTone(aspect.level)) }
-                            Text(aspect.note, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.weight(1f).padding(top = 2.dp))
+                            Text(aspect.name, style = MaterialTheme.typography.labelLarge, modifier = Modifier.width(nameWidth))
+                            Text(levels[i], style = MaterialTheme.typography.labelLarge, color = levelTone(aspect.level).color(),
+                                modifier = Modifier.width(levelWidth))
+                            Text(aspect.note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.weight(1f).padding(top = 1.dp))
                         }
                     }
                 }
@@ -85,9 +89,31 @@ fun BandHeader(score: ReviewScore?, aspects: List<ReviewAspect>, modifier: Modif
     }
 }
 
+/** Suggestions grouped by how much they matter, each decidable in place; tapping a row opens its detail. */
+@Composable
+fun IssueList(placed: List<PlacedIssue>, onOpen: (Int) -> Unit, onDecide: ((ReviewIssue, ReviewDecision) -> Unit)?) {
+    if (placed.isEmpty()) return
+    var filter by rememberSaveable { mutableIntStateOf(0) }
+    val must = placed.count { it.issue.must }
+    val shown = placed.withIndex().filter { (_, p) -> when (filter) { 1 -> p.issue.must; 2 -> !p.issue.must; else -> true } }
+    SectionLabel("逐条修改 · ${placed.size}")
+    Row(Modifier.padding(start = CardMargin, end = CardMargin, bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        listOf("全部 ${placed.size}", "必改 $must", "可改 ${placed.size - must}").forEachIndexed { i, label ->
+            FilterChip(selected = filter == i, onClick = { filter = i }, label = { Text(label) })
+        }
+    }
+    if (shown.isEmpty()) { Note("这一类没有修改。", Modifier.padding(horizontal = PageGutter)); return }
+    RowCard {
+        shown.forEachIndexed { n, (i, p) ->
+            IssueRow(p, i + 1, onDecide = onDecide) { onOpen(i) }
+            if (n < shown.lastIndex) RowDivider()
+        }
+    }
+}
+
 /** One suggestion as a list row: what was written, what to write, and the learner's decision. */
 @Composable
-fun IssueRow(placed: PlacedIssue, number: Int, onClick: () -> Unit) {
+fun IssueRow(placed: PlacedIssue, number: Int, onDecide: ((ReviewIssue, ReviewDecision) -> Unit)? = null, onClick: () -> Unit) {
     val issue = placed.issue
     Row(Modifier.fillMaxWidth().clickable(onClick = onClick).semantics { stateDescription = if (issue.must) "必改" else "可改" }
         .padding(horizontal = CardPadding, vertical = 14.dp),
@@ -105,9 +131,15 @@ fun IssueRow(placed: PlacedIssue, number: Int, onClick: () -> Unit) {
             }, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.semantics { contentDescription = spokenChange(issue) })
             if (issue.reason.isNotBlank()) Text(issue.reason, style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant)
+            // Text buttons keep each row short; the hit area still meets the 40 dp minimum.
+            if (onDecide != null && !placed.accepted && !placed.dismissed && placed.range != null) Row(Modifier.offset(x = (-12).dp)) {
+                TextButton(onClick = { onDecide(issue, ReviewDecision.ACCEPT) }, modifier = Modifier.heightIn(min = 40.dp)) { Text("采纳") }
+                TextButton(onClick = { onDecide(issue, ReviewDecision.DISMISS) }, modifier = Modifier.heightIn(min = 40.dp),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant)) { Text("忽略") }
+            }
         }
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Tag(issue.category, if (issue.must) Tone.Must else Tone.Better)
+            Note(issue.category, tone = if (issue.must) Tone.Must else Tone.Better)
             when {
                 placed.accepted -> Note("已采纳", tone = Tone.Good)
                 placed.dismissed -> Note("已忽略")
