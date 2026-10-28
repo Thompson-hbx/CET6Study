@@ -1,6 +1,5 @@
 package com.example.cet6.data
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -24,9 +23,7 @@ data class CoachTurn(
     /** Small mutable JSON owned by the UI, such as accepted or dismissed suggestions. */
     val state: String = "",
     val model: String = "",
-    val createdAt: Long = System.currentTimeMillis(),
-    /** Exact source text selected by AI; matching does not imply human review. */
-    @ColumnInfo(defaultValue = "''") val locatedQuote: String = ""
+    val createdAt: Long = System.currentTimeMillis()
 ) {
     val fromUser get() = role == USER
 
@@ -81,7 +78,7 @@ object CoachTurns {
         require(Anchor.valid(turn.anchor) && turn.kind in TurnKind.all) { "对话类型无效" }
         require(turn.role == CoachTurn.USER || turn.role == CoachTurn.ASSISTANT) { "对话角色无效" }
         require(turn.content.isNotBlank() && turn.content.length <= MAX_CONTENT && turn.state.length <= MAX_STATE &&
-            turn.model.length <= 200 && turn.locatedQuote.length <= MAX_CONTENT) { "对话内容为空或过长" }
+            turn.model.length <= 200) { "对话内容为空或过长" }
     }
 
     /** Turns of one anchor, oldest first, as stored. */

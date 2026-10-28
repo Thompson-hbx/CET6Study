@@ -4,8 +4,6 @@ import com.example.cet6.data.*
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
 class ReadingLocationTest {
     private val source = "Intro.\n\nLibraries offer quiet rooms."
@@ -17,15 +15,11 @@ class ReadingLocationTest {
         anchor = Anchor.question(46), kind = TurnKind.READING_EXPLAIN, role = CoachTurn.ASSISTANT,
         content = JSONObject().put("type", "locate").put("paragraph", 999).put("quote", quote).put("note", "test").toString(),
         createdAt = 1000)
-    private fun snapshot(turn: CoachTurn) = StudyBackup(1000, emptyList(), emptyList(), emptyList(), emptyList(),
-        emptyList(), emptyList(), listOf(entry), listOf(turn))
 
-    @Test fun restoresExactQuoteWithoutTrustingTheAiParagraph() {
-        val reply = turn()
-        val saved = reply.copy(locatedQuote = ReadingLocation.extract(entry, reply))
-        assertEquals("Libraries offer quiet rooms.", ReadingLocation.restored(entry, saved))
-        assertEquals(2, PassageLayout.paragraphOf(source, saved.locatedQuote))
-        assertNull(ReadingLocation.restored(entry, reply))
+    @Test fun extractsExactQuoteWithoutTrustingTheAiParagraph() {
+        val quote = ReadingLocation.extract(entry, turn())
+        assertEquals("Libraries offer quiet rooms.", quote)
+        assertEquals(2, PassageLayout.paragraphOf(source, quote))
     }
     @Test fun rejectsFuzzyInventedWrongQuestionAndIncompleteReplies() {
         listOf(turn("Libraries offer more quiet rooms."), turn("Libraries offer  quiet rooms."),
@@ -34,24 +28,6 @@ class ReadingLocationTest {
             turn().copy(content = turn().content + "\n{bad json")).forEach {
             assertEquals("", ReadingLocation.extract(entry, it))
         }
-        assertNull(ReadingLocation.restored(entry, turn().copy(locatedQuote = "Invented quote.")))
-    }
-    @Test fun jsonAndCompleteZipRoundTripWithLocationAndMergeOldCopies() {
-        val reply = turn().let { it.copy(locatedQuote = ReadingLocation.extract(entry, it)) }
-        val data = snapshot(reply)
-        assertEquals(data, BackupCodec.decode(BackupCodec.encode(data)))
-        val bytes = ByteArrayOutputStream().also { CompleteBackupCodec.write(CompleteBackup(data, emptyList()), it) }.toByteArray()
-        assertEquals(data, CompleteBackupCodec.read(ByteArrayInputStream(bytes)).study)
-        val old = JSONObject(BackupCodec.encode(data)).put("version", 5).put("databaseVersion", 8)
-        old.getJSONArray("turns").getJSONObject(0).remove("locatedQuote")
-        val decoded = BackupCodec.decode(old.toString())
-        assertEquals("", decoded.turns.single().locatedQuote)
-        assertTrue(BackupMerger.merge(data, decoded, false).turns.isEmpty())
-    }
-    @Test fun backupRejectsTamperedOrCrossQuestionLocation() {
-        assertTrue(runCatching { BackupCodec.encode(snapshot(turn().copy(locatedQuote = "Made up."))) }.isFailure)
-        val invalid = turn().copy(anchor = "q:47", locatedQuote = "Libraries offer quiet rooms.")
-        assertTrue(runCatching { BackupCodec.encode(snapshot(invalid)) }.isFailure)
     }
     @Test fun exactMatchingWithoutEvidenceSourceDoesNotImplyReview() {
         val q = question.copy(evidence = "Libraries offer quiet rooms.")

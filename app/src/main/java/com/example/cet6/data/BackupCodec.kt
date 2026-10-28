@@ -16,13 +16,13 @@ object BackupCodec {
     }
     internal fun json(data: StudyBackup): JSONObject {
         BackupValidation.validate(data)
-        return obj("format" to "CET6StudyBackup", "version" to 6, "databaseVersion" to 9, "createdAt" to data.createdAt,
+        return obj("format" to "CET6StudyBackup", "version" to 5, "databaseVersion" to 8, "createdAt" to data.createdAt,
             "coach" to array(data.coach) { obj("id" to it.id, "kind" to it.kind, "title" to it.title,
                 "material" to it.material, "questions" to it.questions, "answer" to it.answer, "feedback" to it.feedback,
                 "model" to it.model, "errorReason" to it.errorReason, "submittedAt" to it.submittedAt, "updatedAt" to it.updatedAt,
                 "savedSentences" to it.savedSentences, "sourcePracticeId" to it.sourcePracticeId, "practiceGoal" to it.practiceGoal) },
             "turns" to array(data.turns) { obj("id" to it.id, "practiceId" to it.practiceId, "anchor" to it.anchor, "kind" to it.kind,
-                "role" to it.role, "content" to it.content, "state" to it.state, "model" to it.model, "createdAt" to it.createdAt, "locatedQuote" to it.locatedQuote) },
+                "role" to it.role, "content" to it.content, "state" to it.state, "model" to it.model, "createdAt" to it.createdAt) },
             "words" to array(data.words) { obj("word" to it.word, "meaning" to it.meaning, "example" to it.example,
                 "source" to it.source, "dueAt" to it.dueAt, "repetitions" to it.repetitions, "intervalDays" to it.intervalDays) },
             "reviews" to array(data.reviews) { obj("id" to it.id, "word" to it.word, "remembered" to it.remembered,
@@ -58,14 +58,13 @@ object BackupCodec {
         val fields = setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays")
         require(root.keys().asSequence().toSet() == when (version) {
             in 2..4 -> fields + "coach"
-            5, 6 -> fields + "coach" + "turns"
+            5 -> fields + "coach" + "turns"
             else -> fields
         }) { "备份字段不完整或不兼容" }
         require(root.string("format") == "CET6StudyBackup" &&
             ((version == 1 && root.int("databaseVersion") == 4) || (version == 2 && root.int("databaseVersion") == 5) ||
                 (version == 3 && root.int("databaseVersion") == 6) || (version == 4 && root.int("databaseVersion") == 7) ||
-                (version == 5 && root.int("databaseVersion") == 8) ||
-                (version == 6 && root.int("databaseVersion") == 9))) { "不是兼容的 CET6Study 学习备份" }
+                (version == 5 && root.int("databaseVersion") == 8))) { "不是兼容的 CET6Study 学习备份" }
         return StudyBackup(root.long("createdAt"),
             root.rows("words", 20_000) { WordEntity(it.string("word"), it.string("meaning"), it.string("example"),
                 it.long("dueAt"), it.int("repetitions"), it.int("intervalDays"), it.string("source")) },
@@ -84,7 +83,7 @@ object BackupCodec {
                 if (version >= 4) it.string("sourcePracticeId") else "", if (version >= 4) it.string("practiceGoal") else "") },
             if (version < 5) emptyList() else root.rows("turns", 200_000) { CoachTurn(it.string("id"), it.string("practiceId"),
                 it.string("anchor"), it.string("kind"), it.string("role"), it.string("content"), it.string("state"),
-                it.string("model"), it.long("createdAt"), if (version >= 6) it.string("locatedQuote") else "") }
+                it.string("model"), it.long("createdAt")) }
         ).also(BackupValidation::validate)
     }
     internal fun JSONObject.string(key: String) = get(key).also { require(it is String) { "$key 必须是文本" } } as String

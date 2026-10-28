@@ -71,7 +71,6 @@ object CompleteBackupCodec {
             // Each paper is separately bounded by ExamCodec; splitting also preserves empty libraries.
             papers.forEachIndexed { index, paper -> entry("papers/$index.json", ExamCodec.encode(listOf(paper))) }
             val manifest = JSONObject().put("format", "CET6CompleteBackup").put("version", 1)
-                .put("studyVersion", 6).put("databaseVersion", 9)
                 .put("createdAt", backup.study.createdAt).put("paperCount", papers.size)
                 .put("entries", descriptors).put("counts", JSONObject().apply {
                     tables.forEach { put(it, root.getJSONArray(it).length()) }
@@ -145,11 +144,7 @@ object CompleteBackupCodec {
         require(names == actual.keys - "manifest.json") { "备份清单与内容不一致" }
         require(meta.int("paperCount") == papers.size && paperIndexes == papers.indices.toSet()) { "题库条目缺失" }
         require(papers.map { it.stableId }.toSet().size == papers.size) { "题库重复" }
-        require(meta.has("studyVersion") == meta.has("databaseVersion")) { "备份学习版本不完整" }
-        val studyVersion = if (meta.has("studyVersion")) meta.int("studyVersion") else 5
-        val databaseVersion = if (meta.has("databaseVersion")) meta.int("databaseVersion") else 8
-        require((studyVersion == 5 && databaseVersion == 8) || (studyVersion == 6 && databaseVersion == 9)) { "不兼容的学习备份版本" }
-        val root = JSONObject().put("format", "CET6StudyBackup").put("version", studyVersion).put("databaseVersion", databaseVersion)
+        val root = JSONObject().put("format", "CET6StudyBackup").put("version", 5).put("databaseVersion", 8)
             .put("createdAt", meta.long("createdAt"))
         for (table in tables) {
             val indexes = chunkIndexes.getValue(table)

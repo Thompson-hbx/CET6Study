@@ -153,15 +153,10 @@ interface StudyDao {
 }
 
 @Database(entities = [WordEntity::class, ReadingAttempt::class, EssayEntity::class,
-    WordReview::class, DailyPlan::class, WordSchedule::class, CoachPractice::class, CoachTurn::class], version = 9)
+    WordReview::class, DailyPlan::class, WordSchedule::class, CoachPractice::class, CoachTurn::class], version = 8)
 abstract class StudyDatabase : RoomDatabase() {
     abstract fun dao(): StudyDao
     companion object {
-        val MIGRATION_8_9 = object : Migration(8, 9) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE coach_turns ADD COLUMN locatedQuote TEXT NOT NULL DEFAULT ''")
-            }
-        }
         /** Additive only: conversations live beside practices, existing rows are untouched. */
         val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(db: SupportSQLiteDatabase) {
@@ -207,7 +202,7 @@ abstract class StudyDatabase : RoomDatabase() {
             }
         }
         val ALL_MIGRATIONS get() = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5,
-            MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
+            MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
         @Volatile private var INSTANCE: StudyDatabase? = null
         fun get(context: Context): StudyDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context.applicationContext, StudyDatabase::class.java,

@@ -86,9 +86,12 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         }
     }
     val anchor = Anchor.question(selected)
-    val savedFocus = CoachTurns.latest(turns, anchor, TurnKind.READING_EXPLAIN)?.let { turn ->
-        ReadingLocation.restored(entry, turn)?.let { quote ->
-            passages.firstOrNull { p -> p.questions.any { it.number == selected } }?.let { ReaderFocus(it.code, quote) }
+    // The selected question's saved explanation names its quote; recomputed from that reply, never stored apart.
+    val savedFocus = remember(turns, selected, passages) {
+        CoachTurns.latest(turns, anchor, TurnKind.READING_EXPLAIN)?.let { turn ->
+            ReadingLocation.extract(entry, turn).takeIf(String::isNotBlank)?.let { quote ->
+                passages.firstOrNull { p -> p.questions.any { it.number == selected } }?.let { ReaderFocus(it.code, quote) }
+            }
         }
     }
     fun ask(question: String) = talk.send(entry, anchor, TurnKind.CHAT, question) {
@@ -131,8 +134,7 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                 // Passage above, question below: checking an answer never means flipping to another tab and back.
                 val q = questions.firstOrNull { it.number == selected } ?: questions.first()
                 val passage = passages.first { p -> p.questions.any { it.number == q.number } }
-                val savedQuote = CoachTurns.latest(turns, Anchor.question(q.number), TurnKind.READING_EXPLAIN)
-                    ?.let { ReadingLocation.restored(entry, it) }
+                val savedQuote = savedFocus?.takeIf { it.passage == passage.code }?.quote
                 if (savedQuote != null) Text("AI 定位 · 已匹配原文，待人工确认", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(horizontal = PageGutter))
                 PassagePeek(passage, q, focus?.takeIf { it.passage == passage.code }?.quote ?: savedQuote, peekOpen, onToggle = { peekOpen = !peekOpen },
                     onOpenFull = { focus = focus ?: savedFocus; tab = 2 }, modifier = if (peekOpen) Modifier.weight(0.42f) else Modifier)

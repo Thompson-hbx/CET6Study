@@ -35,8 +35,6 @@ for version in range(1, latest):
         db.execute("UPDATE coach_practices SET savedSentences='Original evidence.'")
     if version >= 7:
         db.execute("UPDATE coach_practices SET sourcePracticeId='older-practice',practiceGoal='Preserved goal'")
-    if version >= 8:
-        db.execute("INSERT INTO coach_turns VALUES ('preserved-turn','preserved-practice','q:46','read-explain/1','assistant','Original reply.','','test-model',100)")
     before = {}
     for table in original["entities"]:
         name = table["tableName"]
@@ -64,8 +62,6 @@ for version in range(1, latest):
             assert [row[2] for row in db.execute(f"PRAGMA index_info({index['name']})")] == index["columnNames"], (name, index)
     for name, (columns, rows) in before.items():
         assert db.execute(f"SELECT {','.join(columns)} FROM {name}").fetchall() == rows, f"Lost data: {name}"
-    if version >= 8:
-        assert db.execute("SELECT locatedQuote FROM coach_turns WHERE id='preserved-turn'").fetchone()[0] == ""
     assert db.execute("SELECT count(*) FROM word_schedules").fetchone()[0] == 0, "Fabricated memory"
     assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
     print(f"PASS: actual migration SQL {version}->{latest}; columns/types/keys match Room {latest}; all original rows preserved; no fabricated FSRS state.")

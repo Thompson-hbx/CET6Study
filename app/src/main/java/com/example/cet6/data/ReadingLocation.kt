@@ -1,6 +1,10 @@
 package com.example.cet6.data
 
-/** Persist only exact quotes in the question's snapshot, never a fuzzy match or an AI paragraph number. */
+/**
+ * The AI's located quote, recomputed from the saved explanation each time, so older explanations work too and
+ * nothing extra is stored. Only an exact quote in the question's snapshot counts, never a fuzzy match or an AI
+ * paragraph number.
+ */
 object ReadingLocation {
     private fun passage(entry: CoachPractice, turn: CoachTurn): ExamPassage? {
         if (entry.id != turn.practiceId || entry.kind != CoachKind.READING.name ||
@@ -16,7 +20,4 @@ object ReadingLocation {
         return explanation.takeIf { it.structured }?.locate?.quote
             ?.takeIf { it.isNotBlank() && source.content.contains(it) }.orEmpty()
     }
-
-    fun restored(entry: CoachPractice, turn: CoachTurn): String? = turn.locatedQuote
-        .takeIf { it.isNotBlank() && it == extract(entry, turn) }
 }

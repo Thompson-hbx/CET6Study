@@ -34,21 +34,6 @@ class CompleteBackupTest {
         assertEquals(CompleteBackup(empty, null), decode(BackupCodec.encode(empty).toByteArray()))
     }
 
-    @Test fun legacyZipWithoutStudyVersionStillRestoresAndInvalidNewVersionsFail() {
-        val original = entries(encode(CompleteBackup(empty, emptyList())))
-        val manifest = JSONObject(String(original.getValue("manifest.json")))
-        val legacy = JSONObject(manifest.toString()).apply { remove("studyVersion"); remove("databaseVersion") }
-        assertEquals(empty, decode(zip(original + ("manifest.json" to legacy.toString().toByteArray()))).study)
-        listOf(
-            JSONObject(manifest.toString()).put("studyVersion", "6"),
-            JSONObject(manifest.toString()).put("databaseVersion", 9.5),
-            JSONObject(manifest.toString()).put("studyVersion", 99),
-            JSONObject(manifest.toString()).apply { remove("databaseVersion") }
-        ).forEach { changed ->
-            assertTrue(runCatching { decode(zip(original + ("manifest.json" to changed.toString().toByteArray()))) }.isFailure)
-        }
-    }
-
     @Test fun rejectsMissingEntriesChecksumsUnknownPathsAndConflictingCounts() {
         val original = entries(encode(CompleteBackup(empty, listOf(paper))))
         val variants = listOf(
