@@ -58,9 +58,9 @@ fun InteractiveStepPill(
 @Composable
 fun PageHeader(
     title: String,
+    modifier: Modifier = Modifier,
     subtitle: String? = null,
-    badge: String? = null,
-    modifier: Modifier = Modifier
+    badge: String? = null
 ) {
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(

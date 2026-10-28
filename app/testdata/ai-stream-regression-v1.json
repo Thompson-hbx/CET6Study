@@ -1,0 +1,591 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "chat-normal",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": "解释"
+    },
+    {
+      "id": "chat-reasoning-usage",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":null}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"reasoning_content\":\"internal\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "{\"choices\":[],\"usage\":{\"total_tokens\":8}}",
+        "[DONE]"
+      ],
+      "expected": "解释"
+    },
+    {
+      "id": "chat-terminal-text",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"终句\"},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": "终句"
+    },
+    {
+      "id": "chat-other-choice",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":1,\"delta\":{\"content\":\"other\"}},{\"index\":0,\"delta\":{\"content\":\"所选\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": "所选"
+    },
+    {
+      "id": "chat-unicode-parts",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"第一行\\n\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"📚\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": "第一行\n📚"
+    },
+    {
+      "id": "chat-legacy-missing-delta",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": "解释"
+    },
+    {
+      "id": "chat-content-object",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":{\"data\":\"fixture-private-marker\"}}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-content-array",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":[\"fixture-private-marker\"]}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-content-integer",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":123}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-content-boolean",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":true}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-delta-string",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":\"fixture-private-marker\"}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-delta-array",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":[]}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-delta-integer",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":1}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-string",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":\"0\",\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-decimal",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0.5,\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-negative",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":-1,\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-overflow",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":1e+30,\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-boolean",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":false,\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-null",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":null,\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-index-missing",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"delta\":{\"content\":\"wrong\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-duplicate-0",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"first\"}},{\"index\":0,\"delta\":{\"content\":\"lost\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-duplicate-1",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":1,\"delta\":{\"content\":\"first\"}},{\"index\":1,\"delta\":{\"content\":\"lost\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-length",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"length\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-content_filter",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"content_filter\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-tool_calls",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"tool_calls\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-unexpected",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"unexpected\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-123",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":123}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-{}",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":{}}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-finish-[]",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":[]}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-missing-done",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-missing-stop",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-empty",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-error",
+      "protocol": "chat",
+      "records": [
+        "{\"error\":{\"message\":\"fixture-private-marker\"}}"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-bad-json",
+      "protocol": "chat",
+      "records": [
+        "not-json"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-bad-choices",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":{}}"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-bad-choice",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[\"fixture-private-marker\"]}"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-after-stop",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "chat-repeated-stop",
+      "protocol": "chat",
+      "records": [
+        "{\"choices\":[{\"index\":0,\"delta\":{\"content\":\"解释\"}}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "{\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}",
+        "[DONE]"
+      ],
+      "expected": null
+    },
+    {
+      "id": "responses-normal",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": "解释"
+    },
+    {
+      "id": "responses-event-fallback",
+      "protocol": "responses",
+      "wire": "event: response.output_text.delta\ndata: {\"delta\":\"解释\"}\n\nevent: response.completed\ndata: {}\n\n",
+      "expected": "解释"
+    },
+    {
+      "id": "responses-refusal",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\",\"delta\":\"无法完成\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": "无法完成"
+    },
+    {
+      "id": "responses-unicode-parts",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"第一行\\n\"}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"📚\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": "第一行\n📚"
+    },
+    {
+      "id": "responses-missing-header-valid-created",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.created\",\"response\":{\"object\":\"response\"}}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": "解释",
+      "missingHeader": true
+    },
+    {
+      "id": "responses-unknown-metadata",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.created\",\"response\":{\"object\":\"response\"}}\n\ndata: {\"type\":\"response.custom_metadata\",\"anything\":{\"data\":1}}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": "解释"
+    },
+    {
+      "id": "responses-response.output_text.delta-object",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":{\"data\":\"fixture-private-marker\"}}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.output_text.delta-array",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":[\"fixture-private-marker\"]}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.output_text.delta-integer",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":123}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.output_text.delta-boolean",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":true}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.output_text.delta-null",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":null}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.output_text.delta-missing",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.refusal.delta-object",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\",\"delta\":{\"data\":\"fixture-private-marker\"}}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.refusal.delta-array",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\",\"delta\":[\"fixture-private-marker\"]}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.refusal.delta-integer",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\",\"delta\":123}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.refusal.delta-boolean",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\",\"delta\":true}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.refusal.delta-null",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\",\"delta\":null}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-response.refusal.delta-missing",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.refusal.delta\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-type-object",
+      "protocol": "responses",
+      "wire": "data: {\"type\":{\"data\":\"fixture-private-marker\"}}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-type-array",
+      "protocol": "responses",
+      "wire": "data: {\"type\":[]}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-type-integer",
+      "protocol": "responses",
+      "wire": "data: {\"type\":1}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-type-boolean",
+      "protocol": "responses",
+      "wire": "data: {\"type\":true}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-type-null",
+      "protocol": "responses",
+      "wire": "data: {\"type\":null}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-bad-json",
+      "protocol": "responses",
+      "wire": "data: not-json\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-incomplete",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.incomplete\",\"response\":{\"incomplete_details\":{\"reason\":\"max_output_tokens\"}}}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-failed",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.failed\",\"response\":{\"error\":{\"code\":\"server_error\"}}}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-error",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"error\",\"code\":\"server_error\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-eof",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-done-without-completed",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: [DONE]\n\n",
+      "expected": null
+    },
+    {
+      "id": "responses-missing-header-unverified",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null,
+      "missingHeader": true
+    },
+    {
+      "id": "responses-missing-header-invalid-created",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.created\",\"response\":{\"object\":{}}}\n\ndata: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null,
+      "missingHeader": true
+    },
+    {
+      "id": "responses-html",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null,
+      "contentType": "text/html"
+    },
+    {
+      "id": "responses-http429",
+      "protocol": "responses",
+      "wire": "data: {\"type\":\"response.output_text.delta\",\"delta\":\"解释\"}\n\ndata: {\"type\":\"response.completed\"}\n\n",
+      "expected": null,
+      "httpCode": 429
+    }
+  ]
+}

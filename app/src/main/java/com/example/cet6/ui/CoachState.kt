@@ -7,22 +7,26 @@ import androidx.compose.runtime.setValue
 import com.example.cet6.data.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /** Keeps edits local; complete AI feedback is attached to the exact saved submission. */
-class CoachState(
+class CoachState internal constructor(
     private val repository: CoachRepository,
     private val scope: CoroutineScope,
     private val canRequest: () -> Boolean,
     private val model: () -> String,
+    private val startupReady: Deferred<Unit>?,
     private val request: suspend (String, suspend (String) -> Unit) -> String
 ) {
+    constructor(repository: CoachRepository, scope: CoroutineScope, canRequest: () -> Boolean, model: () -> String,
+        request: suspend (String, suspend (String) -> Unit) -> String) : this(repository, scope, canRequest, model, null, request)
+
     val entries = mutableStateMapOf<CoachKind, CoachPractice>()
     val messages = mutableStateMapOf<CoachKind, String>()
     var history by mutableStateOf<List<CoachPractice>>(emptyList())
@@ -41,6 +45,7 @@ class CoachState(
     private val ready = CoachKind.entries.associateWith { CompletableDeferred<Unit>() }
     private val readingReady = ready.getValue(CoachKind.READING)
     private val shareLock = Mutex()
+    private val saveLocks = CoachKind.entries.associateWith { Mutex() }
     var shareStatus by mutableStateOf("")
         private set
     var importedReadingId by mutableStateOf<String?>(null)
@@ -54,7 +59,11 @@ class CoachState(
         }
         CoachKind.entries.forEach { kind ->
             scope.launch {
-                try { entries[kind] = repository.draft(kind) ?: CoachPractice(kind = kind.name) }
+                try {
+                    // Pending recovery can add the latest draft; never cache the pre-recovery snapshot.
+                    startupReady?.await()
+                    entries[kind] = repository.draft(kind) ?: CoachPractice(kind = kind.name)
+                }
                 catch (e: CancellationException) { throw e }
                 catch (_: Exception) { messages[kind] = "草稿读取失败，请重启重试；未覆盖已有记录。" }
                 finally { ready.getValue(kind).complete(Unit) }
@@ -109,7 +118,6 @@ class CoachState(
         messages[kind] = "正在保存……"
         writes[kind]?.cancel()
         writes[kind] = scope.launch {
-            delay(350)
             persist(kind, next)
         }
         return true
@@ -128,14 +136,16 @@ class CoachState(
         }
     }
 
-    private suspend fun persist(kind: CoachKind, entry: CoachPractice): Boolean = try {
-        repository.save(entry)
-        messages[kind] = "已保存到本机"
-        true
-    } catch (e: CancellationException) { throw e
-    } catch (_: Exception) {
-        messages[kind] = "本地保存失败，请点击保存重试；不要清除数据。"
-        false
+    private suspend fun persist(kind: CoachKind, entry: CoachPractice): Boolean = saveLocks.getValue(kind).withLock {
+        try {
+            repository.save(entry)
+            if (entries[kind] == entry) messages[kind] = "已保存到本机"
+            true
+        } catch (e: CancellationException) { throw e
+        } catch (_: Exception) {
+            messages[kind] = "本地保存失败，请点击保存重试；不要清除数据。"
+            false
+        }
     }
 
     private fun action(kind: CoachKind, block: suspend () -> Unit) {
@@ -173,7 +183,7 @@ class CoachState(
         return try {
             writes.values.toList().forEach { it.cancelAndJoin() }
             writes.clear()
-            entries.toMap().all { (kind, entry) -> persist(kind, entry) }
+            entries.toMap().map { (kind, entry) -> persist(kind, entry) }.all { it }
         } finally { working = false }
     }
 
@@ -283,7 +293,7 @@ class CoachState(
         } catch (e: IllegalArgumentException) { messages[kind] = e.message.orEmpty(); return@action }
         if (!persist(kind, current)) return@action
         if (!canRequest()) {
-            messages[kind] = "作答已保存。AI 分析需要在“我的”连接 AI 服务并选择模型。"
+            messages[kind] = "作答已保存。AI 分析需要在“我的”连接 ChatGPT 或其他 AI 服务并选择模型。"
             return@action
         }
         val selectedModel = model()

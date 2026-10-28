@@ -10,6 +10,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * Requests whose results become [CoachTurn]s. Unlike the older feedback field, nothing here
@@ -35,6 +37,7 @@ class CoachTalk(
         private set
     private var job: Job? = null
     private var retryCurrent: (() -> Unit)? = null
+    private val stateWrites = Mutex()
 
     val busy get() = pending != null
     fun turns(practiceId: String): Flow<List<CoachTurn>> = repository.turns(practiceId)
@@ -64,12 +67,22 @@ class CoachTalk(
         val runningJob = scope.launch {
             try {
                 val selectedModel = model()
-                val reply = request(text) { delta -> pending = pending?.let { it.copy(text = it.text + delta) } }
+                val reply = request(text) { delta ->
+                    pending = pending?.let {
+                        val next = it.text + delta
+                        CoachTurns.checkReplyLength(next)
+                        it.copy(text = next)
+                    }
+                }
                 check(reply.isNotBlank()) { "AI 没有返回可用文本" }
-                if (question.isNotBlank()) repository.saveTurn(CoachTurn(practiceId = practice.id, anchor = anchor,
-                    kind = TurnKind.CHAT, role = CoachTurn.USER, content = question.trim(), createdAt = startedAt))
-                repository.saveTurn(CoachTurn(practiceId = practice.id, anchor = anchor, kind = kind, role = CoachTurn.ASSISTANT,
-                    content = reply.take(CoachTurns.MAX_CONTENT), model = selectedModel))
+                CoachTurns.checkReplyLength(reply)
+                val userTurn = question.takeIf(String::isNotBlank)?.let {
+                    CoachTurn(practiceId = practice.id, anchor = anchor, kind = TurnKind.CHAT,
+                        role = CoachTurn.USER, content = it.trim(), createdAt = startedAt)
+                }
+                repository.saveExchange(userTurn, CoachTurn(practiceId = practice.id, anchor = anchor,
+                    kind = kind, role = CoachTurn.ASSISTANT, content = reply, model = selectedModel,
+                    createdAt = maxOf(System.currentTimeMillis(), startedAt + 1)))
                 pending = null
             } catch (e: CancellationException) {
                 pending = null
@@ -98,11 +111,9 @@ class CoachTalk(
         // The cancelled coroutine clears pending after its socket closes, before another request can start.
     }
 
-    fun updateState(turn: CoachTurn, state: String) {
-        scope.launch {
-            try { repository.saveTurn(turn.copy(state = state)) }
-            catch (e: CancellationException) { throw e }
-            catch (_: Exception) { failure = Failure(turn.practiceId, turn.anchor, "本机保存失败，请重试。") }
-        }
+    fun updateDecision(turn: CoachTurn, issueId: Int, decision: ReviewDecision) = scope.launch {
+        try { stateWrites.withLock { repository.updateDecision(turn.id, issueId, decision) } }
+        catch (e: CancellationException) { throw e }
+        catch (_: Exception) { failure = Failure(turn.practiceId, turn.anchor, "本机保存失败，请重试。") }
     }
 }

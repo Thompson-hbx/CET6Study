@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -51,21 +52,31 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     if (entry == null) { LoadingScreen(onBack); return }
     val passages = remember(entry.questions) { ExamCodec.passages(entry) }
     if (passages.isEmpty()) {
-        SimpleScreen(entry.title, onBack) { Note("题目快照无法读取，请保留记录并重新核对内容包。") }
+        if (ExamCodec.metadata(entry) == null) {
+            SimpleScreen(entry.title.ifBlank { "自己的文章" }, onBack, actions = { WorkspaceMenu(vm, entry) }) { scroll ->
+                CoachScreen(vm, CoachKind.READING, scroll)
+            }
+        } else {
+            SimpleScreen(entry.title, onBack) { Note("题目快照无法读取，请保留记录并重新核对内容包。") }
+        }
         return
     }
     val questions = remember(passages) { passages.flatMap { it.questions }.sortedBy { it.number } }
     val turns = rememberTurns(vm, entry.id)
     val submitted = entry.submittedAt > 0
     val answers = questions.associate { it.number to ReadingQuestions.selected(entry.answer, "${it.number}").orEmpty() }
-    var tab by rememberSaveable(entry.id) { mutableIntStateOf(if (submitted) 1 else 0) }
-    var selected by rememberSaveable(entry.id) { mutableIntStateOf(questions.first().number) }
+    val savedPosition = remember(entry.id) { vm.readingPosition(entry.id)?.takeIf { position -> questions.any { it.number == position.second } } }
+    val initiallySubmitted = remember(entry.id) { submitted }
+    var tab by rememberSaveable(entry.id) { mutableIntStateOf(savedPosition?.first ?: if (submitted) 1 else 0) }
+    var selected by rememberSaveable(entry.id) { mutableIntStateOf(savedPosition?.second ?:
+        questions.firstOrNull { submitted && ReadingGuidance.verdict(it, answers[it.number].orEmpty()) == "需要回看" }?.number ?: questions.first().number) }
     var invalid by rememberSaveable(entry.id) { mutableStateOf("") }
     var focus by remember { mutableStateOf<ReaderFocus?>(null) }
     val scroll = rememberScrollState()
     LaunchedEffect(tab) { if (focus == null || tab != 2) scroll.scrollTo(0) }
+    LaunchedEffect(entry.id, tab, selected) { vm.rememberReadingPosition(entry.id, tab, selected) }
     LaunchedEffect(submitted) {
-        if (submitted) {
+        if (submitted && !initiallySubmitted) {
             tab = 1
             selected = questions.firstOrNull { ReadingGuidance.verdict(it, answers[it.number].orEmpty()) == "需要回看" }?.number ?: selected
         }
@@ -191,7 +202,7 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
                 ordered.forEachIndexed { i, q ->
                     val mine = answers[q.number].orEmpty()
                     AnswerCell("${i + 1}", mine, picking == i, null, Modifier.weight(1f),
-                        spoken = "篇章 ${p.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}") {
+                        spoken = "篇章 ${p.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}", enabled = !submitted && !state.working) {
                         if (!submitted) picking = if (picking == i) -1 else i
                     }
                 }
@@ -240,10 +251,10 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
 /** One bubble of the answer sheet; the bottom stripe carries the check result once there is one. */
 @Composable
 private fun AnswerCell(number: String, value: String, selected: Boolean, tone: Tone?, modifier: Modifier = Modifier,
-    spoken: String, onClick: () -> Unit) {
+    spoken: String, enabled: Boolean = true, onClick: () -> Unit) {
     val marked = tone == Tone.Good || tone == Tone.Must
     val stripe = if (marked) tone!!.color() else Color.Transparent
-    Surface(onClick = onClick, shape = RoundedCornerShape(10.dp),
+    Surface(onClick = onClick, enabled = enabled, shape = RoundedCornerShape(10.dp),
         modifier = modifier.height(60.dp).semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" },
         color = if (marked) tone!!.soft() else MaterialTheme.colorScheme.surfaceContainer,
         border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)) {
@@ -316,25 +327,25 @@ private fun QuestionDetail(vm: StudyViewModel, entry: CoachPractice, passage: Ex
     val explanation = remember(text) { text?.let(ReadingExplanation::parse) }
     var reveal by rememberSaveable(entry.id, q.number) { mutableStateOf(false) }
     val keyKnown = q.referenceAnswer.isNotBlank() && q.answerSource.isNotBlank()
-    val showKey = keyKnown && (reveal || explanation?.options?.isNotEmpty() == true)
+    val showKey = keyKnown && (reveal || explanation?.takeIf { it.structured }?.options?.isNotEmpty() == true)
     PaperCard(Modifier.padding(top = 12.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 CardTitle("篇章 ${passage.code} · 第 $ordinal 题", Modifier.weight(1f))
                 DotStatus(verdictLabel(verdict), verdictTone(verdict))
             }
-            Text(q.stem, style = PassageText)
+            SelectionContainer { Text(q.stem, style = PassageText) }
             val optionLabel = labelWidth(q.options.map { it.label }, MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold))
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 q.options.forEach { option ->
-                    val note = explanation?.options?.firstOrNull { it.label == option.label }
+                    val note = explanation?.takeIf { it.structured }?.options?.firstOrNull { it.label == option.label }
                     val isKey = showKey && q.referenceAnswer == option.label
                     val isMine = mine == option.label
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text(option.label, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(optionLabel),
                             color = when { isKey -> Tone.Good.color(); isMine && verdict == "需要回看" -> Tone.Must.color(); else -> MaterialTheme.colorScheme.onSurface })
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Text(option.text, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp))
+                            SelectionContainer { Text(option.text, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)) }
                             if (isMine || isKey) FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 if (isMine) Tag("我的选择", if (verdict == "需要回看") Tone.Must else if (verdict == "与参考一致") Tone.Good else Tone.Muted)
                                 if (isKey) Tag("参考答案", Tone.Good)
@@ -358,7 +369,7 @@ private fun QuestionDetail(vm: StudyViewModel, entry: CoachPractice, passage: Ex
                     Note("回到原文讲清定位、同义替换和每个选项；不确定的地方会说明。")
                     if (!vm.aiReady || vm.chosenModel.isBlank()) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型。")
                 }
-                !explanation.structured -> { MarkdownBody(explanation.raw); Provenance(explainTurn?.model.orEmpty()) }
+                !explanation.structured -> { Note("回复未完整通过结构检查，以下保留全部原文。"); MarkdownBody(explanation.raw); Provenance(explainTurn?.model.orEmpty()) }
                 else -> ExplanationView(explanation, explainTurn?.model) { quote -> onLocate(passage.code, quote) }
             }
             ReadingDiagnosis.saved(entry.feedback, q.number).takeIf(String::isNotBlank)?.let { legacy ->
@@ -392,7 +403,9 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
                 }
                 if (locate.quote.isNotBlank()) Row(Modifier.height(IntrinsicSize.Min)) {
                     Box(Modifier.width(3.dp).fillMaxHeight().background(MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)))
-                    Text(locate.quote, style = PassageText.copy(fontSize = 16.sp, lineHeight = 26.sp), modifier = Modifier.padding(start = 12.dp))
+                    SelectionContainer {
+                        Text(locate.quote, style = PassageText.copy(fontSize = 16.sp, lineHeight = 26.sp), modifier = Modifier.padding(start = 12.dp))
+                    }
                 }
                 if (locate.note.isNotBlank()) Text(locate.note, style = MaterialTheme.typography.bodyMedium)
             }
@@ -560,7 +573,7 @@ private fun ParagraphSheet(vm: StudyViewModel, entry: CoachPractice, passage: Ex
         Column(Modifier.fillMaxWidth().padding(horizontal = PageGutter).padding(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             CardTitle("篇章 ${passage.code} · 第 $index 段")
             Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(paragraph, style = PassageText.copy(fontSize = 16.sp, lineHeight = 26.sp))
+                SelectionContainer { Text(paragraph, style = PassageText.copy(fontSize = 16.sp, lineHeight = 26.sp)) }
                 ThreadView(thread, pending, talk::stop, kinds = setOf(TurnKind.CHAT, TurnKind.READING_PARAGRAPH))
                 QuickAsks(ParagraphHelp.entries.map { it.label } + CoachChat.suggestions(CoachKind.READING, anchor).takeIf { thread.isNotEmpty() }.orEmpty(),
                     enabled = !talk.busy, onPick = { label ->

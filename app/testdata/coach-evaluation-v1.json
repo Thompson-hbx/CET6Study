@@ -1,0 +1,171 @@
+{
+  "format": "CET6CoachEvaluation",
+  "version": 1,
+  "note": "Original small gold set; not genuine exams. Human calibration and live model evaluation remain required.",
+  "cases": [
+    {
+      "id": "writing-basic",
+      "kind": "writing",
+      "level": "basic",
+      "material": "Explain why libraries matter.",
+      "answer": "Libraries helps students. It provide quiet rooms.",
+      "errors": [
+        {
+          "quote": "Libraries helps",
+          "start": 0,
+          "fixes": [
+            "Libraries help"
+          ]
+        },
+        {
+          "quote": "It provide",
+          "start": 26,
+          "fixes": [
+            "It provides"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "writing-intermediate",
+      "kind": "writing",
+      "level": "intermediate",
+      "material": "Discuss independent study.",
+      "answer": "Students can studies alone, but feedback is useful.",
+      "errors": [
+        {
+          "quote": "can studies",
+          "start": 9,
+          "fixes": [
+            "can study"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "writing-strong",
+      "kind": "writing",
+      "level": "strong",
+      "material": "Discuss access to libraries.",
+      "answer": "Libraries widen access to knowledge while providing a quiet place to study.",
+      "errors": []
+    },
+    {
+      "id": "translation-omission",
+      "kind": "translation",
+      "level": "basic",
+      "material": "这项服务不仅免费，而且对所有学生开放。",
+      "answer": "The service is free.",
+      "errors": [
+        {
+          "quote": "The service is free.",
+          "start": 0,
+          "fixes": [
+            "The service is not only free but also open to all students."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-negation",
+      "kind": "translation",
+      "level": "intermediate",
+      "material": "并非所有学生都赞成这项规定。",
+      "answer": "All students support this rule.",
+      "errors": [
+        {
+          "quote": "All students support this rule.",
+          "start": 0,
+          "fixes": [
+            "Not all students support this rule."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-number",
+      "kind": "translation",
+      "level": "intermediate",
+      "material": "去年的读者人数增加了一倍。",
+      "answer": "The number of readers rose by ten percent last year.",
+      "errors": [
+        {
+          "quote": "rose by ten percent",
+          "start": 22,
+          "fixes": [
+            "doubled",
+            "rose by 100 percent"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-strong",
+      "kind": "translation",
+      "level": "strong",
+      "material": "这座桥连接了两座城市，缩短了通勤时间。",
+      "answer": "The bridge links the two cities and shortens commuting time.",
+      "errors": []
+    },
+    {
+      "id": "reading-scope",
+      "kind": "reading",
+      "level": "scope",
+      "material": "Some students use the library on weekends.",
+      "question": "Who uses the library on weekends?",
+      "options": {
+        "A": "Some students",
+        "B": "All students",
+        "C": "Only teachers",
+        "D": "No one"
+      },
+      "correct": "A",
+      "errors": []
+    },
+    {
+      "id": "reading-negation",
+      "kind": "reading",
+      "level": "negation",
+      "material": "The survey did not find evidence that the change improved attendance.",
+      "question": "What did the survey find?",
+      "options": {
+        "A": "Attendance certainly improved",
+        "B": "An improvement was not demonstrated",
+        "C": "Attendance certainly fell",
+        "D": "The change was cancelled"
+      },
+      "correct": "B",
+      "errors": []
+    },
+    {
+      "id": "reading-causation",
+      "kind": "reading",
+      "level": "causation",
+      "material": "Reading time and test scores rose together, but the study did not establish a causal link.",
+      "question": "Which conclusion is supported?",
+      "options": {
+        "A": "Reading caused higher scores",
+        "B": "Higher scores caused reading",
+        "C": "The two increased together",
+        "D": "Every student improved"
+      },
+      "correct": "C",
+      "errors": []
+    },
+    {
+      "id": "reading-paraphrase",
+      "kind": "reading",
+      "level": "paraphrase",
+      "material": "The service is available to every student at no charge.",
+      "question": "Which statement matches the passage?",
+      "options": {
+        "A": "Only some students may use it",
+        "B": "Students pay a small fee",
+        "C": "Teachers alone can use it",
+        "D": "All students can use it for free"
+      },
+      "correct": "D",
+      "errors": []
+    }
+  ]
+}

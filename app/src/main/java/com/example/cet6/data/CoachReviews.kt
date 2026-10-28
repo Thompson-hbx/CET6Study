@@ -2,6 +2,7 @@ package com.example.cet6.data
 
 import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONTokener
 
 data class ReviewScore(val band: Int, val summary: String)
 data class ReviewAspect(val name: String, val level: String, val note: String)
@@ -21,7 +22,9 @@ data class CoachReview(
     val segments: List<ReviewSegment>, val terms: List<ReviewTerm>, val tips: List<String>,
     val rewrite: String, val raw: String
 ) {
-    val structured get() = score != null || aspects.isNotEmpty() || issues.isNotEmpty() || segments.isNotEmpty()
+    val structured get() = !JsonLines.hasMalformedObjects(raw) &&
+        segments.map { it.index }.distinct().size == segments.size &&
+        (score != null || aspects.isNotEmpty() || issues.isNotEmpty() || segments.isNotEmpty())
 
     companion object {
         private val types = setOf("score", "aspect", "issue", "segment", "term", "tip", "rewrite")
@@ -42,7 +45,11 @@ data class CoachReview(
             val terms = mutableListOf<ReviewTerm>()
             val tips = mutableListOf<String>()
             var rewrite = ""
-            JsonLines.typed(text, types).forEach { o ->
+            val rows = JsonLines.typed(text, types)
+            if (JsonLines.hasMalformedObjects(text) || !CoachOutputSchema.review(rows)) {
+                return CoachReview(null, emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), "", text)
+            }
+            rows.forEach { o ->
                 when (o.optString("type")) {
                     "score" -> band(o.optInt("band", -1))?.let { score = ReviewScore(it, o.text("summary")) }
                     "aspect" -> if (o.text("name").isNotBlank()) aspects += ReviewAspect(o.text("name"), o.text("level"), o.text("note"))
@@ -61,11 +68,13 @@ data class CoachReview(
                     "rewrite" -> rewrite = o.text("text")
                 }
             }
-            return CoachReview(score, aspects, issues, segments.distinctBy { it.index }.sortedBy { it.index },
+            return CoachReview(score, aspects, issues, segments.sortedBy { it.index },
                 terms, tips, rewrite, text)
         }
     }
 }
+
+enum class ReviewDecision { ACCEPT, DISMISS, RESET }
 
 /** The learner's verdict on individual suggestions; stored on the review turn, never inferred. */
 data class ReviewDecisions(val accepted: Set<Int> = emptySet(), val dismissed: Set<Int> = emptySet()) {
@@ -75,6 +84,43 @@ data class ReviewDecisions(val accepted: Set<Int> = emptySet(), val dismissed: S
     fun encode(): String = JSONObject().put("accepted", JSONArray(accepted.sorted())).put("dismissed", JSONArray(dismissed.sorted())).toString()
 
     companion object {
+        /** A failed read must never become an empty state during a database write. */
+        internal fun decodeForUpdate(state: String, issueIds: Set<Int>): ReviewDecisions {
+            require(state.length <= CoachTurns.MAX_STATE) { "建议状态过长，原状态已保留" }
+            if (state.isBlank()) return ReviewDecisions()
+            val input = JSONTokener(state)
+            require(input.nextClean() == '{') { "建议状态格式无效，原状态已保留" }
+            val fields = mutableMapOf<String, Set<Int>>()
+            if (input.nextClean() != '}') {
+                input.back()
+                while (true) {
+                    require(input.nextClean() == '\"') { "建议状态字段无效，原状态已保留" }
+                    val key = input.nextString('\"')
+                    require(key in setOf("accepted", "dismissed") && key !in fields) { "建议状态字段未知或重复，原状态已保留" }
+                    require(input.nextClean() == ':') { "建议状态格式无效，原状态已保留" }
+                    val array = requireNotNull(input.nextValue() as? JSONArray) { "建议状态必须是编号列表，原状态已保留" }
+                    val ids = mutableSetOf<Int>()
+                    for (i in 0 until array.length()) {
+                        val id = when (val value = array.opt(i)) {
+                            is Int -> value
+                            is Long -> value.takeIf { it in 0..Int.MAX_VALUE.toLong() }?.toInt()
+                            else -> null
+                        }
+                        require(id != null && id in issueIds && ids.add(id)) { "建议状态编号无效或重复，原状态已保留" }
+                    }
+                    fields[key] = ids
+                    val next = input.nextClean()
+                    if (next == '}') break
+                    require(next == ',') { "建议状态格式无效，原状态已保留" }
+                }
+            }
+            require(input.nextClean().code == 0) { "建议状态存在多余内容，原状态已保留" }
+            val accepted = fields["accepted"].orEmpty()
+            val dismissed = fields["dismissed"].orEmpty()
+            require(accepted.intersect(dismissed).isEmpty()) { "建议状态互相冲突，原状态已保留" }
+            return ReviewDecisions(accepted, dismissed)
+        }
+
         fun decode(state: String): ReviewDecisions = runCatching {
             val o = JSONObject(state)
             fun ints(key: String) = o.optJSONArray(key)?.let { a -> (0 until a.length()).map { a.getInt(it) }.toSet() }.orEmpty()
@@ -92,7 +138,9 @@ data class ReadingExplanation(
     val locate: ExplainLocate?, val paraphrases: List<ExplainParaphrase>, val options: List<ExplainOption>,
     val misread: String, val checkQuestion: String, val checkAnswer: String, val summary: String, val raw: String
 ) {
-    val structured get() = locate != null || paraphrases.isNotEmpty() || options.isNotEmpty()
+    val structured get() = !JsonLines.hasMalformedObjects(raw) &&
+        options.map { it.label }.distinct().size == options.size &&
+        (locate != null || paraphrases.isNotEmpty() || options.isNotEmpty())
 
     companion object {
         private val types = setOf("locate", "paraphrase", "option", "misread", "check", "summary")
@@ -101,7 +149,11 @@ data class ReadingExplanation(
             val paraphrases = mutableListOf<ExplainParaphrase>()
             val options = mutableListOf<ExplainOption>()
             var misread = ""; var question = ""; var answer = ""; var summary = ""
-            JsonLines.typed(text, types).forEach { o ->
+            val rows = JsonLines.typed(text, types)
+            if (JsonLines.hasMalformedObjects(text) || !CoachOutputSchema.reading(rows)) {
+                return ReadingExplanation(null, emptyList(), emptyList(), "", "", "", "", text)
+            }
+            rows.forEach { o ->
                 when (o.optString("type")) {
                     "locate" -> locate = ExplainLocate(o.optInt("paragraph", 0).takeIf { it > 0 }, o.text("quote"), o.text("note"))
                     "paraphrase" -> if (o.text("passage").isNotBlank()) paraphrases += ExplainParaphrase(o.text("stem"), o.text("passage"), o.text("option"))
@@ -113,7 +165,7 @@ data class ReadingExplanation(
                     "summary" -> summary = o.text("text")
                 }
             }
-            return ReadingExplanation(locate, paraphrases, options.distinctBy { it.label }.sortedBy { it.label },
+            return ReadingExplanation(locate, paraphrases, options.sortedBy { it.label },
                 misread, question, answer, summary, text)
         }
     }
@@ -123,13 +175,19 @@ data class ParagraphGist(val index: Int, val gist: String, val role: String)
 
 /** Paragraph map of a passage; only paragraphs that exist locally are kept. */
 data class PassageOverview(val main: String, val paragraphs: List<ParagraphGist>, val structure: String, val raw: String) {
-    val structured get() = main.isNotBlank() || paragraphs.isNotEmpty()
+    val structured get() = !JsonLines.hasMalformedObjects(raw) &&
+        paragraphs.map { it.index }.distinct().size == paragraphs.size &&
+        (main.isNotBlank() || paragraphs.isNotEmpty())
 
     companion object {
         fun parse(text: String, paragraphCount: Int): PassageOverview {
             var main = ""; var structure = ""
             val gists = mutableListOf<ParagraphGist>()
-            JsonLines.typed(text, setOf("main", "para", "structure")).forEach { o ->
+            val rows = JsonLines.typed(text, setOf("main", "para", "structure"))
+            if (JsonLines.hasMalformedObjects(text) || !CoachOutputSchema.overview(rows, paragraphCount)) {
+                return PassageOverview("", emptyList(), "", text)
+            }
+            rows.forEach { o ->
                 when (o.optString("type")) {
                     "main" -> main = o.text("text")
                     "structure" -> structure = o.text("text")
@@ -138,7 +196,7 @@ data class PassageOverview(val main: String, val paragraphs: List<ParagraphGist>
                     }
                 }
             }
-            return PassageOverview(main, gists.distinctBy { it.index }.sortedBy { it.index }, structure, text)
+            return PassageOverview(main, gists.sortedBy { it.index }, structure, text)
         }
     }
 }

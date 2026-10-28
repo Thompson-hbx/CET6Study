@@ -1,5 +1,6 @@
 package com.example.cet6.ui.theme
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 // Clear desk, ink-blue pen. Cards sit on a cool grey desk; every Material role is set explicitly so no
@@ -77,10 +78,14 @@ val DarkMarkBetterSoft = Color(0xFF382C13)
 val DarkMarkGood = Color(0xFF78CFA0)
 val DarkMarkGoodSoft = Color(0xFF153020)
 
-// Older screens use these fixed accents; kept in the same family as the marks above.
-val AccentSuccess = LightMarkGood
-val AccentSuccessContainer = LightMarkGoodSoft
-val AccentWarning = LightMarkBetter
-val AccentWarningContainer = LightMarkBetterSoft
+// Older screens use these accents; mapped to LocalMarks so light and dark themes both keep >= 4.5:1 contrast.
+val AccentSuccess: Color
+    @Composable get() = LocalMarks.current.good
+val AccentSuccessContainer: Color
+    @Composable get() = LocalMarks.current.goodSoft
+val AccentWarning: Color
+    @Composable get() = LocalMarks.current.better
+val AccentWarningContainer: Color
+    @Composable get() = LocalMarks.current.betterSoft
 val AccentInfo = Color(0xFF2A56C6)
 val AccentInfoContainer = Color(0xFFDCE5FF)

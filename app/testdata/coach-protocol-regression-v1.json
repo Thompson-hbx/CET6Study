@@ -1,0 +1,663 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "review-band-string",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":\"11\",\"summary\":\"Original score.\"}"
+    },
+    {
+      "id": "review-band-decimal",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":11.5,\"summary\":\"Original score.\"}"
+    },
+    {
+      "id": "review-band-integral-decimal",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":11.0,\"summary\":\"Original score.\"}"
+    },
+    {
+      "id": "review-band-overflow",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":2147483648,\"summary\":\"Original score.\"}"
+    },
+    {
+      "id": "review-band-null",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":null,\"summary\":\"Original score.\"}"
+    },
+    {
+      "id": "review-band-range",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":16,\"summary\":\"Original score.\"}"
+    },
+    {
+      "id": "review-summary-object",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"score\",\"band\":11,\"summary\":{\"text\":\"bad\"}}"
+    },
+    {
+      "id": "review-aspect-name-number",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"aspect\",\"name\":1}"
+    },
+    {
+      "id": "review-aspect-empty-name",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"aspect\",\"name\":\"\"}"
+    },
+    {
+      "id": "review-aspect-level-array",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":[\"好\"]}"
+    },
+    {
+      "id": "review-aspect-unknown-level",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"excellent\"}"
+    },
+    {
+      "id": "review-issue-quote-object",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":{\"text\":\"helps\"},\"fix\":\"help\"}"
+    },
+    {
+      "id": "review-issue-fix-array",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":[\"help\"]}"
+    },
+    {
+      "id": "review-issue-null-fix",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":null}"
+    },
+    {
+      "id": "review-issue-reason-boolean",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"reason\":true}"
+    },
+    {
+      "id": "review-issue-category-object",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"category\":{}}"
+    },
+    {
+      "id": "review-issue-unknown-level",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"level\":\"minor\"}"
+    },
+    {
+      "id": "review-issue-level-boolean",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"level\":true}"
+    },
+    {
+      "id": "review-issue-string-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"index\":\"1\"}"
+    },
+    {
+      "id": "review-issue-fraction-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"index\":1.2}"
+    },
+    {
+      "id": "review-issue-zero-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"index\":0}"
+    },
+    {
+      "id": "review-issue-empty-edit",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"issue\",\"quote\":\"\",\"fix\":\"\"}"
+    },
+    {
+      "id": "review-segment-string-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":\"1\",\"mine\":\"Original sentence.\",\"verdict\":\"good\"}"
+    },
+    {
+      "id": "review-segment-fraction-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":1.9,\"verdict\":\"good\"}"
+    },
+    {
+      "id": "review-segment-missing-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"mine\":\"Original sentence.\",\"verdict\":\"good\"}"
+    },
+    {
+      "id": "review-segment-zero-index",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":0,\"verdict\":\"good\"}"
+    },
+    {
+      "id": "review-segment-array-mine",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":[],\"verdict\":\"good\"}"
+    },
+    {
+      "id": "review-segment-unknown-verdict",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":1,\"verdict\":\"okay\"}"
+    },
+    {
+      "id": "review-segment-object-suggestion",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":1,\"suggestion\":{}}"
+    },
+    {
+      "id": "review-term-missing-en",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"term\",\"zh\":\"图书馆\"}"
+    },
+    {
+      "id": "review-term-null-zh",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"term\",\"zh\":null,\"en\":\"library\"}"
+    },
+    {
+      "id": "review-tip-object",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"tip\",\"text\":{}}"
+    },
+    {
+      "id": "review-tip-missing-text",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"tip\"}"
+    },
+    {
+      "id": "review-rewrite-array",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"rewrite\",\"text\":[]}"
+    },
+    {
+      "id": "review-duplicate-score",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":11}\n{\"type\":\"score\",\"band\":8}"
+    },
+    {
+      "id": "review-duplicate-rewrite",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"rewrite\",\"text\":\"First.\"}\n{\"type\":\"rewrite\",\"text\":\"Second.\"}"
+    },
+    {
+      "id": "review-duplicate-segment",
+      "kind": "review",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"segment\",\"index\":1,\"verdict\":\"good\"}\n{\"type\":\"segment\",\"index\":1,\"verdict\":\"error\"}"
+    },
+    {
+      "id": "reading-option-number-label",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":1,\"verdict\":\"wrong\"}"
+    },
+    {
+      "id": "reading-option-unknown-label",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":\"E\",\"verdict\":\"wrong\"}"
+    },
+    {
+      "id": "reading-option-missing-verdict",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":\"A\"}"
+    },
+    {
+      "id": "reading-option-null-verdict",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":null}"
+    },
+    {
+      "id": "reading-option-unknown-verdict",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"probably\"}"
+    },
+    {
+      "id": "reading-option-boolean-note",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"correct\",\"note\":true}"
+    },
+    {
+      "id": "reading-locate-string-paragraph",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"locate\",\"paragraph\":\"1\",\"quote\":\"quiet rooms\"}"
+    },
+    {
+      "id": "reading-locate-fraction-paragraph",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"locate\",\"paragraph\":1.7,\"quote\":\"quiet rooms\"}"
+    },
+    {
+      "id": "reading-locate-zero-paragraph",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"locate\",\"paragraph\":0,\"quote\":\"quiet rooms\"}"
+    },
+    {
+      "id": "reading-locate-array-quote",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"locate\",\"paragraph\":1,\"quote\":[]}"
+    },
+    {
+      "id": "reading-paraphrase-empty-passage",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"paraphrase\",\"passage\":\"\"}"
+    },
+    {
+      "id": "reading-paraphrase-object-stem",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"paraphrase\",\"passage\":\"quiet rooms\",\"stem\":{}}"
+    },
+    {
+      "id": "reading-check-array-question",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"check\",\"question\":[],\"answer\":\"Original answer.\"}"
+    },
+    {
+      "id": "reading-check-missing-answer",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"check\",\"question\":\"Original question?\"}"
+    },
+    {
+      "id": "reading-summary-array-text",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"summary\",\"text\":[]}"
+    },
+    {
+      "id": "reading-duplicate-option",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"option\",\"label\":\"a\",\"verdict\":\"correct\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\"}"
+    },
+    {
+      "id": "reading-duplicate-locate",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"locate\",\"quote\":\"first\"}\n{\"type\":\"locate\",\"quote\":\"second\"}"
+    },
+    {
+      "id": "reading-duplicate-summary",
+      "kind": "reading",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"paraphrase\",\"stem\":\"rooms\",\"passage\":\"quiet rooms\",\"option\":\"quiet spaces\"}\n{\"type\":\"summary\",\"text\":\"first\"}\n{\"type\":\"summary\",\"text\":\"second\"}"
+    },
+    {
+      "id": "overview-main-object-text",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"main\",\"text\":{}}"
+    },
+    {
+      "id": "overview-structure-number-text",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"structure\",\"text\":1}"
+    },
+    {
+      "id": "overview-para-string-index",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":\"1\",\"gist\":\"Original gist.\"}"
+    },
+    {
+      "id": "overview-para-fraction-index",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":1.2,\"gist\":\"Original gist.\"}"
+    },
+    {
+      "id": "overview-para-zero-index",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":0,\"gist\":\"Original gist.\"}"
+    },
+    {
+      "id": "overview-para-absent-index",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":3,\"gist\":\"Nonexistent paragraph.\"}"
+    },
+    {
+      "id": "overview-para-missing-index",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"gist\":\"Original gist.\"}"
+    },
+    {
+      "id": "overview-para-empty-gist",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":1,\"gist\":\"\"}"
+    },
+    {
+      "id": "overview-para-object-gist",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":1,\"gist\":{}}"
+    },
+    {
+      "id": "overview-para-boolean-role",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":1,\"gist\":\"Original gist.\",\"role\":true}"
+    },
+    {
+      "id": "overview-duplicate-main",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"main\",\"text\":\"Second.\"}"
+    },
+    {
+      "id": "overview-duplicate-paragraph",
+      "kind": "overview",
+      "structured": false,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":1,\"gist\":\"First.\"}\n{\"type\":\"para\",\"index\":1,\"gist\":\"Second.\"}"
+    },
+    {
+      "id": "review-valid-minimal-and-optional",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":10}\n{\"type\":\"issue\",\"quote\":\"redundant\",\"fix\":\"\"}\n{\"type\":\"issue\",\"fix\":\"Missing translation.\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"\",\"verdict\":\"missing\"}\n{\"type\":\"term\",\"zh\":\"图书馆\",\"en\":\"library\",\"note\":\"\"}"
+    },
+    {
+      "id": "review-valid-forward-compatible",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"Original regression note.\"}\n{\"type\":\"future_extension\",\"data\":{}}\n{\"type\":\"issue\",\"quote\":\"helps\",\"fix\":\"help\",\"extra\":{\"confidence\":1}}"
+    },
+    {
+      "id": "reading-valid-minimal",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"option\",\"label\":\"b\",\"verdict\":\"wrong\"}"
+    },
+    {
+      "id": "overview-valid-map",
+      "kind": "overview",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"main\",\"text\":\"Original overview.\"}\n{\"type\":\"para\",\"index\":1,\"gist\":\"First.\",\"role\":\"引入\"}\n{\"type\":\"para\",\"index\":2,\"gist\":\"Second.\",\"role\":\"结论\"}\n{\"type\":\"structure\",\"text\":\"Original structure.\"}"
+    },
+    {
+      "id": "recorded-writing-basic",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":5,\"summary\":\"仅7词，切题但内容严重不足，主谓一致有误，按字数不足降档。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"一般\",\"note\":\"涉及图书馆帮助学生和安静空间，但未解释为何重要。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"待改进\",\"note\":\"仅7词，缺少理由、细节和例证，内容严重不足。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"待改进\",\"note\":\"仅两句，未形成完整论证结构，衔接手段单一。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"待改进\",\"note\":\"存在主谓一致错误，句式简单且字数严重不足。\"}\n{\"type\":\"issue\",\"quote\":\"Libraries helps students. It provide quiet rooms.\",\"fix\":\"Libraries help students by providing quiet study spaces, useful resources and equal learning opportunities.\",\"reason\":\"全文仅7词，只给结论未解释原因，内容严重不足。\",\"category\":\"内容\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"Libraries helps\",\"fix\":\"Libraries help\",\"reason\":\"主语Libraries为复数，谓语应用复数形式help。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"It provide\",\"fix\":\"They provide\",\"reason\":\"代词指代复数libraries，且provide需与复数主语一致。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"quiet rooms\",\"fix\":\"quiet study spaces\",\"reason\":\"搭配更具体，突出供学习使用的安静空间。\",\"category\":\"搭配\",\"level\":\"better\"}\n{\"type\":\"tip\",\"text\":\"六级写作应写150–200词、3段：引言点题，主体给2个理由并举例，结论总结；7词会因字数不足大幅降档。\"}\n{\"type\":\"tip\",\"text\":\"动笔前列提纲，每段写主题句+解释+例子；完成后检查主谓一致、代词指代和拼写。\"}\n{\"type\":\"rewrite\",\"text\":\"Libraries matter because they give students a quiet and supportive place to study. In a busy school or home, it is often difficult to find silence, but a library offers clean desks, comfortable chairs and an atmosphere of concentration. This environment helps students read more carefully, finish assignments on time and prepare for exams. Libraries also provide useful resources that students may not be able to afford, such as books, dictionaries, computers and reliable internet access. When students meet a difficult question, they can look for information in books or ask a librarian for help. In addition, libraries are fair places: rich and poor students can use the same facilities and enjoy the same chances to learn. They also teach students how to behave politely, share space and respect others who are studying. Therefore, libraries are not simply rooms full of books. They are important learning centres that help students gain knowledge, build good habits and become more independent. For these reasons, libraries will continue to matter to every student.\"}"
+    },
+    {
+      "id": "recorded-writing-intermediate",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":2,\"summary\":\"全文仅8词，严重低于字数要求；虽基本切题，但论证未展开且有一处基础语法错误，只能判低档。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"一般\",\"note\":\"提到独立学习与反馈，方向基本正确，但未展开讨论。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"待改进\",\"note\":\"仅一句，缺乏论点、例证和结论，内容严重不足。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"待改进\",\"note\":\"无段落与展开，全文一句，结构无法成立。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"待改进\",\"note\":\"情态动词后误用studies，且总字数过少，语言样本不足。\"}\n{\"type\":\"issue\",\"quote\":\"can studies\",\"fix\":\"can study\",\"reason\":\"情态动词can后应接动词原形，studies为第三人称单数。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"feedback is useful\",\"fix\":\"feedback is valuable for improving independent learning\",\"reason\":\"表达过于笼统，未说明反馈对独立学习的具体作用。\",\"category\":\"内容\",\"level\":\"better\"}\n{\"type\":\"tip\",\"text\":\"六级写作通常要求150–200词；本文仅8词，须按“观点—解释—例子—结论”扩展，否则会因字数严重不足降档。\"}\n{\"type\":\"tip\",\"text\":\"注意情态动词后接动词原形；写完后检查主谓一致和词形。\"}\n{\"type\":\"tip\",\"text\":\"可分别讨论独立学习的优点与反馈的必要性，并给出具体例子。\"}\n{\"type\":\"rewrite\",\"text\":\"Independent study has become increasingly important for university students. It allows learners to arrange their own time, choose materials that suit their needs, and develop the ability to solve problems on their own. Without the pressure of a traditional classroom, students can focus on their weak areas and learn at their own pace. In this sense, studying alone is a valuable skill that prepares students for lifelong learning.\\n\\nHowever, independent study does not mean that students should work completely alone. Feedback is also useful, because it helps learners discover mistakes that they may not notice by themselves. Teachers can offer professional advice, while classmates can share different ideas and experiences. With timely feedback, students can adjust their learning methods and avoid repeating the same errors. Therefore, independent study and feedback should not be seen as opposites.\\n\\nIn conclusion, students can study independently, but they should actively seek feedback. A balance between working alone and learning from others will make their study more effective and help them achieve better results.\"}"
+    },
+    {
+      "id": "recorded-writing-strong",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":2,\"summary\":\"全文仅一句12词，切题但未成篇，内容与结构严重不足，按字数不足降为2档。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"一般\",\"note\":\"涉及图书馆拓宽知识获取，但未展开讨论。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"待改进\",\"note\":\"仅一句观点，无例证分析，远不足150词。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"待改进\",\"note\":\"无段落与论证结构，未构成短文。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"好\",\"note\":\"唯一句子语法通顺，但样本过短，难以全面体现。\"}\n{\"type\":\"issue\",\"quote\":\"Libraries widen access to knowledge while providing a quiet place to study.\",\"fix\":\"Libraries widen access to knowledge while providing a quiet place to study. For example, free borrowing, public computers and quiet reading rooms help students and low-income residents.\",\"reason\":\"全文仅12词，未展开论据，属严重字数不足。\",\"category\":\"内容\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"Libraries widen access to knowledge while providing a quiet place to study.\",\"fix\":\"Libraries widen access to knowledge while providing a quiet place to study. This sentence can serve as the opening, but body paragraphs and a conclusion are needed.\",\"reason\":\"缺少段落与论证结构，未构成完整短文。\",\"category\":\"逻辑\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"widen access to knowledge\",\"fix\":\"widen access to knowledge by improving library services\",\"reason\":\"需把“知识获取”与“图书馆可及性”建立更直接联系。\",\"category\":\"内容\",\"level\":\"better\"}\n{\"type\":\"tip\",\"text\":\"先按三段式写完整短文：引言点题，主体分两点论证，结尾总结；每段3–5句，确保150词以上。\"}\n{\"type\":\"tip\",\"text\":\"用具体例子说明图书馆如何降低知识获取门槛，并讨论距离、开放时间等可及性问题。\"}\n{\"type\":\"rewrite\",\"text\":\"Libraries widen access to knowledge while providing a quiet place to study. This dual role is important because knowledge should not be limited by income, age or background. A public library offers free books, newspapers, computers and internet access, so students from poor families and elderly people can learn at little cost. It also gives people a quiet environment in which to read, prepare for exams or finish work that cannot be done at home.\\n\\nHowever, access to libraries is not equal everywhere. Some communities have few libraries, and some people cannot reach them because of distance, disability or limited opening hours. To improve access, governments should fund local branches, extend opening hours and provide digital services such as online catalogues and e-books. Libraries should also offer help for people who are not confident with technology.\\n\\nIn short, libraries are not only storehouses of books but also bridges to knowledge and opportunity. If they are well funded and easy to reach, they can help more people learn, improve their skills and take part in society. Therefore, making libraries accessible is a wise investment in education and equality.\"}"
+    },
+    {
+      "id": "recorded-translation-omission",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":5,\"summary\":\"译文语法正确，但只译出“免费”这一点，漏掉“对所有学生开放”及递进关系，信息严重不全。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"The service is free.\",\"verdict\":\"error\",\"note\":\"只译出“免费”，漏译“不仅……而且”递进结构和“对所有学生开放”。\",\"suggestion\":\"The service is not only free but also open to all students.\"}\n{\"type\":\"issue\",\"index\":1,\"quote\":\"The service is free.\",\"fix\":\"The service is not only free but also open to all students.\",\"reason\":\"后半句“对所有学生开放”完全未译，信息缺失过半。\",\"category\":\"漏译\",\"level\":\"must\"}\n{\"type\":\"issue\",\"index\":1,\"quote\":\"is free\",\"fix\":\"is not only free but also open to all students\",\"reason\":\"原文“不仅……而且”的递进并列关系未体现。\",\"category\":\"句式\",\"level\":\"better\"}\n{\"type\":\"term\",\"zh\":\"免费\",\"en\":\"free / free of charge\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"对……开放\",\"en\":\"be open to\",\"note\":\"介词用 to\"}\n{\"type\":\"term\",\"zh\":\"所有学生\",\"en\":\"all students\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"不仅……而且\",\"en\":\"not only ... but also ...\",\"note\":\"注意部分倒装可选\"}\n{\"type\":\"tip\",\"text\":\"翻译前先划分意群，逐项核对原文信息点（免费、开放对象），避免只译半句；注意并列递进结构用 not only...but also 表达。\"}"
+    },
+    {
+      "id": "recorded-translation-negation",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":5,\"summary\":\"句子通顺，但将“并非所有……都”误译为全部肯定，核心意思相反，属严重误译。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"All students support this rule.\",\"verdict\":\"error\",\"note\":\"将部分否定“并非所有……都”译为全部肯定，语义相反。\",\"suggestion\":\"Not all students support this rule.\"}\n{\"type\":\"issue\",\"index\":1,\"quote\":\"All students support this rule.\",\"fix\":\"Not all students support this rule.\",\"reason\":\"原文是否定部分，译文变成全部肯定，核心意思相反。\",\"category\":\"误译\",\"level\":\"must\"}\n{\"type\":\"term\",\"zh\":\"并非所有……都\",\"en\":\"not all\",\"note\":\"部分否定结构\"}\n{\"type\":\"term\",\"zh\":\"赞成\",\"en\":\"support\",\"note\":\"也可用 approve of\"}\n{\"type\":\"term\",\"zh\":\"规定\",\"en\":\"rule\",\"note\":\"此处可指 regulation\"}\n{\"type\":\"tip\",\"text\":\"遇到“并非所有……都”要保留部分否定，不可写成 all...；可记 not all = 并非全部。\"}"
+    },
+    {
+      "id": "recorded-translation-number",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":5,\"summary\":\"句式通顺、无语法错误，但把“增加了一倍”译为“rose by ten percent”，核心数据严重失真，属重大信息错误。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"The number of readers rose by ten percent last year.\",\"verdict\":\"error\",\"note\":\"“增加了一倍”是翻倍，不是增长10%；数据被改写，属严重误译。\",\"suggestion\":\"The number of readers doubled last year.\"}\n{\"type\":\"issue\",\"index\":1,\"quote\":\"rose by ten percent\",\"fix\":\"doubled\",\"reason\":\"“增加了一倍”指数量翻倍（doubled / increased twofold），并非增长百分之十，原文无10%这一信息。\",\"category\":\"误译\",\"level\":\"must\"}\n{\"type\":\"issue\",\"index\":1,\"quote\":\"the number of readers\",\"fix\":\"the number of readers\",\"reason\":\"该表达本身正确（readership也可），问题不在搭配，而在谓语部分的数据。\",\"category\":\"搭配\",\"level\":\"better\"}\n{\"type\":\"term\",\"zh\":\"增加了一倍\",\"en\":\"double / increase twofold\",\"note\":\"表示翻倍，不可用百分比替换\"}\n{\"type\":\"term\",\"zh\":\"读者人数\",\"en\":\"the number of readers / readership\",\"note\":\"readership更简洁地道\"}\n{\"type\":\"term\",\"zh\":\"去年\",\"en\":\"last year\",\"note\":\"置于句末或句首均可\"}\n{\"type\":\"tip\",\"text\":\"数字、倍数类信息是翻译采分点，务必核对“一倍/两倍/百分比”的区别，宁可句式简单也不可改动数据。\"}"
+    },
+    {
+      "id": "recorded-translation-strong",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"score\",\"band\":14,\"summary\":\"译文准确完整，用词贴切，行文流畅，仅可作细微润色。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"The bridge links the two cities and shortens commuting time.\",\"verdict\":\"good\",\"note\":\"准确表达原意，用词自然，无明显语言错误。\",\"suggestion\":\"The bridge connects the two cities, shortening commuting time.\"}\n{\"type\":\"term\",\"zh\":\"桥\",\"en\":\"bridge\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"连接\",\"en\":\"connect / link\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"缩短\",\"en\":\"shorten / reduce\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"通勤\",\"en\":\"commute / commuting\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"通勤时间\",\"en\":\"commuting time\",\"note\":\"\"}\n{\"type\":\"tip\",\"text\":\"本句完成度较高。可积累 connect/link、shorten/reduce 等同义表达，并注意地道搭配。\"}"
+    },
+    {
+      "id": "recorded-reading-scope",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"locate\",\"paragraph\":1,\"quote\":\"Some students use the library on weekends.\",\"note\":\"题干 Who/uses/on weekends 指向第1段。\"}\n{\"type\":\"paraphrase\",\"stem\":\"Who uses the library on weekends?\",\"passage\":\"Some students use the library on weekends.\",\"option\":\"Some students\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"correct\",\"note\":\"原文直接说 Some students use...，与A一致。\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"wrong\",\"note\":\"原文是 Some students，不是 All students，扩大范围。\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"wrong\",\"note\":\"原文未提到 teachers，属无中生有。\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"wrong\",\"note\":\"原文明确有学生使用，与 No one 相反。\"}\n{\"type\":\"check\",\"question\":\"题干中的 Who 在原文由哪一部分回答？\",\"answer\":\"Some students\"}\n{\"type\":\"summary\",\"text\":\"无参考答案，A仅为据原文推断；做法是定位Who的施动者，并区分Some与All。\"}"
+    },
+    {
+      "id": "recorded-reading-negation",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"locate\",\"paragraph\":1,\"quote\":\"The survey did not find evidence that the change improved attendance.\",\"note\":\"题干 survey find 对应原文 The survey did not find。\"}\n{\"type\":\"paraphrase\",\"stem\":\"What did the survey find?\",\"passage\":\"The survey did not find evidence that the change improved attendance.\",\"option\":\"An improvement was not demonstrated\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\",\"note\":\"与原文相反：原文说未发现改善证据，不是 certainly improved。\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"correct\",\"note\":\"did not find evidence 对应 not demonstrated，即改善未被证明。\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"wrong\",\"note\":\"原文未提及 attendance fell；未证明改善不等于确定下降。\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"wrong\",\"note\":\"无中生有：原文没有说 change was cancelled。\"}\n{\"type\":\"misread\",\"text\":\"可能只看到 improved attendance 就以为改善成立，忽略了 did not find evidence 的否定含义。\"}\n{\"type\":\"check\",\"question\":\"原文说 survey 对改善得出了什么结论？\",\"answer\":\"未发现改善证据，即改善未被证明。\"}\n{\"type\":\"summary\",\"text\":\"按题干定位，抓否定词 did not；“未证明改善”不等于没改善或下降。无参考答案，此为原文推断。\"}"
+    },
+    {
+      "id": "recorded-reading-causation",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"locate\",\"paragraph\":1,\"quote\":\"Reading time and test scores rose together, but the study did not establish a causal link.\",\"note\":\"由 conclusion、supported 定位到段落结论句\"}\n{\"type\":\"paraphrase\",\"stem\":\"Which conclusion is supported?\",\"passage\":\"Reading time and test scores rose together\",\"option\":\"The two increased together\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\",\"note\":\"把同时上升误作因果，原文明确未建立因果联系\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"wrong\",\"note\":\"因果方向相反，且原文未支持分数导致阅读\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"correct\",\"note\":\"与原文 rose together 直接对应，只讲同升\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"wrong\",\"note\":\"无中生有：原文未提每个学生都提高\"}\n{\"type\":\"misread\",\"text\":\"可能看到 rose together 就联想到阅读带来高分，把同时上升误读为因果关系，忽略了 but 后的否定。\"}\n{\"type\":\"check\",\"question\":\"原文承认的结论是什么？\",\"answer\":\"阅读时间与考试分数一起上升，但未证明因果。\"}\n{\"type\":\"summary\",\"text\":\"先找原文结论，勿把相关当因果；本题无参考答案，C为据原文推断。\"}"
+    },
+    {
+      "id": "recorded-reading-paraphrase",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 2,
+      "response": "{\"type\":\"locate\",\"paragraph\":1,\"quote\":\"The service is available to every student at no charge.\",\"note\":\"题干 matches 与 statement 提示找同义句；every student 和 no charge 是关键。\"}\n{\"type\":\"paraphrase\",\"stem\":\"Which statement matches the passage?\",\"passage\":\"The service is available to every student at no charge.\",\"option\":\"All students can use it for free\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\",\"note\":\"与原文相反：原文是 every student，A 说 only some，范围被缩小。\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"wrong\",\"note\":\"与原文相反：原文 no charge，B 说 pay a small fee。\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"wrong\",\"note\":\"无中生有：原文对象是 every student，未说只有教师。\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"correct\",\"note\":\"同义复现：every student≈All students，no charge≈for free。\"}\n{\"type\":\"misread\",\"text\":\"可能把 every student 粗略看成 some students，或没注意 only 与 every 的范围冲突，于是误选 A。\"}\n{\"type\":\"check\",\"question\":\"判断 D 正确的两个原文依据是什么？\",\"answer\":\"every student；no charge\"}\n{\"type\":\"summary\",\"text\":\"本题无参考答案，只能依原文推断：核对范围、费用、对象，every student/no charge 对应 D。\"}"
+    },
+    {
+      "id": "recorded-v2-essay-library-basic",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":11,\"summary\":\"切题、结构清晰，内容完整；语言有少量主谓一致和情态动词后动词形式错误，属11分档。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"好\",\"note\":\"紧扣图书馆支持自主学习，回应题目要求。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"好\",\"note\":\"观点明确，有安静环境、馆员帮助、工作坊等例证。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"好\",\"note\":\"四段安排合理，起承转合清楚。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"总体通顺，但有少量主谓一致和动词形式错误。\"}\n{\"type\":\"issue\",\"quote\":\"The library provide a quiet room\",\"fix\":\"The library provides a quiet room\",\"reason\":\"主语library为单数第三人称，谓语应用provides。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"Students can studies there\",\"fix\":\"Students can study there\",\"reason\":\"情态动词can后应接动词原形，不用studies。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"When they meet an unfamiliar term\",\"fix\":\"When they encounter an unfamiliar term\",\"reason\":\"encounter与term搭配更自然，表达更书面。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"The library provide workshops as well.\",\"fix\":\"The library provides workshops as well.\",\"reason\":\"主语library为单数，谓语应用provides。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"tip\",\"text\":\"优先检查主谓一致：library为单数，谓语用provides；can后接动词原形study。\"}\n{\"type\":\"tip\",\"text\":\"文章例证充分，可保持四段结构；写后留一分钟专门检查动词形式。\"}\n{\"type\":\"rewrite\",\"text\":\"A campus library is more than a place where students borrow books. It is also a place where they can build habits that help them study without constant instruction. For this reason, universities should treat the library as an important part of daily learning.\\n\\nThe library provides a quiet room for students who cannot concentrate in a crowded dormitory. Students can study there after class and compare several sources before forming an opinion. When they encounter an unfamiliar term, a librarian can show them how to search for reliable information instead of giving them a ready answer.\\n\\nThe library also provides workshops. A short session about planning a research project can help beginners divide a large task into manageable steps. However, workshops should remain optional, since students have different schedules and levels of experience.\\n\\nTo make these services useful, the university should ask students what they need and publish clear opening hours. With suitable support and enough freedom to choose their own methods, students can gradually become more responsible for their learning.\"}"
+    },
+    {
+      "id": "recorded-v2-essay-group-basic",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":11,\"summary\":\"切题完整，四段结构清晰，好处与局限均有着落；但存在主谓一致、双重比较级等基础错误，语言档受限。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"好\",\"note\":\"明确写出一项好处与一项局限，并给出个人做法，完全符合题目要求。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"好\",\"note\":\"例子具体（会前备问题、强势成员包办），末段建议可操作；好处可再点明。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"好\",\"note\":\"引入—好处—局限—对策，四段功能分明，段首有过渡句，逻辑顺畅。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"句意基本清楚，长短句有变化；但主谓一致与比较级错误属基础失误。\"}\n{\"type\":\"issue\",\"quote\":\"Group study can be useful when students are learning a difficult subject.\",\"fix\":\"Group study can be useful when students are learning a difficult subject, mainly because explaining ideas aloud deepens understanding.\",\"reason\":\"首段只提“有用”，未预告好处与局限，补出核心论点更切题。\",\"category\":\"内容\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"In a well organised session\",\"fix\":\"In a well-organised session\",\"reason\":\"复合形容词作前置定语应加连字符。\",\"category\":\"标点\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"Each student have time\",\"fix\":\"Each student has time\",\"reason\":\"each 作主语视为单数，谓语须用 has。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"more easier\",\"fix\":\"easier\",\"reason\":\"easier 已是比较级，不能再用 more 构成双重比较级。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"the separate steps\",\"fix\":\"the individual steps\",\"reason\":\"指解题的各个步骤，individual 比 separate 更贴切自然。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"There are also limits.\",\"fix\":\"However, group study also has its limits.\",\"reason\":\"用 However 明示转折，并重复主语，段间衔接更紧。\",\"category\":\"衔接\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"keeps the benefits of cooperation\",\"fix\":\"preserves the benefits of cooperation\",\"reason\":\"preserve 与 benefits 搭配更正式，符合议论文语域。\",\"category\":\"搭配\",\"level\":\"better\"}\n{\"type\":\"tip\",\"text\":\"交卷前专查三类低级错：主谓一致、比较级叠加、可数名词单复数；这类错误对档次影响最大，改掉即有望升档。\"}\n{\"type\":\"tip\",\"text\":\"首段可用一句“好处+局限”预告全文，让阅卷人三秒内看到切题，比只写“有用”更稳。\"}\n{\"type\":\"rewrite\",\"text\":\"Group study can be useful when students are learning a difficult subject, mainly because explaining ideas aloud reveals gaps in their understanding. However, simply sitting at the same table does not guarantee that everyone will learn.\\n\\nIn a well-organised session, each member prepares a question before the meeting. Each student has time to describe a problem, while the others listen and ask for clarification. Explaining a solution can make a concept easier to remember, because the speaker has to connect the individual steps and put them in order.\\n\\nHowever, group study also has its limits. One confident member may answer every question, leaving quieter students with little opportunity to think. A meeting can also turn into a social conversation if the group has no clear goal. These problems are especially serious when an examination is close and study time is limited.\\n\\nI would therefore combine group sessions with individual practice. Members could agree on a short agenda, take turns leading the discussion and finish by solving a new problem alone. This approach preserves the benefits of cooperation while allowing each student to check personal progress.\"}"
+    },
+    {
+      "id": "recorded-v2-essay-feedback-intermediate",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":11,\"summary\":\"切题，结构清晰，观点明确；有两处明显语言错误（depends of、a useful informations），文字尚连贯，定 11 分档。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"好\",\"note\":\"紧扣学生如何使用线上反馈，题目要求得到完整回应。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"一般\",\"note\":\"观点合理但偏概括，缺少具体例子支撑修改过程。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"好\",\"note\":\"四段分明，主题句清楚，therefore、in my view 等衔接自然。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"一般\",\"note\":\"句式有变化，但存在搭配与不可数名词错误，另有冠词小错。\"}\n{\"type\":\"issue\",\"quote\":\"depends of how it is interpreted\",\"fix\":\"depends on how it is interpreted\",\"reason\":\"depend 后固定接介词 on，不能用 of。\",\"category\":\"搭配\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"give a useful informations\",\"fix\":\"provide useful information\",\"reason\":\"information 为不可数名词，不能加 a 或词尾 -s。\",\"category\":\"语法\",\"level\":\"must\"}\n{\"type\":\"issue\",\"quote\":\"repeat the same problem\",\"fix\":\"make the same mistake\",\"reason\":\"表示重犯错误用 make a mistake，problem 不与 repeat 搭配。\",\"category\":\"搭配\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"conflicts with course materials\",\"fix\":\"conflicts with the course materials\",\"reason\":\"特指本课程材料，需加定冠词 the。\",\"category\":\"语法\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"Teachers also have a role.\",\"fix\":\"Teachers also have a role to play.\",\"reason\":\"have a role to play 更符合英语惯用表达，语气更完整。\",\"category\":\"句式\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"a small number of priorities\",\"fix\":\"a few clear priorities\",\"reason\":\"priorities 在此指优先事项，用 a few clear 更自然具体。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"as a final judgement of ability\",\"fix\":\"as a final judgement of their ability\",\"reason\":\"ability 前缺限定词，指代学生能力需加 their。\",\"category\":\"语法\",\"level\":\"better\"}\n{\"type\":\"tip\",\"text\":\"论证可加一个具体例子：如收到批注后对照原句修改、再比对前后版本，说明反馈如何转化为进步，比纯说理更有说服力。\"}\n{\"type\":\"tip\",\"text\":\"交卷前专项检查三类高频错：不可数名词（information、advice）、固定介词（depend on、consist of）和冠词。\"}\n{\"type\":\"rewrite\",\"text\":\"Online feedback has become a common part of university study. Students can receive comments on a draft before the next class, and teachers can respond to questions that would otherwise remain unanswered. These opportunities are valuable, but the usefulness of feedback depends on how it is interpreted.\\n\\nA short response can provide useful information about a specific sentence or calculation. It cannot always explain why the student made the mistake. If learners copy a suggested answer without considering the reason behind it, they may make the same mistake in another task.\\n\\nStudents should therefore compare a comment with the original question, identify the part that needs attention and try to produce a new answer in their own words. When a suggestion seems unclear or conflicts with the course materials, asking the teacher is more useful than guessing what was intended.\\n\\nTeachers also have a role to play. Clear comments and a few clear priorities can help students focus their effort. In my view, online feedback works best as the beginning of a conversation, followed by revision and independent practice, rather than as a final judgement of their ability.\"}"
+    },
+    {
+      "id": "recorded-v2-essay-public-space-strong",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":14,\"summary\":\"全文切题、结构清晰、语言准确，仅个别表达可优化，达到14分档水平。\"}\n{\"type\":\"aspect\",\"name\":\"切题\",\"level\":\"好\",\"note\":\"紧扣安静学习与社交活动的平衡，提出分区、规则与反馈等方案。\"}\n{\"type\":\"aspect\",\"name\":\"内容\",\"level\":\"好\",\"note\":\"观点明确，论证具体，能兼顾学习需求与社交需求。\"}\n{\"type\":\"aspect\",\"name\":\"结构\",\"level\":\"好\",\"note\":\"四段推进自然：问题、分析、方案、总结，衔接顺畅。\"}\n{\"type\":\"aspect\",\"name\":\"语言\",\"level\":\"好\",\"note\":\"语法与拼写基本无误，句式有变化；少数搭配可更自然。\"}\n{\"type\":\"issue\",\"quote\":\"share a poorly planned area\",\"fix\":\"are placed in a poorly planned shared area\",\"reason\":\"原表达略显生硬，改为“被安排在规划不佳的共享区域”更清楚。\",\"category\":\"句式\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"make the rules visible\",\"fix\":\"make the rules clear and visible\",\"reason\":\"补充clear后，规则不仅可见而且明确，语义更完整。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"issue\",\"quote\":\"provide reliable choices\",\"fix\":\"provide consistent choices\",\"reason\":\"reliable choices表意略泛，consistent更贴合空间选择的一致性。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"tip\",\"text\":\"已具备14分档特征。若想更稳，可多使用具体例证，并检查少数搭配是否最自然；不必为求复杂而堆砌生僻表达。\"}\n{\"type\":\"rewrite\",\"text\":\"A university needs spaces for both quiet concentration and informal conversation. Students do not all work in the same way, and their needs can change during the day. A successful campus should recognise these differences instead of expecting one room to serve every purpose.\\n\\nQuiet study areas allow students to read demanding material, prepare for examinations and work without interruption. Social spaces support discussion and help new students form friendships. If these activities are placed in a poorly planned shared area, ordinary conversation may disturb readers, while requests for silence may discourage useful exchange.\\n\\nOne practical solution is to separate spaces by purpose and make the rules clear and visible. A library could reserve some floors for silent work while offering rooms where small groups can discuss a project. Students should also have a way to report problems and suggest improvements, since a rule that looks sensible on paper may prove inconvenient in practice.\\n\\nThe aim is to provide consistent choices. By reviewing how rooms are used and listening to different groups, a university can protect concentration without treating social activity as a nuisance. Both forms of campus life deserve thoughtful support.\"}"
+    },
+    {
+      "id": "recorded-v2-translation-community-omission",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":11,\"summary\":\"前四句准确通顺，语言错误少；但整句漏译第5句，信息不完整，按模拟标准约11分档。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"The community library used to open only on weekdays.\",\"verdict\":\"good\",\"note\":\"过去只在工作日开放；used to与only on weekdays准确。\",\"suggestion\":\"This community library used to open only on weekdays.\"}\n{\"type\":\"segment\",\"index\":2,\"mine\":\"Last year, after listening to residents, its staff began a trial of weekend opening.\",\"verdict\":\"minor\",\"note\":\"听取居民意见未明确译出opinions，其余表达自然。\",\"suggestion\":\"Last year, after soliciting residents' opinions, the staff piloted weekend opening.\"}\n{\"type\":\"segment\",\"index\":3,\"mine\":\"Volunteers help organise the books, but regular staff members are still responsible for explaining the borrowing rules.\",\"verdict\":\"good\",\"note\":\"organise为英式拼写可接受；regular staff基本对应正式工作人员。\",\"suggestion\":\"Volunteers help sort the books, but the borrowing rules are still explained by regular staff.\"}\n{\"type\":\"segment\",\"index\":4,\"mine\":\"Residents can choose a visiting time that suits their own schedules.\",\"verdict\":\"good\",\"note\":\"到访时间按日程选择，意思准确，表达自然。\",\"suggestion\":\"Residents can choose when to visit according to their own schedules.\"}\n{\"type\":\"segment\",\"index\":5,\"mine\":\"\",\"verdict\":\"missing\",\"note\":\"第5句整句未译，信息完全缺失。\",\"suggestion\":\"In addition, the library offers free guidance on use to older adults visiting for the first time.\"}\n{\"type\":\"issue\",\"index\":2,\"quote\":\"after listening to residents\",\"fix\":\"after soliciting residents' opinions\",\"reason\":\"听取居民意见中的意见未明确体现，表达略泛。\",\"category\":\"漏译\",\"level\":\"better\"}\n{\"type\":\"issue\",\"index\":5,\"quote\":\"\",\"fix\":\"In addition, the library offers free guidance on use to older adults visiting for the first time.\",\"reason\":\"第5句整句未译，造成信息缺失。\",\"category\":\"漏译\",\"level\":\"must\"}\n{\"type\":\"term\",\"zh\":\"社区图书馆\",\"en\":\"community library\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"工作日\",\"en\":\"weekdays\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"听取居民意见\",\"en\":\"solicit residents' opinions\",\"note\":\"也可用 listen to residents' views\"}\n{\"type\":\"term\",\"zh\":\"试行\",\"en\":\"pilot; try out\",\"note\":\"pilot 更正式\"}\n{\"type\":\"term\",\"zh\":\"借阅规则\",\"en\":\"borrowing rules\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"正式工作人员\",\"en\":\"regular staff\",\"note\":\"也可用 permanent staff\"}\n{\"type\":\"term\",\"zh\":\"使用指导\",\"en\":\"guidance on use\",\"note\":\"或 user guidance\"}\n{\"type\":\"tip\",\"text\":\"务必逐句翻译，避免整句漏译；附加信息句往往是得分点。\"}\n{\"type\":\"tip\",\"text\":\"时态要随原文变化：过去情况用过去时，一般规则用现在时。\"}"
+    },
+    {
+      "id": "recorded-v2-translation-workshop-negation",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":11,\"summary\":\"整体通顺，四句准确；第三句否定漏译致语义反转，属局部重大误译，定为11分档。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"A university has introduced workshops on research methods for new students.\",\"verdict\":\"good\",\"note\":\"表达准确；introduced 可接受，更自然可用 offered/set up。\",\"suggestion\":\"A university has offered workshops on research methods for new students.\"}\n{\"type\":\"segment\",\"index\":2,\"mine\":\"Registration is voluntary, and students do not need to choose a research topic in advance.\",\"verdict\":\"good\",\"note\":\"voluntary 与 in advance 准确；choose 可换 select。\",\"suggestion\":\"Registration is voluntary, and students do not need to choose a research topic in advance.\"}\n{\"type\":\"segment\",\"index\":3,\"mine\":\"Every participant thought that there was enough time for discussion.\",\"verdict\":\"error\",\"note\":\"漏译“并非都”，误为所有人都认为讨论时间足够。\",\"suggestion\":\"Not every participant thought there was enough time for discussion.\"}\n{\"type\":\"segment\",\"index\":4,\"mine\":\"Some students wanted more opportunities for independent practice.\",\"verdict\":\"good\",\"note\":\"wanted 与 opportunities for independent practice 准确。\",\"suggestion\":\"Some students wanted more opportunities for independent practice.\"}\n{\"type\":\"segment\",\"index\":5,\"mine\":\"The organisers plan to collect feedback before the next event, but they have not decided whether to add more teaching hours.\",\"verdict\":\"good\",\"note\":\"feedback 对应“意见”，teaching hours 对应“课时”，准确。\",\"suggestion\":\"The organizers plan to collect feedback before the next event but have not decided whether to add more class hours.\"}\n{\"type\":\"issue\",\"index\":3,\"quote\":\"Every participant\",\"fix\":\"Not every participant\",\"reason\":\"原句为部分否定，漏掉 not 后变成全部肯定，语义反转。\",\"category\":\"误译\",\"level\":\"must\"}\n{\"type\":\"term\",\"zh\":\"新生\",\"en\":\"freshmen / new students\",\"note\":\"视语境选用\"}\n{\"type\":\"term\",\"zh\":\"工作坊\",\"en\":\"workshop\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"自愿的\",\"en\":\"voluntary\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"研究题目\",\"en\":\"research topic\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"独立练习\",\"en\":\"independent practice\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"课时\",\"en\":\"class hours / teaching hours\",\"note\":\"也可用 contact hours\"}\n{\"type\":\"tip\",\"text\":\"注意 not every 表示部分否定，不能写成 every ...；翻译后回读是否与原文逻辑一致。\"}"
+    },
+    {
+      "id": "recorded-v2-translation-route-number",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":11,\"summary\":\"译文整体通顺，信息基本完整；但将“百分之三十”误作3%，属关键信息错误，影响准确性。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"Last year, this fictional city adjusted three bus routes.\",\"verdict\":\"good\",\"note\":\"准确表达原文，用词自然。\",\"suggestion\":\"Last year, this fictional city adjusted three bus routes.\"}\n{\"type\":\"segment\",\"index\":2,\"mine\":\"The number of services during peak hours increased by three percent, while fares remained unchanged.\",\"verdict\":\"error\",\"note\":\"将“百分之三十”误译为three percent（3%），关键数据错误。\",\"suggestion\":\"Service frequency during peak hours increased by 30 percent, while fares remained unchanged.\"}\n{\"type\":\"segment\",\"index\":3,\"mine\":\"The survey collected responses only from regular passengers, so it cannot represent all residents.\",\"verdict\":\"good\",\"note\":\"准确；only from regular passengers对应“只收集了经常乘车者的意见”。\",\"suggestion\":\"The survey only collected opinions from regular passengers, so it cannot represent all residents.\"}\n{\"type\":\"segment\",\"index\":4,\"mine\":\"The transport department said it also needed to understand the needs of night passengers before deciding whether to expand the pilot programme.\",\"verdict\":\"good\",\"note\":\"准确表达；before deciding whether to expand the pilot programme自然。\",\"suggestion\":\"The transport department said it also needed to understand night passengers' needs before deciding whether to expand the pilot programme.\"}\n{\"type\":\"issue\",\"index\":2,\"quote\":\"three percent\",\"fix\":\"30 percent\",\"reason\":\"原文为“百分之三十”，译文误作3%，关键数据错误。\",\"category\":\"误译\",\"level\":\"must\"}\n{\"type\":\"issue\",\"index\":2,\"quote\":\"The number of services\",\"fix\":\"Service frequency\",\"reason\":\"“班次”用service frequency更自然，与百分比增幅搭配更清楚。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"term\",\"zh\":\"公交线路\",\"en\":\"bus routes\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"高峰时段\",\"en\":\"peak hours\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"班次\",\"en\":\"service frequency\",\"note\":\"也可用number of services\"}\n{\"type\":\"term\",\"zh\":\"票价\",\"en\":\"fares\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"经常乘车者\",\"en\":\"regular passengers\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"夜间乘客\",\"en\":\"night passengers\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"试点\",\"en\":\"pilot programme\",\"note\":\"英式拼写\"}\n{\"type\":\"tip\",\"text\":\"数字信息要逐字核对，尤其百分比；其余句子流畅、结构清楚。\"}"
+    },
+    {
+      "id": "recorded-v2-translation-bridge-control",
+      "kind": "review",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"score\",\"band\":14,\"summary\":\"全篇信息完整准确，句式自然连贯，语法基本无误；仅有个别用词可更地道，属高分段译文。\"}\n{\"type\":\"segment\",\"index\":1,\"mine\":\"The pedestrian bridge connects two parts of the campus.\",\"verdict\":\"good\",\"note\":\"“步行桥”“校园的两个区域”均准确，two parts of the campus 自然。\",\"suggestion\":\"The pedestrian bridge connects the two areas of the campus.\"}\n{\"type\":\"segment\",\"index\":2,\"mine\":\"In the past, students had to go around a busy road to reach the laboratories.\",\"verdict\":\"good\",\"note\":\"时态、逻辑与“绕过”“实验室”均准确，表达流畅。\",\"suggestion\":\"In the past, students had to detour around a busy road to reach the labs.\"}\n{\"type\":\"segment\",\"index\":3,\"mine\":\"The new bridge offers them another route, but it has not changed the laboratories' opening hours.\",\"verdict\":\"good\",\"note\":\"转折关系清楚，“另一条路线”“开放时间”均译出，准确。\",\"suggestion\":\"The new bridge gives them another route, but it has not changed the labs' opening hours.\"}\n{\"type\":\"segment\",\"index\":4,\"mine\":\"The university will also inspect the bridge surface during the rainy season and improve the lighting in response to users' comments.\",\"verdict\":\"minor\",\"note\":\"意思完整；comments 略偏“评论”，指“意见/反馈”用 feedback 更贴切。\",\"suggestion\":\"The university will also check the bridge deck during the rainy season and improve the lighting based on users' feedback.\"}\n{\"type\":\"issue\",\"index\":4,\"quote\":\"users' comments\",\"fix\":\"users' feedback\",\"reason\":\"原文“使用者的意见”指使用反馈，feedback 比 comments 更准确自然。\",\"category\":\"用词\",\"level\":\"better\"}\n{\"type\":\"issue\",\"index\":4,\"quote\":\"inspect the bridge surface\",\"fix\":\"check the bridge deck\",\"reason\":\"“桥面”常用 bridge deck；check 与“检查情况”更对应，原译不算错。\",\"category\":\"搭配\",\"level\":\"better\"}\n{\"type\":\"term\",\"zh\":\"步行桥\",\"en\":\"pedestrian bridge\",\"note\":\"也可用 footbridge\"}\n{\"type\":\"term\",\"zh\":\"绕过\",\"en\":\"detour around\",\"note\":\"也可 go around\"}\n{\"type\":\"term\",\"zh\":\"桥面\",\"en\":\"bridge deck\",\"note\":\"surface 亦可，deck 更专业\"}\n{\"type\":\"term\",\"zh\":\"雨季\",\"en\":\"rainy season\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"照明\",\"en\":\"lighting\",\"note\":\"\"}\n{\"type\":\"term\",\"zh\":\"使用者的意见\",\"en\":\"users' feedback\",\"note\":\"comments 偏“评论”\"}\n{\"type\":\"tip\",\"text\":\"译文已达高分段，重点在细节用词地道化：多积累 bridge deck、feedback 等固定表达；注意“意见”与 comments 的细微差别。\"}"
+    },
+    {
+      "id": "recorded-v2-reading-pilot-scope",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"locate\",\"paragraph\":4,\"quote\":\"After reviewing the results, the university decided to continue the arrangement for one more term.\",\"note\":\"由题干 decide after the trial 定位到第4段决定句。\"}\n{\"type\":\"paraphrase\",\"stem\":\"decide after the trial\",\"passage\":\"After reviewing the results, the university decided to continue the arrangement for one more term.\",\"option\":\"To continue the limited arrangement while gathering more feedback\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\",\"note\":\"与原文相反且扩大范围：只延长小阅览室两晚，其他楼层照常关闭。\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"correct\",\"note\":\"对应第4段：继续一学期并收集进一步反馈。\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"wrong\",\"note\":\"与原文相反：决定继续一学期，并未立即结束晚间开放。\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"wrong\",\"note\":\"无中生有：原文明确说报告未比较考试成绩。\"}\n{\"type\":\"misread\",\"text\":\"可能把“继续安排”扩大成所有楼层每晚开放，忽略原文只说小阅览室和固定两晚，其他楼层照常关闭。\"}\n{\"type\":\"check\",\"question\":\"大学决定把这个安排继续多久？\",\"answer\":\"一个学期（one more term）。\"}\n{\"type\":\"summary\",\"text\":\"这类题回原文找决定动词，核对范围和时间；本题无参考答案，B为据原文推断，学生A误在扩大范围。\"}"
+    },
+    {
+      "id": "recorded-v2-reading-correlation-long",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"locate\",\"paragraph\":4,\"quote\":\"The final report presented the association but did not claim that the room caused better academic performance.\",\"note\":\"题干问“conclusion is justified”，对应报告如何表述研究结论。\"}\n{\"type\":\"paraphrase\",\"stem\":\"conclusion is justified\",\"passage\":\"Students who visited the reading room more often tended to report higher marks.\",\"option\":\"Visits and marks were associated\"}\n{\"type\":\"paraphrase\",\"stem\":\"conclusion is justified\",\"passage\":\"did not claim that the room caused better academic performance\",\"option\":\"but the cause remained uncertain\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\",\"note\":\"把“相关”扩大为“必然提高每位学生成绩”，且与文中不主张因果相反。\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"wrong\",\"note\":\"原文是更常去者成绩倾向更高，不是成绩高阻止访问；因果颠倒。\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"correct\",\"note\":\"概括了报告承认关联但不作因果断言的结论，符合原文。\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"wrong\",\"note\":\"与第5段“useful facility”“practical value”相反，且“no...any”绝对化。\"}\n{\"type\":\"misread\",\"text\":\"可能把“更常去者成绩倾向更高”当成“去阅读室必然提高每位学生成绩”，忽略了报告明确不作因果结论。\"}\n{\"type\":\"check\",\"question\":\"研究报告应支持哪类结论：因果还是关联？\",\"answer\":\"只支持关联，不支持因果。\"}\n{\"type\":\"summary\",\"text\":\"本题无参考答案；按原文推断应选C。做结论题要排除因果倒置、绝对化和无据推断。\"}"
+    },
+    {
+      "id": "recorded-v2-reading-price-contrast",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"locate\",\"paragraph\":1,\"quote\":\"The pass allowed unlimited travel on two local routes between Saturday morning and Sunday evening. It did not include the express service to the airport, which continued to use its normal ticket system.\",\"note\":\"题干问通票，由pass和airport express定位到第1段。\"}\n{\"type\":\"paraphrase\",\"stem\":\"covered two local routes\",\"passage\":\"allowed unlimited travel on two local routes\",\"option\":\"covered two local routes\"}\n{\"type\":\"paraphrase\",\"stem\":\"not the airport express\",\"passage\":\"did not include the express service to the airport\",\"option\":\"not the airport express\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"correct\",\"note\":\"第1段：通票覆盖两种本地线路，机场快线不包含。\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"wrong\",\"note\":\"与原文相反：第2段说买通票并不保证有座位。\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"wrong\",\"note\":\"与原文不符：第2段说平日通勤者不是主要目标，未说取代所有车票。\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"wrong\",\"note\":\"与原文相反：第4段明确不先把通票扩展到机场。\"}\n{\"type\":\"check\",\"question\":\"机场快线在周末通票中吗？\",\"answer\":\"不在；它继续使用正常票务系统。\"}\n{\"type\":\"summary\",\"text\":\"依据第1段可推断A正确；本题无参考答案，判断仅为推断。\"}"
+    },
+    {
+      "id": "recorded-v2-reading-retention-policy",
+      "kind": "reading",
+      "structured": true,
+      "paragraphCount": 5,
+      "response": "{\"type\":\"locate\",\"paragraph\":4,\"quote\":\"After the exhibition closed, the archive kept the recordings under the original access conditions.\",\"note\":\"题干 after the exhibition 对应第4段开头，问的是闭展后的做法\"}\n{\"type\":\"paraphrase\",\"stem\":\"after the exhibition\",\"passage\":\"After the exhibition closed\",\"option\":\"continued\"}\n{\"type\":\"paraphrase\",\"stem\":\"guided the archive / principle\",\"passage\":\"kept the recordings under the original access conditions\",\"option\":\"continued to follow the participants' permissions\"}\n{\"type\":\"paraphrase\",\"stem\":\"publication\",\"passage\":\"did not automatically make restricted interviews public\",\"option\":\"publication continued to follow the participants' permissions\"}\n{\"type\":\"option\",\"label\":\"A\",\"verdict\":\"wrong\",\"note\":\"与原文相反：第4段说限制性访谈不会自动公开，并非所有录音都必须免费上线\"}\n{\"type\":\"option\",\"label\":\"B\",\"verdict\":\"wrong\",\"note\":\"与原文相反：第4段说在阅览室听过，引用时仍须走许可流程\"}\n{\"type\":\"option\",\"label\":\"C\",\"verdict\":\"wrong\",\"note\":\"与原文相反：原文明确 closing the exhibition did not automatically make... public\"}\n{\"type\":\"option\",\"label\":\"D\",\"verdict\":\"correct\",\"note\":\"对应第4段：闭展后仍按原有访问条件保存，公开须另行取得许可\"}\n{\"type\":\"misread\",\"text\":\"可能把第2段“some agreed to public”误读为全部录音都要公开，或以为展览结束就等于解除限制，因此选了与第4段相反的A\"}\n{\"type\":\"check\",\"question\":\"闭展后，馆藏录音的访问与公开条件由什么决定？\",\"answer\":\"仍由参与者原先选择的访问条件决定，须走相应许可流程\"}\n{\"type\":\"summary\",\"text\":\"按题干时间点回原文定位，逐项查是否与原文相反；本题无可核实答案，上述判断仅为推断。\"}"
+    }
+  ]
+}

@@ -63,9 +63,15 @@ object Anchor {
     fun valid(anchor: String) = pattern.matches(anchor)
 }
 
+class CoachReplyTooLongException : IllegalArgumentException("AI 回复超过本机单条保存上限")
+
 object CoachTurns {
     const val MAX_CONTENT = 60_000
     const val MAX_STATE = 8_000
+
+    fun checkReplyLength(content: String) {
+        if (content.length > MAX_CONTENT) throw CoachReplyTooLongException()
+    }
 
     fun validate(turn: CoachTurn) {
         require(turn.id.length in 1..100 && turn.practiceId.length in 1..100) { "对话标识无效" }

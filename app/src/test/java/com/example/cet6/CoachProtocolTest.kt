@@ -38,6 +38,26 @@ class CoachProtocolTest {
         assertFalse(CoachReview.parse("## 普通 Markdown 批改\n- 第一处").structured)
     }
 
+    @Test fun malformedCompleteReviewsAndDuplicateNumbersFallBackWithoutDroppingRawText() {
+        val valid = """{"type":"issue","quote":"helps","fix":"help"}"""
+        for (tail in listOf("{broken}", "{\"type\":\"segment\"", "{\"type\":true,}")) {
+            val raw = "$valid\n$tail"
+            val review = CoachReview.parse(raw)
+            assertFalse(review.structured)
+            assertEquals(raw, review.raw)
+        }
+        val duplicates = """{"type":"segment","index":1,"verdict":"good"}
+            {"type":"segment","index":1,"verdict":"error"}"""
+        assertFalse(CoachReview.parse(duplicates).structured)
+        val options = """{"type":"option","label":"A","verdict":"correct"}
+            {"type":"option","label":"A","verdict":"wrong"}"""
+        assertFalse(ReadingExplanation.parse(options).structured)
+        val fakeQuote = CoachReview.parse(valid.replace("helps", "absent quotation"))
+        val placed = com.example.cet6.ui.placeIssues("Libraries helps students.", fakeQuote, ReviewDecisions().accept(0))
+        assertNull(placed.single().range)
+        assertEquals("Libraries helps students.", com.example.cet6.ui.applyAccepted("Libraries helps students.", placed))
+    }
+
     @Test fun decisionsRoundTripAndNeverHoldBothStates() {
         val d = ReviewDecisions().accept(1).dismiss(2).accept(2)
         assertEquals(setOf(1, 2), d.accepted)

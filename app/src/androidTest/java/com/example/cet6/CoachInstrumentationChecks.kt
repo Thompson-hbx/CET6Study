@@ -91,6 +91,15 @@ class CoachInstrumentationChecks(private val context: Context) {
             state.edit(CoachKind.WRITING) { it.copy(answer = "Immediate background save.") }
             check(state.flush())
             check(db.dao().coachDraft(CoachKind.WRITING.name)?.answer == "Immediate background save.")
+            db.openHelper.writableDatabase.execSQL("""
+                CREATE TEMP TRIGGER fail_reading_save BEFORE UPDATE ON coach_practices
+                WHEN NEW.kind = 'READING' BEGIN SELECT RAISE(ABORT, 'controlled draft failure'); END
+            """.trimIndent())
+            state.edit(CoachKind.TRANSLATION) { it.copy(answer = "Other drafts still save.") }
+            check(!state.flush())
+            check(db.dao().coachDraft(CoachKind.TRANSLATION.name)?.answer == "Other drafts still save.")
+            db.openHelper.writableDatabase.execSQL("DROP TRIGGER fail_reading_save")
+            check(state.flush())
             val legacy = JSONObject(BackupCodec.encode(snapshot)).apply {
                 put("version", 1); put("databaseVersion", 4); remove("coach"); remove("turns")
             }
@@ -101,7 +110,7 @@ class CoachInstrumentationChecks(private val context: Context) {
             check(db.dao().allCoach().single { it.id == complete.id }.errorReason == "长难句：误读主语")
             check(db.dao().allCoach().single { it.id == complete.id }.savedSentences == "quiet rooms.")
             check(db.dao().coachDraft(CoachKind.WRITING.name)?.answer == "Immediate background save.")
-            check(db.dao().coachDraft(CoachKind.TRANSLATION.name)?.answer == "My draft.")
+            check(db.dao().coachDraft(CoachKind.TRANSLATION.name)?.answer == "Other drafts still save.")
         } finally { job.cancelAndJoin(); db.close() }
     }
 }

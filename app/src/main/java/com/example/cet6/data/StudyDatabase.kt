@@ -103,6 +103,8 @@ interface StudyDao {
     @Query("SELECT practiceId, COUNT(*) AS count FROM coach_turns WHERE role='assistant' GROUP BY practiceId")
     fun turnCounts(): Flow<List<TurnCount>>
     @Upsert suspend fun saveTurn(turn: CoachTurn)
+    @Query("SELECT * FROM coach_turns WHERE id=:id") suspend fun turnById(id: String): CoachTurn?
+    @Query("UPDATE coach_turns SET state=:state WHERE id=:id") suspend fun updateTurnState(id: String, state: String): Int
     @Query("SELECT * FROM coach_turns ORDER BY createdAt, id") suspend fun allTurns(): List<CoachTurn>
     @Insert suspend fun addTurns(turns: List<CoachTurn>)
     @Query("SELECT * FROM words ORDER BY word") fun words(): Flow<List<WordEntity>>
