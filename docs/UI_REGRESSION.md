@@ -12,6 +12,10 @@ adb -s <emulator> shell am instrument --user 0 -w -e scenario ui com.example.cet
 
 脚本确认新练习 ID 后才编辑，检查文章和题目输入、选项选择、离线提交、原文收藏、错因及后台持久化。使用语义点击、节点刷新和状态等待；全部原业务断言保留。2026-10-24 普通显示和 1.3 字体/深色组合均通过。2026-10-28 接续时先复现 `No scrollable viewport`：页签切换后，目标、容器与滚动分别重取界面树，容器可能已被替换。现改为同轮使用同一树并将已找到的容器交给滚动，全部业务断言保留；最终重编译普通 APK 与修复后的测试 APK 在两种显示下均通过。详细失败与通过记录见 [验收证据](../test-evidence/release-acceptance-20261028.json)。
 
+## 2026-10-28 界面改版
+
+导航改为 今日 / 练习 / 复盘 / 我的，写作、翻译、阅读在「练习」顶部的分段按钮切换（Compose 以 checked 而非 selected 报告分段状态）。自拟阅读脚本相应改为先点「练习」再点「阅读」，业务断言未改。改版后完整隔离套件与该脚本在普通显示和 1.3 字体/深色下均通过；`review-layout` 夹具上手动核对了逐条采纳、页脚“用采纳的 N 处写修改稿”和追问展开/收起。截图为 `test-evidence/emulator-redesign-*-20261028.png`。TalkBack 朗读与实体机未验证。
+
 ## 结构化答题卡
 
 先记录字体、夜间模式和无障碍设置原值。准备原创资料和新练习：
@@ -22,7 +26,7 @@ adb -s <emulator> shell am instrument --user 0 -w -e fixture g4-sample com.examp
 adb -s <emulator> shell am instrument --user 0 -w -e fixture reading-accessibility com.example.cet6.test/com.example.cet6.LocalDataInstrumentation
 ```
 
-在阅读首页打开“原创样本”，确认标题为“原创答题卡无障碍检查”。选择一个选项，检查自动跳格；再在第一篇“按顺序连续输入”输入 `CADCBADCBA`，确认两篇分别为 `CADCB` 和 `ADCBA`。选中已填格检查“清除”在大字体下仍可见，然后核对答案。核对后，答题卡录入格应禁用，讲解页格子仍可切换题目。回读验证：
+在「练习 → 阅读」打开“原创样本”，确认标题为“原创答题卡无障碍检查”。选择一个选项，检查自动跳格；再在第一篇“按顺序连续输入”输入 `CADCBADCBA`，确认两篇分别为 `CADCB` 和 `ADCBA`。选中已填格检查“清除”在大字体下仍可见，然后核对答案。核对后，答题卡录入格应禁用，讲解页格子仍可切换题目。回读验证：
 
 ```powershell
 adb -s <emulator> shell am instrument --user 0 -w -e scenario reading-accessibility-verify com.example.cet6.test/com.example.cet6.LocalDataInstrumentation
