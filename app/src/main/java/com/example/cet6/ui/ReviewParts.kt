@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
 import com.example.cet6.ui.theme.PassageText
@@ -97,11 +98,8 @@ fun IssueList(placed: List<PlacedIssue>, onOpen: (Int) -> Unit, onDecide: ((Revi
     val must = placed.count { it.issue.must }
     val shown = placed.withIndex().filter { (_, p) -> when (filter) { 1 -> p.issue.must; 2 -> !p.issue.must; else -> true } }
     SectionLabel("逐条修改 · ${placed.size}")
-    Row(Modifier.padding(start = CardMargin, end = CardMargin, bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        listOf("全部 ${placed.size}", "必改 $must", "可改 ${placed.size - must}").forEachIndexed { i, label ->
-            FilterChip(selected = filter == i, onClick = { filter = i }, label = { Text(label) })
-        }
-    }
+    FilterPills(listOf("全部 ${placed.size}", "必改 $must", "可改 ${placed.size - must}"), filter, { filter = it },
+        Modifier.padding(start = PageGutter, end = PageGutter, bottom = 10.dp))
     if (shown.isEmpty()) { Note("这一类没有修改。", Modifier.padding(horizontal = PageGutter)); return }
     RowCard {
         shown.forEachIndexed { n, (i, p) ->
@@ -115,36 +113,35 @@ fun IssueList(placed: List<PlacedIssue>, onOpen: (Int) -> Unit, onDecide: ((Revi
 @Composable
 fun IssueRow(placed: PlacedIssue, number: Int, onDecide: ((ReviewIssue, ReviewDecision) -> Unit)? = null, onClick: () -> Unit) {
     val issue = placed.issue
-    Row(Modifier.fillMaxWidth().clickable(onClick = onClick).semantics { stateDescription = if (issue.must) "必改" else "可改" }
-        .padding(horizontal = CardPadding, vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("$number", style = MaterialTheme.typography.labelLarge, color = placed.tone.color(),
-            modifier = Modifier.width(labelWidth(listOf("00"), MaterialTheme.typography.labelLarge)))
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(buildAnnotatedString {
-                if (issue.quote.isNotBlank()) withStyle(SpanStyle(textDecoration = if (placed.accepted) TextDecoration.LineThrough else null,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)) { append(issue.quote) }
-                if (issue.fix.isNotBlank()) {
-                    append("  →  ")
-                    withStyle(SpanStyle(color = Tone.Good.color(), fontWeight = FontWeight.Medium)) { append(issue.fix) }
-                }
-            }, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.semantics { contentDescription = spokenChange(issue) })
-            if (issue.reason.isNotBlank()) Text(issue.reason, style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-            // Text buttons keep each row short; the hit area still meets the 40 dp minimum.
-            if (onDecide != null && !placed.accepted && !placed.dismissed && placed.range != null) Row(Modifier.offset(x = (-12).dp)) {
-                TextButton(onClick = { onDecide(issue, ReviewDecision.ACCEPT) }, modifier = Modifier.heightIn(min = 40.dp)) { Text("采纳") }
-                TextButton(onClick = { onDecide(issue, ReviewDecision.DISMISS) }, modifier = Modifier.heightIn(min = 40.dp),
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant)) { Text("忽略") }
-            }
-        }
-        Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Note(issue.category, tone = if (issue.must) Tone.Must else Tone.Better)
+    Column(Modifier.fillMaxWidth().clickable(onClick = onClick).semantics { stateDescription = if (issue.must) "必改" else "可改" }
+        .padding(horizontal = CardPadding, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Note(listOf("第 $number 处", issue.category).filter(String::isNotBlank).joinToString(" · "), Modifier.weight(1f))
             when {
                 placed.accepted -> Note("已采纳", tone = Tone.Good)
                 placed.dismissed -> Note("已忽略")
                 placed.range == null -> Note("未定位")
             }
+        }
+        // What was written, struck in grey, then the fix in the mark's own pen colour.
+        Text(buildAnnotatedString {
+            if (issue.quote.isNotBlank()) withStyle(SpanStyle(textDecoration = TextDecoration.LineThrough,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)) { append(issue.quote) }
+            if (issue.fix.isNotBlank()) {
+                if (issue.quote.isNotBlank()) append("  ")
+                withStyle(SpanStyle(color = placed.tone.color())) { append(issue.fix) }
+            }
+        }, style = PassageText.copy(fontSize = 16.sp, lineHeight = 24.sp), modifier = Modifier.semantics { contentDescription = spokenChange(issue) })
+        if (issue.reason.isNotBlank()) Text(issue.reason, style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (onDecide != null && !placed.accepted && !placed.dismissed && placed.range != null) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilledTonalButton(onClick = { onDecide(issue, ReviewDecision.ACCEPT) }, contentPadding = PaddingValues(horizontal = 16.dp),
+                colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primary),
+                modifier = Modifier.heightIn(min = 40.dp)) { Text("采纳") }
+            OutlinedButton(onClick = { onDecide(issue, ReviewDecision.DISMISS) }, contentPadding = PaddingValues(horizontal = 16.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
+                modifier = Modifier.heightIn(min = 40.dp)) { Text("忽略") }
         }
     }
 }
