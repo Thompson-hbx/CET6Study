@@ -106,11 +106,6 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         topBar = { ScreenTopBar(entry.title.removeSuffix(" · 阅读"), subtitle = if (desk) "仔细阅读 · 篇章 ${current.code} · 已核对"
             else "仔细阅读 · Section C" + if (submitted) " · 已核对" else "", onBack = onBack,
             actions = {
-                if (desk && passages.size > 1) OutlinedButton(onClick = {
-                    val next = passages[(passages.indexOf(current) + 1) % passages.size]
-                    focus = null; selected = next.questions.minOf { it.number }
-                }, shape = RoundedCornerShape(50), contentPadding = PaddingValues(horizontal = 12.dp),
-                    modifier = Modifier.semantics { contentDescription = "切换篇章，当前篇章 ${current.code}" }) { Text("篇章 ${current.code}") }
                 if (desk) AskAction { asking = true }
                 WorkspaceMenu(vm, entry, if (submitted) listOf("答题卡" to { tab = 0 }, "全文与逐段讲解" to { focus = focus ?: savedFocus; tab = 2 },
                     "逐题讲解" to { tab = 1 }).filter { it.first != "逐题讲解" || tab != 1 } else emptyList())
@@ -152,8 +147,12 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                 Column(Modifier.fillMaxSize()) {
                     if (savedQuote != null) Text("AI 定位 · 已匹配原文，待人工确认", style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(horizontal = PageGutter))
+                    // The passage switch sits on the passage's own header; the top bar is too narrow for it beside the title.
+                    val next = passages.getOrNull((passages.indexOf(current) + 1) % passages.size)?.takeIf { it != current }
                     PassagePeek(current, q, focus?.takeIf { it.passage == current.code }?.quote ?: savedQuote,
-                        onOpenFull = { focus = focus ?: savedFocus; tab = 2 }, modifier = Modifier.weight(1f))
+                        onOpenFull = { focus = focus ?: savedFocus; tab = 2 },
+                        onSwitch = next?.let { { focus = null; selected = it.questions.minOf { q -> q.number } } }, switchTo = next?.code,
+                        modifier = Modifier.weight(1f))
                     QuestionPanel(vm, entry, current, answers, turns, selected, panelMax, scroll, onSelect = { focus = null; selected = it },
                         onAsk = ::ask) { code, quote -> focus = ReaderFocus(code, quote) }
                 }
@@ -553,7 +552,8 @@ private fun ErrorNote(vm: StudyViewModel, entry: CoachPractice, passage: ExamPas
  * evidence sentence) is tinted and scrolled into view; without either, the passage simply starts at the top.
  */
 @Composable
-private fun PassagePeek(passage: ExamPassage, q: ExamQuestion, quote: String?, onOpenFull: () -> Unit, modifier: Modifier = Modifier) {
+private fun PassagePeek(passage: ExamPassage, q: ExamQuestion, quote: String?, onOpenFull: () -> Unit, onSwitch: (() -> Unit)?,
+    switchTo: String?, modifier: Modifier = Modifier) {
     val paragraphs = remember(passage.content) { PassageLayout.paragraphs(passage.content) }
     val evidence = quote?.takeIf(String::isNotBlank) ?: q.verifiedEvidence(passage)
     val marks = remember(paragraphs, evidence) { paragraphs.map { para -> evidence?.let { TextMarks.locate(para, it) } } }
@@ -563,6 +563,7 @@ private fun PassagePeek(passage: ExamPassage, q: ExamQuestion, quote: String?, o
     Column(modifier.fillMaxWidth()) {
         Row(Modifier.fillMaxWidth().padding(start = PageGutter, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Note("原文 · 篇章 ${passage.code}" + (target?.let { " · 依据在第 ${it + 1} 段" } ?: ""), Modifier.weight(1f))
+            if (onSwitch != null && switchTo != null) TextButton(onClick = onSwitch) { Text("看篇章 $switchTo") }
             TextButton(onClick = onOpenFull) { Text("逐段讲解") }
         }
         run {
