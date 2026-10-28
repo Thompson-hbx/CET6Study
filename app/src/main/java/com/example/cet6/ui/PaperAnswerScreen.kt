@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.InteractiveStepPill
+import com.example.cet6.ui.theme.SourceSerif
 import com.example.cet6.ui.theme.AccentSuccess
 import com.example.cet6.ui.theme.AccentSuccessContainer
 import com.example.cet6.ui.theme.AccentWarning
@@ -626,7 +626,7 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                                                 modifier = Modifier.fillMaxWidth()
                                             ) {
                                                 SelectionContainer {
-                                                    Text("“${q.evidence}”", fontFamily = FontFamily.Serif, fontSize = 16.sp, lineHeight = 26.sp, modifier = Modifier.padding(12.dp))
+                                                    Text("“${q.evidence}”", fontFamily = SourceSerif, fontSize = 16.sp, lineHeight = 26.sp, modifier = Modifier.padding(12.dp))
                                                 }
                                             }
                                             Text("结合上下文，核对主语、转折、因果和范围。", lineHeight = 24.sp, style = MaterialTheme.typography.bodyMedium)
@@ -728,7 +728,7 @@ fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollSt
                                 }
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
                                 SelectionContainer {
-                                    Text(p.content, fontFamily = FontFamily.Serif, fontSize = 16.sp, lineHeight = 28.sp)
+                                    Text(p.content, fontFamily = SourceSerif, fontSize = 16.sp, lineHeight = 28.sp)
                                 }
                             }
                         }

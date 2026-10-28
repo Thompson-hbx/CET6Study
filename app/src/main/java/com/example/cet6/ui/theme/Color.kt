@@ -3,16 +3,16 @@ package com.example.cet6.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Clear desk, ink-blue pen. Cards sit on a cool grey desk; every Material role is set explicitly so no
+// Paper desk, ink-blue pen. White sheets sit on a warm paper desk; every Material role is set explicitly so no
 // library default tint leaks in. Text roles keep at least 4.5:1 against the desk, cards and chips.
-val LightPrimary = Color(0xFF2A56C6)
+val LightPrimary = Color(0xFF2A4BA8)
 val LightOnPrimary = Color(0xFFFFFFFF)
-val LightPrimaryContainer = Color(0xFFDCE5FF)
-val LightOnPrimaryContainer = Color(0xFF0D2A6E)
+val LightPrimaryContainer = Color(0xFFE8EDFA)
+val LightOnPrimaryContainer = Color(0xFF13265E)
 
 val LightSecondary = Color(0xFF4C5A73)
 val LightOnSecondary = Color(0xFFFFFFFF)
-val LightSecondaryContainer = Color(0xFFE3E8F0)
+val LightSecondaryContainer = Color(0xFFEEECE6)
 val LightOnSecondaryContainer = Color(0xFF1F2A3D)
 
 val LightTertiary = Color(0xFF8A4B00)
@@ -20,19 +20,19 @@ val LightOnTertiary = Color(0xFFFFFFFF)
 val LightTertiaryContainer = Color(0xFFFDE9CC)
 val LightOnTertiaryContainer = Color(0xFF4A2800)
 
-val LightBackground = Color(0xFFF3F5F8)
-val LightOnBackground = Color(0xFF171A1F)
-val LightSurface = Color(0xFFF3F5F8)
-val LightOnSurface = Color(0xFF171A1F)
-val LightSurfaceVariant = Color(0xFFE7EBF0)
-val LightOnSurfaceVariant = Color(0xFF525B68)
-val LightOutline = Color(0xFF7D8693)
-val LightOutlineVariant = Color(0xFFD8DDE4)
+val LightBackground = Color(0xFFF7F6F2)
+val LightOnBackground = Color(0xFF1B1E23)
+val LightSurface = Color(0xFFF7F6F2)
+val LightOnSurface = Color(0xFF1B1E23)
+val LightSurfaceVariant = Color(0xFFEEECE6)
+val LightOnSurfaceVariant = Color(0xFF555B66)
+val LightOutline = Color(0xFF7E7A70)
+val LightOutlineVariant = Color(0xFFE2DFD8)
 val LightSurfaceLowest = Color(0xFFFFFFFF)
 val LightSurfaceLow = Color(0xFFFFFFFF)
-val LightSurfaceMid = Color(0xFFEEF1F5)
-val LightSurfaceHigh = Color(0xFFE7EBF0)
-val LightSurfaceHighest = Color(0xFFE0E5EB)
+val LightSurfaceMid = Color(0xFFF0EEE8)
+val LightSurfaceHigh = Color(0xFFEAE7E0)
+val LightSurfaceHighest = Color(0xFFE3E0D8)
 
 val DarkPrimary = Color(0xFFA8C0FF)
 val DarkOnPrimary = Color(0xFF0B2667)
@@ -87,5 +87,5 @@ val AccentWarning: Color
     @Composable get() = LocalMarks.current.better
 val AccentWarningContainer: Color
     @Composable get() = LocalMarks.current.betterSoft
-val AccentInfo = Color(0xFF2A56C6)
-val AccentInfoContainer = Color(0xFFDCE5FF)
+val AccentInfo = Color(0xFF2A4BA8)
+val AccentInfoContainer = Color(0xFFE8EDFA)

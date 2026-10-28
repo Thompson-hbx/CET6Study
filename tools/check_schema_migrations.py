@@ -19,6 +19,8 @@ for version in range(1, latest):
     original = json.loads((SCHEMAS / f"{version}.json").read_text(encoding="utf-8"))["database"]
     for table in original["entities"]:
         db.execute(table["createSql"].replace("${TABLE_NAME}", table["tableName"]))
+        for index in table.get("indices", []):
+            db.execute(index["createSql"].replace("${TABLE_NAME}", table["tableName"]))
     fields = "word,meaning,example,dueAt,repetitions,intervalDays" + (",source" if version >= 3 else "")
     values = ["preserved", "original meaning", "original example", 1800000000000, 5, 30] + (["original source"] if version >= 3 else [])
     db.execute(f"INSERT INTO words ({fields}) VALUES ({','.join('?' for _ in values)})", values)
@@ -53,6 +55,11 @@ for version in range(1, latest):
             actual = columns[field["columnName"]]
             assert actual[2] == field["affinity"] and bool(actual[3]) == field["notNull"], (name, field)
         assert [col for col, spec in columns.items() if spec[5]] == table["primaryKey"]["columnNames"], name
+        indexes = {row[1]: row for row in db.execute(f"PRAGMA index_list({name})") if row[3] == "c"}
+        assert set(indexes) == {index["name"] for index in table.get("indices", [])}, name
+        for index in table.get("indices", []):
+            assert bool(indexes[index["name"]][2]) == index["unique"], (name, index)
+            assert [row[2] for row in db.execute(f"PRAGMA index_info({index['name']})")] == index["columnNames"], (name, index)
     for name, (columns, rows) in before.items():
         assert db.execute(f"SELECT {','.join(columns)} FROM {name}").fetchall() == rows, f"Lost data: {name}"
     assert db.execute("SELECT count(*) FROM word_schedules").fetchone()[0] == 0, "Fabricated memory"

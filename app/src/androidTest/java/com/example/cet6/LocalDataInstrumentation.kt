@@ -277,6 +277,11 @@ class LocalDataInstrumentation : Instrumentation() {
                 for (i in 0 until entities.length()) {
                     val table = entities.getJSONObject(i)
                     old.execSQL(table.getString("createSql").replace("\u0024{TABLE_NAME}", table.getString("tableName")))
+                    val indices = table.optJSONArray("indices")
+                    for (j in 0 until (indices?.length() ?: 0)) {
+                        old.execSQL(indices!!.getJSONObject(j).getString("createSql")
+                            .replace("\u0024{TABLE_NAME}", table.getString("tableName")))
+                    }
                 }
                 val sourceColumn = if (version >= 3) ",source" else ""
                 val sourceValue = if (version >= 3) ",'用户来源'" else ""

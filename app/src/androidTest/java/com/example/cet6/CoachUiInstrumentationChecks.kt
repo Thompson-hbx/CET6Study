@@ -23,15 +23,17 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         for (i in 0 until root.childCount) find(root.getChild(i), predicate)?.let { return it }
         return null
     }
-    private val homeTabs = setOf("写作", "翻译", "阅读", "我的")
+    private val homeTabs = setOf("今日", "练习", "复盘", "我的")
+    // The skill switch inside 练习 is a segmented button: Compose reports its choice as checked, not selected.
+    private val skillSegments = setOf("写作", "翻译", "阅读")
     private fun actionTarget(node: AccessibilityNodeInfo, allowSelected: Boolean): AccessibilityNodeInfo? {
         var target: AccessibilityNodeInfo? = node
-        while (target != null && !target.isClickable && !(allowSelected && target.isSelected)) target = target.parent
+        while (target != null && !target.isClickable && !(allowSelected && (target.isSelected || target.isChecked))) target = target.parent
         return target
     }
     private fun node(text: String, forClick: Boolean = false,
         root: AccessibilityNodeInfo? = automation.rootInActiveWindow) = find(root) {
-        it.text?.toString() == text && (!forClick || actionTarget(it, text in homeTabs) != null)
+        it.text?.toString() == text && (!forClick || actionTarget(it, text in homeTabs || text in skillSegments) != null)
     }
     private fun awaitState(label: String, condition: () -> Boolean) {
         val deadline = SystemClock.uptimeMillis() + 10_000
@@ -73,7 +75,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
             if (target != null) {
                 val bounds = Rect().also { target.getBoundsInScreen(it) }
                 val clip = Rect().also { viewport?.getBoundsInScreen(it) }
-                if (text in homeTabs || clip.isEmpty ||
+                if (text in homeTabs || text in skillSegments || clip.isEmpty ||
                     (bounds.top >= clip.top + 6 && bounds.bottom <= clip.bottom - 6)) return target
                 scroll(bounds.top >= clip.top, viewport)
             } else scroll(true, viewport)
@@ -83,15 +85,18 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
     private fun click(text: String) {
         if (text in listOf("资料作答", "AI 讲解", "错因难句", "历史")) top()
         automation.waitForIdle(200, 2000)
-        val target = requireNotNull(actionTarget(seek(text, forClick = true), text in homeTabs)) { "Cannot click: $text" }
+        val target = requireNotNull(actionTarget(seek(text, forClick = true), text in homeTabs || text in skillSegments)) { "Cannot click: $text" }
         awaitState("enabled $text") { target.refresh() && target.isEnabled }
         // Selected Compose tabs intentionally expose no click action.
         if (text in homeTabs && target.isSelected) return
+        if (text in skillSegments && target.isChecked) return
         runner.sendStatus(0, Bundle().apply { putString("stream", "Activate $text\n") })
         check(target.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "Click rejected: $text" }
         if (text in homeTabs || text in listOf("资料作答", "AI 讲解", "错因难句", "历史")) {
             awaitState("selected tab $text") { target.refresh() && target.isSelected }
         }
+        // A checked segment stops being clickable, so Compose replaces its node; look it up again by its label.
+        if (text in skillSegments) awaitState("checked segment $text") { node(text)?.let { actionTarget(it, true) }?.isChecked == true }
         automation.waitForIdle(200, 2000)
     }
     private fun enter(label: String, value: String) {
@@ -116,6 +121,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         awaitState("initial reading draft") { currentId() != null }
         val before = currentId()
         automation.waitForIdle(500, 5000)
+        click("练习")
         click("阅读")
         click("粘贴一篇英文文章练习")
         awaitState("a new reading draft") { currentId() != before }

@@ -9,7 +9,7 @@ object ReadingGuidance {
         else -> "需要回看"
     }
     fun paragraph(passage: ExamPassage, question: ExamQuestion): Int? {
-        if (question.evidence.isBlank() || !passage.content.contains(question.evidence)) return null
+        if (question.verifiedEvidence(passage) == null) return null
         return PassageLayout.paragraphOf(passage.content, question.evidence)
     }
     fun prompt(entry: CoachPractice, number: Int, level: Int): String {

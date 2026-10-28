@@ -165,3 +165,44 @@ fun SkillErrorNote(vm: StudyViewModel, entry: CoachPractice, kind: CoachKind) {
         }
     }
 }
+
+/** 作答 → 批改 → 修改 for writing and translation; 修改 starts a revision of the submitted draft. */
+@Composable
+fun DeskSteps(writeLabel: String, tab: Int, submitted: Boolean, working: Boolean, onTab: (Int) -> Unit, onRevise: () -> Unit) {
+    WorkflowSteps(listOf(
+        WorkflowStep(writeLabel, done = submitted) { onTab(0) },
+        WorkflowStep("批改", enabled = submitted) { onTab(1) },
+        WorkflowStep("修改", enabled = submitted && !working, onClick = onRevise)
+    ), current = tab.takeIf { it <= 1 })
+}
+
+/** The newest structured review placed on [answer] with the learner's decisions; null while there is none. */
+fun placedReview(answer: String, reviewTurn: CoachTurn?): List<PlacedIssue>? {
+    val review = reviewTurn?.let { CoachReview.parse(it.content) }?.takeIf { it.structured } ?: return null
+    return placeIssues(answer, review, ReviewDecisions.decode(reviewTurn.state))
+}
+
+/**
+ * Footer of a review: the next step (a revision with the accepted fixes) is the main action; follow-up
+ * questions open the composer on demand instead of holding the bottom of the screen the whole time.
+ */
+@Composable
+fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, placed: List<PlacedIssue>?, canAsk: Boolean,
+    onAsk: (String) -> Unit) {
+    val talk = vm.talk
+    val failure = talk.failureFor(entry.id, Anchor.REVIEW, chat = true)
+    var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
+    if (canAsk && (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT)) BottomBar {
+        AskBar(placeholder, busy = talk.busy, enabled = !talk.busy, onSend = onAsk, onStop = talk::stop,
+            modifier = Modifier.weight(1f), draftKey = entry.id, failure = failure, onDismissFailure = talk::dismissFailure)
+        if (!talk.busy) TextButton(onClick = { asking = false; failure?.let { talk.dismissFailure() } }) { Text("收起") }
+    } else BottomBar {
+        val accepted = placed?.count { it.accepted && it.range != null } ?: 0
+        if (canAsk) OutlinedButton(onClick = { asking = true }, modifier = Modifier.height(48.dp)) { Text("追问") }
+        Spacer(Modifier.weight(1f))
+        Button(onClick = { vm.coach.revise(entry, placed?.let { applyAccepted(entry.answer, it) } ?: entry.answer) },
+            enabled = !vm.coach.working, modifier = Modifier.height(48.dp)) {
+            Text(if (accepted > 0) "用采纳的 $accepted 处写修改稿" else "写修改稿")
+        }
+    }
+}

@@ -24,8 +24,8 @@ object ReadingDiagnosis {
         val selectedText = q.options.firstOrNull { it.label == selected }?.text.orEmpty()
         val reference = if (q.referenceAnswer.isNotBlank() && q.answerSource.isNotBlank())
             "${q.referenceAnswer}；来源：${q.answerSource}" else "暂无有来源的参考答案；结论只能标为 AI 推断"
-        val evidence = if (ReadingEvidence.find(passage.content, q.evidence) != null) q.evidence
-            else "未提供经过原文匹配的证据；请自行从原文核实，不能补造引用"
+        val evidence = q.verifiedEvidence(passage)?.let { "$it；来源：${q.evidenceSource}" }
+            ?: "未提供经过原文匹配的证据；请自行从原文核实，不能补造引用"
         return """
             你是帮助学生回到原文纠正误读的六级阅读教练。用户已完成纸上作答。
             现在分析篇章 ${passage.code} 的第 $ordinal 题（内部题号 $number），不是复述通用解题步骤。

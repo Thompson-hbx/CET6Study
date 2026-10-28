@@ -1,6 +1,6 @@
 # CET6Study（六级研习室）
 
-个人本地优先的 CET-6 学习 App（Android）：写作 / 翻译 / 阅读 / 我的 四个标签。AI 批改与追问支持用户本人的 ChatGPT 登录/Responses SSE、DeepSeek 和自定义 Chat Completions SSE。普通 APK 不含第三方真题。
+个人本地优先的 CET-6 学习 App（Android）：今日 / 练习（写作·翻译·阅读）/ 复盘 / 我的 四个标签。AI 批改与追问支持用户本人的 ChatGPT 登录/Responses SSE、DeepSeek 和自定义 Chat Completions SSE。普通 APK 不含第三方真题。
 
 ## 技术栈
 

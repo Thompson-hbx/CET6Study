@@ -39,12 +39,12 @@ object ExamCodec {
     fun passage(o: JSONObject) = ExamPassage(o.getString("code"), o.optString("title"), o.getString("content"),
         strings(o.getJSONArray("questions")).map { q -> ExamQuestion(q.getInt("number"), q.getString("stem"),
             strings(q.getJSONArray("options")).map { ExamOption(it.getString("label"), it.getString("text")) },
-            q.optString("referenceAnswer"), q.optString("answerSource"), q.optString("evidence")) })
+            q.optString("referenceAnswer"), q.optString("answerSource"), q.optString("evidence"), q.optString("evidenceSource")) })
     private fun obj(vararg fields: Pair<String, Any>) = JSONObject().apply { fields.forEach { put(it.first, it.second) } }
     fun passageJson(p: ExamPassage): JSONObject = obj("code" to p.code, "title" to p.title, "content" to p.content,
         "questions" to JSONArray(p.questions.map { q -> obj("number" to q.number, "stem" to q.stem,
             "options" to JSONArray(q.options.map { obj("label" to it.label, "text" to it.text) }),
-            "referenceAnswer" to q.referenceAnswer, "answerSource" to q.answerSource, "evidence" to q.evidence) }))
+            "referenceAnswer" to q.referenceAnswer, "answerSource" to q.answerSource, "evidence" to q.evidence, "evidenceSource" to q.evidenceSource) }))
     fun encode(papers: List<ExamPaper>): String = obj("format" to "CET6ExamPack", "version" to 1,
         "papers" to JSONArray(papers.map { p -> obj("stableId" to p.stableId, "examDate" to p.examDate, "setCode" to p.setCode,
             "revision" to p.revision, "sourceName" to p.sourceName, "sourceUrl" to p.sourceUrl, "licenseStatus" to p.licenseStatus,
