@@ -29,7 +29,7 @@ private fun sessionTitle(date: String) = "${date.take(4)} 年 ${date.substring(5
 /** Skill home for writing or translation: one card per exam session, newest first. */
 @Composable
 fun TaskHome(vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen: (CoachPractice) -> Unit,
-    onStart: (ExamPaper) -> Unit, onCustom: () -> Unit) {
+    onStart: (ExamPaper) -> Unit, onCustom: () -> Unit, header: @Composable () -> Unit) {
     val history = vm.coach.history
     val bands = remember(vm.reviewTurns) { latestBands(vm.reviewTurns) }
     val papers = allPapers(vm)
@@ -38,10 +38,7 @@ fun TaskHome(vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen
     val draft = vm.coach.entries[kind]?.takeIf { it.submittedAt == 0L && it.answer.isNotBlank() }
     val mine = history.filter { it.kind == kind.name && it.answer.isNotBlank() }.take(3)
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
-        item {
-            if (kind == CoachKind.WRITING) TabTitle("写作", "六级 Part I · 30 分钟 · 150–200 词")
-            else TabTitle("翻译", "六级 Part IV · 30 分钟 · 段落汉译英")
-        }
+        item { header() }
         if (draft != null) item {
             SectionLabel("继续")
             RowCard {
@@ -60,7 +57,7 @@ fun TaskHome(vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen
                             val available = paper.issues(kind).isEmpty()
                             val itemId = "${paper.stableId}/${kind.name}/1"
                             val status = if (available) writtenStatus(history, bands, itemId) else null
-                            ListRow("第 ${paper.setCode} 套", subtitle = if (available) taskLine(paper, kind) else unavailable(paper),
+                            ListRow("第 ${paper.setCode} 套", subtitle = if (available) taskLine(paper, kind) else unavailable(paper), subtitleLines = 1,
                                 trailing = status?.label, trailingTone = status?.tone ?: Tone.Muted, enabled = available && !vm.coach.working) {
                                 latestAttempt(history, itemId)?.let(onOpen) ?: onStart(paper)
                             }
@@ -121,7 +118,7 @@ private fun unavailable(paper: ExamPaper) = when (paper.status) {
 /** Reading home: papers by session; each opens the two-passage answer card. */
 @Composable
 fun ReadingHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice) -> Unit, onStart: (ExamPaper) -> Unit,
-    onShared: (String) -> Unit, onCustom: () -> Unit) {
+    onShared: (String) -> Unit, onCustom: () -> Unit, header: @Composable () -> Unit) {
     val history = vm.coach.history
     val papers = allPapers(vm)
     val bySession = papers.filter { !it.sample }.groupBy { it.examDate }.toSortedMap(compareByDescending { it })
@@ -133,7 +130,7 @@ fun ReadingHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPracti
         it.kind == CoachKind.READING.name && (it.answer.isNotBlank() || (ExamCodec.metadata(it) == null && it.material.isNotBlank()))
     }.take(3)
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
-        item { TabTitle("阅读", "仔细阅读 · 纸上做完，再来核对和弄懂") }
+        item { header() }
         if (draft != null) item {
             val status = if (ExamCodec.metadata(draft) != null) readingStatus(draft) else TaskStatus("草稿", Tone.Better)
             SectionLabel("继续")
@@ -217,7 +214,7 @@ private fun ReadingPaperRow(vm: StudyViewModel, history: List<CoachPractice>, pa
 /** Opening of a passage, enough to recognise it; the row cuts it to one line. */
 private fun openingLine(content: String) = PassageLayout.paragraphs(content).firstOrNull().orEmpty().take(160)
 
-private fun readingStatus(entry: CoachPractice): TaskStatus {
+fun readingStatus(entry: CoachPractice): TaskStatus {
     val questions = ExamCodec.passages(entry).flatMap { it.questions }
     val answered = questions.count { ReadingQuestions.selected(entry.answer, "${it.number}").orEmpty().isNotBlank() }
     if (entry.submittedAt == 0L) return if (answered == 0) TaskStatus("未录入", Tone.Better)
@@ -228,10 +225,9 @@ private fun readingStatus(entry: CoachPractice): TaskStatus {
         else TaskStatus("$right/${known.size}", Tone.Ink, "已核对，${known.size} 题中 $right 题与参考一致")
 }
 
-/** Sections of the 我的 tab; each row opens a full screen. */
+/** Sections of the 我的 tab: connection, data and older screens; review material lives in 复盘. */
 @Composable
 fun MeHome(vm: StudyViewModel, padding: PaddingValues, onRoute: (String) -> Unit) {
-    val reviews = WeaknessReview.records(vm.coach.history)
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { TabTitle("我的") }
         item {
@@ -242,31 +238,6 @@ fun MeHome(vm: StudyViewModel, padding: PaddingValues, onRoute: (String) -> Unit
                     vm.chosenModel.isBlank() -> "已连接 · 还没有选择模型"
                     else -> "已连接 · ${vm.models.firstOrNull { it.slug == vm.chosenModel }?.displayName ?: vm.chosenModel}"
                 }, trailing = if (vm.aiReady && vm.chosenModel.isNotBlank()) "可用" else null, trailingTone = Tone.Good) { onRoute("me/connection") }
-            }
-        }
-        item {
-            SectionLabel("复盘")
-            RowCard {
-                ListRow("错因回顾", subtitle = if (reviews.isEmpty()) "记录过错因的练习会出现在这里" else "${reviews.size} 条记录",
-                    onClick = { onRoute("me/review") })
-                RowDivider()
-                ListRow("学习趋势", subtitle = "按周查看阅读核对、修改稿与复习自评", onClick = { onRoute("me/trends") })
-                RowDivider()
-                ListRow("练习记录", subtitle = "全部阅读、写作和翻译练习", onClick = { onRoute("me/records") })
-            }
-        }
-        item {
-            val dueCount = vm.words.count { it.dueAt in 1..vm.now }
-            val totalCount = vm.words.size
-            SectionLabel("词汇")
-            RowCard {
-                ListRow(
-                    "六级词汇",
-                    subtitle = if (totalCount == 0) "导入词库或在练习中加入生词" else "词库 $totalCount 词 · 今日待复习 $dueCount 词",
-                    trailing = if (dueCount > 0) "待复习 $dueCount" else if (totalCount > 0) "已完成" else null,
-                    trailingTone = if (dueCount > 0) Tone.Better else Tone.Good,
-                    onClick = { onRoute("me/words") }
-                )
             }
         }
         item {

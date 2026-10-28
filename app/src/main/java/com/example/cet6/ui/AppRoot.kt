@@ -8,14 +8,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,11 +26,14 @@ import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
 
 private enum class HomeTab(val key: String, val label: String) {
-    WRITING("writing", "写作"), TRANSLATION("translation", "翻译"), READING("reading", "阅读"), ME("me", "我的")
+    TODAY("today", "今日"), PRACTICE("practice", "练习"), REVIEW("review", "复盘"), ME("me", "我的")
 }
 
+/** Saved tab keys: the four tabs, or a skill key, which opens 练习 on that skill (also what older versions stored). */
+private val practiceKeys = mapOf("writing" to CoachKind.WRITING, "translation" to CoachKind.TRANSLATION, "reading" to CoachKind.READING)
+
 /**
- * Four skill-first tabs; tasks open as full screens on a small back stack. Routes are plain strings
+ * Today, practice, review and me; tasks open as full screens on a small back stack. Routes are plain strings
  * so the stack survives configuration changes and process death through the saved state bundle.
  */
 @Composable
@@ -38,7 +41,10 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
     var stack by rememberSaveable { mutableStateOf("") }
     val routes = stack.split('|').filter(String::isNotBlank)
     val top = routes.lastOrNull()
-    var tab by rememberSaveable { mutableStateOf(HomeTab.entries.firstOrNull { it.key == vm.lastTab } ?: HomeTab.WRITING) }
+    var tab by rememberSaveable { mutableStateOf(HomeTab.entries.firstOrNull { it.key == vm.lastTab }
+        ?: if (vm.lastTab in practiceKeys) HomeTab.PRACTICE else HomeTab.TODAY) }
+    var practice by rememberSaveable { mutableStateOf(practiceKeys[vm.lastTab] ?: CoachKind.WRITING) }
+    fun showPractice(kind: CoachKind) { tab = HomeTab.PRACTICE; practice = kind; vm.lastTab = practiceKeys.entries.first { it.value == kind }.key }
     val snackbar = remember { SnackbarHostState() }
     fun push(route: String) { if (route != stack.split('|').lastOrNull()) stack = (stack.split('|').filter(String::isNotBlank) + route).joinToString("|") }
     fun pop() { stack = stack.split('|').filter(String::isNotBlank).dropLast(1).joinToString("|") }
@@ -76,11 +82,13 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
                     NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainerLow, tonalElevation = 0.dp) {
                         HomeTab.entries.forEach { item ->
                             val selected = tab == item
-                            NavigationBarItem(selected = selected, onClick = { tab = item; vm.lastTab = item.key },
+                            NavigationBarItem(selected = selected, onClick = {
+                                    if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key }
+                                },
                                 icon = { Icon(when (item) {
-                                    HomeTab.WRITING -> if (selected) Icons.Filled.EditNote else Icons.Outlined.EditNote
-                                    HomeTab.TRANSLATION -> if (selected) Icons.Filled.Translate else Icons.Outlined.Translate
-                                    HomeTab.READING -> if (selected) Icons.AutoMirrored.Filled.MenuBook else Icons.AutoMirrored.Outlined.MenuBook
+                                    HomeTab.TODAY -> if (selected) Icons.Filled.Today else Icons.Outlined.Today
+                                    HomeTab.PRACTICE -> if (selected) Icons.Filled.EditNote else Icons.Outlined.EditNote
+                                    HomeTab.REVIEW -> if (selected) Icons.Filled.History else Icons.Outlined.History
                                     HomeTab.ME -> if (selected) Icons.Filled.Person else Icons.Outlined.Person
                                 }, contentDescription = null) },
                                 label = { Text(item.label) },
@@ -92,16 +100,19 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
                 }
             }
         ) { padding ->
+            val header: @Composable () -> Unit = { PracticeHeader(practice, ::showPractice) }
             when (tab) {
-                HomeTab.WRITING -> TaskHome(vm, CoachKind.WRITING, padding, ::open, { start(it, CoachKind.WRITING) }) {
-                    vm.coach.startCustom(CoachKind.WRITING, "自拟题目", "") { push("work/WRITING") }
+                HomeTab.TODAY -> TodayHome(vm, padding, ::open, ::start, ::push)
+                HomeTab.PRACTICE -> when (practice) {
+                    CoachKind.WRITING -> TaskHome(vm, CoachKind.WRITING, padding, ::open, { start(it, CoachKind.WRITING) },
+                        onCustom = { vm.coach.startCustom(CoachKind.WRITING, "自拟题目", "") { push("work/WRITING") } }, header = header)
+                    CoachKind.TRANSLATION -> TaskHome(vm, CoachKind.TRANSLATION, padding, ::open, { start(it, CoachKind.TRANSLATION) },
+                        onCustom = { vm.coach.startCustom(CoachKind.TRANSLATION, "自选段落", "") { push("work/TRANSLATION") } }, header = header)
+                    CoachKind.READING -> ReadingHome(vm, padding, ::open, { start(it, CoachKind.READING) },
+                        onShared = { id -> vm.examPapers.firstOrNull { it.stableId == id }?.let { start(it, CoachKind.READING) } },
+                        onCustom = { vm.coach.open(CoachKind.READING) { push("custom/READING") } }, header = header)
                 }
-                HomeTab.TRANSLATION -> TaskHome(vm, CoachKind.TRANSLATION, padding, ::open, { start(it, CoachKind.TRANSLATION) }) {
-                    vm.coach.startCustom(CoachKind.TRANSLATION, "自选段落", "") { push("work/TRANSLATION") }
-                }
-                HomeTab.READING -> ReadingHome(vm, padding, ::open, { start(it, CoachKind.READING) },
-                    onShared = { id -> vm.examPapers.firstOrNull { it.stableId == id }?.let { start(it, CoachKind.READING) } },
-                    onCustom = { vm.coach.open(CoachKind.READING) { push("custom/READING") } })
+                HomeTab.REVIEW -> ReviewHome(vm, padding, ::push)
                 HomeTab.ME -> MeHome(vm, padding, ::push)
             }
         }
@@ -123,7 +134,7 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         top == "me/exams" -> SimpleScreen("题库管理", ::pop) { ExamManagement(vm) }
         top == "me/legacy" -> SimpleScreen("单词与旧版功能", ::pop) {
             legacy.today({ push("me/words") }, { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
-                { tab = HomeTab.WRITING; pop() }, ::open)
+                { showPractice(CoachKind.WRITING); pop() }, ::open)
         }
         top == "me/words" -> SimpleScreen("六级词汇", ::pop) { legacy.words() }
         top == "me/essays" -> SimpleScreen("旧版作文记录", ::pop) { LegacyEssays(vm) }
