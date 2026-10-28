@@ -196,7 +196,7 @@ private fun ReadingPaperRow(vm: StudyViewModel, history: List<CoachPractice>, pa
     val status = attempt?.let { readingStatus(it) }
     ListRow(if (paper.sample) "原创样本" else "第 ${paper.setCode} 套",
         subtitle = when {
-            shared != null -> "阅读与第 1 套相同，在第 1 套练习"
+            shared != null -> "阅读共用第 1 套，按第 1 套题序练习"
             available -> null
             else -> unavailable(paper)
         },

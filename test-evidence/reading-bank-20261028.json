@@ -1,0 +1,296 @@
+{
+  "date": "2026-10-28",
+  "scope": "Current app structured careful reading (Section C), not all reading sections",
+  "sourcePack": ".tools\\private-exams\\private-study-pack-reading22-20261020.json",
+  "sourcePackSha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+  "outputPack": ".tools\\private-exams\\private-study-pack-complete-20261028.json",
+  "outputPackSha256": "e84a8024a6040f7c8ceb0df4fc5e297f7a6793abe96985035060e4e40c731151",
+  "catalogEntries": 24,
+  "independentReadingSets": 22,
+  "sharedReadingEntries": 2,
+  "distinctPassages": 44,
+  "distinctQuestions": 220,
+  "allReadingEntriesResolvable": true,
+  "newDistinctQuestionsAdded": 0,
+  "sourcePackUnchanged": true,
+  "sharedReadingEvidence": {
+    "localPdf": ".tools\\private-exams\\downloads\\cet6_2023_03_2-3.pdf",
+    "sha256": "2570952cd5781945f79b1e98a48266fb04f8ab815226d504941c14110683b8ea",
+    "pages": [
+      1,
+      3
+    ],
+    "visualCheck": "Both original pages explicitly say reading is shared with set 1, in a different order; no order mapping is supplied",
+    "handling": "Use the complete set 1 exercise and answer order; do not fabricate the original order for set 2 or 3"
+  },
+  "evidenceSentenceStatus": "Previous 220-question evidence candidates remain pending human review, not promoted",
+  "entries": [
+    {
+      "stableId": "cet6-2023-03-12-1",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-03-12-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_03_1.pdf"
+    },
+    {
+      "stableId": "cet6-2023-03-12-2",
+      "revision": 3,
+      "readingMode": "shared-first-set-order",
+      "readingSourcePaperId": "cet6-2023-03-12-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_03_2-3.pdf"
+    },
+    {
+      "stableId": "cet6-2023-03-12-3",
+      "revision": 3,
+      "readingMode": "shared-first-set-order",
+      "readingSourcePaperId": "cet6-2023-03-12-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_03_2-3.pdf"
+    },
+    {
+      "stableId": "cet6-2023-06-17-1",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-06-17-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_06_1.pdf"
+    },
+    {
+      "stableId": "cet6-2023-06-17-2",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-06-17-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_06_2.pdf"
+    },
+    {
+      "stableId": "cet6-2023-06-17-3",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-06-17-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_06_3.pdf"
+    },
+    {
+      "stableId": "cet6-2023-12-16-1",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-12-16-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_12_1.pdf"
+    },
+    {
+      "stableId": "cet6-2023-12-16-2",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-12-16-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_12_2.pdf"
+    },
+    {
+      "stableId": "cet6-2023-12-16-3",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2023-12-16-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2023_12_3.pdf"
+    },
+    {
+      "stableId": "cet6-2024-06-15-1",
+      "revision": 3,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2024-06-15-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2024_06_1.pdf"
+    },
+    {
+      "stableId": "cet6-2024-06-15-2",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2024-06-15-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2024_06_2.pdf"
+    },
+    {
+      "stableId": "cet6-2024-06-15-3",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2024-06-15-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2024_06_3.pdf"
+    },
+    {
+      "stableId": "cet6-2024-12-14-1",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2024-12-14-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2024_12_1.pdf"
+    },
+    {
+      "stableId": "cet6-2024-12-14-2",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2024-12-14-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2024_12_2.pdf"
+    },
+    {
+      "stableId": "cet6-2024-12-14-3",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2024-12-14-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2024_12_3.pdf"
+    },
+    {
+      "stableId": "cet6-2025-06-14-1",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2025-06-14-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2025_06_1.pdf"
+    },
+    {
+      "stableId": "cet6-2025-06-14-2",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2025-06-14-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2025_06_2.pdf"
+    },
+    {
+      "stableId": "cet6-2025-06-14-3",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2025-06-14-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2025_06_3.pdf"
+    },
+    {
+      "stableId": "cet6-2025-12-13-1",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2025-12-13-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2025_12_1.pdf"
+    },
+    {
+      "stableId": "cet6-2025-12-13-2",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2025-12-13-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2025_12_2.pdf"
+    },
+    {
+      "stableId": "cet6-2025-12-13-3",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2025-12-13-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2025_12_3.pdf"
+    },
+    {
+      "stableId": "cet6-2026-06-13-1",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2026-06-13-1",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2026_06_1.pdf"
+    },
+    {
+      "stableId": "cet6-2026-06-13-2",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2026-06-13-2",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2026_06_2.pdf"
+    },
+    {
+      "stableId": "cet6-2026-06-13-3",
+      "revision": 1,
+      "readingMode": "independent",
+      "readingSourcePaperId": "cet6-2026-06-13-3",
+      "passages": 2,
+      "questions": 10,
+      "answersWithSource": 10,
+      "sourceUrl": "https://www.wehuster.com/static/cet6/cet6_2026_06_3.pdf"
+    }
+  ],
+  "personalApk": ".tools\\CET6Study-reading-complete-20261028-personal.apk",
+  "personalApkSha256": "74da9de9e03c0ea3dc35864fa03e711118a8ea84320fa0a2ce5a8a971b6561f7",
+  "verification": {
+    "gradle": "assembleDebug assembleDebugAndroidTest testDebugUnitTest lintDebug with personalExamPack and personalExamPdfs: PASS",
+    "jvm": {
+      "tests": 163,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lintErrors": 0,
+    "lintWarnings": 6,
+    "bundledPackMatchesSource": true,
+    "bundledPdfs": 46,
+    "allBundledPdfsMatchSource": true,
+    "emulator": "emulator-5556",
+    "personalApkInstalled": true,
+    "defaultIsolatedInstrumentation": "PASS; includes 22 reading snapshots and both shared-source checks",
+    "originalPrivateMaterialsUnmodified": true,
+    "diffCheck": "PASS"
+  },
+  "limitations": [
+    "No additional independent questions: March sets 2 and 3 share set 1; their original order is unavailable",
+    "Scope is Section C; cloze/long matching/listening are not implemented",
+    "No human confirmation of evidence candidates; no new real-AI requests",
+    "Installed and tested on emulator only; no physical-device installation in this turn"
+  ]
+}

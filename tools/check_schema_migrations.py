@@ -19,6 +19,8 @@ for version in range(1, latest):
     original = json.loads((SCHEMAS / f"{version}.json").read_text(encoding="utf-8"))["database"]
     for table in original["entities"]:
         db.execute(table["createSql"].replace("${TABLE_NAME}", table["tableName"]))
+        for index in table.get("indices", []):
+            db.execute(index["createSql"].replace("${TABLE_NAME}", table["tableName"]))
     fields = "word,meaning,example,dueAt,repetitions,intervalDays" + (",source" if version >= 3 else "")
     values = ["preserved", "original meaning", "original example", 1800000000000, 5, 30] + (["original source"] if version >= 3 else [])
     db.execute(f"INSERT INTO words ({fields}) VALUES ({','.join('?' for _ in values)})", values)
@@ -33,6 +35,8 @@ for version in range(1, latest):
         db.execute("UPDATE coach_practices SET savedSentences='Original evidence.'")
     if version >= 7:
         db.execute("UPDATE coach_practices SET sourcePracticeId='older-practice',practiceGoal='Preserved goal'")
+    if version >= 8:
+        db.execute("INSERT INTO coach_turns VALUES ('preserved-turn','preserved-practice','q:46','read-explain/1','assistant','Original reply.','','test-model',100)")
     before = {}
     for table in original["entities"]:
         name = table["tableName"]
@@ -53,8 +57,15 @@ for version in range(1, latest):
             actual = columns[field["columnName"]]
             assert actual[2] == field["affinity"] and bool(actual[3]) == field["notNull"], (name, field)
         assert [col for col, spec in columns.items() if spec[5]] == table["primaryKey"]["columnNames"], name
+        indexes = {row[1]: row for row in db.execute(f"PRAGMA index_list({name})") if row[3] == "c"}
+        assert set(indexes) == {index["name"] for index in table.get("indices", [])}, name
+        for index in table.get("indices", []):
+            assert bool(indexes[index["name"]][2]) == index["unique"], (name, index)
+            assert [row[2] for row in db.execute(f"PRAGMA index_info({index['name']})")] == index["columnNames"], (name, index)
     for name, (columns, rows) in before.items():
         assert db.execute(f"SELECT {','.join(columns)} FROM {name}").fetchall() == rows, f"Lost data: {name}"
+    if version >= 8:
+        assert db.execute("SELECT locatedQuote FROM coach_turns WHERE id='preserved-turn'").fetchone()[0] == ""
     assert db.execute("SELECT count(*) FROM word_schedules").fetchone()[0] == 0, "Fabricated memory"
     assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
     print(f"PASS: actual migration SQL {version}->{latest}; columns/types/keys match Room {latest}; all original rows preserved; no fabricated FSRS state.")

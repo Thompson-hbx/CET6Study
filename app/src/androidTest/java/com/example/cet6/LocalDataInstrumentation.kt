@@ -17,6 +17,7 @@ import org.json.JSONObject
 
 /** Default suite uses isolated databases. Explicit fixture mode only adds a new practice; never reads credentials. */
 class LocalDataInstrumentation : Instrumentation() {
+    private var readingLocationScenario = false
     private var aiConnectionScenario = false
     private var manifestScenario = false
     private var draftProcessScenario = ""
@@ -43,6 +44,7 @@ class LocalDataInstrumentation : Instrumentation() {
     private var reviewFixture = false
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
+        readingLocationScenario = arguments?.getString("scenario") == "reading-location"
         aiConnectionScenario = arguments?.getString("scenario") == "ai-connection"
         manifestScenario = arguments?.getString("scenario") == "backup-manifest"
         draftProcessScenario = arguments?.getString("scenario")?.takeIf {
@@ -85,6 +87,12 @@ class LocalDataInstrumentation : Instrumentation() {
     override fun onStart() {
         val results = Bundle()
         try {
+            if (readingLocationScenario) {
+                runBlocking { ReadingLocationChecks(targetContext).verify(); verifyReleasedSchemas() }
+                results.putString("stream", "PASS: exact AI quote persists across Room reopen and ZIP restore; invented quote rejected; v1-v8 migrations preserve records.\n")
+                finish(-1, results)
+                return
+            }
             if (aiConnectionScenario) {
                 runBlocking { AiConnectionStateChecks(targetContext).verify() }
                 results.putString("stream", "PASS: isolated AI provider/model preferences, encrypted profile restoration, busy/cancellation, partial/429 failures and completed-only essay persistence.\n")
@@ -252,8 +260,8 @@ class LocalDataInstrumentation : Instrumentation() {
                 finish(-1, results)
                 return
             }
-            runBlocking { EvaluationOfflineChecks(this@LocalDataInstrumentation).verify(); AiConnectionStateChecks(targetContext).verify(); OAuthRefreshChecks().verify(); AiStreamChecks(context).verify(); CoachOutputSchemaChecks(context).verify(); ExamInstrumentationChecks(targetContext).verify(); ReadingDiagnosisInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CompleteRestoreChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify(); AiInteractionChecks(targetContext).verify(); CoachDecisionStateChecks(targetContext, context).verify() }
-            results.putString("stream", "PASS: v1-v7 to v8 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v5 roundtrip with turns and v1-v4 imports; existing backup and scheduler checks.\n")
+            runBlocking { EvaluationOfflineChecks(this@LocalDataInstrumentation).verify(); AiConnectionStateChecks(targetContext).verify(); OAuthRefreshChecks().verify(); AiStreamChecks(context).verify(); CoachOutputSchemaChecks(context).verify(); ExamInstrumentationChecks(targetContext).verify(); ReadingDiagnosisInstrumentationChecks(targetContext).verify(); verifyMigrationAndTransactions(); verifyReleasedSchemas(); BackupInstrumentationChecks(targetContext).verify(); CompleteRestoreChecks(targetContext).verify(); CoachInstrumentationChecks(targetContext).verify(); ReadingLocationChecks(targetContext).verify(); MicroPracticeInstrumentationChecks(targetContext).verify(); ShareInstrumentationChecks(targetContext).verify(); CoachFailureInstrumentationChecks(targetContext).verify(); AiInteractionChecks(targetContext).verify(); CoachDecisionStateChecks(targetContext, context).verify() }
+            results.putString("stream", "PASS: v1-v8 to v9 preserves learning data; drafts/history/evidence survive reopen; generation failure and offline mode preserve source; generated drafts retain provenance and independent answers; shared text preserves drafts and running AI; timeout/429/refresh/stream failures preserve saved feedback and manual retry succeeds; backup v6 roundtrip with turns and v1-v4 imports; existing backup and scheduler checks.\n")
             finish(-1, results)
         } catch (e: Throwable) {
             if (uiScenario) {
@@ -268,7 +276,7 @@ class LocalDataInstrumentation : Instrumentation() {
     }
 
     private suspend fun verifyReleasedSchemas() {
-        for (version in 1..7) {
+        for (version in 1..8) {
             val file = File(targetContext.cacheDir, "released-$version-${System.nanoTime()}.db")
             val schema = context.assets.open("com.example.cet6.data.StudyDatabase/$version.json")
                 .bufferedReader().use { JSONObject(it.readText()).getJSONObject("database") }
@@ -277,6 +285,11 @@ class LocalDataInstrumentation : Instrumentation() {
                 for (i in 0 until entities.length()) {
                     val table = entities.getJSONObject(i)
                     old.execSQL(table.getString("createSql").replace("\u0024{TABLE_NAME}", table.getString("tableName")))
+                    val indices = table.optJSONArray("indices")
+                    for (j in 0 until (indices?.length() ?: 0)) {
+                        old.execSQL(indices!!.getJSONObject(j).getString("createSql")
+                            .replace("\u0024{TABLE_NAME}", table.getString("tableName")))
+                    }
                 }
                 val sourceColumn = if (version >= 3) ",source" else ""
                 val sourceValue = if (version >= 3) ",'用户来源'" else ""
@@ -289,6 +302,7 @@ class LocalDataInstrumentation : Instrumentation() {
                     old.execSQL("INSERT INTO daily_plans VALUES ('2026-10-16',7,15)")
                     old.execSQL("INSERT INTO word_reviews (id,word,remembered,wasNew,studiedOn,createdAt,nextDueAt) VALUES ('old-log','preserved',1,0,'2026-10-16',1000,1800000000000)")
                 }
+                if (version >= 8) old.execSQL("INSERT INTO coach_turns VALUES ('preserved-turn','preserved-coach','q:46','read-explain/1','assistant','Original reply.','','test-model',100)")
                 old.version = version
             }
             val upgraded = Room.databaseBuilder(targetContext, StudyDatabase::class.java, file.absolutePath)
@@ -300,7 +314,10 @@ class LocalDataInstrumentation : Instrumentation() {
                 check(upgraded.dao().schedule(word.word) == null) { "migration fabricated FSRS memory" }
                 check(upgraded.dao().readingHistory().first().single().answer == "C")
                 check(upgraded.dao().essays().first().single().content == "original draft")
-                check(upgraded.dao().allTurns().isEmpty()) { "migration fabricated coach turns" }
+                if (version >= 8) {
+                    val turn = upgraded.dao().allTurns().single()
+                    check(turn.id == "preserved-turn" && turn.content == "Original reply." && turn.locatedQuote.isEmpty())
+                } else check(upgraded.dao().allTurns().isEmpty()) { "migration fabricated coach turns" }
                 if (version >= 5) {
                     val preserved = upgraded.dao().allCoach().single()
                     check(preserved.answer == "A" && preserved.feedback == "Original feedback.")

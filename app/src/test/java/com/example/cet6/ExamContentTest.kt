@@ -15,7 +15,7 @@ class ExamContentTest {
     private fun complete() = ExamPaper("cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "User material", sourceUrl = "local:owned",
         licenseStatus = "personal-use", reviewed = true, passages = (1..2).map { code ->
             ExamPassage("$code", "Test", "Libraries offer quiet rooms.", (if (code == 1) 46..50 else 51..55).map { n ->
-                ExamQuestion(n, "What is offered?", listOf("A", "B", "C", "D").map { ExamOption(it, "Option $it") }, "A", "local:key", "quiet rooms")
+                ExamQuestion(n, "What is offered?", listOf("A", "B", "C", "D").map { ExamOption(it, "Option $it") }, "A", "local:key", "quiet rooms", "local:original-test-passage")
             }) }, writingPrompt = "Write about libraries", writingInstructions = "150–200 words", chineseText = "图书馆提供安静的空间。")
     @Test fun catalogContainsOnlyHeldSessionsAndStableSets() {
         assertEquals(8, ExamCatalog.sessions.size)

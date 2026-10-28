@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-28",
+  "databaseVersion": 9,
+  "jsonBackupVersion": 6,
+  "completeZipVersion": 1,
+  "changes": [
+    "coach_turns.locatedQuote: exact quote from the question snapshot; AI suggestion, not human-reviewed evidence",
+    "restore highlight from latest completed per-question explanation",
+    "evidenceSource required for trusted imported evidence"
+  ],
+  "verification": {
+    "gradle": "assembleDebug testDebugUnitTest lintDebug assembleDebugAndroidTest: PASS",
+    "jvmTests": 163,
+    "jvmFailures": 0,
+    "lintErrors": 0,
+    "lintWarnings": 6,
+    "pythonCandidateTests": 2,
+    "hostMigrationVersions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "hostMigrationTarget": 9,
+    "emulator": "emulator-5556",
+    "emulatorReadingLocation": "PASS: Room reopen, exact/mismatched quote, ZIP restore, released-schema migrations",
+    "emulatorDefaultIsolatedSuite": "PASS",
+    "diffCheck": "PASS"
+  },
+  "candidates": {
+    "path": ".tools/private-exams/evidence-candidates-20261028.json",
+    "questions": 220,
+    "spans": 660,
+    "allExactSourceSpans": true,
+    "status": "pending-human-review",
+    "sourcePackUnchanged": true
+  },
+  "limitations": [
+    "No human confirmation of candidate relevance; no verified evidence was added to the original pack",
+    "No real-device or real-AI request in this run; no visual UI acceptance",
+    "Legacy completed replies keep an empty locatedQuote until a new explanation is saved; no automatic backfill"
+  ]
+}

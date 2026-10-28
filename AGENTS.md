@@ -7,7 +7,7 @@
 - 单模块 `:app`。Kotlin 2.0.21、AGP 8.7.3、KSP 2.0.21-1.0.28、Gradle Wrapper 8.9（校验 SHA-256）；没有 version catalog，版本直接写在 `build.gradle.kts`。
 - compileSdk / targetSdk 35，minSdk 26；Java / Kotlin target 17，JDK 17 或 21（本机 SDK 与 JDK 在 `C:\Dev\Env`）。
 - UI 全部 Jetpack Compose（BOM 2024.12.01、Material3），没有 XML 布局。导航由 `ui/AppRoot.kt` 手写，不用 Navigation 库，也没有 DI 框架；MVVM + Repository。
-- Room 2.7.2：数据库 `cet6_study.db`，版本以 `data/StudyDatabase.kt` 为准（目前 v8），schema 导出到 `app/schemas/`。OkHttp 4.12，Markwon 4.6。
+- Room 2.7.2：数据库 `cet6_study.db`，版本以 `data/StudyDatabase.kt` 为准（目前 v9），schema 导出到 `app/schemas/`。OkHttp 4.12，Markwon 4.6。
 - 单测 JUnit 4 + org.json（让协议解析在 JVM 上跑）；仪器测试用自定义 `android.app.Instrumentation`（`LocalDataInstrumentation`），不是 AndroidJUnitRunner。
 
 ## 目录
@@ -39,7 +39,7 @@
 
 - 包结构 `com.example.cet6.{ai,auth,data,ui}`，文件按功能命名；单测 `*Test.kt`，设备检查 `*InstrumentationChecks.kt`。
 - Kotlin 官方代码风格（`kotlin.code.style=official`），没有 ktlint / detekt。注释和 KDoc 用英文；界面文字直接写在 Compose `Text(...)` 里，用中文，没有 `strings.xml`；文档用中文。
-- Room 迁移只做加法（新增表、列、索引），不删除或重建旧表；改实体时升级版本、补迁移，并提交新生成的 schema JSON。完整备份为分段 ZIP v1，学习字段沿用 JSON v5，仍能导入旧 JSON v1—v5；见 `docs/BACKUP.md`。
+- Room 迁移只做加法（新增表、列、索引），不删除或重建旧表；改实体时升级版本、补迁移，并提交新生成的 schema JSON。完整备份为分段 ZIP v1，学习字段为 JSON v6，仍能导入旧 JSON v1—v6；见 `docs/BACKUP.md`。
 - 提交信息用英文 Conventional Commits，例如 `feat(reading): ...`。
 - 文本 UTF-8；`third_party/bee-fsrs/src/` 强制 LF；私人资料在 `.gitattributes` 中标为 `-text`，不要改动它们的字节。
 

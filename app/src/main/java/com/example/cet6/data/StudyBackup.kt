@@ -34,10 +34,14 @@ object BackupValidation {
             require(it.id.length in 1..100 && it.model.length <= 200 && it.updatedAt in 0..MAX_TIME &&
                 it.submittedAt in 0..it.updatedAt) { "训练标识或时间无效" }
         }
-        val practiceIds = data.coach.map { it.id }.toSet()
+        val practices = data.coach.associateBy { it.id }
+        val practiceIds = practices.keys
         data.turns.forEach {
             CoachTurns.validate(it)
             require(it.practiceId in practiceIds && it.createdAt in 0..MAX_TIME) { "对话记录引用或时间无效" }
+            require(it.locatedQuote.isEmpty() || ReadingLocation.restored(practices.getValue(it.practiceId), it) != null) {
+                "保存的 AI 定位无法在对应题目原文中核实"
+            }
         }
         val words = data.words.associateBy { it.word }
         val wordPattern = Regex("[a-z]+(?:[ '-][a-z]+)*")
@@ -149,7 +153,9 @@ object BackupMerger {
         val coach = incoming.coach.filter { it.id !in currentCoach }
         val currentTurns = current.turns.associateBy { it.id }
         incoming.turns.forEach {
-            require(currentTurns[it.id]?.let { local -> local == it } != false) { "相同对话标识内容冲突，未恢复任何数据；本机记录已保留" }
+            require(currentTurns[it.id]?.let { local ->
+                local == it || (it.locatedQuote.isEmpty() && local.copy(locatedQuote = "") == it)
+            } != false) { "相同对话标识内容冲突，未恢复任何数据；本机记录已保留" }
         }
         val turns = incoming.turns.filter { it.id !in currentTurns }
         return BackupMerge(words, schedules, clears, reviews, plans, reading, essays,

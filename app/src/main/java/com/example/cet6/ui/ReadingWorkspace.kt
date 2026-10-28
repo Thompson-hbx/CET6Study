@@ -74,7 +74,7 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     var selected by rememberSaveable(entry.id) { mutableIntStateOf(savedPosition?.second ?:
         questions.firstOrNull { submitted && ReadingGuidance.verdict(it, answers[it.number].orEmpty()) == "需要回看" }?.number ?: questions.first().number) }
     var invalid by rememberSaveable(entry.id) { mutableStateOf("") }
-    var focus by remember { mutableStateOf<ReaderFocus?>(null) }
+    var focus by remember(entry.id) { mutableStateOf<ReaderFocus?>(null) }
     var peekOpen by rememberSaveable(entry.id) { mutableStateOf(true) }
     val scroll = rememberScrollState()
     LaunchedEffect(tab) { if (focus == null || tab != 2) scroll.scrollTo(0) }
@@ -86,6 +86,11 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         }
     }
     val anchor = Anchor.question(selected)
+    val savedFocus = CoachTurns.latest(turns, anchor, TurnKind.READING_EXPLAIN)?.let { turn ->
+        ReadingLocation.restored(entry, turn)?.let { quote ->
+            passages.firstOrNull { p -> p.questions.any { it.number == selected } }?.let { ReaderFocus(it.code, quote) }
+        }
+    }
     fun ask(question: String) = talk.send(entry, anchor, TurnKind.CHAT, question) {
         CoachChat.prompt(entry, anchor, CoachTurns.thread(turns, anchor), question)
     }
@@ -126,8 +131,11 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                 // Passage above, question below: checking an answer never means flipping to another tab and back.
                 val q = questions.firstOrNull { it.number == selected } ?: questions.first()
                 val passage = passages.first { p -> p.questions.any { it.number == q.number } }
-                PassagePeek(passage, q, focus?.takeIf { it.passage == passage.code }?.quote, peekOpen, onToggle = { peekOpen = !peekOpen },
-                    onOpenFull = { focus = null; tab = 2 }, modifier = if (peekOpen) Modifier.weight(0.42f) else Modifier)
+                val savedQuote = CoachTurns.latest(turns, Anchor.question(q.number), TurnKind.READING_EXPLAIN)
+                    ?.let { ReadingLocation.restored(entry, it) }
+                if (savedQuote != null) Text("AI 定位 · 已匹配原文，待人工确认", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(horizontal = PageGutter))
+                PassagePeek(passage, q, focus?.takeIf { it.passage == passage.code }?.quote ?: savedQuote, peekOpen, onToggle = { peekOpen = !peekOpen },
+                    onOpenFull = { focus = focus ?: savedFocus; tab = 2 }, modifier = if (peekOpen) Modifier.weight(0.42f) else Modifier)
                 Hairline()
                 Column(Modifier.weight(0.58f).fillMaxWidth().verticalScroll(scroll).padding(bottom = 32.dp)) {
                     ExplainPane(vm, entry, passages, questions, answers, turns, selected, onSelect = { focus = null; selected = it }, onAsk = ::ask) { code, quote ->
@@ -140,7 +148,7 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         invalid = if (bad) (invalid + code).toSet().joinToString("") else invalid.replace(code, "")
                     }
                     1 -> EmptyNote("在答题卡录入纸上的答案并核对后，就可以逐题讲解。", "去录入") { tab = 0 }
-                    else -> PassagePane(vm, entry, passages, turns, focus)
+                    else -> PassagePane(vm, entry, passages, turns, focus ?: savedFocus)
                 }
             }
         }
@@ -471,7 +479,7 @@ private fun LocalHints(entry: CoachPractice, passage: ExamPassage, q: ExamQuesti
                 1 -> "圈出题干里的主体、时间和限定词，想清楚要找的是什么信息。"
                 2 -> ReadingGuidance.paragraph(passage, q)?.let { "回到篇章 ${passage.code} 第 $it 段，找题干说法的同义表达。" }
                     ?: "这份资料没有记录证据位置。从题干关键词出发逐段找同义表达，不要把猜测当作确定位置。"
-                3 -> if (q.evidence.isNotBlank() && passage.content.contains(q.evidence)) "证据句：“${q.evidence}”。核对主语、转折、因果和范围。"
+                3 -> if (q.verifiedEvidence(passage) != null) "证据句：“${q.evidence}”。来源：${q.evidenceSource}。核对主语、转折、因果和范围。"
                     else "资料没有经过原文匹配的证据句，可以请求讲解，再自己回原文核实。"
                 else -> "参考答案：${q.referenceAnswer.ifBlank { "暂无可核实答案" }}" + if (q.answerSource.isNotBlank()) "（来源已记录）" else ""
             }, style = MaterialTheme.typography.bodyLarge)
@@ -519,7 +527,7 @@ private fun ErrorNote(vm: StudyViewModel, entry: CoachPractice, passage: ExamPas
 private fun PassagePeek(passage: ExamPassage, q: ExamQuestion, quote: String?, open: Boolean, onToggle: () -> Unit,
     onOpenFull: () -> Unit, modifier: Modifier = Modifier) {
     val paragraphs = remember(passage.content) { PassageLayout.paragraphs(passage.content) }
-    val evidence = quote?.takeIf(String::isNotBlank) ?: q.evidence.takeIf { it.isNotBlank() && passage.content.contains(it) }
+    val evidence = quote?.takeIf(String::isNotBlank) ?: q.verifiedEvidence(passage)
     val marks = remember(paragraphs, evidence) { paragraphs.map { para -> evidence?.let { TextMarks.locate(para, it) } } }
     val target = marks.indexOfFirst { it != null }.takeIf { it >= 0 } ?: ReadingGuidance.paragraph(passage, q)?.minus(1)
     val list = rememberLazyListState()

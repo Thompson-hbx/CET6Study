@@ -5,7 +5,7 @@
 按用户 2026-10-20 要求，个人 APK 可直接包含题库，首次启动自动载入，无需手动导入。使用已校对的完整 JSON：
 
 ```powershell
-.\gradlew.bat --offline assembleDebug '-PpersonalExamPack=.tools/private-exams/private-study-pack-reading18-20261020.json' '-PpersonalExamPdfs=.tools/private-exams/downloads'
+.\gradlew.bat --offline assembleDebug '-PpersonalExamPack=.tools/private-exams/private-study-pack-complete-20261028.json' '-PpersonalExamPdfs=.tools/private-exams/downloads'
 ```
 
 JSON 只打包指定文件；可选 personalExamPdfs 仅复制目录内 cet6_*.pdf。套卷详情可打开原卷与参考资料，内置离线查看器支持翻页、放大与滚动，无需外部阅读器。2023 年 3 月第 2、3 套指向资料原有的合并卷，不伪造独立题序。未传参数的普通构建仍不带私有资料；私有包和 APK 不进入 Git。应用启动时合并并保存：新增套卷自动加入，较高修订更新内容，本机同版本或较新版本优先，自定义套卷保留；Room 中既有作答快照不受影响。未来题库更新随个人 APK 一起交付。打包不会把待校对材料变成已校对，目前部分资料仍待补齐。
@@ -87,3 +87,25 @@ D. 选项四
 修正后的 `tools/extract_exam_pack.py` 仅输出 `.tools/private-exams/agent-extracted/` 待校对候选：兼容双栏选项，提取翻译，标记 reviewed=false，参考键附第三方 PDF URL / SHA-256。不会自动把扫描 OCR、O) 标签或无来源答案修成正确答案；既有输出拒绝覆盖。`tools/download_wehuster_papers.py` 仅审计现有缓存，自动网络获取因已审阅 robots 的 /static 禁止规则而关闭。
 
 私有的 `RESOURCE_REPORT.md`、`OTHER_AGENT_REVIEW.md` 和逐文件 JSON 审计存于 `.tools/private-exams/`；范文和译文仍需逐字校对，不冒称官方唯一答案。
+
+## 证据句与人工确认（2026-10-28）
+
+逐题 `evidence` 只用于人工确认的原文引用，并配套 `evidenceSource`（原资料 URL 或本地来源、套卷修订、篇章及位置）。应用只在证据逐字包含于原文且来源非空时用于本地提示及高亮；旧包未填来源的证据仍保留，但不再称为已核对材料证据。题库正文/答案的 `reviewed=true` 不等于所有证据已确认。
+
+候选生成入口：
+
+```powershell
+python tools/prepare_evidence_review.py <已校对内容包.json> <新的候选清单.json>
+```
+
+工具只读原包，候选全部为 `pending-human-review`，记录原包与篇章 SHA-256、来源、套卷修订、题号和原文字符起止位置。词汇重合只用于排序，不能证明候选支持答案；人工须结合整篇原文、题干及选项核对，可能需要另选句子或多句证据。确认后才由人工填写 `evidence` 和 `evidenceSource`、增加套卷修订；不能把候选 JSON 改名后当作题库导入。不得由脚本或 AI 宣称已经人工确认。
+
+本轮 `.tools/private-exams/evidence-candidates-20261028.json` 及同名 Markdown 涵盖 reading22 包的 22 套完整阅读、220 题，每题最多 3 个候选；未对原包回填，全部待人工确认。另两套合并阅读目录没有独立阅读正文，未虚构证据。
+
+## 当前仔细阅读题库覆盖（2026-10-28）
+
+最新个人内容包为 `.tools/private-exams/private-study-pack-complete-20261028.json`。24 个目录项中有 22 套独立仔细阅读（44 篇、220 道题），其正文、题干、A/B/C/D 选项、参考答案和答案来源均已具备。另 2 个目录项是 2023 年 3 月第 2、3 套的共用入口，可打开第 1 套完整阅读；不能计成额外 20 道独立真题。
+
+已查看合并原卷 `cet6_2023_03_2-3.pdf` 第 1、3 页：原文明确说明阅读内容与第 1 套相同、顺序不同，并省略正文；未提供题序映射。因此保持两套 `passages=[]`，不复制第 1 套题目冒充它们的原始题序。其修订从 2 升至 3，来源说明改为“共用、沿用第 1 套题序”；应用已有共用入口，本轮补明题序提示。原题库、原卷、既有作答快照及证据候选均不改写。
+
+逐项覆盖与来源哈希见 `.tools/private-exams/reading-bank-audit-20261028.json`。上述覆盖限于当前 App 支持的仔细阅读 Section C；不表示已实现选词填空、长篇匹配或听力题库。

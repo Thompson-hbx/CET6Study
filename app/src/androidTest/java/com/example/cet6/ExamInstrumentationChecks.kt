@@ -29,6 +29,11 @@ class ExamInstrumentationChecks(private val context: Context) {
             check(bundledStore.load() == expected)
             check(bundledStore.loadWithBundledContent() == expected)
             expected.forEach { paper ->
+                PaperDocuments.sharedReadingPaperId(paper)?.let { sourceId ->
+                    val source = expected.single { it.stableId == sourceId }
+                    check(source.issues(CoachKind.READING).isEmpty()) { "Shared reading source is unavailable" }
+                    check(ExamCodec.passages(ExamCodec.practice(source, CoachKind.READING)).flatMap { it.questions }.size == 10)
+                }
                 CoachKind.entries.filter { paper.issues(it).isEmpty() }.forEach { kind ->
                     val practice = ExamCodec.practice(paper, kind)
                     if (kind == CoachKind.READING) {

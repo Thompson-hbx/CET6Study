@@ -15,7 +15,10 @@ class CoachRepository(private val db: StudyDatabase) {
     }
     suspend fun saveTurn(turn: CoachTurn) {
         CoachTurns.validate(turn)
-        db.dao().saveTurn(turn)
+        db.withTransaction {
+            val entry = requireNotNull(db.dao().coachById(turn.practiceId)) { "对应练习不存在" }
+            db.dao().saveTurn(turn.copy(locatedQuote = ReadingLocation.extract(entry, turn)))
+        }
     }
 
     suspend fun saveExchange(question: CoachTurn?, reply: CoachTurn) {
@@ -27,8 +30,9 @@ class CoachRepository(private val db: StudyDatabase) {
                 it.practiceId == reply.practiceId && it.anchor == reply.anchor) { "问答关联无效" }
         }
         db.withTransaction {
-            require(db.dao().coachById(reply.practiceId) != null) { "对应练习不存在，问答未保存" }
-            db.dao().addTurns(listOfNotNull(question, reply))
+            val entry = requireNotNull(db.dao().coachById(reply.practiceId)) { "对应练习不存在，问答未保存" }
+            db.dao().addTurns(listOfNotNull(question?.copy(locatedQuote = ""),
+                reply.copy(locatedQuote = ReadingLocation.extract(entry, reply))))
         }
     }
 

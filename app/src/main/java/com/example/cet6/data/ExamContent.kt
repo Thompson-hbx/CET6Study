@@ -29,7 +29,12 @@ object ExamCatalog {
 
 data class ExamOption(val label: String, val text: String)
 data class ExamQuestion(val number: Int, val stem: String, val options: List<ExamOption>,
-    val referenceAnswer: String = "", val answerSource: String = "", val evidence: String = "")
+    val referenceAnswer: String = "", val answerSource: String = "", val evidence: String = "",
+    val evidenceSource: String = "") {
+    fun verifiedEvidence(passage: ExamPassage): String? = evidence.takeIf {
+        it.isNotBlank() && evidenceSource.isNotBlank() && passage.content.contains(it)
+    }
+}
 data class ExamPassage(val code: String, val title: String, val content: String, val questions: List<ExamQuestion>)
 data class ExamPaper(
     val stableId: String, val examDate: String, val setCode: String, val revision: Int = 1,
@@ -54,6 +59,7 @@ data class ExamPaper(
                 if (q.referenceAnswer !in setOf("", "A", "B", "C", "D")) add("${q.number} 题答案冲突或无效")
                 if (q.referenceAnswer.isNotBlank() && q.answerSource.isBlank()) add("${q.number} 题答案缺少来源")
                 if (q.evidence.isNotBlank() && !p.content.contains(q.evidence)) add("${q.number} 题证据不在原文")
+                if (q.evidenceSource.length > 1000) add("${q.number} 题证据来源过长")
             }
         }
         }
