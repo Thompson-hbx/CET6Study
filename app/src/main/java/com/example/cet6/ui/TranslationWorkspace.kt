@@ -23,7 +23,7 @@ import com.example.cet6.ui.theme.SourceText
 import kotlinx.coroutines.launch
 
 /** Translation desk: numbered source sentences, the learner's version, and a sentence-aligned review. */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val state = vm.coach
@@ -40,6 +40,11 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     var showVersions by remember { mutableStateOf(false) }
     var confirmSubmit by remember { mutableStateOf(false) }
     var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
+    var sourceOpen by rememberSaveable(entry.id) { mutableStateOf(true) }
+    val editingSource = meta == null && !submitted && entry.sourcePracticeId.isBlank()
+    val split = tab == 0 && sentences.isNotEmpty() && !editingSource
+    // While the keyboard is up the step bar and footer step aside, so the source and the draft share what is left.
+    val typing = split && WindowInsets.isImeVisible
     val versions = remember(state.history, entry) { versionsOf(state.history, entry) }
     val bands = remember(vm.reviewTurns) { latestBands(vm.reviewTurns) }
     val words = remember(entry.answer) { WritingCoach.words(entry.answer) }
@@ -71,7 +76,7 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         },
         bottomBar = {
             when {
-                tab == 0 -> BottomBar {
+                tab == 0 && !typing -> BottomBar {
                     if (!submitted) ExamClock(entry.id)
                     Column(Modifier.weight(1f)) {
                         WordCount(words, null, null)
@@ -87,14 +92,26 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             }
         }
     ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
-            DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
-                state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
-            })
-            Hairline()
-            Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
+        Column(Modifier.padding(padding).then(if (typing) Modifier.consumeWindowInsets(padding).imePadding() else Modifier).fillMaxSize()) {
+            if (!typing) {
+                DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
+                    state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
+                })
+                Hairline()
+            }
+            // While translating, the Chinese stays on screen above the editor instead of scrolling away with it.
+            if (split) BoxWithConstraints(Modifier.fillMaxSize()) {
+                val sourceMax = maxHeight * if (typing) 0.6f else 0.5f
+                Column(Modifier.fillMaxSize()) {
+                    SourcePane(sentences, turns, sourceOpen, { sourceOpen = !sourceOpen }, sourceMax) { sentenceSheet = it }
+                    Hairline()
+                    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(bottom = 32.dp)) {
+                        TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = false) { sentenceSheet = it }
+                    }
+                }
+            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
                 when (tab) {
-                    0 -> TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted) { sentenceSheet = it }
+                    0 -> TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = true) { sentenceSheet = it }
                     1 -> TranslationReviewPane(vm, entry, sentences, turns, reviewTurn, scroll, onGoWrite = { tab = 0 }, onAsk = ::ask)
                     else -> TranslationReference(sentences, reference, meta?.optString("referenceSource").orEmpty())
                 }
@@ -112,7 +129,7 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
 
 @Composable
 private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentences: List<String>, turns: List<CoachTurn>,
-    custom: Boolean, submitted: Boolean, onSentence: (Int) -> Unit) {
+    custom: Boolean, submitted: Boolean, includeSource: Boolean, onSentence: (Int) -> Unit) {
     val state = vm.coach
     Column(Modifier.fillMaxWidth().padding(vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (custom && !submitted && entry.sourcePracticeId.isBlank()) {
@@ -125,7 +142,7 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
                 }
             }
         }
-        if (sentences.isNotEmpty()) {
+        if (includeSource && sentences.isNotEmpty()) {
             Note("点一句，可以看难词和句式提示", Modifier.padding(horizontal = PageGutter))
             RowCard {
                 sentences.forEachIndexed { i, sentence ->
@@ -159,6 +176,27 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
         }
         if (submitted) Note("这一稿已提交，可以在「批改」里逐句对照；想继续改，点下方「写修改稿」。",
             Modifier.padding(horizontal = PageGutter))
+    }
+}
+
+/** The Chinese source pinned above the editor: scrolls on its own, folds away when the learner wants the room. */
+@Composable
+private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Boolean, onToggle: () -> Unit,
+    maxHeight: androidx.compose.ui.unit.Dp, onSentence: (Int) -> Unit) {
+    Column(Modifier.fillMaxWidth().heightIn(max = maxHeight)) {
+        Row(Modifier.fillMaxWidth().padding(start = PageGutter, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Note("原文 · ${sentences.size} 句" + if (open) " · 点一句看提示" else "", Modifier.weight(1f))
+            TextButton(onClick = onToggle) { Text(if (open) "收起原文" else "展开原文") }
+        }
+        if (open) Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 8.dp)) {
+            RowCard {
+                sentences.forEachIndexed { i, sentence ->
+                    val helped = turns.any { it.anchor == Anchor.sentence(i + 1) }
+                    SourceSentence(i + 1, sentence, helped) { onSentence(i + 1) }
+                    if (i < sentences.lastIndex) RowDivider()
+                }
+            }
+        }
     }
 }
 
