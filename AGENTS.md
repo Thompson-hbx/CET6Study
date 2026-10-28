@@ -33,7 +33,7 @@
 - 模拟器草稿跨进程检查：安装普通调试包和测试包后执行 `.\tools\check_draft_process.ps1`；会新增原创草稿并结束所选模拟器的本项目进程，不进入默认隔离套件，详见 `docs/DRAFT_PERSISTENCE.md`。
 - 个人包（把已校对题库和原卷打进 APK）：`.\gradlew.bat --offline assembleDebug '-PpersonalExamPack=<json>' '-PpersonalExamPdfs=<dir>'`，见 `docs/EXAM_IMPORT.md`。
 - Python 工具：`python tools/prepare_exam_pack.py extract|convert ...`（用法见 `docs/EXAM_IMPORT.md`）；工具测试 `python tools/test_prepare_exam_pack.py`（其中一项需要 `pypdf`）。
-- Android CI 在 `.github/workflows/android.yml`；本地回归入口 `tools/verify.ps1`。本轮尚未提交或推送，远端工作流未运行。
+- Android CI 在 `.github/workflows/android.yml`；本地回归入口 `tools/verify.ps1`。本轮改动已提交到功能分支 `feat/study-backend-integration` 并开 PR，远端运行结果以 PR 检查为准。
 
 ## 约定
 
