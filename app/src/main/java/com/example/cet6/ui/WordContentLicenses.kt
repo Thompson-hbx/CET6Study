@@ -16,8 +16,8 @@ fun WordContentLicenses() {
     OutlinedButton(onClick = { open = true }) { Text("词汇来源与开源许可") }
     if (open) {
         val text = remember {
-            "内置词义和例句为项目原创；音标为 CMUdict 美式读音的宽式转写，包含不同读法，供学习参考，不是完整词典。发音由本机系统语音引擎提供。\n\n" +
-                listOf("cmudict.txt", "fsrs.txt").joinToString("\n\n") { name ->
+            "内置词义和例句为项目原创；音标为 CMUdict 美式读音的宽式转写，包含不同读法，供学习参考，不是完整词典。发音由本机系统语音引擎提供。英文正文使用随 App 附带的 Source Serif 4 字体。\n\n" +
+                listOf("cmudict.txt", "fsrs.txt", "source-serif.txt").joinToString("\n\n") { name ->
                     context.assets.open("licenses/$name").bufferedReader().use { it.readText() }
                 }
         }

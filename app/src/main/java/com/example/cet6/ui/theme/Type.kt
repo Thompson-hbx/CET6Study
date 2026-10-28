@@ -2,9 +2,11 @@ package com.example.cet6.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.cet6.R
 
 val Typography = Typography(
     headlineLarge = TextStyle(
@@ -95,9 +97,15 @@ val Typography = Typography(
     )
 )
 
+/** Bundled rather than downloadable: many phones here lack the Play services font provider. OFL 1.1, see assets/licenses. */
+val SourceSerif = FontFamily(
+    Font(R.font.source_serif4_regular, FontWeight.Normal),
+    Font(R.font.source_serif4_semibold, FontWeight.SemiBold)
+)
+
 /** English the learner reads or writes: passages, essays, translations. */
 val PassageText = TextStyle(
-    fontFamily = FontFamily.Serif,
+    fontFamily = SourceSerif,
     fontWeight = FontWeight.Normal,
     fontSize = 17.sp,
     lineHeight = 28.sp
