@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-27",
+  "scope": "P1-04/P1-05 startup restore and editor draft ordering",
+  "reproduced": {
+    "main_apk_before": ".tools/CET6Study-ai-state-20261027-ordinary.apk",
+    "error": "Restored READING draft was not loaded into the editor",
+    "log": ".tools/restore-draft-before-resume-20261027.txt",
+    "stage": "journal persisted but database not yet committed",
+    "database_restore_succeeded": true,
+    "cause": "CoachState loaded drafts before startup restoration and retained the earlier in-memory entries"
+  },
+  "changes": [
+    "Gate initial draft loading on startup recovery completion when a journal exists",
+    "Skip memory-draft flush only for automatic cold-start recovery",
+    "Keep normal manual restore flush and original CoachState constructor"
+  ],
+  "verification": {
+    "gradle_command": "assembleDebug testDebugUnitTest lintDebug assembleDebugAndroidTest",
+    "gradle_pass": true,
+    "jvm": {
+      "tests": 149,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lint": {
+      "errors": 0,
+      "fatal": 0,
+      "existing_warnings": 7
+    },
+    "journal_only_cold_start": {
+      "result": "PASS",
+      "restored_editor_kinds": [
+        "READING",
+        "WRITING",
+        "TRANSLATION"
+      ],
+      "flush_checked": true,
+      "no_extra_blank_rows": true,
+      "existing_practice_hashes_unchanged": true,
+      "bank_hash_unchanged": true
+    },
+    "committed_database_cold_start": {
+      "result": "PASS",
+      "restored_database_record_checked": true,
+      "existing_practice_hashes_unchanged": true,
+      "bank_hash_unchanged": true
+    },
+    "journal_only_action_send_cold_start": {
+      "result": "PASS",
+      "three_restored_originals_preserved": true,
+      "writing_translation_editor_checked": true,
+      "shared_reading_saved_as_separate_new_practice": true,
+      "flush_checked": true,
+      "exact_id_set_checked": true,
+      "existing_practice_hashes_unchanged": true,
+      "bank_hash_unchanged": true
+    },
+    "real_new_pid_asserted_in_each_startup_scenario": true,
+    "android_full_isolated_suite": "PASS",
+    "normal_activity_viewmodel_lifecycle": "PASS",
+    "share_fixture_correction": "Initial fixture passed an already transformed title as the raw subject; corrected only raw input, retaining all assertions",
+    "new_live_model_requests": 0,
+    "phone_database_or_credentials_read": false,
+    "logs": [
+      ".tools/restore-draft-full-gradle-20261027.log",
+      ".tools/restore-draft-share-fixture-build-20261027.log",
+      ".tools/restore-draft-after-resume-20261027.txt",
+      ".tools/restore-draft-committed-resume-20261027.txt",
+      ".tools/restore-draft-share-corrected-resume-20261027.txt",
+      ".tools/restore-draft-full-isolated-20261027.txt",
+      ".tools/restore-draft-normal-lifecycle-20261027.txt"
+    ],
+    "source_diff_review": "PASS; only startup gate and startup-only flush selection in production",
+    "git_diff_check": "PASS"
+  },
+  "ordinary_apk": {
+    "path": ".tools/CET6Study-restore-draft-20261027-ordinary.apk",
+    "sha256": "2a1c7b58d4ec060927b2b4e71b57c32e9e3de019a80e99703337f2c6448ad501",
+    "private_assets_absent": true
+  },
+  "personal_apk": {
+    "path": ".tools/CET6Study-restore-draft-20261027-personal.apk",
+    "sha256": "87d761013f886b97d8b94d647f4203daa289b36ffee1067f016f0bf7502ba089",
+    "dex_identical_to_tested_ordinary": true,
+    "pack_sha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+    "pack_bytes_match": true,
+    "pdf_count": 46,
+    "all_pdf_bytes_match": true,
+    "installed": true,
+    "installation_attempt": {
+      "device": "10AE5X1ZA3000YU",
+      "success": false,
+      "error": "INSTALL_FAILED_ABORTED: User rejected permissions",
+      "automatic_retry": false,
+      "user_authorized_retry": "允许覆盖安装。",
+      "retry_success": true
+    },
+    "installed_phone_apk_after_rejection": "c256fb3b47bf4a3fa36c2b003a5f2a214bcac40548ad860dd013edfe7f8f8dd8",
+    "installed_sha256": "87d761013f886b97d8b94d647f4203daa289b36ffee1067f016f0bf7502ba089"
+  },
+  "storage_format_or_schema_change": false,
+  "new_dependencies": false,
+  "limits": [
+    "Explicit startup scenarios add labelled original records only on the emulator",
+    "Not a real phone restore or a physical power-loss/LMKD test",
+    "Runtime manual restore keeps the current edited practice; this fix changes automatic startup ordering"
+  ]
+}

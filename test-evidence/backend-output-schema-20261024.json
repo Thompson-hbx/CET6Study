@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-24",
+  "scope": "Backend typed output validation and repository decision guard",
+  "before_fix": {
+    "tests": 4,
+    "failures": 3,
+    "failure_messages": [
+      "java.lang.AssertionError: overview-structure-number-text expected:<false> but was:<true>",
+      "java.lang.AssertionError: reading-option-number-label expected:<false> but was:<true>",
+      "java.lang.AssertionError: review-band-string expected:<false> but was:<true>"
+    ]
+  },
+  "corpus": {
+    "file": "app\\testdata\\coach-protocol-regression-v1.json",
+    "sha256": "a9ffb8cf6d636e58660208e58050f0623a1fc942b31b99fd0fa86e72db5ed618",
+    "total": 82,
+    "invalid": 67,
+    "valid": 15,
+    "existing_live_replies_checked_offline": 11
+  },
+  "behavior": [
+    "Reject coerced integer fields, invalid known-field types and unrecognised verdicts",
+    "Reject duplicate single-result records and duplicate segment/option/paragraph identifiers",
+    "Reject overview references outside the local paragraph count",
+    "Preserve the entire raw reply; invalid replies expose no actionable edits",
+    "Repository rejects decision updates for invalid structured reviews and preserves existing content/state",
+    "Keep minimal legacy shapes and unknown extension types/fields compatible"
+  ],
+  "after_fix": {
+    "jvm": {
+      "tests": 131,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lint": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 7
+    },
+    "android_default_isolated_suite": "PASS including the same 82 protocol cases, invalid-decision preservation and all previous atomic exchange/rapid update/backup/migration checks"
+  },
+  "new_live_ai_requests": 0,
+  "database_schema_change": false,
+  "new_dependency": false,
+  "limits": [
+    "Schema validation does not measure factual correction quality or prove quotations exist in a supplied source",
+    "Known fields are validated; unknown extension types/fields are deliberately retained as compatible",
+    "JSONObject syntax compatibility and complete response-section counts are not a strict JSON Schema implementation"
+  ],
+  "log": ".tools/backend-schema-isolated-20261024.txt"
+}

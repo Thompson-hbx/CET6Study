@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-24",
+  "scope": "Durable complete-backup restore, additive to p1-verification-20261024.json",
+  "implemented": [
+    "Persist and read back private restore task before database mutation",
+    "Replay pending task at Activity/ViewModel startup; retry in backup UI",
+    "Check bank readback after AtomicFile finish; skip unchanged/empty bank writes",
+    "Legacy learning-only restore leaves question bank untouched"
+  ],
+  "instrumentation": {
+    "restore-recovery": "PASS: empty/legacy restore; database rollback; post-commit bank failure; duplicate history prevention; conflict/corrupt task preservation",
+    "restore-process": "PASS: force-stop after partial restore; new process verified different PID; bank completed; history not duplicated",
+    "restore-startup": "PASS: real Activity/ViewModel startup resumes pending task after force-stop; labelled original draft preserved; existing question bank SHA-256 unchanged",
+    "default-isolated-suite": "PASS: full suite including new recovery checks, migrations and prior backup/AI failure checks"
+  },
+  "jvm": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "errors": 0,
+    "fatal": 0,
+    "warnings": 7
+  },
+  "ordinary_apk_sha256": "a3f27d5d63c38cb4d93f4724bdaee353ba8deaa619b7e2760ae823e3035bb64b",
+  "limits": [
+    "No cross-store atomic transaction",
+    "No real power-loss or physical storage-corruption exercise",
+    "Task needs extra local storage; original backup must be retained",
+    "Unresolved conflict/corrupt task is retained for maintenance, never silently discarded"
+  ],
+  "side_effects": [
+    "No new AI requests",
+    "No physical phone data changed in these fault tests",
+    "Actual startup test added one clearly labelled original emulator practice; existing question bank preserved"
+  ],
+  "logs": [
+    ".tools/restore-recovery-20261024.txt",
+    ".tools/restore-process-prepare-20261024.txt",
+    ".tools/restore-process-resume-20261024.txt",
+    ".tools/restore-startup-prepare-20261024.txt",
+    ".tools/restore-startup-resume-20261024.txt",
+    ".tools/isolated-after-restore-20261024.txt"
+  ],
+  "phone_delivery": {
+    "personal_apk": ".tools\\CET6Study-recovery-20261024-personal.apk",
+    "sha256": "54702c7d2373cdd9550be5b6e4da8d373ef42f78f8f1f25f17805109c242a0c3",
+    "pack_sha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+    "pdfs_byte_identical": 46,
+    "installed": true,
+    "installed_sha256_matched": true,
+    "phone": "10AE5X1ZA3000YU / V2359A",
+    "launched_after_install": false,
+    "launch_note": "Installed APK hash matched; foreground audio activity left undisturbed; updated Activity startup verified on emulator only"
+  }
+}

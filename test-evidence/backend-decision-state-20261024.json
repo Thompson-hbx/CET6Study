@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-24",
+  "scope": "Backend review decision-state preservation",
+  "before_fix": "FAIL: Invalid state broken-json was overwritten",
+  "fix": [
+    "Use checked state decoding inside the existing Room transaction",
+    "Reject malformed JSON, duplicate keys/records, invalid numeric IDs, unknown fields, repeated or conflicting decisions",
+    "Keep empty and partial legacy states compatible",
+    "Keep the existing tolerant display decoder API; it is no longer used as a database write snapshot"
+  ],
+  "corpus": {
+    "total": 18,
+    "invalid": 14,
+    "valid": 4,
+    "file": "app/testdata/coach-decision-state-v1.json"
+  },
+  "android_checks": [
+    "Every invalid state is rejected and the complete original row remains byte-for-byte equal",
+    "Every valid corpus state accepts a new decision without losing prior choices",
+    "Legacy one-field state preserves its original accepted choice",
+    "Two independent repositories apply 40 concurrent updates; all accepted/dismissed choices remain; content unchanged"
+  ],
+  "jvm": {
+    "tests": 133,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 7
+  },
+  "isolated_backend_suite": "PASS including all 82 AI schema cases and prior migration/backup/atomic exchange checks",
+  "logs": [
+    ".tools/backend-decision-before-20261024.txt",
+    ".tools/backend-decision-after-isolated-20261024.txt"
+  ],
+  "database_schema_change": false,
+  "new_dependencies": false,
+  "new_live_ai_requests": 0
+}

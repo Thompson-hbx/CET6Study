@@ -1,0 +1,13 @@
+{
+  "apk": ".tools\\CET6Study-personal-reading20-20261020.apk",
+  "sha256": "ead491a0317f5028f1b4e812c22cdad96696ddf71bcd63e0587263568ca26187",
+  "bytes": 117722385,
+  "papers": 24,
+  "pdfs": 46,
+  "packMatchesSource": true,
+  "allPdfBytesMatch": true,
+  "emulatorInstrumentation": "PASS 2026-10-20; bundled persistence and ready practice snapshots checked",
+  "phoneInstalled": false,
+  "papersWithReadingContent": 21,
+  "readingWithCompleteOptions": 20
+}

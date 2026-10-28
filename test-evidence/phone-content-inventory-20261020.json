@@ -1,0 +1,19 @@
+{
+  "source": "Phone internal exam-content-v1.json after system-picker import and cold restart",
+  "real_papers": 24,
+  "samples": 1,
+  "ready_reading": 15,
+  "pending_reading": [
+    "cet6-2023-03-12-1",
+    "cet6-2023-03-12-2",
+    "cet6-2023-03-12-3",
+    "cet6-2023-06-17-2",
+    "cet6-2023-06-17-3",
+    "cet6-2023-12-16-1",
+    "cet6-2023-12-16-2",
+    "cet6-2023-12-16-3",
+    "cet6-2024-06-15-1"
+  ],
+  "reviewed_writing": 24,
+  "reviewed_translation": 24
+}

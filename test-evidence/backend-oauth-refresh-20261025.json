@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-25",
+  "scope": "Backend OAuth refresh, offline HTTP and in-memory sessions only",
+  "before_fix": {
+    "jvm": [
+      "Cancelled refresh lost the rotated session",
+      "Malformed token reply 2 was accepted"
+    ],
+    "android": "Malformed token reply 0 was accepted"
+  },
+  "fix": [
+    "Protect started HTTP refresh, validation and local save from caller cancellation; existing 20-second HTTP timeout remains",
+    "Keep caller cancelled and skip continuation; cancelled lock waiters do not start a refresh",
+    "Check JSON types before existing token policy and persistence; normalize malformed response diagnostics",
+    "Preserve public Keystore constructor and existing encrypted storage format"
+  ],
+  "shared_checks": {
+    "groups": 10,
+    "malformed_success_responses": 34,
+    "concurrent_requests": 20,
+    "source": "app/src/testShared/java/com/example/cet6/OAuthRefreshChecks.kt"
+  },
+  "jvm": {
+    "tests": 147,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 7
+  },
+  "android": {
+    "oauth_refresh": "PASS",
+    "full_isolated_suite": "PASS"
+  },
+  "logs": [
+    ".tools/oauth-refresh-before-20261024.xml",
+    ".tools/oauth-refresh-android-before-20261025.txt",
+    ".tools/oauth-refresh-targeted-20261025.log",
+    ".tools/oauth-refresh-android-after-20261025.txt",
+    ".tools/oauth-refresh-full-isolated-20261025.txt",
+    ".tools/oauth-refresh-full-gradle-20261025.log"
+  ],
+  "database_schema_change": false,
+  "encrypted_store_format_change": false,
+  "new_dependencies": false,
+  "real_credentials_accessed": false,
+  "new_live_ai_requests": 0,
+  "limits": [
+    "No real expiry/revocation/device-switch validation",
+    "No real Keystore failure or power-loss validation",
+    "Existing offline learning failure checks use controlled request failures"
+  ],
+  "ordinary_apk": {
+    "path": ".tools\\CET6Study-oauth-20261025-ordinary.apk",
+    "sha256": "08d84a670393b23906a13a3aac2f6354d5e2b40fcab44037ce3492033e5ace7c",
+    "private_assets_present": false,
+    "shared_test_class_present": false
+  },
+  "personal_apk": {
+    "path": ".tools\\CET6Study-oauth-20261025-personal.apk",
+    "sha256": "b771f85b84635e2d358f5a13254fcbffc80011431fe835a3e5b606ac070bb313",
+    "pdfs_byte_identical": 46,
+    "pack_sha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+    "dex_identical_to_tested_ordinary": true,
+    "installed": true,
+    "device": "10AE5X1ZA3000YU",
+    "installed_sha256": "b771f85b84635e2d358f5a13254fcbffc80011431fe835a3e5b606ac070bb313",
+    "launch_after_install": false
+  }
+}

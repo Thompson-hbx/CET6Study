@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-20T15:47:37.583606",
+  "device": "10AE5X1ZA3000YU",
+  "practice": "original sample writing, not exam material",
+  "focus": "STRUCTURE",
+  "observed": [
+    "Tapped structure focus then correction button",
+    "UI displayed AI processing status",
+    "Later adb devices listed emulator only"
+  ],
+  "result": "PASS: saved structure feedback confirmed after reconnect and process restart",
+  "retrySent": false,
+  "nextAction": "Verify follow-up response, translation and reading live AI flows",
+  "practiceId": "a7f27b09-6f2b-4726-9479-760c7f929ade",
+  "feedbackCharacters": 1262,
+  "feedbackSha256": "dd21113d3654842ac61db8e16cad40dd8077eca1770a5b1f46bfbcce1fff93e9",
+  "databaseIntegrity": "ok",
+  "restartUi": "Shows saved status, append review button and follow-up editor",
+  "followUpShortcut": "Correction vs polish fills editable question without sending"
+}

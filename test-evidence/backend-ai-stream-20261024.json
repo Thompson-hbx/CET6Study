@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-24",
+  "scope": "Backend Chat/Responses stream validation",
+  "before_fix": "Android: Malformed stream case 0 was accepted (object content coerced to text)",
+  "fix": [
+    "Check actual selected-content/delta/finish types and nonnegative integer choice IDs",
+    "Reject duplicate choice indexes in one event instead of overwriting earlier text",
+    "Check Responses event and delta types; extract internal response parser for offline testing"
+  ],
+  "corpus": {
+    "file": "app/testdata/ai-stream-regression-v1.json",
+    "total": 71,
+    "chat": 38,
+    "responses": 33,
+    "invalid_or_incomplete": 59,
+    "compatible": 12
+  },
+  "jvm": {
+    "tests": 137,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "android": "PASS: complete isolated backend suite including the same 71 stream cases, 82 output schema and 18 decision-state cases",
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 7
+  },
+  "logs": [
+    ".tools/backend-stream-before-20261024.txt",
+    ".tools/backend-stream-after-isolated-20261024.txt",
+    ".tools/backend-stream-gradle-20261024.log"
+  ],
+  "database_schema_change": false,
+  "new_dependencies": false,
+  "new_live_ai_requests": 0,
+  "limits": [
+    "No real OAuth expiry, revoked authorization or device-switch testing",
+    "Offline fixtures do not prove all provider variants",
+    "No full UI or physical device startup regression for this change"
+  ],
+  "ordinary_apk": {
+    "path": ".tools\\CET6Study-backend-stream-20261024-ordinary.apk",
+    "sha256": "8bb21ef5231327091c71f2efb43704014b839735f106608404846b1017b14bc6",
+    "private_assets_present": false
+  },
+  "personal_apk": {
+    "date": "2026-10-24",
+    "path": ".tools\\CET6Study-backend-stream-20261024-personal.apk",
+    "sha256": "8dd43d1c3612f3901fe80537ef0847f8bd92cbfb1f62d9a6a3a5982de9a3d1ec",
+    "pack_sha256": "f72e0def53b503785c8e74b6d9974aab312d4b64d6ebae1a46bbb071c359ddfc",
+    "pdfs_byte_identical": 46,
+    "dex_identical_to_tested_ordinary_apk": true,
+    "installed": true,
+    "launch_after_install": false,
+    "installed_sha256": "8dd43d1c3612f3901fe80537ef0847f8bd92cbfb1f62d9a6a3a5982de9a3d1ec",
+    "device": "10AE5X1ZA3000YU"
+  }
+}

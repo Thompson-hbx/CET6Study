@@ -1,0 +1,70 @@
+{
+  "android_metadata": {
+    "before": 1,
+    "after": 1,
+    "changed_or_missing": 0
+  },
+  "words": {
+    "before": 81,
+    "after": 81,
+    "changed_or_missing": 0
+  },
+  "reading_attempts": {
+    "before": 0,
+    "after": 0,
+    "changed_or_missing": 0
+  },
+  "essays": {
+    "before": 0,
+    "after": 0,
+    "changed_or_missing": 0
+  },
+  "room_master_table": {
+    "before": 1,
+    "after": 1,
+    "changed_or_missing": 0
+  },
+  "word_reviews": {
+    "before": 3,
+    "after": 3,
+    "changed_or_missing": 0
+  },
+  "daily_plans": {
+    "before": 4,
+    "after": 5,
+    "changed_or_missing": 0
+  },
+  "word_schedules": {
+    "before": 1,
+    "after": 1,
+    "changed_or_missing": 0
+  },
+  "coach_practices": {
+    "before": 11,
+    "after": 15,
+    "changed_or_missing": 2
+  },
+  "integrity": "ok",
+  "version": 7,
+  "expected_sample_updates": [
+    {
+      "id": "a07ce9e4-d95f-4745-93f5-e25e85fc5a01",
+      "fields": [
+        "answer",
+        "submittedAt",
+        "updatedAt"
+      ],
+      "reason": "Previously empty original functional sample completed by authorized UI verification; all other fields unchanged."
+    },
+    {
+      "id": "cde62e1f-4371-4fe4-a914-959042bc4ad1",
+      "fields": [
+        "answer",
+        "submittedAt",
+        "updatedAt"
+      ],
+      "reason": "Previously empty original functional sample completed by authorized UI verification; all other fields unchanged."
+    }
+  ],
+  "result": "All original rows retained; two empty original-sample drafts completed; all other pre-existing fields unchanged. Four new practice rows and one new daily plan."
+}
