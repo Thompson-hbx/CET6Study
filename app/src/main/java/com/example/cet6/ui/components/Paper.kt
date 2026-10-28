@@ -193,7 +193,9 @@ fun ListRow(
                     maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
-        if (!trailing.isNullOrBlank()) StatusPill(trailing, trailingTone, Modifier.padding(start = 12.dp)
+        // Plain tinted words rather than a pill: long lists stay calm and the colour still carries the state.
+        if (!trailing.isNullOrBlank()) Text(trailing, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold,
+            color = trailingTone.color(), maxLines = 1, modifier = Modifier.padding(start = 12.dp)
             .then(if (trailingDescription != null) Modifier.semantics { contentDescription = trailingDescription } else Modifier))
         if (showChevron && enabled) Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(start = 4.dp).size(20.dp))
