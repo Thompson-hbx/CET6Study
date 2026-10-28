@@ -1,12 +1,20 @@
 package com.example.cet6.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
@@ -77,21 +85,21 @@ fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice
         item {
             SectionLabel("今天要做")
             RowCard {
-                ListRow("单词复习", subtitle = if (vm.words.isEmpty()) "导入词库或在练习中加入生词" else "待复习 $due 词 · 来自词库与练习原句",
-                    trailing = if (due > 0) "$due" else if (vm.words.isNotEmpty()) "已完成" else null,
-                    trailingTone = if (due > 0) Tone.Better else Tone.Good) { onRoute("me/words") }
+                TodayRow(if (vm.words.isEmpty()) "—" else "$due", if (due > 0) Tone.Ink else Tone.Muted, "单词复习",
+                    if (vm.words.isEmpty()) "导入词库或在练习中加入生词" else "待复习 $due 词 · 来自词库与练习原句") { onRoute("me/words") }
                 RowDivider()
-                ListRow("错因重练", subtitle = if (reviews.isEmpty()) "批改后记下的错因会出现在这里" else
-                    reviews.map { it.errorReason.substringBefore('；').take(16) }.distinct().take(2).joinToString(" · "),
-                    trailing = reviews.size.takeIf { it > 0 }?.toString(), trailingTone = Tone.Must) { onRoute("me/review") }
+                TodayRow("${reviews.size}", if (reviews.isEmpty()) Tone.Muted else Tone.Must, "错因重练",
+                    if (reviews.isEmpty()) "批改后记下的错因会出现在这里" else
+                        reviews.map { it.errorReason.substringBefore('；').take(16) }.distinct().take(2).joinToString(" · ")) { onRoute("me/review") }
                 if (next != null) {
                     RowDivider()
-                    ListRow("下一套阅读", subtitle = "${next.examDate.take(4)} 年 ${next.examDate.substring(5, 7).toInt()} 月 · 第 ${next.setCode} 套 · 仔细阅读",
+                    TodayRow(null, Tone.Muted, "下一套阅读",
+                        "${next.examDate.take(4)} 年 ${next.examDate.substring(5, 7).toInt()} 月 · 第 ${next.setCode} 套 · 仔细阅读",
                         enabled = !vm.coach.working) { onStart(next, CoachKind.READING) }
                 }
                 if (!vm.aiReady) {
                     RowDivider()
-                    ListRow("连接 AI", subtitle = "配置后可以批改、讲解和追问", trailing = "未连接", trailingTone = Tone.Muted) { onRoute("me/connection") }
+                    TodayRow("AI", Tone.Muted, "连接 AI", "未连接 · 配置后可以批改、讲解和追问") { onRoute("me/connection") }
                 }
             }
         }
@@ -115,17 +123,34 @@ fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice
     }
 }
 
+/** A to-do line led by a tinted count tile (or a book for the next set), as on a paper planner. */
+@Composable
+private fun TodayRow(badge: String?, tone: Tone, title: String, subtitle: String, enabled: Boolean = true, onClick: () -> Unit) {
+    Row(Modifier.fillMaxWidth().clickable(enabled = enabled, onClick = onClick).heightIn(min = 64.dp)
+        .padding(start = CardPadding, end = 8.dp, top = 12.dp, bottom = 12.dp),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+        Box(Modifier.size(36.dp).background(tone.soft(), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
+            if (badge != null) Text(badge, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = tone.color())
+            else Icon(Icons.AutoMirrored.Outlined.MenuBook, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(18.dp))
+        }
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
+            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1,
+                overflow = TextOverflow.Ellipsis)
+        }
+        Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(20.dp))
+    }
+}
+
 /** 练习: one catalogue with the three skills behind a segmented switch instead of three tabs. */
 @Composable
 fun PracticeHeader(kind: CoachKind, onKind: (CoachKind) -> Unit) {
     TabTitle("练习")
     val kinds = listOf(CoachKind.WRITING, CoachKind.TRANSLATION, CoachKind.READING)
-    SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 8.dp)) {
-        kinds.forEachIndexed { i, k ->
-            SegmentedButton(selected = kind == k, onClick = { onKind(k) }, shape = SegmentedButtonDefaults.itemShape(i, kinds.size),
-                icon = {}) { Text(kindLabel(k.name)) }
-        }
-    }
+    TrackSegments(kinds.map { kindLabel(it.name) }, kinds.indexOf(kind), { onKind(kinds[it]) },
+        Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
     Note(when (kind) {
         CoachKind.WRITING -> "六级 Part I · 30 分钟 · 150–200 词"
         CoachKind.TRANSLATION -> "六级 Part IV · 30 分钟 · 段落汉译英"

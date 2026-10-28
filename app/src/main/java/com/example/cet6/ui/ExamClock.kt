@@ -3,6 +3,7 @@ package com.example.cet6.ui
 import android.os.SystemClock
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.*
@@ -46,7 +47,8 @@ fun ExamClock(key: String, minutes: Int = 30) {
         else -> "已超时 ${-left / 60} 分 ${-left % 60} 秒，点按停止"
     }
     Column {
-        TextButton(onClick = {
+        // A pill beside the word count: the timer reads as a control, not as a link.
+        OutlinedButton(onClick = {
             if (!saving) {
                 saving = true
                 val next = if (clock == null) TrainingClock(System.currentTimeMillis(), SystemClock.elapsedRealtime(), boot) else null
@@ -61,7 +63,8 @@ fun ExamClock(key: String, minutes: Int = 30) {
                     saving = false
                 }
             }
-        }, enabled = !saving,
+        }, enabled = !saving, shape = RoundedCornerShape(50), contentPadding = PaddingValues(horizontal = 12.dp),
+            colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.background),
             modifier = Modifier.semantics { contentDescription = spoken }) {
             Icon(Icons.Outlined.Timer, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(4.dp))

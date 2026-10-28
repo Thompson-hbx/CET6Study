@@ -3,6 +3,7 @@ package com.example.cet6.ui
 import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Chat
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -183,26 +184,29 @@ fun placedReview(answer: String, reviewTurn: CoachTurn?): List<PlacedIssue>? {
 }
 
 /**
- * Footer of a review: the next step (a revision with the accepted fixes) is the main action; follow-up
- * questions open the composer on demand instead of holding the bottom of the screen the whole time.
+ * Footer of a review: how many suggestions are taken, and the next step (a revision with them). Follow-up
+ * questions open the composer here from the top bar's 追问, instead of holding the bottom of the screen.
  */
 @Composable
-fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, placed: List<PlacedIssue>?, canAsk: Boolean,
-    onAsk: (String) -> Unit) {
+fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, placed: List<PlacedIssue>?, asking: Boolean,
+    onAsking: (Boolean) -> Unit, onAsk: (String) -> Unit) {
     val talk = vm.talk
     val failure = talk.failureFor(entry.id, Anchor.REVIEW, chat = true)
-    var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
-    if (canAsk && (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT)) BottomBar {
+    if (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT) BottomBar {
         AskBar(placeholder, busy = talk.busy, enabled = !talk.busy, onSend = onAsk, onStop = talk::stop,
             modifier = Modifier.weight(1f), draftKey = entry.id, failure = failure, onDismissFailure = talk::dismissFailure)
-        if (!talk.busy) TextButton(onClick = { asking = false; failure?.let { talk.dismissFailure() } }) { Text("收起") }
+        if (!talk.busy) TextButton(onClick = { onAsking(false); failure?.let { talk.dismissFailure() } }) { Text("收起") }
     } else BottomBar {
         val accepted = placed?.count { it.accepted && it.range != null } ?: 0
-        if (canAsk) OutlinedButton(onClick = { asking = true }, modifier = Modifier.height(48.dp)) { Text("追问") }
-        Spacer(Modifier.weight(1f))
+        Text(if (placed.isNullOrEmpty()) saveLabel(vm.coach.messages[CoachKind.valueOf(entry.kind)]) else "已采纳 $accepted / ${placed.size} 条",
+            style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
         Button(onClick = { vm.coach.revise(entry, placed?.let { applyAccepted(entry.answer, it) } ?: entry.answer) },
-            enabled = !vm.coach.working, modifier = Modifier.height(48.dp)) {
-            Text(if (accepted > 0) "用采纳的 $accepted 处写修改稿" else "写修改稿")
-        }
+            enabled = !vm.coach.working, modifier = Modifier.height(48.dp)) { Text("写修改稿") }
     }
+}
+
+/** 追问 in a review's top bar; it opens the follow-up composer in the footer. */
+@Composable
+fun AskAction(onClick: () -> Unit) {
+    IconButton(onClick = onClick) { Icon(Icons.AutoMirrored.Outlined.Chat, contentDescription = "追问", tint = MaterialTheme.colorScheme.primary) }
 }

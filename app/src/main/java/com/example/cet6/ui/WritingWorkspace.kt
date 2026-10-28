@@ -41,6 +41,7 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     var showPlan by rememberSaveable(entry.id) { mutableStateOf(false) }
     var showVersions by remember { mutableStateOf(false) }
     var confirmSubmit by remember { mutableStateOf(false) }
+    var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
     val versions = remember(state.history, entry) { versionsOf(state.history, entry) }
     val bands = remember(vm.reviewTurns) { latestBands(vm.reviewTurns) }
     val words = remember(entry.answer) { WritingCoach.words(entry.answer) }
@@ -65,6 +66,7 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     if (submitted) "已提交" else null).joinToString(" · "),
                 onBack = onBack,
                 actions = {
+                    if (tab == 1 && submitted && reviewTurn != null && pending?.kind != TurnKind.WRITING_REVIEW) AskAction { asking = true }
                     WorkspaceMenu(vm, entry, listOfNotNull("构思提纲" to { showPlan = true },
                         if (reference.isNotBlank()) "参考范文" to { tab = 2 } else null,
                         if (versions.size > 1) "各稿" to { showVersions = true } else null))
@@ -84,7 +86,7 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         modifier = Modifier.height(48.dp)) { Text("写修改稿") }
                 }
                 tab == 1 && submitted && pending?.kind != TurnKind.WRITING_REVIEW && (reviewTurn != null || pending != null) ->
-                    ReviewFooter(vm, entry, "问问这篇作文…", placedReview(entry.answer, reviewTurn), canAsk = true, onAsk = ::ask)
+                    ReviewFooter(vm, entry, "问问这篇作文…", placedReview(entry.answer, reviewTurn), asking, { asking = it }, onAsk = ::ask)
             }
         }
     ) { padding ->
@@ -157,9 +159,11 @@ private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTas
                         tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(12.dp))
                 }
                 Column(Modifier.padding(end = CardPadding - 4.dp, bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    task.opening?.let { opening -> SelectionContainer { Text(opening, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)) } }
-                    if (expanded || task.opening == null) Text(entry.material, style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = if (expanded) Int.MAX_VALUE else 2, overflow = TextOverflow.Ellipsis)
+                    if (!expanded) Note(if (task.opening != null) "点开查看完整题目和开头句" else "点开查看完整题目", Modifier.padding(top = 0.dp))
+                    else {
+                        task.opening?.let { opening -> SelectionContainer { Text(opening, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)) } }
+                        Text(entry.material, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                     if (!submitted && entry.answer.isBlank() && task.opening != null) TextButton(
                         onClick = { state.edit(CoachKind.WRITING) { it.copy(answer = task.opening + " ") } },
                         contentPadding = PaddingValues(0.dp)) { Text("插入开头句") }

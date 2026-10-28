@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.*
@@ -37,6 +38,7 @@ fun TaskHome(vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen
     val samples = papers.filter { it.sample && it.issues(kind).isEmpty() }
     val draft = vm.coach.entries[kind]?.takeIf { it.submittedAt == 0L && it.answer.isNotBlank() }
     val mine = history.filter { it.kind == kind.name && it.answer.isNotBlank() }.take(3)
+    var filter by rememberSaveable(kind) { mutableIntStateOf(0) }
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { header() }
         if (draft != null) item {
@@ -47,23 +49,24 @@ fun TaskHome(vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen
                     trailing = "草稿", trailingTone = Tone.Better) { onOpen(draft) }
             }
         }
-        bySession.forEach { (date, sets) ->
-            item(key = "session-$date") {
+        val rows = bySession.mapValues { (_, sets) -> sets.sortedBy { it.setCode }.map { paper ->
+            val available = paper.issues(kind).isEmpty()
+            CatalogEntry(paper, available, if (available) writtenStatus(history, bands, "${paper.stableId}/${kind.name}/1") else null)
+        } }
+        item(key = "filters") { CatalogFilters(rows.values.flatten(), filter) { filter = it } }
+        rows.forEach { (date, entries) ->
+            val shown = entries.filter { it.matches(filter) }
+            if (shown.isNotEmpty()) item(key = "session-$date") {
                 SectionLabel(sessionTitle(date))
-                RowCard {
-                    val ordered = sets.sortedBy { it.setCode }
-                    ordered.forEachIndexed { i, paper ->
-                        key("${kind.name}-${paper.stableId}") {
-                            val available = paper.issues(kind).isEmpty()
-                            val itemId = "${paper.stableId}/${kind.name}/1"
-                            val status = if (available) writtenStatus(history, bands, itemId) else null
-                            ListRow("第 ${paper.setCode} 套", subtitle = if (available) taskLine(paper, kind) else unavailable(paper), subtitleLines = 1,
-                                trailing = status?.label, trailingTone = status?.tone ?: Tone.Muted, enabled = available && !vm.coach.working) {
-                                latestAttempt(history, itemId)?.let(onOpen) ?: onStart(paper)
-                            }
+                shown.forEachIndexed { i, row ->
+                    key("${kind.name}-${row.paper.stableId}") {
+                        val itemId = "${row.paper.stableId}/${kind.name}/1"
+                        CatalogRow("第 ${row.paper.setCode} 套", if (row.available) taskLine(row.paper, kind) else unavailable(row.paper),
+                            row.status?.label, row.status?.tone ?: Tone.Muted, enabled = row.available && !vm.coach.working) {
+                            latestAttempt(history, itemId)?.let(onOpen) ?: onStart(row.paper)
                         }
-                        if (i < ordered.lastIndex) RowDivider()
                     }
+                    if (i < shown.lastIndex) CatalogDivider()
                 }
             }
         }
@@ -129,6 +132,7 @@ fun ReadingHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPracti
     val mine = history.filter {
         it.kind == CoachKind.READING.name && (it.answer.isNotBlank() || (ExamCodec.metadata(it) == null && it.material.isNotBlank()))
     }.take(3)
+    var filter by rememberSaveable { mutableIntStateOf(0) }
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { header() }
         if (draft != null) item {
@@ -140,15 +144,19 @@ fun ReadingHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPracti
                     trailing = status.label, trailingTone = status.tone, trailingDescription = status.spoken) { onOpen(draft) }
             }
         }
-        bySession.forEach { (date, sets) ->
-            item(key = "session-$date") {
+        val rows = bySession.mapValues { (_, sets) -> sets.sortedBy { it.setCode }.map { paper ->
+            val attempt = readingAttempt(history, paper)
+            CatalogEntry(paper, paper.issues(CoachKind.READING).isEmpty() || PaperDocuments.sharedReadingPaperId(paper) != null,
+                attempt?.let { readingStatus(it) }, inProgress = attempt != null && attempt.submittedAt == 0L)
+        } }
+        item(key = "filters") { CatalogFilters(rows.values.flatten(), filter) { filter = it } }
+        rows.forEach { (date, entries) ->
+            val shown = entries.filter { it.matches(filter) }
+            if (shown.isNotEmpty()) item(key = "session-$date") {
                 SectionLabel(sessionTitle(date))
-                RowCard {
-                    val ordered = sets.sortedBy { it.setCode }
-                    ordered.forEachIndexed { i, paper ->
-                        key("reading-${paper.stableId}") { ReadingPaperRow(vm, history, paper, onOpen, onStart, onShared) }
-                        if (i < ordered.lastIndex) RowDivider()
-                    }
+                shown.forEachIndexed { i, row ->
+                    key("reading-${row.paper.stableId}") { ReadingPaperRow(vm, history, row.paper, onOpen, onStart, onShared) }
+                    if (i < shown.lastIndex) CatalogDivider()
                 }
             }
         }
@@ -192,16 +200,15 @@ private fun ReadingPaperRow(vm: StudyViewModel, history: List<CoachPractice>, pa
     onStart: (ExamPaper) -> Unit, onShared: (String) -> Unit) {
     val shared = PaperDocuments.sharedReadingPaperId(paper)
     val available = paper.issues(CoachKind.READING).isEmpty()
-    val attempt = history.filter { ExamCodec.itemId(it)?.startsWith("${paper.stableId}/READING/") == true }.maxByOrNull { it.updatedAt }
+    val attempt = readingAttempt(history, paper)
     val status = attempt?.let { readingStatus(it) }
-    ListRow(if (paper.sample) "原创样本" else "第 ${paper.setCode} 套",
-        subtitle = when {
+    CatalogRow(if (paper.sample) "样本" else "第 ${paper.setCode} 套",
+        when {
             shared != null -> "阅读共用第 1 套，按第 1 套题序练习"
-            available -> null
+            available -> paper.passages.minByOrNull { it.code }?.let { openingLine(it.content) }.orEmpty()
             else -> unavailable(paper)
         },
-        lines = if (shared == null && available) paper.passages.sortedBy { it.code }.map { openingLine(it.content) } else emptyList(),
-        trailing = status?.label, trailingTone = status?.tone ?: Tone.Muted, trailingDescription = status?.spoken,
+        status?.label, status?.tone ?: Tone.Muted, statusDescription = status?.spoken,
         enabled = (available || shared != null) && !vm.coach.working) {
         when {
             shared != null -> onShared(shared)
@@ -209,6 +216,26 @@ private fun ReadingPaperRow(vm: StudyViewModel, history: List<CoachPractice>, pa
             else -> onStart(paper)
         }
     }
+}
+
+private fun readingAttempt(history: List<CoachPractice>, paper: ExamPaper) =
+    history.filter { ExamCodec.itemId(it)?.startsWith("${paper.stableId}/READING/") == true }.maxByOrNull { it.updatedAt }
+
+/** One catalogue set with its status; [inProgress] marks a started but unfinished attempt. */
+private data class CatalogEntry(val paper: ExamPaper, val available: Boolean, val status: TaskStatus?,
+    val inProgress: Boolean = status != null && (status.tone == Tone.Better || status.label == "已提交")) {
+    fun matches(filter: Int) = when (filter) {
+        1 -> available && status == null
+        2 -> inProgress
+        else -> true
+    }
+}
+
+/** 全部 / 未做 / 进行中, counted over the sets on this list. */
+@Composable
+private fun CatalogFilters(entries: List<CatalogEntry>, selected: Int, onSelect: (Int) -> Unit) {
+    FilterPills(listOf("全部 ${entries.count { it.available }}", "未做 ${entries.count { it.matches(1) }}", "进行中 ${entries.count { it.matches(2) }}"),
+        selected, onSelect, Modifier.padding(start = PageGutter, end = PageGutter, top = 14.dp))
 }
 
 /** Opening of a passage, enough to recognise it; the row cuts it to one line. */

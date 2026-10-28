@@ -39,6 +39,7 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     var sentenceSheet by rememberSaveable(entry.id) { mutableStateOf<Int?>(null) }
     var showVersions by remember { mutableStateOf(false) }
     var confirmSubmit by remember { mutableStateOf(false) }
+    var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
     val versions = remember(state.history, entry) { versionsOf(state.history, entry) }
     val bands = remember(vm.reviewTurns) { latestBands(vm.reviewTurns) }
     val words = remember(entry.answer) { WritingCoach.words(entry.answer) }
@@ -63,6 +64,7 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     if (submitted) "已提交" else null).joinToString(" · "),
                 onBack = onBack,
                 actions = {
+                    if (tab == 1 && submitted && reviewTurn != null && pending?.kind != TurnKind.TRANSLATION_REVIEW) AskAction { asking = true }
                     WorkspaceMenu(vm, entry, listOfNotNull(if (reference.isNotBlank()) "参考译文" to { tab = 2 } else null,
                         if (versions.size > 1) "各稿" to { showVersions = true } else null))
                 })
@@ -81,7 +83,7 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         modifier = Modifier.height(48.dp)) { Text("写修改稿") }
                 }
                 tab == 1 && submitted && pending?.kind != TurnKind.TRANSLATION_REVIEW && (reviewTurn != null || pending != null) ->
-                    ReviewFooter(vm, entry, "问问这段译文…", placedReview(entry.answer, reviewTurn), canAsk = true, onAsk = ::ask)
+                    ReviewFooter(vm, entry, "问问这段译文…", placedReview(entry.answer, reviewTurn), asking, { asking = it }, onAsk = ::ask)
             }
         }
     ) { padding ->
