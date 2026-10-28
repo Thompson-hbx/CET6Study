@@ -23,7 +23,7 @@ import com.example.cet6.ui.theme.SourceText
 import kotlinx.coroutines.launch
 
 /** Translation desk: numbered source sentences, the learner's version, and a sentence-aligned review. */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val state = vm.coach
@@ -41,6 +41,10 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     var confirmSubmit by remember { mutableStateOf(false) }
     var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
     var sourceOpen by rememberSaveable(entry.id) { mutableStateOf(true) }
+    val editingSource = meta == null && !submitted && entry.sourcePracticeId.isBlank()
+    val split = tab == 0 && sentences.isNotEmpty() && !editingSource
+    // While the keyboard is up the step bar and footer step aside, so the source and the draft share what is left.
+    val typing = split && WindowInsets.isImeVisible
     val versions = remember(state.history, entry) { versionsOf(state.history, entry) }
     val bands = remember(vm.reviewTurns) { latestBands(vm.reviewTurns) }
     val words = remember(entry.answer) { WritingCoach.words(entry.answer) }
@@ -72,7 +76,7 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         },
         bottomBar = {
             when {
-                tab == 0 -> BottomBar {
+                tab == 0 && !typing -> BottomBar {
                     if (!submitted) ExamClock(entry.id)
                     Column(Modifier.weight(1f)) {
                         WordCount(words, null, null)
@@ -88,15 +92,16 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             }
         }
     ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
-            DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
-                state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
-            })
-            Hairline()
+        Column(Modifier.padding(padding).then(if (typing) Modifier.consumeWindowInsets(padding).imePadding() else Modifier).fillMaxSize()) {
+            if (!typing) {
+                DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
+                    state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
+                })
+                Hairline()
+            }
             // While translating, the Chinese stays on screen above the editor instead of scrolling away with it.
-            val editingSource = meta == null && !submitted && entry.sourcePracticeId.isBlank()
-            if (tab == 0 && sentences.isNotEmpty() && !editingSource) BoxWithConstraints(Modifier.fillMaxSize()) {
-                val sourceMax = maxHeight * 0.42f
+            if (split) BoxWithConstraints(Modifier.fillMaxSize()) {
+                val sourceMax = maxHeight * if (typing) 0.6f else 0.5f
                 Column(Modifier.fillMaxSize()) {
                     SourcePane(sentences, turns, sourceOpen, { sourceOpen = !sourceOpen }, sourceMax) { sentenceSheet = it }
                     Hairline()
