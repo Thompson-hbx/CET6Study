@@ -5,6 +5,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
@@ -72,6 +75,7 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         questions.firstOrNull { submitted && ReadingGuidance.verdict(it, answers[it.number].orEmpty()) == "需要回看" }?.number ?: questions.first().number) }
     var invalid by rememberSaveable(entry.id) { mutableStateOf("") }
     var focus by remember { mutableStateOf<ReaderFocus?>(null) }
+    var peekOpen by rememberSaveable(entry.id) { mutableStateOf(true) }
     val scroll = rememberScrollState()
     LaunchedEffect(tab) { if (focus == null || tab != 2) scroll.scrollTo(0) }
     LaunchedEffect(entry.id, tab, selected) { vm.rememberReadingPosition(entry.id, tab, selected) }
@@ -118,15 +122,24 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     Tab(selected = tab == i, onClick = { focus = null; tab = i }, text = { Text(label) })
                 }
             }
-            Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
+            if (tab == 1 && submitted) {
+                // Passage above, question below: checking an answer never means flipping to another tab and back.
+                val q = questions.firstOrNull { it.number == selected } ?: questions.first()
+                val passage = passages.first { p -> p.questions.any { it.number == q.number } }
+                PassagePeek(passage, q, focus?.takeIf { it.passage == passage.code }?.quote, peekOpen, onToggle = { peekOpen = !peekOpen },
+                    onOpenFull = { focus = null; tab = 2 }, modifier = if (peekOpen) Modifier.weight(0.42f) else Modifier)
+                Hairline()
+                Column(Modifier.weight(0.58f).fillMaxWidth().verticalScroll(scroll).padding(bottom = 32.dp)) {
+                    ExplainPane(vm, entry, passages, questions, answers, turns, selected, onSelect = { focus = null; selected = it }, onAsk = ::ask) { code, quote ->
+                        focus = ReaderFocus(code, quote); peekOpen = true
+                    }
+                }
+            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
                 when (tab) {
                     0 -> AnswerCardPane(vm, entry, passages, answers, submitted) { code, bad ->
                         invalid = if (bad) (invalid + code).toSet().joinToString("") else invalid.replace(code, "")
                     }
-                    1 -> if (!submitted) EmptyNote("在答题卡录入纸上的答案并核对后，就可以逐题讲解。", "去录入") { tab = 0 }
-                        else ExplainPane(vm, entry, passages, questions, answers, turns, selected, onSelect = { selected = it }, onAsk = ::ask) { code, quote ->
-                            focus = ReaderFocus(code, quote); tab = 2
-                        }
+                    1 -> EmptyNote("在答题卡录入纸上的答案并核对后，就可以逐题讲解。", "去录入") { tab = 0 }
                     else -> PassagePane(vm, entry, passages, turns, focus)
                 }
             }
@@ -251,15 +264,16 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
 /** One bubble of the answer sheet; the bottom stripe carries the check result once there is one. */
 @Composable
 private fun AnswerCell(number: String, value: String, selected: Boolean, tone: Tone?, modifier: Modifier = Modifier,
-    spoken: String, enabled: Boolean = true, onClick: () -> Unit) {
+    spoken: String, enabled: Boolean = true, compact: Boolean = false, onClick: () -> Unit) {
     val marked = tone == Tone.Good || tone == Tone.Must
     val stripe = if (marked) tone!!.color() else Color.Transparent
     Surface(onClick = onClick, enabled = enabled, shape = RoundedCornerShape(10.dp),
-        modifier = modifier.height(60.dp).semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" },
+        modifier = modifier.height(if (compact) 48.dp else 60.dp).semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" },
         color = if (marked) tone!!.soft() else MaterialTheme.colorScheme.surfaceContainer,
         border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(number, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+            // Compact cells (the explain pane) drop the number row: position already says which question it is.
+            if (!compact) Text(number, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 6.dp))
             Text(value.ifBlank { "·" }, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold,
                 color = if (marked) tone!!.color() else MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f).wrapContentHeight())
@@ -294,7 +308,7 @@ private fun ExplainPane(vm: StudyViewModel, entry: CoachPractice, passages: List
         Note(listOfNotNull("需要回看 ${known.size - matched}", if (unanswered > 0) "未录入 $unanswered" else null,
             if (unknown > 0) "待核对 $unknown" else null).joinToString(" · "))
         passages.forEach { p ->
-            Row(Modifier.fillMaxWidth().padding(top = 14.dp), verticalAlignment = Alignment.CenterVertically,
+            Row(Modifier.fillMaxWidth().padding(top = 10.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("篇章 ${p.code}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1, modifier = Modifier.width(passageLabel))
@@ -302,7 +316,7 @@ private fun ExplainPane(vm: StudyViewModel, entry: CoachPractice, passages: List
                     val mine = answers[q.number].orEmpty()
                     val verdict = ReadingGuidance.verdict(q, mine)
                     AnswerCell("${i + 1}", mine, q.number == selected, verdictTone(verdict), Modifier.weight(1f),
-                        spoken = "篇章 ${p.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}，${verdictLabel(verdict)}") { onSelect(q.number) }
+                        spoken = "篇章 ${p.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}，${verdictLabel(verdict)}", compact = true) { onSelect(q.number) }
                 }
             }
         }
@@ -493,6 +507,48 @@ private fun ErrorNote(vm: StudyViewModel, entry: CoachPractice, passage: ExamPas
                 Text("按错因出一道练习")
             }
             state.messages[CoachKind.READING]?.takeIf { it.isNotBlank() && it != "已保存到本机" && it != "正在保存……" }?.let { Note(it) }
+        }
+    }
+}
+
+/**
+ * The selected question's passage beside its explanation. The evidence (a located quote, else the sourced
+ * evidence sentence) is tinted and scrolled into view; without either, the passage simply starts at the top.
+ */
+@Composable
+private fun PassagePeek(passage: ExamPassage, q: ExamQuestion, quote: String?, open: Boolean, onToggle: () -> Unit,
+    onOpenFull: () -> Unit, modifier: Modifier = Modifier) {
+    val paragraphs = remember(passage.content) { PassageLayout.paragraphs(passage.content) }
+    val evidence = quote?.takeIf(String::isNotBlank) ?: q.evidence.takeIf { it.isNotBlank() && passage.content.contains(it) }
+    val marks = remember(paragraphs, evidence) { paragraphs.map { para -> evidence?.let { TextMarks.locate(para, it) } } }
+    val target = marks.indexOfFirst { it != null }.takeIf { it >= 0 } ?: ReadingGuidance.paragraph(passage, q)?.minus(1)
+    val list = rememberLazyListState()
+    LaunchedEffect(passage.code, target, open) { if (open) list.scrollToItem(target?.coerceIn(0, paragraphs.lastIndex.coerceAtLeast(0)) ?: 0) }
+    Column(modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth().padding(start = PageGutter, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Note("原文 · 篇章 ${passage.code}" + (target?.let { " · 依据在第 ${it + 1} 段" } ?: ""), Modifier.weight(1f))
+            TextButton(onClick = onOpenFull) { Text("全文") }
+            TextButton(onClick = onToggle) { Text(if (open) "收起原文" else "展开原文") }
+        }
+        if (open) {
+            val numberWidth = labelWidth(listOf("${paragraphs.size}"), MaterialTheme.typography.labelMedium)
+            val soft = Tone.Better.soft()
+            LazyColumn(Modifier.fillMaxWidth().weight(1f), state = list,
+                contentPadding = PaddingValues(start = 12.dp, end = PageGutter, bottom = 12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                itemsIndexed(paragraphs) { i, paragraph ->
+                    Row {
+                        Text("${i + 1}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.width(numberWidth).padding(top = 4.dp), textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                        Spacer(Modifier.width(10.dp))
+                        SelectionContainer {
+                            Text(buildAnnotatedString {
+                                append(paragraph)
+                                marks[i]?.let { addStyle(SpanStyle(background = soft), it.first, it.last + 1) }
+                            }, style = PassageText.copy(fontSize = 16.sp, lineHeight = 26.sp))
+                        }
+                    }
+                }
+            }
         }
     }
 }
