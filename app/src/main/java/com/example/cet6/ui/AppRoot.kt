@@ -124,7 +124,7 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
             onBack = ::pop,
             actions = { vm.coach.entries[CoachKind.READING]?.let { WorkspaceMenu(vm, it) } }
         ) { scroll -> CoachScreen(vm, CoachKind.READING, scroll) }
-        top == "me/connection" -> SimpleScreen("AI 连接", ::pop) { legacy.connection() }
+        top == "me/connection" -> SimpleScreen("AI 连接", ::pop) { ConnectionRoute(vm) }
         top == "me/review" -> SimpleScreen("错因回顾", ::pop) {
             WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, standalone = true, onReview = ::open)
         }
@@ -144,7 +144,6 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
 
 /** Screens that still live in MainActivity; passed in so their code stays where it is. */
 class LegacyScreens(
-    val connection: @Composable () -> Unit,
     val words: @Composable () -> Unit,
     val today: @Composable (onWords: () -> Unit, onReading: () -> Unit, onWriting: () -> Unit, onReview: (CoachPractice) -> Unit) -> Unit
 )
