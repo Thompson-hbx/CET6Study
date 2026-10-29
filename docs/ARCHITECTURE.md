@@ -2,6 +2,13 @@
 
 本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
 
+## 页面 ViewModel：备份与题库管理（2026-10-29）
+
+- 「备份与恢复」：`BackupViewModel` 用 `combine` 合并备份、学习计划、练习、对话和题库五个服务的状态，得到 `BackupUiState`；原来散在按钮上的启用条件（导出、恢复预览、继续/确认合并）集中到 `BackupUiState.from`，由 `BackupUiStateTest` 在 JVM 上覆盖。`BackupCard(vm, standalone)` 保留为绑定入口（「我的」页和旧版今日页共用同一个 ViewModel），界面是无状态的 `BackupPanel(state, onIntent)`。
+- 「题库管理」：`ExamLibraryViewModel` 暴露 `ExamLibrary.state.flow`，`ExamManagement(state, onIntent)` 无状态，由 `ExamManagementRoute` 绑定。
+- `StudyViewModel.services` 改为 `internal`，页面 ViewModel 统一从这里取服务（AI 连接页随之改用 `vm.services.ai`）；不再被任何页面使用的备份/题库委托方法和属性已删除，仪器测试仍在用的 `backupBusy`、`backupStatus`、`backupRestorePending` 等保留。
+- 验证：174 项 JVM（新增 6 项）、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件与 `scenario ui` 通过；模拟器上手动打开备份页、题库管理页和旧版今日页的备份卡片，数量与按钮状态正常。恢复预览对话框需经系统文件选择器，未手动走完；启动续恢复场景（`restore-startup-*`）本次未跑。
+
 ## 页面 ViewModel：AI 连接（2026-10-29）
 
 - 「我的 → AI 连接」是第一个按页面拆分的界面：`ConnectionViewModel` 直接暴露 `AiGateway.state.flow`（`StateFlow<AiState>`），用 `ConnectionIntent` 接收操作，用 `ConnectionEffect.ApiKeySaved` 通知页面清空已保存的 Key 输入；`ConnectionScreen(state, effects, onIntent)` 本身无状态，由 `ConnectionRoute` 以 `collectAsStateWithLifecycle` 绑定。

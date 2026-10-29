@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
 /** Binds [ConnectionScreen] to its ViewModel; the gateway comes from the activity's [StudyViewModel]. */
 @Composable
 fun ConnectionRoute(vm: StudyViewModel) {
-    val model = viewModel { ConnectionViewModel(vm.ai) }
+    val model = viewModel { ConnectionViewModel(vm.services.ai) }
     val state by model.state.collectAsStateWithLifecycle()
     ConnectionScreen(state, model.effect, model::onIntent)
 }

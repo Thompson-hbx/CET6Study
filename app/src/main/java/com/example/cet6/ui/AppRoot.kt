@@ -22,7 +22,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cet6.data.*
+import com.example.cet6.domain.ExamLibraryState
 import com.example.cet6.ui.components.*
 
 private enum class HomeTab(val key: String, val label: String) {
@@ -131,7 +134,7 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         top == "me/trends" -> SimpleScreen("学习趋势", ::pop) { LearningTrendsScreen(vm) }
         top == "me/records" -> SimpleScreen("练习记录", ::pop) { ExamHistory(vm, onOpen = ::open) }
         top == "me/backup" -> SimpleScreen("备份与恢复", ::pop) { BackupCard(vm, standalone = true) }
-        top == "me/exams" -> SimpleScreen("题库管理", ::pop) { ExamManagement(vm) }
+        top == "me/exams" -> SimpleScreen("题库管理", ::pop) { ExamManagementRoute(vm) }
         top == "me/legacy" -> SimpleScreen("单词与旧版功能", ::pop) {
             legacy.today({ push("me/words") }, { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
                 { showPractice(CoachKind.WRITING); pop() }, ::open)
@@ -176,15 +179,23 @@ private fun LegacyEssays(vm: StudyViewModel) {
     }
 }
 
-/** Import and export of the personal question bank; unchanged behaviour, now its own screen. */
+/** Binds [ExamManagement] to its ViewModel; the library comes from the activity's [StudyViewModel]. */
 @Composable
-fun ExamManagement(vm: StudyViewModel) {
+fun ExamManagementRoute(vm: StudyViewModel) {
+    val model = viewModel { ExamLibraryViewModel(vm.services.exams) }
+    val state by model.state.collectAsStateWithLifecycle()
+    ExamManagement(state, model::onIntent)
+}
+
+/** Import and export of the personal question bank. */
+@Composable
+fun ExamManagement(state: ExamLibraryState, onIntent: (ExamLibraryIntent) -> Unit) {
     val uriHandler = LocalUriHandler.current
-    val import = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { it?.let(vm::previewExam) }
-    val export = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { it?.let(vm::exportExam) }
+    val import = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { it?.let { uri -> onIntent(ExamLibraryIntent.Preview(uri)) } }
+    val export = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { it?.let { uri -> onIntent(ExamLibraryIntent.Export(uri)) } }
     val catalogCount = remember { ExamCatalog.papers().size }
-    val importedCount = vm.examPapers.count { !it.sample }
-    val sampleCount = vm.examPapers.count { it.sample }
+    val importedCount = state.papers.count { !it.sample }
+    val sampleCount = state.papers.count { it.sample }
     SectionCard(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             CardTitle("当前个人题库")
@@ -202,26 +213,26 @@ fun ExamManagement(vm: StudyViewModel) {
         Text("导入你有权使用的结构化 JSON 资料。PDF / Word 请先在电脑本地转换并校对；扫描件暂不自动识别。",
             style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = { import.launch(arrayOf("application/json", "text/plain", "application/octet-stream")) }, enabled = !vm.examBusy) {
+            Button(onClick = { import.launch(arrayOf("application/json", "text/plain", "application/octet-stream")) }, enabled = !state.busy) {
                 Text("导入 JSON 资料")
             }
-            OutlinedButton(onClick = { export.launch("cet6-personal-exams.json") }, enabled = !vm.examBusy && vm.examPapers.isNotEmpty()) {
+            OutlinedButton(onClick = { export.launch("cet6-personal-exams.json") }, enabled = !state.busy && state.papers.isNotEmpty()) {
                 Text("导出个人题库")
             }
         }
-        if (vm.examStatus.isNotBlank()) Text(vm.examStatus, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
+        if (state.status.isNotBlank()) Text(state.status, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
     }
-    if (vm.examPreview.isNotEmpty()) {
+    if (state.preview.isNotEmpty()) {
         SectionCard {
-            CardTitle("导入预览（${vm.examPreview.size} 套）")
-            vm.examPreview.forEachIndexed { index, p ->
+            CardTitle("导入预览（${state.preview.size} 套）")
+            state.preview.forEachIndexed { index, p ->
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text("${p.label} · ${p.status}", style = MaterialTheme.typography.bodyLarge)
                     Note(p.issues().joinToString("；").ifBlank { "结构完整，使用权与套卷一致性由导入者确认" })
                 }
-                if (index < vm.examPreview.lastIndex) Hairline()
+                if (index < state.preview.lastIndex) Hairline()
             }
-            Button(onClick = vm::confirmExamImport, enabled = !vm.examBusy, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = { onIntent(ExamLibraryIntent.ConfirmImport) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) {
                 Text("确认保存个人题库")
             }
         }

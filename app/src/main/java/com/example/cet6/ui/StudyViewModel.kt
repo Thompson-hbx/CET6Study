@@ -16,12 +16,11 @@ import kotlinx.coroutines.launch
 
 /** Exposes the services to the current screens as Compose-observable properties; holds no business rules itself. */
 class StudyViewModel(app: Application) : AndroidViewModel(app) {
-    private val services = StudyServices(app, viewModelScope)
+    /** Shared with screen ViewModels that live in the same ViewModelStore. */
+    internal val services = StudyServices(app, viewModelScope)
     private val dao = services.db.dao()
     private val prefs = app.getSharedPreferences("study_ui", android.content.Context.MODE_PRIVATE)
     private val aiConnection = AiConnectionState(services.ai)
-    /** For screen ViewModels that live in the same ViewModelStore as this one. */
-    internal val ai get() = services.ai
     private val studyUi by services.study.state.composeState()
     private val examUi by services.exams.state.composeState()
     private val backupUi by services.backup.state.composeState()
@@ -56,13 +55,8 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     val backupRecoveryRunning: Boolean get() = backupUi.recoveryRunning
     val backupBusy: Boolean get() = backupUi.busy
     val backupStatus: String get() = backupUi.status
-    val backupPreview: StudyBackup? get() = backupUi.preview
-    val backupPaperPreview: List<ExamPaper>? get() = backupUi.paperPreview
 
     val examPapers: List<ExamPaper> get() = examUi.papers
-    val examPreview: List<ExamPaper> get() = examUi.preview
-    val examStatus: String get() = examUi.status
-    val examBusy: Boolean get() = examUi.busy
 
     val pronunciations: Map<String, String> get() = studyUi.pronunciations
     val now: Long get() = studyUi.now
@@ -119,20 +113,10 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
 
     fun saveDrafts() { if (!backupRecoveryRunning) viewModelScope.launch { coach.flush() } }
 
-    fun previewExam(uri: Uri) = services.exams.preview(uri)
-    fun confirmExamImport() = services.exams.confirmImport()
-    fun exportExam(uri: Uri) = services.exams.export(uri)
-
     fun savePlan(newGoal: Int, reviewGoal: Int) = services.study.savePlan(newGoal, reviewGoal)
     fun importVocabulary(uri: Uri, source: String) = services.study.importVocabulary(uri, source)
     suspend fun savePracticeWord(entry: CoachPractice, word: String, meaning: String, quote: String): String =
         services.study.savePracticeWord(entry, word, meaning, quote)
-
-    fun exportBackup(uri: Uri) = services.backup.export(uri)
-    fun previewBackup(uri: Uri) = services.backup.preview(uri)
-    fun cancelBackupRestore() = services.backup.cancelRestore()
-    fun restoreBackup(adoptPlans: Boolean) = services.backup.restore(adoptPlans)
-    fun resumeBackupRestore() = services.backup.resume()
 
     fun recordReading(choice: String) {
         viewModelScope.launch {
