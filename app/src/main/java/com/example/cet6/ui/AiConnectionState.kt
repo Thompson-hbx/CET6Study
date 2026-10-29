@@ -10,6 +10,9 @@ import com.example.cet6.ai.ResponsesClient
 import com.example.cet6.ai.AiProvider
 import com.example.cet6.ai.ApiConnection
 import com.example.cet6.ai.ChatCompletionsClient
+import com.example.cet6.ai.ReasoningEffort
+import com.example.cet6.ai.ReasoningFormat
+import com.example.cet6.ai.ReviewReasoning
 import com.example.cet6.auth.SecureApiStore
 import com.example.cet6.auth.ChatGptAuth
 import com.example.cet6.auth.SecureSessionStore
@@ -45,13 +48,58 @@ internal class AiConnectionState(
     val aiReady: Boolean get() = if (provider == AiProvider.CHATGPT) hasPlan else hasApiKey
     private fun modelPreference(): String = if (provider == AiProvider.CHATGPT) "model" else "model_${provider.name}"
 
-    private suspend fun streamAi(prompt: String, onDelta: suspend (String) -> Unit): String =
-        if (provider == AiProvider.CHATGPT) ai.stream(chosenModel, prompt, onDelta)
-        else compatibleAi.stream(apiConnection ?: error("请先保存 API 配置"), chosenModel, prompt, onDelta)
-    internal suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String {
+    var deepReviewEnabled by androidx.compose.runtime.mutableStateOf(false)
+        private set
+    var reviewEffort by androidx.compose.runtime.mutableStateOf(ReasoningEffort.HIGH)
+        private set
+    var reviewFormat by androidx.compose.runtime.mutableStateOf(ReasoningFormat.OPENAI)
+        private set
+
+    // Destination and model are part of the key so one provider's settings cannot leak into another's.
+    private fun reviewPreference(): String = "deep_review_${provider.name}_${apiBaseUrl}_$chosenModel"
+
+    private fun restoreReviewSettings() {
+        val key = reviewPreference()
+        reviewFormat = when (provider) {
+            AiProvider.CHATGPT -> ReasoningFormat.OPENAI
+            AiProvider.DEEPSEEK -> ReasoningFormat.DEEPSEEK
+            AiProvider.CUSTOM -> ReasoningFormat.entries.firstOrNull { it.name == prefs.getString("${key}_format", null) }
+                ?: ReasoningFormat.OPENAI
+        }
+        reviewEffort = reviewFormat.efforts.firstOrNull { it.name == prefs.getString("${key}_effort", null) }
+            ?: ReasoningEffort.HIGH
+        deepReviewEnabled = prefs.getBoolean("${key}_enabled", false)
+    }
+
+    fun setDeepReview(enabled: Boolean) {
+        if (busy) return
+        deepReviewEnabled = enabled
+        prefs.edit().putBoolean("${reviewPreference()}_enabled", enabled).apply()
+    }
+
+    fun selectReviewEffort(value: ReasoningEffort) {
+        if (busy || value !in reviewFormat.efforts) return
+        reviewEffort = value
+        prefs.edit().putString("${reviewPreference()}_effort", value.name).apply()
+    }
+
+    fun selectReviewFormat(value: ReasoningFormat) {
+        if (busy || provider != AiProvider.CUSTOM) return
+        reviewFormat = value
+        prefs.edit().putString("${reviewPreference()}_format", value.name).apply()
+        if (reviewEffort !in value.efforts) selectReviewEffort(ReasoningEffort.HIGH)
+    }
+
+    private suspend fun streamAi(prompt: String, deepReview: Boolean = false,
+        onDelta: suspend (String) -> Unit): String {
+        val reasoning = if (deepReview && deepReviewEnabled) ReviewReasoning(reviewEffort, reviewFormat) else null
+        return if (provider == AiProvider.CHATGPT) ai.stream(chosenModel, prompt, reasoning, onDelta)
+        else compatibleAi.stream(apiConnection ?: error("请先保存 API 配置"), chosenModel, prompt, reasoning, onDelta)
+    }
+    internal suspend fun streamCoach(prompt: String, deepReview: Boolean = false, onDelta: suspend (String) -> Unit): String {
         busy = true
         try {
-            return streamAi(prompt) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
+            return streamAi(prompt, deepReview) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
         } finally { syncSessionState(); busy = false }
     }
     var sessionEmail by androidx.compose.runtime.mutableStateOf(
@@ -73,12 +121,14 @@ internal class AiConnectionState(
     init {
         restoreApiConnection()
         chosenModel = prefs.getString(modelPreference(), "").orEmpty()
+        restoreReviewSettings()
         if (aiReady) refreshModels()
     }
 
     fun selectModel(slug: String) {
         if (busy) return
         chosenModel = slug.trim()
+        restoreReviewSettings()
         prefs.edit().putString(modelPreference(), chosenModel).apply()
     }
 
@@ -98,6 +148,7 @@ internal class AiConnectionState(
         status = "已切换到 ${value.label}。"
         restoreApiConnection()
         chosenModel = prefs.getString(modelPreference(), "").orEmpty()
+        restoreReviewSettings()
         if (aiReady) refreshModels()
     }
 
@@ -111,6 +162,7 @@ internal class AiConnectionState(
             val connection = ApiConnection.create(url, savedKey)
             apiStore.save(provider, connection)
             apiConnection = connection
+            restoreReviewSettings()
             models = emptyList()
             result = ""
             status = "API 配置已加密保存；请刷新模型或填写模型名称，再发送测试请求。"
@@ -131,6 +183,7 @@ internal class AiConnectionState(
             apiConnection = null
             models = emptyList()
             chosenModel = ""
+            restoreReviewSettings()
             prefs.edit().remove(modelPreference()).apply()
             result = ""
             status = "已清除本机 ${provider.label} 配置；如需撤销 Key，请到服务商控制台操作。"
@@ -201,6 +254,7 @@ internal class AiConnectionState(
                         (models.firstOrNull { it.slug == remembered } ?: models.firstOrNull())?.slug.orEmpty()
                 }
                 prefs.edit().putString(modelPreference(), chosenModel).apply()
+                restoreReviewSettings()
                 status = "已获取 ${models.size} 个当前账号可见模型。"
                 if (models.isEmpty()) status = "没有获取到可用模型；请检查权限，或为兼容接口手动填写模型名称。"
             } catch (e: CancellationException) { throw e
@@ -219,7 +273,7 @@ internal class AiConnectionState(
             result = ""
             status = "正在请求 ${provider.label}……"
             try {
-                val completed = streamAi(prompt) { delta ->
+                val completed = streamAi(prompt, deepReview = true) { delta ->
                     withContext(Dispatchers.Main) { result += delta }
                 }
                 status = "API 测试成功：已收到完整回复。"

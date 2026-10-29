@@ -46,21 +46,28 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     val hasPlan: Boolean get() = aiConnection.hasPlan
     val models: List<AvailableModel> get() = aiConnection.models
     val chosenModel: String get() = aiConnection.chosenModel
+    val deepReviewEnabled: Boolean get() = aiConnection.deepReviewEnabled
+    val reviewEffort get() = aiConnection.reviewEffort
+    val reviewFormat get() = aiConnection.reviewFormat
     val busy: Boolean get() = aiConnection.busy
     val status: String get() = aiConnection.status
     val result: String get() = aiConnection.result
 
     internal suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String =
-        aiConnection.streamCoach(prompt, onDelta)
+        aiConnection.streamCoach(prompt, onDelta = onDelta)
+    private suspend fun streamReview(prompt: String, onDelta: suspend (String) -> Unit): String =
+        aiConnection.streamCoach(prompt, deepReview = true, onDelta = onDelta)
     val coach = CoachState(coachRepository, viewModelScope,
         canRequest = { aiReady && chosenModel.isNotBlank() && !busy && !backupBusy && !backupRecoveryRunning },
         model = { chosenModel },
         startupReady = restoreStartupReady.takeIf { backupRestorePending },
+        reviewRequest = ::streamReview,
         request = ::streamCoach)
     /** Saved explanations and follow-ups; independent of the practice rows above. */
     val talk = CoachTalk(coachRepository, viewModelScope,
         canRequest = { aiReady && chosenModel.isNotBlank() && !busy && !backupBusy && !backupRecoveryRunning },
         model = { chosenModel },
+        reviewRequest = ::streamReview,
         request = ::streamCoach)
     var reviewTurns by androidx.compose.runtime.mutableStateOf<List<CoachTurn>>(emptyList())
         private set
@@ -163,6 +170,9 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch { dao.essays().collectLatest { essays = it } }
     }
 
+    fun setDeepReview(enabled: Boolean) = aiConnection.setDeepReview(enabled)
+    fun selectReviewEffort(value: com.example.cet6.ai.ReasoningEffort) = aiConnection.selectReviewEffort(value)
+    fun selectReviewFormat(value: com.example.cet6.ai.ReasoningFormat) = aiConnection.selectReviewFormat(value)
     fun selectModel(slug: String) = aiConnection.selectModel(slug)
     fun selectProvider(value: AiProvider) = aiConnection.selectProvider(value)
     fun saveApiConnection(baseUrl: String, key: String): Boolean = aiConnection.saveApiConnection(baseUrl, key)

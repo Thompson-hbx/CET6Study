@@ -13,6 +13,12 @@
 - 三种服务分别记住所选模型，DeepSeek 与自定义服务分别加密保存一份配置。Key 由 Android Keystore AES-GCM 加密，不进入学习 JSON 备份或系统迁移；清除本机配置不会撤销服务商 Key。更换自定义地址时必须重新输入 Key。
 - API 请求按所选服务商规则计费，使用自己的 API 账户，独立于 ChatGPT 套餐。只有完整结束的文本才保存为学习反馈；推理过程不混入正文，中断、截断或过滤的回复不算完成。
 
+「我的 → AI 连接」新增可选的**深度批改**，默认关闭。开启后仅作文批改、翻译批改、阅读逐题分析（含旧阅读错因分析）及连接页测试使用所选思考档位，构思、提示、段落辅助和普通追问沿用服务端默认值。默认深度档位为 `high`；OpenAI 兼容格式可选 `high/xhigh/max`，DeepSeek 格式可选 `high/max`，只应选择当前模型明确支持的档位。设置按服务商、已保存服务地址和模型分别记住；切换服务或模型不会把旧选择套到新模型。自定义 API 可按服务商文档选择 OpenAI 或 DeepSeek 请求格式。
+
+ChatGPT Responses 使用 `reasoning.effort`；兼容 API 使用顶层 `reasoning_effort`，DeepSeek 格式另带 `thinking.type=enabled`。服务以 HTTP 400/422 拒绝深度请求时明确提示检查模型、档位和格式，保留原有作答与反馈，不自动降档或重发。兼容服务可能忽略参数，本功能只确认发送了所选参数，不保证服务端实际执行或批改质量提升。更高档位可能增加等待和额度消耗，原有登录、API Key、数据库和备份格式不变。
+
+参数依据：[OpenAI 思考强度](https://developers.openai.com/api/docs/guides/reasoning)、[DeepSeek 思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)。
+
 协议参考：[DeepSeek 首次调用](https://api-docs.deepseek.com/zh-cn/)、[Chat Completions](https://api-docs.deepseek.com/api/create-chat-completion/)、[模型列表](https://api-docs.deepseek.com/api/list-models/)（2026-10-23 核对）。
 
 AI 追问会区分等待回复与正文生成，输入栏旁可随时停止。停止或失败后保留原问题，可重新生成或放回输入框修改；半截回复不会保存。完整追问回复显示模型、保存时间并支持一键复制。原问题恢复按钮不会覆盖输入框里另写的草稿。

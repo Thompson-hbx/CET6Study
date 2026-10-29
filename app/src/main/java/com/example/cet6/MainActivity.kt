@@ -38,6 +38,7 @@ import java.time.format.DateTimeFormatter
 import com.example.cet6.ui.StudyViewModel
 import com.example.cet6.ai.AiProvider
 import com.example.cet6.ui.ApiConnectionSettings
+import com.example.cet6.ui.DeepReviewSettings
 import com.example.cet6.ui.VocabularyImportCard
 import com.example.cet6.ui.WordContentLicenses
 import com.example.cet6.ui.BackupCard
@@ -307,6 +308,7 @@ private fun ConnectionScreen(vm: StudyViewModel) {
     if (vm.provider == AiProvider.CHATGPT || vm.models.isNotEmpty()) {
         ModelSelector(vm)
     }
+    DeepReviewSettings(vm)
     OutlinedTextField(
         value = message,
         onValueChange = { message = it },

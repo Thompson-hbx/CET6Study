@@ -105,6 +105,28 @@ class AiInteractionChecks(private val context: Context) {
                 "Malformed mixed review accepted a decision"
             }
             check(db.dao().turnById(invalidReview.id) == invalidReview) { "Rejected decision changed raw review or existing state" }
+            var deepCalls = 0
+            var defaultCalls = 0
+            var rejectDeep = false
+            val routed = CoachTalk(repository, scope, { true }, { "offline-depth-model" },
+                reviewRequest = { _, _ ->
+                    deepCalls++
+                    if (rejectDeep) throw com.example.cet6.ai.DeepReviewRejectedException()
+                    "Complete deep review"
+                }, request = { _, _ -> defaultCalls++; "Complete default response" })
+            for (kind in TurnKind.all) {
+                routed.send(practice, Anchor.REVIEW, kind) { "Original route fixture" }
+                withTimeout(5000) { while (routed.busy) yield() }
+                check(routed.failure == null)
+            }
+            check(deepCalls == 3 && defaultCalls == TurnKind.all.size - 3)
+            val turnsBeforeRejection = db.dao().allTurns().toSet()
+            rejectDeep = true
+            routed.send(practice, Anchor.REVIEW, TurnKind.WRITING_REVIEW) { "Original rejected review" }
+            withTimeout(5000) { while (routed.busy) yield() }
+            check(routed.failure?.message?.contains("未自动降档") == true)
+            check(deepCalls == 4 && defaultCalls == TurnKind.all.size - 3)
+            check(db.dao().allTurns().toSet() == turnsBeforeRejection) { "Rejected depth changed complete feedback" }
         } finally {
             scope.cancel()
             db.close()

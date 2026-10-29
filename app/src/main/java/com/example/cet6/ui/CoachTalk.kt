@@ -23,8 +23,12 @@ class CoachTalk(
     private val scope: CoroutineScope,
     private val canRequest: () -> Boolean,
     private val model: () -> String,
+    private val reviewRequest: (suspend (String, suspend (String) -> Unit) -> String)?,
     private val request: suspend (String, suspend (String) -> Unit) -> String
 ) {
+    constructor(repository: CoachRepository, scope: CoroutineScope, canRequest: () -> Boolean, model: () -> String,
+        request: suspend (String, suspend (String) -> Unit) -> String) : this(repository, scope, canRequest, model, null, request)
+
     data class Pending(val practiceId: String, val anchor: String, val kind: String, val question: String, val text: String = "")
     data class Failure(val practiceId: String, val anchor: String, val message: String, val question: String = "",
         val kind: String = "", val stopped: Boolean = false, val retry: (() -> Unit)? = null) {
@@ -67,7 +71,8 @@ class CoachTalk(
         val runningJob = scope.launch {
             try {
                 val selectedModel = model()
-                val reply = request(text) { delta ->
+                val sendRequest = if (isDeepReviewKind(kind)) reviewRequest ?: request else request
+                val reply = sendRequest(text) { delta ->
                     pending = pending?.let {
                         val next = it.text + delta
                         CoachTurns.checkReplyLength(next)
@@ -117,3 +122,7 @@ class CoachTalk(
         catch (_: Exception) { failure = Failure(turn.practiceId, turn.anchor, "本机保存失败，请重试。") }
     }
 }
+
+/** Only full reviews and evidence analysis opt in; hints and follow-up chat retain server defaults. */
+internal fun isDeepReviewKind(kind: String): Boolean = kind in setOf(
+    TurnKind.WRITING_REVIEW, TurnKind.TRANSLATION_REVIEW, TurnKind.READING_EXPLAIN)

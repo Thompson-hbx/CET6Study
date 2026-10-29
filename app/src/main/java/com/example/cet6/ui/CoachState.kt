@@ -22,10 +22,11 @@ class CoachState internal constructor(
     private val canRequest: () -> Boolean,
     private val model: () -> String,
     private val startupReady: Deferred<Unit>?,
+    private val reviewRequest: (suspend (String, suspend (String) -> Unit) -> String)? = null,
     private val request: suspend (String, suspend (String) -> Unit) -> String
 ) {
     constructor(repository: CoachRepository, scope: CoroutineScope, canRequest: () -> Boolean, model: () -> String,
-        request: suspend (String, suspend (String) -> Unit) -> String) : this(repository, scope, canRequest, model, null, request)
+        request: suspend (String, suspend (String) -> Unit) -> String) : this(repository, scope, canRequest, model, null, null, request)
 
     val entries = mutableStateMapOf<CoachKind, CoachPractice>()
     val messages = mutableStateMapOf<CoachKind, String>()
@@ -303,7 +304,8 @@ class CoachState internal constructor(
         activeRequest = current.id
         messages[kind] = "AI 正在结合本篇原文和你的选项分析错因……"
         try {
-            val completed = request(prompt) { partial += it }
+            val sendRequest = if (followUp.isBlank()) reviewRequest ?: request else request
+            val completed = sendRequest(prompt) { partial += it }
             check(completed.isNotBlank())
             val response = if (followUp.isBlank()) completed else "追问：$followUp\n\n$completed"
             val feedback = listOf(current.feedback, "${ReadingDiagnosis.heading(number)}\n\n$response")
@@ -340,7 +342,8 @@ class CoachState internal constructor(
         activeRequest = submitted.id
         messages[kind] = "AI 处理中；网络中断仍保留作答。"
         try {
-            val completed = request(prompt) { partial += it }
+            val sendRequest = if (followUp.isBlank()) reviewRequest ?: request else request
+            val completed = sendRequest(prompt) { partial += it }
             check(completed.isNotBlank()) { "AI 没有返回可用文本" }
             val feedback = if (followUp.isNotBlank()) "${submitted.feedback}\n\n追问：$followUp\n\n$completed"
                 else if (kind != CoachKind.READING) listOf(submitted.feedback, "## ${focus.label}\n\n$completed")

@@ -11,6 +11,7 @@ object CoachFailures {
         val code = Regex("(?:code=|OAuth Token 请求失败：HTTP [0-9]{3}，|AI 响应未完成：)([a-z_]+)\\b")
             .find(message)?.groupValues?.get(1)
         return when {
+            error is com.example.cet6.ai.DeepReviewRejectedException -> error.message.orEmpty()
             error is CoachReplyTooLongException ->
                 "回复超过 60,000 字符，本次问答未保存，也未截断为完整回复；请缩小问题范围后重试。"
             code in setOf("invalid_grant", "invalid_token", "token_expired") || http == 401 ||
