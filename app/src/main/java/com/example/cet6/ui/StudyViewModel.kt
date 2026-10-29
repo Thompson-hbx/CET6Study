@@ -20,6 +20,8 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     private val dao = services.db.dao()
     private val prefs = app.getSharedPreferences("study_ui", android.content.Context.MODE_PRIVATE)
     private val aiConnection = AiConnectionState(services.ai)
+    /** For screen ViewModels that live in the same ViewModelStore as this one. */
+    internal val ai get() = services.ai
     private val studyUi by services.study.state.composeState()
     private val examUi by services.exams.state.composeState()
     private val backupUi by services.backup.state.composeState()

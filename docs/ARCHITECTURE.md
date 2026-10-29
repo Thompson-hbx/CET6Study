@@ -2,6 +2,13 @@
 
 本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
 
+## 页面 ViewModel：AI 连接（2026-10-29）
+
+- 「我的 → AI 连接」是第一个按页面拆分的界面：`ConnectionViewModel` 直接暴露 `AiGateway.state.flow`（`StateFlow<AiState>`），用 `ConnectionIntent` 接收操作，用 `ConnectionEffect.ApiKeySaved` 通知页面清空已保存的 Key 输入；`ConnectionScreen(state, effects, onIntent)` 本身无状态，由 `ConnectionRoute` 以 `collectAsStateWithLifecycle` 绑定。
+- 页面从 `MainActivity` 移到 `ui/ConnectionScreen.kt`，`ApiConnectionSettings` / `DeepReviewSettings` 改为接收 `AiState` 与 intent；`LegacyScreens.connection` 删除。界面文案与布局不变，正在输入的 Base URL、Key、测试消息仍只留在页面内存（Key 不进 saved state）。
+- `ConnectionViewModel` 通过 `viewModel {}` 放在 Activity 的 ViewModelStore，网关取自同一 store 里的 `StudyViewModel`（`internal val ai`），两者同时清除。改为进程级容器仍待后续页面一起处理。
+- 验证：168 项 JVM、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件与 `scenario ui` 通过；模拟器上手动进入 AI 连接页，切换服务、无效配置保存提示和返回后「我的」摘要同步均正常。未发起真实 AI 请求，未在实体机安装。
+
 ## 服务层（domain）拆分（2026-10-29）
 
 - 新增 `com.example.cet6.domain`，不依赖 Compose：`AiGateway`（服务配置、OAuth、模型、流式请求）、`PracticeService`（原 `CoachState` 的草稿/提交/提示/诊断/微练习）、`ConversationService`（原 `CoachTalk` 的 turn 请求）、`StudyPlanService`（词库、FSRS 复习、每日计划）、`ExamLibrary`（个人题库读取、导入预览、导出）、`BackupService`（完整备份导出、预览、可续恢复）和 `AppGate`（统一判断能否发起 AI 请求，替代 ViewModel 里重复的 `canRequest`）。`StudyServices` 负责创建与接线，并按原顺序完成“先续恢复、再读题库、最后加载草稿和词库”的启动流程。

@@ -7,8 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
@@ -18,10 +16,7 @@ import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.EditNote
-import androidx.compose.material.icons.outlined.Hub
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
-import androidx.compose.material.icons.automirrored.outlined.Send
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,9 +31,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.example.cet6.ui.StudyViewModel
-import com.example.cet6.ai.AiProvider
-import com.example.cet6.ui.ApiConnectionSettings
-import com.example.cet6.ui.DeepReviewSettings
 import com.example.cet6.ui.VocabularyImportCard
 import com.example.cet6.ui.WordContentLicenses
 import com.example.cet6.ui.BackupCard
@@ -61,7 +53,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             CET6Theme {
                 AppRoot(vm, LegacyScreens(
-                    connection = { ConnectionScreen(vm) },
                     words = { WordScreen(vm) },
                     today = { onWords, onReading, onWriting, onReview -> TodayScreen(vm, onWords, onReading, onWriting, onReview) }
                 ))
@@ -220,158 +211,6 @@ private fun SectionTitle(title: String, subtitle: String) {
     Text(title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
     Text(subtitle, style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant)
-}
-
-@Composable
-private fun ConnectionScreen(vm: StudyViewModel) {
-    var message by rememberSaveable { mutableStateOf("请只回答：六级研习室 API 测试成功。") }
-    Text(
-        "选择服务与模型，用于批改、讲解和追问",
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        AiProvider.entries.forEach { provider ->
-            FilterChip(selected = vm.provider == provider, onClick = { vm.selectProvider(provider) },
-                enabled = !vm.busy, label = { Text(provider.label) })
-        }
-    }
-    if (vm.provider != AiProvider.CHATGPT) {
-        ApiConnectionSettings(vm)
-    } else {
-        ElevatedCard(
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        if (vm.sessionEmail.isBlank()) "未连接" else "已登录：${vm.sessionEmail}",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Surface(
-                        shape = MaterialTheme.shapes.extraSmall,
-                        color = if (vm.sessionEmail.isNotBlank()) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant
-                    ) {
-                        Text(
-                            if (vm.sessionEmail.isNotBlank()) "有效会话" else "离线",
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (vm.sessionEmail.isNotBlank()) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-                Text(
-                    if (vm.hasPlan) "套餐 scope：已授予（实际调用待验证）" else "套餐 scope：未授予",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (vm.hasPlan) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
-                )
-                Button(
-                    onClick = vm::signIn,
-                    enabled = !vm.busy,
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(Icons.Outlined.Hub, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text("Continue with ChatGPT", fontWeight = FontWeight.SemiBold)
-                }
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(
-                        onClick = vm::refreshModels,
-                        enabled = vm.hasPlan && !vm.busy,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(Icons.Outlined.Refresh, contentDescription = null, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(4.dp))
-                        Text("刷新模型")
-                    }
-                    OutlinedButton(
-                        onClick = vm::signOut,
-                        enabled = !vm.busy,
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text("退出连接")
-                    }
-                }
-            }
-        }
-    }
-    if (vm.provider == AiProvider.CHATGPT || vm.models.isNotEmpty()) {
-        ModelSelector(vm)
-    }
-    DeepReviewSettings(vm)
-    OutlinedTextField(
-        value = message,
-        onValueChange = { message = it },
-        label = { Text("测试消息") },
-        minLines = 3,
-        enabled = !vm.busy,
-        shape = MaterialTheme.shapes.small,
-        modifier = Modifier.fillMaxWidth()
-    )
-    Button(
-        onClick = { vm.ask(message) },
-        enabled = vm.aiReady && vm.chosenModel.isNotBlank() && message.isNotBlank() && !vm.busy,
-        shape = MaterialTheme.shapes.small,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Icon(Icons.AutoMirrored.Outlined.Send, contentDescription = null, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.width(8.dp))
-        Text("发送一条测试请求", fontWeight = FontWeight.SemiBold)
-    }
-    StatusCard(vm)
-    Text(
-        if (vm.provider == AiProvider.CHATGPT) "授权过程由系统浏览器完成。此应用不收集密码、不使用 ChatGPT Cookie。"
-        else "请求会把当前练习相关内容发送给所选服务，按服务商 API 规则计费。API Key 不包含在学习备份中。",
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-}
-
-@Composable
-private fun ModelSelector(vm: StudyViewModel) {
-    var expanded by remember { mutableStateOf(false) }
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Text("推理模型", fontWeight = FontWeight.Medium)
-        Box {
-            OutlinedButton(onClick = { expanded = true }, enabled = vm.models.isNotEmpty() && !vm.busy) {
-                Text(vm.models.find { it.slug == vm.chosenModel }?.displayName ?: vm.chosenModel.ifBlank { "请先获取模型" })
-                Text(" ▾")
-            }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                vm.models.forEach { model ->
-                    DropdownMenuItem(text = { Text(model.displayName) }, onClick = {
-                        vm.selectModel(model.slug); expanded = false
-                    })
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun StatusCard(vm: StudyViewModel) {
-    ElevatedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (vm.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
-            Text("状态：${vm.status}", style = MaterialTheme.typography.bodyMedium)
-            if (vm.result.isNotBlank()) {
-                HorizontalDivider()
-                SelectionContainer {
-                    Text(vm.result, style = MaterialTheme.typography.bodyLarge)
-                }
-            }
-        }
-    }
 }
 
 @Composable
