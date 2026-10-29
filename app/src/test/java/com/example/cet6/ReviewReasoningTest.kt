@@ -3,7 +3,7 @@ package com.example.cet6
 import com.example.cet6.ai.*
 import com.example.cet6.data.CoachFailures
 import com.example.cet6.data.TurnKind
-import com.example.cet6.ui.isDeepReviewKind
+import com.example.cet6.domain.isDeepReviewKind
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.CoachTurn
 import com.example.cet6.data.TurnKind
+import com.example.cet6.domain.ConversationService
 import com.example.cet6.ui.components.*
 
 /** A thin working line with an honest stop control; no spinner theatre. */
@@ -47,7 +48,7 @@ fun WorkingLine(label: String, onStop: () -> Unit, modifier: Modifier = Modifier
 
 /** A request that did not go through, as a tinted strip that screen readers announce when it appears. */
 @Composable
-fun FailureLine(failure: CoachTalk.Failure, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+fun FailureLine(failure: ConversationService.Failure, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
     val tone = if (failure.stopped) Tone.Muted else Tone.Must
     Surface(color = tone.soft(), shape = MaterialTheme.shapes.medium, modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 14.dp, vertical = 8.dp)) {
@@ -87,7 +88,7 @@ fun QuickAsks(items: List<String>, enabled: Boolean, onPick: (String) -> Unit, m
 
 /** Follow-up thread of one anchor: the learner's questions on the right, replies as plain reading text. */
 @Composable
-fun ThreadView(turns: List<CoachTurn>, pending: CoachTalk.Pending?, onStop: () -> Unit, modifier: Modifier = Modifier,
+fun ThreadView(turns: List<CoachTurn>, pending: ConversationService.Pending?, onStop: () -> Unit, modifier: Modifier = Modifier,
     kinds: Set<String> = setOf(TurnKind.CHAT)) {
     val chat = turns.filter { it.kind in kinds }
     if (chat.isEmpty() && pending?.kind !in kinds) return
@@ -140,7 +141,7 @@ private fun Question(text: String) {
  */
 @Composable
 fun AskBar(placeholder: String, busy: Boolean, enabled: Boolean, onSend: (String) -> Unit, onStop: () -> Unit,
-    modifier: Modifier = Modifier, draftKey: String = "", failure: CoachTalk.Failure? = null, onDismissFailure: () -> Unit = {}) {
+    modifier: Modifier = Modifier, draftKey: String = "", failure: ConversationService.Failure? = null, onDismissFailure: () -> Unit = {}) {
     var text by rememberSaveable(draftKey) { mutableStateOf("") }
     val focus = LocalFocusManager.current
     fun send() {

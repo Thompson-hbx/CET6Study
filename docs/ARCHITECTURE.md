@@ -2,6 +2,14 @@
 
 本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
 
+## 服务层（domain）拆分（2026-10-29）
+
+- 新增 `com.example.cet6.domain`，不依赖 Compose：`AiGateway`（服务配置、OAuth、模型、流式请求）、`PracticeService`（原 `CoachState` 的草稿/提交/提示/诊断/微练习）、`ConversationService`（原 `CoachTalk` 的 turn 请求）、`StudyPlanService`（词库、FSRS 复习、每日计划）、`ExamLibrary`（个人题库读取、导入预览、导出）、`BackupService`（完整备份导出、预览、可续恢复）和 `AppGate`（统一判断能否发起 AI 请求，替代 ViewModel 里重复的 `canRequest`）。`StudyServices` 负责创建与接线，并按原顺序完成“先续恢复、再读题库、最后加载草稿和词库”的启动流程。
+- 各服务的状态是不可变 data class，经 `ServiceState` 同时暴露为 `StateFlow`（供后续按页面拆分的 ViewModel 收集）和同步监听；`ui/ServiceMirror.kt` 用同步监听把状态镜像为 Compose state，旧页面读取不会滞后。
+- `AiConnectionState`、`CoachState`、`CoachTalk` 改为薄适配层，保留原构造函数、属性和方法；`StudyViewModel` 只做委托，公开接口不变。逻辑、中文提示文案、Room schema、备份格式均未改。`CoachTalk.Pending/Failure` 移至 `ConversationService`，`isDeepReviewKind` 移至 `domain`。
+- `StudyServices` 目前随 ViewModel 的 `viewModelScope` 存活，新 ViewModel 仍从磁盘重新启动；改为进程级容器会改变恢复与重启语义，留到按页面拆分 ViewModel 时再验证。
+- 验证：168 项 JVM、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件、`scenario ui` 与 `check_draft_process.ps1` 四种模式通过；未在实体机安装，未发起真实 AI 请求。
+
 ## AI 连接职责拆分（2026-10-27）
 
 - `AiConnectionState` 持有服务配置、模型偏好、OAuth 可用状态、模型列表、测试回复和共享请求状态；其协程仍使用 `StudyViewModel.viewModelScope`。`StudyViewModel` 保留原公开读取/操作接口及 `streamCoach`，训练与追问继续共享同一请求门槛；旧作文写入通过回调留在 ViewModel 的数据层。
