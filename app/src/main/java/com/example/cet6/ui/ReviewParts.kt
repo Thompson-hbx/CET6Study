@@ -98,7 +98,7 @@ fun IssueList(placed: List<PlacedIssue>, onOpen: (Int) -> Unit, onDecide: ((Revi
     val must = placed.count { it.issue.must }
     val shown = placed.withIndex().filter { (_, p) -> when (filter) { 1 -> p.issue.must; 2 -> !p.issue.must; else -> true } }
     SectionLabel("逐条修改 · ${placed.size}")
-    FilterPills(listOf("全部 ${placed.size}", "必改 $must", "可改 ${placed.size - must}"), filter, { filter = it },
+    TrackSegments(listOf("全部 ${placed.size}", "必改 $must", "可改 ${placed.size - must}"), filter, { filter = it },
         Modifier.padding(start = PageGutter, end = PageGutter, bottom = 10.dp))
     if (shown.isEmpty()) { Note("这一类没有修改。", Modifier.padding(horizontal = PageGutter)); return }
     RowCard {
@@ -139,8 +139,8 @@ fun IssueRow(placed: PlacedIssue, number: Int, onDecide: ((ReviewIssue, ReviewDe
                 colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier.heightIn(min = 40.dp)) { Text("采纳") }
-            OutlinedButton(onClick = { onDecide(issue, ReviewDecision.DISMISS) }, contentPadding = PaddingValues(horizontal = 16.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
+            TextButton(onClick = { onDecide(issue, ReviewDecision.DISMISS) }, contentPadding = PaddingValues(horizontal = 16.dp),
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
                 modifier = Modifier.heightIn(min = 40.dp)) { Text("忽略") }
         }
     }
@@ -188,7 +188,7 @@ fun IssueSheet(
                         val following = items.indices.firstOrNull { it > index && !items[it].accepted && !items[it].dismissed }
                         if (following != null) onIndex(following) else onDismissSheet()
                     }
-                    OutlinedButton(onClick = { onReject(issue); next() }, modifier = Modifier.weight(1f).height(48.dp)) { Text("忽略") }
+                    TextButton(onClick = { onReject(issue); next() }, modifier = Modifier.weight(1f).height(48.dp)) { Text("忽略") }
                     Button(onClick = { onAccept(issue); next() }, enabled = placed.range != null, modifier = Modifier.weight(1f).height(48.dp)) { Text("采纳") }
                 }
             }

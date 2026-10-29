@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-29",
+  "device": {
+    "model": "V2359A",
+    "androidApi": 36,
+    "resolution": [
+      1260,
+      2800
+    ],
+    "supportedRefreshRatesHz": [
+      60,
+      72,
+      90,
+      120
+    ]
+  },
+  "conditions": {
+    "build": "debug",
+    "systemLowPower": false,
+    "batteryTemperatureC": 31.4,
+    "charging": true,
+    "systemRefreshSettingsChanged": false
+  },
+  "scenario": "Writing catalogue; same original data; two warmup pairs; two trials each with 12 alternating 400ms swipes.",
+  "baseline": "Same Apple UI before performance changes, not the older UI that was initially on the phone.",
+  "before": [
+    {
+      "Total frames rendered": "1006",
+      "Janky frames": "0 (0.00%)",
+      "50th percentile": "6ms",
+      "90th percentile": "7ms",
+      "95th percentile": "8ms",
+      "99th percentile": "9ms",
+      "Number Missed Vsync": "0",
+      "gestureBatchWallSeconds": 5.612
+    },
+    {
+      "Total frames rendered": "1016",
+      "Janky frames": "0 (0.00%)",
+      "50th percentile": "6ms",
+      "90th percentile": "7ms",
+      "95th percentile": "7ms",
+      "99th percentile": "8ms",
+      "Number Missed Vsync": "0",
+      "gestureBatchWallSeconds": 5.621
+    }
+  ],
+  "after": [
+    {
+      "Total frames rendered": "1336",
+      "Janky frames": "0 (0.00%)",
+      "50th percentile": "6ms",
+      "90th percentile": "7ms",
+      "95th percentile": "8ms",
+      "99th percentile": "10ms",
+      "Number Missed Vsync": "0",
+      "gestureBatchWallSeconds": 5.596
+    },
+    {
+      "Total frames rendered": "1338",
+      "Janky frames": "0 (0.00%)",
+      "50th percentile": "6ms",
+      "90th percentile": "7ms",
+      "95th percentile": "8ms",
+      "99th percentile": "11ms",
+      "Number Missed Vsync": "0",
+      "gestureBatchWallSeconds": 5.602
+    }
+  ],
+  "windowCadence": {
+    "catalog-frames-phone-after-timed-1.txt": {
+      "windowFrames": 118,
+      "targetIntervalMedianMs": 8.333,
+      "producedIntervalMedianMs": 8.286,
+      "deadlineLeadMedianMs": 8300.09
+    },
+    "catalog-frames-phone-after-timed-2.txt": {
+      "windowFrames": 119,
+      "targetIntervalMedianMs": 8.333,
+      "producedIntervalMedianMs": 8.286,
+      "deadlineLeadMedianMs": 13824.76
+    },
+    "catalog-frames-phone-before-timed-1.txt": {
+      "windowFrames": 118,
+      "targetIntervalMedianMs": 11.111,
+      "producedIntervalMedianMs": 11.049,
+      "deadlineLeadMedianMs": 14.6
+    },
+    "catalog-frames-phone-before-timed-2.txt": {
+      "windowFrames": 118,
+      "targetIntervalMedianMs": 11.111,
+      "producedIntervalMedianMs": 11.049,
+      "deadlineLeadMedianMs": 14.6
+    }
+  },
+  "completedFrameCadence": {
+    "catalog-frames-phone-after-timed-1.txt": {
+      "samples": 118,
+      "FrameStartTimeMedianIntervalMs": 8.293,
+      "SwapBuffersMedianIntervalMs": 8.341,
+      "FrameCompletedMedianIntervalMs": 8.29,
+      "DisplayPresentTimeMedianIntervalMs": 8.286
+    },
+    "catalog-frames-phone-after-timed-2.txt": {
+      "samples": 119,
+      "FrameStartTimeMedianIntervalMs": 8.302,
+      "SwapBuffersMedianIntervalMs": 8.277,
+      "FrameCompletedMedianIntervalMs": 8.248,
+      "DisplayPresentTimeMedianIntervalMs": 8.286
+    },
+    "catalog-frames-phone-before-timed-1.txt": {
+      "samples": 118,
+      "FrameStartTimeMedianIntervalMs": 11.053,
+      "SwapBuffersMedianIntervalMs": 11.161,
+      "FrameCompletedMedianIntervalMs": 11.174,
+      "DisplayPresentTimeMedianIntervalMs": 11.049
+    },
+    "catalog-frames-phone-before-timed-2.txt": {
+      "samples": 118,
+      "FrameStartTimeMedianIntervalMs": 11.062,
+      "SwapBuffersMedianIntervalMs": 11.131,
+      "FrameCompletedMedianIntervalMs": 11.123,
+      "DisplayPresentTimeMedianIntervalMs": 11.049
+    }
+  },
+  "observedWindowRefreshPreferenceHz": 120.00001,
+  "conclusion": "Window target interval changed from 11.111 ms (90 Hz) to 8.333 ms (120 Hz). Median DisplayPresentTime intervals changed from 11.049 ms to 8.286 ms in both trials; FrameStartTime, SwapBuffers and FrameCompleted cadence agree. This supports approximately 90 to 120 FPS during the sampled catalogue scrolling.",
+  "limitations": [
+    "Short catalogue scroll sample, not every page or a sustained thermal/power test.",
+    "Median frame work duration stayed at 6 ms in both builds; this does not show a lower per-frame processing cost.",
+    "Vendor FrameDeadline values after optimization are several seconds ahead of IntendedVsync, so the reported zero-jank counter is not accepted as proof of zero dropped frames.",
+    "Vendor high bits in Flags are nonzero; cadence uses completed timestamp rows rather than requiring Flags == 0.",
+    "Do not calculate FPS by dividing gfxinfo Total frames rendered by gesture wall time."
+  ],
+  "delivery": {
+    "applicationId": "com.example.cet6",
+    "sameSigningCertificate": true,
+    "installedApkSha256": "c5588e3ba2b7d475cb7a93f72708a524db2d8724350db21e30605dc566e239e7",
+    "installedApkHashMatched": true,
+    "installedOldApkContainedPersonalAssets": false,
+    "userDataCleared": false,
+    "practiceEditedOrSubmitted": false,
+    "aiRequests": 0,
+    "fourRootTabsChecked": true
+  },
+  "screenshots": [
+    "phone-smoothness-catalog-2026-10-29.png",
+    "phone-xiye-me-2026-10-29.png"
+  ]
+}

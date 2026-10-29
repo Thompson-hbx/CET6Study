@@ -47,8 +47,8 @@ fun ExamClock(key: String, minutes: Int = 30) {
         else -> "已超时 ${-left / 60} 分 ${-left % 60} 秒，点按停止"
     }
     Column {
-        // A pill beside the word count: the timer reads as a control, not as a link.
-        OutlinedButton(onClick = {
+        // A quiet toolbar control keeps attention on the draft and its primary action.
+        TextButton(onClick = {
             if (!saving) {
                 saving = true
                 val next = if (clock == null) TrainingClock(System.currentTimeMillis(), SystemClock.elapsedRealtime(), boot) else null
@@ -64,7 +64,7 @@ fun ExamClock(key: String, minutes: Int = 30) {
                 }
             }
         }, enabled = !saving, shape = RoundedCornerShape(50), contentPadding = PaddingValues(horizontal = 12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.background),
+            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary),
             modifier = Modifier.semantics { contentDescription = spoken }) {
             Icon(Icons.Outlined.Timer, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(4.dp))
@@ -73,7 +73,7 @@ fun ExamClock(key: String, minutes: Int = 30) {
                 startedAt == 0L -> "$minutes 分钟"
                 left >= 0 -> "%d:%02d".format(left / 60, left % 60)
                 else -> "超时 %d:%02d".format(-left / 60, -left % 60)
-            }, style = MaterialTheme.typography.labelLarge, color = when {
+            }, style = MaterialTheme.typography.titleSmall, color = when {
                 startedAt == 0L -> MaterialTheme.colorScheme.primary
                 left < 0 -> Tone.Must.color()
                 left < 300 -> Tone.Better.color()

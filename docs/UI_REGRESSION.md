@@ -41,3 +41,10 @@ adb -s <emulator> shell am instrument --user 0 -w -e scenario reading-accessibil
 TalkBack 16.0 服务绑定、触摸探索开启和答题卡标签焦点已有截图证据。完整焦点顺序、朗读及所有控件激活仍未验证；按键和手势尝试没有形成可靠通过证据，不能记为验收完成。初次启动的系统通知弹窗需先正常处理，避免把弹窗焦点当作应用焦点。
 
 [Google 的 TalkBack 导航说明](https://support.google.com/accessibility/android/answer/6006598) 可作人工操作参考。测试结束恢复事先记录的全部设置。不要把已关闭服务、单一绿色焦点或工具成功退出等同于 TalkBack 完整回归。
+
+## 2026-10-29 核心工作台 Apple 风格
+
+- 写作、翻译、阅读共用 `WorkspaceTopBar`：功能大标题与题目上下分层；键盘弹出或阅读对照时使用紧凑导航，继续显示题目。写译共用 `WorkspaceDocument`，字数和目标放到正文表面；系统无衬线编辑字体、较大圆角与留白统一，计时改成次级文字操作。
+- 批改筛选改成分段切换；采纳保留主次层级、忽略改成文字操作。错因笔记改成无描边输入，保留原可访问名称。阅读录入去掉常态描边，讲解题号用蓝色选中态与核对状态色区分，选项按组排列；保存、核对、批改和修改稿调用未改。
+- 验证：`assembleDebug testDebugUnitTest lintDebug assembleDebugAndroidTest` 通过，174 项 JVM，Lint 0 错误 / 6 既有警告。模拟器原创样本实际经过写作/翻译批改到修改稿、十题连续录入和核对；`reading-accessibility-verify` 回读通过。1.3 字体/深色下检查阅读切题、翻译原文与键盘上方编辑，字体、外观和软键盘设置已恢复。没有真实 AI 请求；不计为完整 TalkBack 或实体机验收。
+- 个人包与已测普通包的 DEX 一致，题库 JSON 与 46 份 PDF 均与指定源文件逐字节一致，签名核验通过。实体机在验证期间断开，未覆盖安装。验证清单见 [apple-core-20261029.json](../test-evidence/apple-core-20261029.json)，截图为同目录 `apple-core-*-20261029.png`。

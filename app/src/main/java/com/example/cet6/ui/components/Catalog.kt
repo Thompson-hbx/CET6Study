@@ -2,7 +2,6 @@ package com.example.cet6.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 /**
@@ -60,23 +56,14 @@ fun FilterPills(options: List<String>, selected: Int, onSelect: (Int) -> Unit, m
     }
 }
 
-/** One catalogue line: set label, what the task is about, and its status, all on a single row with no card. */
+/** One inset grouped catalogue cell: set name, a readable preview, status and disclosure. */
 @Composable
 fun CatalogRow(label: String, title: String, status: String?, tone: Tone, enabled: Boolean = true, statusDescription: String? = null,
     onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().clickable(enabled = enabled, onClick = onClick).heightIn(min = 56.dp)
-        .padding(horizontal = PageGutter, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.widthIn(min = labelWidth(listOf("第 3 套"), MaterialTheme.typography.bodyMedium)))
-        Text(title, style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f),
-            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
-        if (!status.isNullOrBlank()) Text(status, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold,
-            color = tone.color(), maxLines = 1,
-            modifier = if (statusDescription != null) Modifier.semantics { contentDescription = statusDescription } else Modifier)
-    }
+    ListRow(label, subtitle = title, trailing = status, trailingTone = tone, trailingDescription = statusDescription,
+        enabled = enabled, onClick = onClick)
 }
 
-/** Divider between [CatalogRow]s, aligned with their text. */
+/** Divider inside one exam-session group. */
 @Composable
-fun CatalogDivider() = Hairline(Modifier.padding(end = PageGutter), start = PageGutter)
+fun CatalogDivider() = RowDivider()

@@ -9,8 +9,9 @@
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:label="六级研习室"
-        android:icon="@drawable/ic_study"
+        android:label="习页"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.CET6Study"
         android:usesCleartextTraffic="false">

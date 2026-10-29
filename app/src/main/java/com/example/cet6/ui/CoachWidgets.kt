@@ -1,6 +1,5 @@
 package com.example.cet6.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,7 +9,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -77,8 +76,7 @@ fun QuickAsks(items: List<String>, enabled: Boolean, onPick: (String) -> Unit, m
         horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items.forEach { item ->
             Surface(onClick = { onPick(item) }, enabled = enabled, shape = RoundedCornerShape(50),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+                color = MaterialTheme.colorScheme.surfaceContainer) {
                 Text(item, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -177,7 +175,7 @@ fun AskBar(placeholder: String, busy: Boolean, enabled: Boolean, onSend: (String
             if (busy) FilledTonalIconButton(onClick = onStop, modifier = Modifier.size(48.dp)) {
                 Icon(Icons.Outlined.Stop, contentDescription = "停止回复")
             } else FilledIconButton(onClick = ::send, enabled = enabled && text.isNotBlank(), modifier = Modifier.size(48.dp)) {
-                Icon(Icons.AutoMirrored.Outlined.Send, contentDescription = "发送")
+                Icon(Icons.Outlined.ArrowUpward, contentDescription = "发送")
             }
         }
     }

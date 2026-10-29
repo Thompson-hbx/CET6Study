@@ -68,12 +68,23 @@ private val LightMarks = MarkColors(LightMarkMust, LightMarkMustSoft, LightMarkB
 private val DarkMarks = MarkColors(DarkMarkMust, DarkMarkMustSoft, DarkMarkBetter, DarkMarkBetterSoft, DarkMarkGood, DarkMarkGoodSoft)
 
 val LocalMarks = staticCompositionLocalOf { LightMarks }
+val LocalUiStyle = staticCompositionLocalOf { UiStyle.APPLE }
 
 @Composable
 fun CET6Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    style: UiStyle = UiStyle.APPLE,
     content: @Composable () -> Unit
 ) {
+    CompositionLocalProvider(LocalUiStyle provides style) {
+        when (style) {
+            UiStyle.APPLE -> AppleTheme(darkTheme, content)
+        }
+    }
+}
+
+@Composable
+private fun AppleTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalMarks provides if (darkTheme) DarkMarks else LightMarks) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,

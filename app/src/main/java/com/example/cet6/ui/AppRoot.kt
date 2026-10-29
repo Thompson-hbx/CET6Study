@@ -7,30 +7,36 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Today
-import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cet6.data.*
 import com.example.cet6.domain.ExamLibraryState
 import com.example.cet6.ui.components.*
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 
 private enum class HomeTab(val key: String, val label: String) {
     TODAY("today", "今日"), PRACTICE("practice", "练习"), REVIEW("review", "复盘"), ME("me", "我的")
@@ -38,6 +44,14 @@ private enum class HomeTab(val key: String, val label: String) {
 
 /** Saved tab keys: the four tabs, or a skill key, which opens 练习 on that skill (also what older versions stored). */
 private val practiceKeys = mapOf("writing" to CoachKind.WRITING, "translation" to CoachKind.TRANSLATION, "reading" to CoachKind.READING)
+
+/** Titles of pushed screens; also shown on the back button of the screen above them. */
+private val routeTitles = mapOf(
+    "work/WRITING" to "写作", "work/TRANSLATION" to "翻译", "work/READING" to "阅读", "custom/READING" to "自己的文章",
+    "me/style" to "界面风格", "me/connection" to "AI 连接", "me/review" to "错因回顾", "me/trends" to "学习趋势", "me/records" to "练习记录",
+    "me/backup" to "备份与恢复", "me/exams" to "题库管理", "me/legacy" to "单词与旧版功能", "me/words" to "六级词汇",
+    "me/essays" to "旧版作文记录"
+)
 
 /**
  * Today, practice, review and me; tasks open as full screens on a small back stack. Routes are plain strings
@@ -53,6 +67,8 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
     var practice by rememberSaveable { mutableStateOf(practiceKeys[vm.lastTab] ?: CoachKind.WRITING) }
     fun showPractice(kind: CoachKind) { tab = HomeTab.PRACTICE; practice = kind; vm.lastTab = practiceKeys.entries.first { it.value == kind }.key }
     val snackbar = remember { SnackbarHostState() }
+    // One capture node serves all root tabs; switching content does not need a new blur state.
+    val hazeState = remember { HazeState() }
     fun push(route: String) { if (route != stack.split('|').lastOrNull()) stack = (stack.split('|').filter(String::isNotBlank) + route).joinToString("|") }
     fun pop() { stack = stack.split('|').filter(String::isNotBlank).dropLast(1).joinToString("|") }
     fun routeFor(entry: CoachPractice): String {
@@ -78,17 +94,18 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         vm.coach.importedReadingId?.let { vm.coach.consumeReadingImport(it); push("custom/READING") }
     }
     LaunchedEffect(vm.coach.shareStatus) { if (vm.coach.shareStatus.isNotBlank()) snackbar.showSnackbar(vm.coach.shareStatus) }
+    val backLabel = routes.getOrNull(routes.size - 2)?.let(routeTitles::get) ?: tab.label
 
-    when {
+    CompositionLocalProvider(LocalBackLabel provides backLabel) { when {
         top == null -> Scaffold(
             containerColor = MaterialTheme.colorScheme.background,
             snackbarHost = { SnackbarHost(snackbar) },
             bottomBar = {
-                HomeTabBar(tab) { item -> if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key } }
+                HomeTabBar(tab, hazeState) { item -> if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key } }
             }
         ) { padding ->
             val header: @Composable () -> Unit = { PracticeHeader(practice, ::showPractice) }
-            when (tab) {
+            Box(Modifier.fillMaxSize().haze(hazeState)) { when (tab) {
                 HomeTab.TODAY -> TodayHome(vm, padding, ::open, ::start, ::push)
                 HomeTab.PRACTICE -> when (practice) {
                     CoachKind.WRITING -> TaskHome(vm, CoachKind.WRITING, padding, ::open, { start(it, CoachKind.WRITING) },
@@ -101,56 +118,65 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
                 }
                 HomeTab.REVIEW -> ReviewHome(vm, padding, ::push)
                 HomeTab.ME -> MeHome(vm, padding, ::push)
-            }
+            } }
         }
         top == "work/WRITING" -> WritingWorkspace(vm, ::pop)
         top == "work/TRANSLATION" -> TranslationWorkspace(vm, ::pop)
         top == "work/READING" -> ReadingWorkspace(vm, ::pop)
         top == "custom/READING" -> SimpleScreen(
-            title = "自己的文章",
+            title = routeTitles.getValue(top),
             onBack = ::pop,
             actions = { vm.coach.entries[CoachKind.READING]?.let { WorkspaceMenu(vm, it) } }
         ) { scroll -> CoachScreen(vm, CoachKind.READING, scroll) }
-        top == "me/connection" -> SimpleScreen("AI 连接", ::pop) { ConnectionRoute(vm) }
-        top == "me/review" -> SimpleScreen("错因回顾", ::pop) {
+        top == "me/style" -> SimpleScreen(routeTitles.getValue(top), ::pop) { UiStyleScreen(vm.uiStyle, vm::selectUiStyle) }
+        top == "me/connection" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ConnectionRoute(vm) }
+        top == "me/review" -> SimpleScreen(routeTitles.getValue(top), ::pop) {
             WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, standalone = true, onReview = ::open)
         }
-        top == "me/trends" -> SimpleScreen("学习趋势", ::pop) { LearningTrendsScreen(vm) }
-        top == "me/records" -> SimpleScreen("练习记录", ::pop) { ExamHistory(vm, onOpen = ::open) }
-        top == "me/backup" -> SimpleScreen("备份与恢复", ::pop) { BackupCard(vm, standalone = true) }
-        top == "me/exams" -> SimpleScreen("题库管理", ::pop) { ExamManagementRoute(vm) }
-        top == "me/legacy" -> SimpleScreen("单词与旧版功能", ::pop) {
+        top == "me/trends" -> SimpleScreen(routeTitles.getValue(top), ::pop) { LearningTrendsScreen(vm) }
+        top == "me/records" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ExamHistory(vm, onOpen = ::open) }
+        top == "me/backup" -> SimpleScreen(routeTitles.getValue(top), ::pop) { BackupCard(vm, standalone = true) }
+        top == "me/exams" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ExamManagementRoute(vm) }
+        top == "me/legacy" -> SimpleScreen(routeTitles.getValue(top), ::pop) {
             legacy.today({ push("me/words") }, { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
                 { showPractice(CoachKind.WRITING); pop() }, ::open)
         }
-        top == "me/words" -> SimpleScreen("六级词汇", ::pop) { legacy.words() }
-        top == "me/essays" -> SimpleScreen("旧版作文记录", ::pop) { LegacyEssays(vm) }
+        top == "me/words" -> SimpleScreen(routeTitles.getValue(top), ::pop) { legacy.words() }
+        top == "me/essays" -> SimpleScreen(routeTitles.getValue(top), ::pop) { LegacyEssays(vm) }
         else -> LaunchedEffect(top) { pop() }
-    }
+    } }
 }
 
 /**
- * iOS-style tab bar: a hairline over a slightly translucent bar, tinted icon and small label, no indicator pill.
- * Each item is a selectable tab so screen readers and the UI scripts see which one is current.
+ * iOS 26-style floating tab bar: a capsule hovering above the content, which keeps scrolling underneath it,
+ * with the current tab on a soft inner pill. Each item is a selectable tab so screen readers and the UI
+ * scripts see which one is current.
  */
 @Composable
-private fun HomeTabBar(current: HomeTab, onSelect: (HomeTab) -> Unit) {
-    Column(Modifier.background(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.94f))) {
-        Hairline()
-        Row(Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)) {
+private fun HomeTabBar(current: HomeTab, hazeState: HazeState, onSelect: (HomeTab) -> Unit) {
+    val capsule = RoundedCornerShape(percent = 50)
+    GlassSurface(
+        state = hazeState,
+        shape = capsule,
+        modifier = Modifier.navigationBarsPadding().padding(start = 20.dp, end = 20.dp, bottom = 8.dp).fillMaxWidth()
+    ) {
+        Row(Modifier.fillMaxWidth().height(62.dp).padding(4.dp)) {
             HomeTab.entries.forEach { item ->
                 val selected = item == current
-                val tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                Column(Modifier.weight(1f).fillMaxHeight()
+                val tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                Column(Modifier.weight(1f).fillMaxHeight().clip(capsule)
+                    .background(if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Transparent)
                     .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item) }),
                     horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    // Line icons that fill in when selected, as SF Symbols do in an iOS tab bar.
                     Icon(when (item) {
-                        HomeTab.TODAY -> if (selected) Icons.Filled.Today else Icons.Outlined.Today
-                        HomeTab.PRACTICE -> if (selected) Icons.Filled.EditNote else Icons.Outlined.EditNote
+                        HomeTab.TODAY -> if (selected) Icons.Filled.WbSunny else Icons.Outlined.WbSunny
+                        HomeTab.PRACTICE -> if (selected) Icons.Filled.Create else Icons.Outlined.Create
                         HomeTab.REVIEW -> if (selected) Icons.Filled.History else Icons.Outlined.History
-                        HomeTab.ME -> if (selected) Icons.Filled.Person else Icons.Outlined.Person
-                    }, contentDescription = null, tint = tint, modifier = Modifier.size(26.dp))
-                    Text(item.label, style = MaterialTheme.typography.labelSmall, color = tint)
+                        HomeTab.ME -> if (selected) Icons.Filled.AccountCircle else Icons.Outlined.AccountCircle
+                    }, contentDescription = null, tint = tint, modifier = Modifier.size(25.dp))
+                    Text(item.label, style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, lineHeight = 12.sp),
+                        color = tint, modifier = Modifier.padding(top = 2.dp))
                 }
             }
         }
@@ -171,7 +197,8 @@ fun SimpleScreen(
     content: @Composable ColumnScope.(androidx.compose.foundation.ScrollState) -> Unit
 ) {
     val scroll = rememberScrollState()
-    Scaffold(containerColor = MaterialTheme.colorScheme.background, topBar = { ScreenTopBar(title, onBack = onBack, actions = actions) }) { padding ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background,
+        topBar = { ScreenTopBar(title, onBack = onBack, showDivider = scroll.canScrollBackward, actions = actions) }) { padding ->
         Column(Modifier.padding(padding).consumeWindowInsets(padding).imePadding().fillMaxSize().verticalScroll(scroll)
             .padding(horizontal = PageGutter, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             content(scroll)

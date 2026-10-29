@@ -125,13 +125,14 @@ fun FieldRow(
     password: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     minLines: Int = 1,
-    accessibilityLabel: String = label ?: placeholder
+    accessibilityLabel: String = label ?: placeholder,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     val style = MaterialTheme.typography.bodyLarge.copy(
         color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
     Row(Modifier.fillMaxWidth().then(RowPadding), verticalAlignment = if (minLines > 1) Alignment.Top else Alignment.CenterVertically) {
         if (label != null) Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.widthIn(min = 96.dp).padding(end = 12.dp))
-        BasicTextField(value, onValueChange, enabled = enabled, textStyle = style, singleLine = minLines == 1, minLines = minLines,
+        BasicTextField(value, onValueChange, enabled = enabled, textStyle = style, singleLine = minLines == 1, minLines = minLines, maxLines = maxLines,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else keyboardType),
@@ -151,6 +152,8 @@ object TileColors {
     val Green = Color(0xFF34C759)
     val Orange = Color(0xFFFF9500)
     val Indigo = Color(0xFF5856D6)
+    val Red = Color(0xFFFF3B30)
+    val Teal = Color(0xFF30B0C7)
     val Gray = Color(0xFF8E8E93)
 }
 

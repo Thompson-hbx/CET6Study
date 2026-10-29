@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.cet6.ui.theme.LocalMarks
+import dev.chrisbanes.haze.HazeState
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.tables.TablePlugin
 
@@ -102,37 +103,38 @@ fun TabTitle(title: String, subtitle: String? = null) {
     }
 }
 
-/** iOS-style navigation bar: centred title, a tinted back chevron with its label, actions on the right. */
-@OptIn(ExperimentalMaterial3Api::class)
+/** Title of the screen underneath, shown on the back button the way iOS does; screens without one say 返回. */
+val LocalBackLabel = staticCompositionLocalOf { "返回" }
+
+/**
+ * iOS-style navigation bar, 44dp tall: a tinted chevron with the previous screen's title on the left, the title
+ * centred, actions on the right. The hairline appears only once content has scrolled under the bar.
+ */
 @Composable
 fun ScreenTopBar(title: String, subtitle: String? = null, onBack: (() -> Unit)? = null,
-    actions: @Composable RowScope.() -> Unit = {}) {
-    Column {
-        CenterAlignedTopAppBar(
-            title = {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-            },
-            navigationIcon = {
-                // One node named 返回 for screen readers; the chevron and label are drawn inside it.
-                if (onBack != null) Row(
-                    Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onBack)
-                        .semantics(mergeDescendants = true) { contentDescription = "返回" }
-                        .heightIn(min = 44.dp).padding(start = 4.dp, end = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.AutoMirrored.Outlined.ArrowBackIos, contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                    Text("返回", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
-                }
-            },
-            actions = actions,
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background)
-        )
-        Hairline()
+    showDivider: Boolean = true, actions: @Composable RowScope.() -> Unit = {}) {
+    Column(Modifier.background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
+        Box(Modifier.fillMaxWidth().heightIn(min = 44.dp)) {
+            // One node named 返回 for screen readers; the chevron and label are drawn inside it.
+            if (onBack != null) Row(
+                Modifier.align(Alignment.CenterStart).clip(RoundedCornerShape(8.dp)).clickable(onClick = onBack)
+                    .semantics(mergeDescendants = true) { contentDescription = "返回" }
+                    .heightIn(min = 44.dp).padding(start = 6.dp, end = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.AutoMirrored.Outlined.ArrowBackIos, contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+                Text(LocalBackLabel.current, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 96.dp))
+            }
+            Column(Modifier.align(Alignment.Center).padding(horizontal = 112.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            Row(Modifier.align(Alignment.CenterEnd).padding(end = 4.dp), verticalAlignment = Alignment.CenterVertically, content = actions)
+        }
+        if (showDivider) Hairline()
     }
 }
 
@@ -219,7 +221,15 @@ fun ListRow(
 
 /** Fixed footer for the screen's main action; rides above the keyboard and system bar. */
 @Composable
-fun BottomBar(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
+fun BottomBar(modifier: Modifier = Modifier, hazeState: HazeState? = null, content: @Composable RowScope.() -> Unit) {
+    if (hazeState != null) {
+        GlassSurface(hazeState, RoundedCornerShape(24.dp),
+            modifier.navigationBarsPadding().imePadding().padding(horizontal = CardMargin, vertical = 8.dp)) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = CardPadding, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp), content = content)
+        }
+        return
+    }
     Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, modifier = modifier) {
         Column {
             Hairline()

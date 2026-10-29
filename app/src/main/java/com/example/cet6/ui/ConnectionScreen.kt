@@ -25,7 +25,7 @@ fun ConnectionRoute(vm: StudyViewModel) {
 /** AI service, model and deep-review settings as iOS-style grouped forms. */
 @Composable
 fun ConnectionScreen(state: AiState, effects: Flow<ConnectionEffect>, onIntent: (ConnectionIntent) -> Unit) {
-    var message by rememberSaveable { mutableStateOf("请只回答：六级研习室 API 测试成功。") }
+    var message by rememberSaveable { mutableStateOf("请只回答：习页 API 测试成功。") }
     Group(header = "服务", footer = "选择服务与模型，用于批改、讲解和追问。") {
         AiProvider.entries.forEachIndexed { i, provider ->
             if (i > 0) GroupDivider()

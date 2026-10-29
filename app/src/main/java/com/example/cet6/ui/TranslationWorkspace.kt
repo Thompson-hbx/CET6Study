@@ -18,6 +18,8 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 import com.example.cet6.ui.theme.PassageText
 import com.example.cet6.ui.theme.SourceText
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val state = vm.coach
+    val hazeState = remember { HazeState() }
     val talk = vm.talk
     val entry = state.entries[CoachKind.TRANSLATION]
     if (entry == null) { LoadingScreen(onBack); return }
@@ -63,10 +66,12 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            ScreenTopBar(
-                title = entry.title.removeSuffix(" · 翻译").ifBlank { "自选段落" },
-                subtitle = listOfNotNull("段落翻译", versions.indexOfFirst { it.id == entry.id }.takeIf { versions.size > 1 }?.let { "第 ${it + 1} 稿" },
-                    if (submitted) "已提交" else null).joinToString(" · "),
+            WorkspaceTopBar(
+                title = "翻译",
+                context = entry.title.removeSuffix(" · 翻译").ifBlank { "自选段落" },
+                detail = listOfNotNull(versions.indexOfFirst { it.id == entry.id }.takeIf { versions.size > 1 }?.let { "第 ${it + 1} 稿" },
+                    if (submitted) "已提交" else "草稿").joinToString(" · "),
+                compact = typing,
                 onBack = onBack,
                 actions = {
                     if (tab == 1 && submitted && reviewTurn != null && pending?.kind != TurnKind.TRANSLATION_REVIEW) AskAction { asking = true }
@@ -76,40 +81,35 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         },
         bottomBar = {
             when {
-                tab == 0 && !typing -> BottomBar {
+                tab == 0 && !typing -> BottomBar(hazeState = hazeState) {
                     if (!submitted) ExamClock(entry.id)
-                    Column(Modifier.weight(1f)) {
-                        WordCount(words, null, null)
-                        Note(saveLabel(state.messages[CoachKind.TRANSLATION]))
-                    }
+                    Note(saveLabel(state.messages[CoachKind.TRANSLATION]), Modifier.weight(1f))
                     if (!submitted) Button(onClick = { confirmSubmit = true }, enabled = words > 0 && !state.working,
                         modifier = Modifier.height(48.dp)) { Text("提交") }
                     else Button(onClick = { state.revise(entry, entry.answer) }, enabled = !state.working,
                         modifier = Modifier.height(48.dp)) { Text("写修改稿") }
                 }
                 tab == 1 && submitted && pending?.kind != TurnKind.TRANSLATION_REVIEW && (reviewTurn != null || pending != null) ->
-                    ReviewFooter(vm, entry, "问问这段译文…", placedReview(entry.answer, reviewTurn), asking, { asking = it }, onAsk = ::ask)
+                    ReviewFooter(vm, entry, "问问这段译文…", placedReview(entry.answer, reviewTurn), asking, { asking = it }, hazeState, onAsk = ::ask)
             }
         }
     ) { padding ->
-        Column(Modifier.padding(padding).then(if (typing) Modifier.consumeWindowInsets(padding).imePadding() else Modifier).fillMaxSize()) {
+        Column(Modifier.padding(top = padding.calculateTopPadding()).haze(hazeState).then(if (typing) Modifier.consumeWindowInsets(padding).imePadding() else Modifier).fillMaxSize()) {
             if (!typing) {
                 DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
                     state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
                 })
-                Hairline()
             }
             // While translating, the Chinese stays on screen above the editor instead of scrolling away with it.
             if (split) BoxWithConstraints(Modifier.fillMaxSize()) {
-                val sourceMax = maxHeight * if (typing) 0.6f else 0.5f
+                val sourceMax = maxHeight * if (typing) 0.6f else 0.42f
                 Column(Modifier.fillMaxSize()) {
                     SourcePane(sentences, turns, sourceOpen, { sourceOpen = !sourceOpen }, sourceMax) { sentenceSheet = it }
-                    Hairline()
-                    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(bottom = 32.dp)) {
+                    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
                         TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = false) { sentenceSheet = it }
                     }
                 }
-            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
+            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
                 when (tab) {
                     0 -> TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = true) { sentenceSheet = it }
                     1 -> TranslationReviewPane(vm, entry, sentences, turns, reviewTurn, scroll, onGoWrite = { tab = 0 }, onAsk = ::ask)
@@ -131,15 +131,14 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
 private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentences: List<String>, turns: List<CoachTurn>,
     custom: Boolean, submitted: Boolean, includeSource: Boolean, onSentence: (Int) -> Unit) {
     val state = vm.coach
-    Column(Modifier.fillMaxWidth().padding(vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         if (custom && !submitted && entry.sourcePracticeId.isBlank()) {
-            PaperCard {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    OutlinedTextField(entry.title, { v -> state.edit(CoachKind.TRANSLATION) { it.copy(title = v.take(200)) } },
-                        label = { Text("标题") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(entry.material, { v -> state.edit(CoachKind.TRANSLATION) { it.copy(material = v) } },
-                        label = { Text("要翻译的中文") }, minLines = 3, maxLines = 10, modifier = Modifier.fillMaxWidth())
-                }
+            RowCard {
+                FieldRow("标题", entry.title, { v -> state.edit(CoachKind.TRANSLATION) { it.copy(title = v.take(200)) } })
+                RowDivider()
+                CardTitle("要翻译的中文", Modifier.padding(start = CardPadding, end = CardPadding, top = 12.dp))
+                FieldRow(null, entry.material, { v -> state.edit(CoachKind.TRANSLATION) { it.copy(material = v) } },
+                    placeholder = "要翻译的中文", minLines = 3, accessibilityLabel = "要翻译的中文", maxLines = 10)
             }
         }
         if (includeSource && sentences.isNotEmpty()) {
@@ -169,10 +168,9 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
             }
             if (compare) ComparePanel(source.answer, entry.answer)
         }
-        PaperCard(padding = PaddingValues(horizontal = 18.dp, vertical = 16.dp)) {
-            Editor(entry.answer, readOnly = submitted, placeholder = "在这里写英文译文…", minHeight = 260) { text ->
-                state.edit(CoachKind.TRANSLATION) { it.copy(answer = text) }
-            }
+        WorkspaceDocument(if (submitted) "已提交的译文" else "英文译文", entry.answer, submitted,
+            WritingCoach.words(entry.answer), minHeight = 220, placeholder = "在这里写英文译文…") { text ->
+            state.edit(CoachKind.TRANSLATION) { it.copy(answer = text) }
         }
         if (submitted) Note("这一稿已提交，可以在「批改」里逐句对照；想继续改，点下方「写修改稿」。",
             Modifier.padding(horizontal = PageGutter))
@@ -183,7 +181,7 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
 @Composable
 private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Boolean, onToggle: () -> Unit,
     maxHeight: androidx.compose.ui.unit.Dp, onSentence: (Int) -> Unit) {
-    Column(Modifier.fillMaxWidth().heightIn(max = maxHeight)) {
+    Column(Modifier.fillMaxWidth().heightIn(max = maxHeight).padding(bottom = 4.dp)) {
         Row(Modifier.fillMaxWidth().padding(start = PageGutter, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Note("原文 · ${sentences.size} 句" + if (open) " · 点一句看提示" else "", Modifier.weight(1f))
             TextButton(onClick = onToggle) { Text(if (open) "收起原文" else "展开原文") }

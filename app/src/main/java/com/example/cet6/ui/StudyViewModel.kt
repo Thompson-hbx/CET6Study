@@ -10,6 +10,7 @@ import com.example.cet6.ai.AvailableModel
 import com.example.cet6.ai.AiProvider
 import com.example.cet6.data.*
 import com.example.cet6.domain.StudyServices
+import com.example.cet6.ui.theme.UiStyle
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,6 +51,14 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     var lastTab: String
         get() = prefs.getString("tab", "writing") ?: "writing"
         set(value) { prefs.edit().putString("tab", value).apply() }
+
+    var uiStyle by androidx.compose.runtime.mutableStateOf(UiStyle.fromKey(prefs.getString("ui_style", null)))
+        private set
+
+    fun selectUiStyle(style: UiStyle) {
+        prefs.edit().putString("ui_style", style.key).apply()
+        uiStyle = style
+    }
 
     val backupRestorePending: Boolean get() = backupUi.restorePending
     val backupRecoveryRunning: Boolean get() = backupUi.recoveryRunning

@@ -167,30 +167,23 @@ data class WorkflowStep(val label: String, val done: Boolean = false, val enable
  */
 @Composable
 fun WorkflowSteps(steps: List<WorkflowStep>, current: Int?, modifier: Modifier = Modifier) {
-    Row(modifier.fillMaxWidth().padding(horizontal = PageGutter, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 8.dp)
+        .clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceContainer).padding(3.dp)) {
         steps.forEachIndexed { i, step ->
-            if (i > 0) HorizontalDivider(Modifier.weight(1f), thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
             val selected = i == current
             val tint = when {
-                selected -> MaterialTheme.colorScheme.primary
+                selected -> MaterialTheme.colorScheme.onSurface
                 step.done -> LocalMarks.current.good
                 else -> MaterialTheme.colorScheme.onSurfaceVariant
             }
-            Row(Modifier.clip(RoundedCornerShape(50))
+            Row(Modifier.weight(1f).clip(RoundedCornerShape(13.dp))
+                .background(if (selected) MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent)
                 .selectable(selected = selected, enabled = step.enabled, role = Role.Tab, onClick = step.onClick)
                 .semantics { stateDescription = when { selected -> "当前"; step.done -> "已完成"; !step.enabled -> "暂不可用"; else -> "" } }
                 .heightIn(min = 44.dp).padding(horizontal = 4.dp),
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Box(Modifier.size(22.dp).clip(CircleShape).then(when {
-                    selected -> Modifier.background(MaterialTheme.colorScheme.primary)
-                    step.done -> Modifier.background(LocalMarks.current.goodSoft)
-                    else -> Modifier.border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
-                }), contentAlignment = Alignment.Center) {
-                    if (step.done && !selected) Icon(Icons.Outlined.Check, contentDescription = null, tint = tint, modifier = Modifier.size(14.dp))
-                    else Text("${i + 1}", style = MaterialTheme.typography.labelSmall,
-                        color = if (selected) MaterialTheme.colorScheme.onPrimary else tint)
-                }
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                if (step.done && !selected) Icon(Icons.Outlined.Check, contentDescription = null, tint = tint,
+                    modifier = Modifier.padding(end = 4.dp).size(16.dp))
                 Text(step.label, style = MaterialTheme.typography.labelLarge, color = if (step.enabled) tint else tint.copy(alpha = 0.6f),
                     fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
             }

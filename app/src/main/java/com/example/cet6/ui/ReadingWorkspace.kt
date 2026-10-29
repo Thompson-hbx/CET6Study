@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -38,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 import com.example.cet6.ui.theme.PassageText
 
 private data class ReaderFocus(val passage: String, val quote: String)
@@ -50,6 +53,7 @@ private data class ReaderFocus(val passage: String, val quote: String)
 @Composable
 fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val state = vm.coach
+    val hazeState = remember { HazeState() }
     val talk = vm.talk
     val entry = state.entries[CoachKind.READING]
     if (entry == null) { LoadingScreen(onBack); return }
@@ -103,8 +107,8 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = { ScreenTopBar(entry.title.removeSuffix(" · 阅读"), subtitle = if (desk) "仔细阅读 · 篇章 ${current.code} · 已核对"
-            else "仔细阅读 · Section C" + if (submitted) " · 已核对" else "", onBack = onBack,
+        topBar = { WorkspaceTopBar("阅读", context = entry.title.removeSuffix(" · 阅读"),
+            detail = if (submitted) "已核对" else "Section C", compact = desk, onBack = onBack,
             actions = {
                 if (desk) AskAction { asking = true }
                 WorkspaceMenu(vm, entry, if (submitted) listOf("答题卡" to { tab = 0 }, "全文与逐段讲解" to { focus = focus ?: savedFocus; tab = 2 },
@@ -112,7 +116,7 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             }) },
         bottomBar = {
             when {
-                tab == 0 -> BottomBar {
+                tab == 0 -> BottomBar(hazeState = hazeState) {
                     val answered = answers.count { it.value.isNotBlank() }
                     Column(Modifier.weight(1f)) {
                         Text("已录 $answered / ${questions.size}", style = MaterialTheme.typography.titleSmall)
@@ -125,7 +129,7 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         modifier = Modifier.height(48.dp)) { Text("再练一次") }
                 }
                 desk && (asking || talk.failureFor(entry.id, anchor, chat = true) != null ||
-                    talk.pendingFor(entry.id, anchor)?.kind == TurnKind.CHAT) -> BottomBar {
+                    talk.pendingFor(entry.id, anchor)?.kind == TurnKind.CHAT) -> BottomBar(hazeState = hazeState) {
                     AskBar("问问这道题…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop,
                         modifier = Modifier.weight(1f), draftKey = entry.id + anchor,
                         failure = talk.failureFor(entry.id, anchor, chat = true), onDismissFailure = talk::dismissFailure)
@@ -134,12 +138,9 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             }
         }
     ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
-            if (!desk) SecondaryTabRow(selectedTabIndex = tab, containerColor = MaterialTheme.colorScheme.background) {
-                listOf("答题卡", "讲解", "原文").forEachIndexed { i, label ->
-                    Tab(selected = tab == i, onClick = { focus = null; tab = i }, text = { Text(label) })
-                }
-            }
+        Column(Modifier.padding(top = padding.calculateTopPadding()).haze(hazeState).fillMaxSize()) {
+            if (!desk) TrackSegments(listOf("答题卡", "讲解", "原文"), tab, { focus = null; tab = it },
+                Modifier.padding(horizontal = CardMargin, vertical = 10.dp))
             if (desk) BoxWithConstraints(Modifier.fillMaxSize()) {
                 val q = questions.firstOrNull { it.number == selected } ?: questions.first()
                 val savedQuote = savedFocus?.takeIf { it.passage == current.code }?.quote
@@ -153,10 +154,10 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         onOpenFull = { focus = focus ?: savedFocus; tab = 2 },
                         onSwitch = next?.let { { focus = null; selected = it.questions.minOf { q -> q.number } } }, switchTo = next?.code,
                         modifier = Modifier.weight(1f))
-                    QuestionPanel(vm, entry, current, answers, turns, selected, panelMax, scroll, onSelect = { focus = null; selected = it },
+                    QuestionPanel(vm, entry, current, answers, turns, selected, panelMax, scroll, padding.calculateBottomPadding(), onSelect = { focus = null; selected = it },
                         onAsk = ::ask) { code, quote -> focus = ReaderFocus(code, quote) }
                 }
-            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = 32.dp)) {
+            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
                 when (tab) {
                     0 -> AnswerCardPane(vm, entry, passages, answers, submitted) { code, bad ->
                         invalid = if (bad) (invalid + code).toSet().joinToString("") else invalid.replace(code, "")
@@ -253,7 +254,11 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
                             state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "${target.number}", c)) }
                             typed.remove(p.code); errors.remove(p.code); onValidity(p.code, false)
                             picking = if (picking < ordered.lastIndex) picking + 1 else -1
-                        }, label = { Text(c, fontWeight = FontWeight.SemiBold) }, enabled = !state.working)
+                        }, label = { Text(c, fontWeight = FontWeight.SemiBold) }, enabled = !state.working,
+                            shape = RoundedCornerShape(12.dp), border = null,
+                            colors = FilterChipDefaults.filterChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.primary))
                     }
                     if (answers[target.number].orEmpty().isNotBlank()) TextButton(onClick = {
                         state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "${target.number}", "")) }
@@ -262,7 +267,7 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
                 }
             }
             val more = index < passages.lastIndex
-            OutlinedTextField(
+            TextField(
                 value = shown(p),
                 onValueChange = { onType(index, it) },
                 label = { Text("按顺序连续输入") }, placeholder = { Text("如 CADCB，没做的写 ?") },
@@ -274,6 +279,12 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
                     imeAction = if (more) ImeAction.Next else ImeAction.Done),
                 keyboardActions = KeyboardActions(onNext = { focusAfter(index) }, onDone = { focusManager.clearFocus() }),
                 textStyle = MaterialTheme.typography.titleMedium.copy(letterSpacing = 4.sp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+                    focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent),
+                shape = MaterialTheme.shapes.medium,
                 singleLine = true, readOnly = submitted, enabled = !state.working, isError = error.isNotBlank(),
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp).focusRequester(requesters[index]))
         }
@@ -292,7 +303,7 @@ private fun AnswerCell(number: String, value: String, selected: Boolean, tone: T
     Surface(onClick = onClick, enabled = enabled, shape = RoundedCornerShape(10.dp),
         modifier = modifier.height(60.dp).semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" },
         color = if (marked) tone!!.soft() else MaterialTheme.colorScheme.surfaceContainer,
-        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)) {
+        border = if (selected) BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary) else null) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(number, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 6.dp))
@@ -312,30 +323,30 @@ private fun verdictTone(verdict: String) = when (verdict) {
 private fun verdictLabel(verdict: String) = when (verdict) { "未录入" -> "未录入"; "暂无可核实答案" -> "待核对"; else -> verdict }
 
 /** The question sheet under the passage: a strip of this passage's answers, then the selected question in detail. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun QuestionPanel(vm: StudyViewModel, entry: CoachPractice, passage: ExamPassage, answers: Map<Int, String>, turns: List<CoachTurn>,
-    selected: Int, maxHeight: androidx.compose.ui.unit.Dp, scroll: androidx.compose.foundation.ScrollState, onSelect: (Int) -> Unit,
+    selected: Int, maxHeight: androidx.compose.ui.unit.Dp, scroll: androidx.compose.foundation.ScrollState, bottomPadding: androidx.compose.ui.unit.Dp, onSelect: (Int) -> Unit,
     onAsk: (String) -> Unit, onLocate: (String, String) -> Unit) {
     val ordered = passage.questions.sortedBy { it.number }
     val known = ordered.filter { it.referenceAnswer.isNotBlank() && it.answerSource.isNotBlank() && answers[it.number].orEmpty().isNotBlank() }
     val matched = known.count { answers[it.number] == it.referenceAnswer }
-    Surface(color = MaterialTheme.colorScheme.surfaceContainerLowest, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        shadowElevation = 8.dp, modifier = Modifier.fillMaxWidth().heightIn(max = maxHeight)) {
+    Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = MaterialTheme.shapes.extraLarge,
+        modifier = Modifier.padding(horizontal = CardMargin).fillMaxWidth().heightIn(max = maxHeight)) {
         Column {
             Box(Modifier.padding(top = 8.dp).size(width = 36.dp, height = 4.dp).align(Alignment.CenterHorizontally)
                 .background(MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(2.dp)))
-            Row(Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 10.dp, bottom = 4.dp),
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 10.dp, bottom = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 ordered.forEachIndexed { i, q ->
                     val mine = answers[q.number].orEmpty()
                     val verdict = ReadingGuidance.verdict(q, mine)
                     AnswerCircle(mine.ifBlank { "${i + 1}" }, mine.isNotBlank(), q.number == selected, verdictTone(verdict),
                         "篇章 ${passage.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}，${verdictLabel(verdict)}") { onSelect(q.number) }
                 }
-                Spacer(Modifier.weight(1f))
-                if (known.isNotEmpty()) Note("$matched/${known.size} 一致")
+                if (known.isNotEmpty()) Note("$matched/${known.size} 一致", Modifier.align(Alignment.CenterVertically))
             }
-            Column(Modifier.fillMaxWidth().verticalScroll(scroll).padding(bottom = 24.dp)) {
+            Column(Modifier.fillMaxWidth().verticalScroll(scroll).padding(bottom = bottomPadding + 24.dp)) {
                 val q = ordered.firstOrNull { it.number == selected } ?: ordered.first()
                 key(q.number) { QuestionDetail(vm, entry, passage, q, answers[q.number].orEmpty(), turns, onAsk, onLocate) }
             }
@@ -347,17 +358,15 @@ private fun QuestionPanel(vm: StudyViewModel, entry: CoachPractice, passage: Exa
 @Composable
 private fun AnswerCircle(label: String, answered: Boolean, selected: Boolean, tone: Tone, spoken: String, onClick: () -> Unit) {
     val marked = tone == Tone.Good || tone == Tone.Must
-    Surface(onClick = onClick, shape = RoundedCornerShape(50), color = if (marked) tone.soft() else MaterialTheme.colorScheme.surfaceContainerLowest,
-        border = when {
-            selected -> BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface)
-            !answered -> BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-            marked -> null
-            else -> BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    Surface(onClick = onClick, shape = RoundedCornerShape(14.dp), color = when {
+            selected -> MaterialTheme.colorScheme.primary
+            marked -> tone.soft()
+            else -> MaterialTheme.colorScheme.surfaceContainer
         },
         modifier = Modifier.size(44.dp).semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" }) {
         Box(contentAlignment = Alignment.Center) {
             Text(label, style = MaterialTheme.typography.titleSmall, fontWeight = if (answered) FontWeight.Bold else FontWeight.Normal,
-                color = if (marked) tone.color() else MaterialTheme.colorScheme.onSurfaceVariant)
+                color = when { selected -> MaterialTheme.colorScheme.onPrimary; marked -> tone.color(); else -> MaterialTheme.colorScheme.onSurfaceVariant })
         }
     }
 }
@@ -384,18 +393,22 @@ private fun QuestionDetail(vm: StudyViewModel, entry: CoachPractice, passage: Ex
                 CardTitle("篇章 ${passage.code} · 第 $ordinal 题", Modifier.weight(1f))
                 DotStatus(verdictLabel(verdict), verdictTone(verdict))
             }
-            SelectionContainer { Text(q.stem, style = PassageText) }
+            SelectionContainer { Text(q.stem, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)) }
             val optionLabel = labelWidth(q.options.map { it.label }, MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold))
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 q.options.forEach { option ->
                     val note = explanation?.takeIf { it.structured }?.options?.firstOrNull { it.label == option.label }
                     val isKey = showKey && q.referenceAnswer == option.label
                     val isMine = mine == option.label
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(when {
+                        isKey -> Tone.Good.soft()
+                        isMine -> verdictTone(verdict).soft()
+                        else -> MaterialTheme.colorScheme.surfaceContainer
+                    }).padding(12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text(option.label, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(optionLabel),
                             color = when { isKey -> Tone.Good.color(); isMine && verdict == "需要回看" -> Tone.Must.color(); else -> MaterialTheme.colorScheme.onSurface })
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            SelectionContainer { Text(option.text, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)) }
+                            SelectionContainer { Text(option.text, style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 25.sp)) }
                             if (isMine || isKey) FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 if (isMine) Tag("我的选择", if (verdict == "需要回看") Tone.Must else if (verdict == "与参考一致") Tone.Good else Tone.Muted)
                                 if (isKey) Tag("参考答案", Tone.Good)
@@ -534,12 +547,14 @@ private fun ErrorNote(vm: StudyViewModel, entry: CoachPractice, passage: ExamPas
                         val note = "$reason：篇章 ${passage.code} 第 $ordinal 题"
                         it.copy(errorReason = if (it.errorReason.split('；').contains(note)) it.errorReason
                             else listOf(it.errorReason, note).filter(String::isNotBlank).joinToString("；"))
-                    } }, label = { Text(reason) }, enabled = !state.working)
+                    } }, label = { Text(reason) }, enabled = !state.working, border = null,
+                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer))
                 }
             }
-            OutlinedTextField(entry.errorReason, { value -> state.edit(CoachKind.READING) { it.copy(errorReason = value) } },
-                label = { Text("我的错因与定位笔记") }, enabled = !state.working, modifier = Modifier.fillMaxWidth())
-            if (entry.errorReason.isNotBlank()) OutlinedButton(onClick = { state.generate(CoachKind.READING) }, enabled = !state.working && !vm.busy) {
+            Hairline()
+            FieldRow(null, entry.errorReason, { value -> state.edit(CoachKind.READING) { it.copy(errorReason = value) } },
+                placeholder = "我的错因与定位笔记", enabled = !state.working, minLines = 3)
+            if (entry.errorReason.isNotBlank()) TextButton(onClick = { state.generate(CoachKind.READING) }, enabled = !state.working && !vm.busy) {
                 Text("按错因出一道练习")
             }
             state.messages[CoachKind.READING]?.takeIf { it.isNotBlank() && it != "已保存到本机" && it != "正在保存……" }?.let { Note(it) }
@@ -560,7 +575,8 @@ private fun PassagePeek(passage: ExamPassage, q: ExamQuestion, quote: String?, o
     val target = marks.indexOfFirst { it != null }.takeIf { it >= 0 } ?: ReadingGuidance.paragraph(passage, q)?.minus(1)
     val list = rememberLazyListState()
     LaunchedEffect(passage.code, target) { list.scrollToItem(target?.coerceIn(0, paragraphs.lastIndex.coerceAtLeast(0)) ?: 0) }
-    Column(modifier.fillMaxWidth()) {
+    Column(modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 8.dp).clip(MaterialTheme.shapes.large)
+        .background(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.shapes.large)) {
         Row(Modifier.fillMaxWidth().padding(start = PageGutter, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Note("原文 · 篇章 ${passage.code}" + (target?.let { " · 依据在第 ${it + 1} 段" } ?: ""), Modifier.weight(1f))
             if (onSwitch != null && switchTo != null) TextButton(onClick = onSwitch) { Text("看篇章 $switchTo") }
