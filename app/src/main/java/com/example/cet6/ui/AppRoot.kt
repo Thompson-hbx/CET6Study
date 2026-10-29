@@ -3,8 +3,10 @@ package com.example.cet6.ui
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -19,8 +21,10 @@ import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -80,27 +84,7 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
             containerColor = MaterialTheme.colorScheme.background,
             snackbarHost = { SnackbarHost(snackbar) },
             bottomBar = {
-                Column {
-                    Hairline()
-                    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainerLow, tonalElevation = 0.dp) {
-                        HomeTab.entries.forEach { item ->
-                            val selected = tab == item
-                            NavigationBarItem(selected = selected, onClick = {
-                                    if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key }
-                                },
-                                icon = { Icon(when (item) {
-                                    HomeTab.TODAY -> if (selected) Icons.Filled.Today else Icons.Outlined.Today
-                                    HomeTab.PRACTICE -> if (selected) Icons.Filled.EditNote else Icons.Outlined.EditNote
-                                    HomeTab.REVIEW -> if (selected) Icons.Filled.History else Icons.Outlined.History
-                                    HomeTab.ME -> if (selected) Icons.Filled.Person else Icons.Outlined.Person
-                                }, contentDescription = null) },
-                                label = { Text(item.label) },
-                                colors = NavigationBarItemDefaults.colors(indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer, selectedTextColor = MaterialTheme.colorScheme.primary,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant, unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant))
-                        }
-                    }
-                }
+                HomeTabBar(tab) { item -> if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key } }
             }
         ) { padding ->
             val header: @Composable () -> Unit = { PracticeHeader(practice, ::showPractice) }
@@ -142,6 +126,34 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         top == "me/words" -> SimpleScreen("六级词汇", ::pop) { legacy.words() }
         top == "me/essays" -> SimpleScreen("旧版作文记录", ::pop) { LegacyEssays(vm) }
         else -> LaunchedEffect(top) { pop() }
+    }
+}
+
+/**
+ * iOS-style tab bar: a hairline over a slightly translucent bar, tinted icon and small label, no indicator pill.
+ * Each item is a selectable tab so screen readers and the UI scripts see which one is current.
+ */
+@Composable
+private fun HomeTabBar(current: HomeTab, onSelect: (HomeTab) -> Unit) {
+    Column(Modifier.background(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.94f))) {
+        Hairline()
+        Row(Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)) {
+            HomeTab.entries.forEach { item ->
+                val selected = item == current
+                val tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                Column(Modifier.weight(1f).fillMaxHeight()
+                    .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item) }),
+                    horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Icon(when (item) {
+                        HomeTab.TODAY -> if (selected) Icons.Filled.Today else Icons.Outlined.Today
+                        HomeTab.PRACTICE -> if (selected) Icons.Filled.EditNote else Icons.Outlined.EditNote
+                        HomeTab.REVIEW -> if (selected) Icons.Filled.History else Icons.Outlined.History
+                        HomeTab.ME -> if (selected) Icons.Filled.Person else Icons.Outlined.Person
+                    }, contentDescription = null, tint = tint, modifier = Modifier.size(26.dp))
+                    Text(item.label, style = MaterialTheme.typography.labelSmall, color = tint)
+                }
+            }
+        }
     }
 }
 
@@ -196,47 +208,31 @@ fun ExamManagement(state: ExamLibraryState, onIntent: (ExamLibraryIntent) -> Uni
     val catalogCount = remember { ExamCatalog.papers().size }
     val importedCount = state.papers.count { !it.sample }
     val sampleCount = state.papers.count { it.sample }
-    SectionCard(containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            CardTitle("当前个人题库")
-            StatusPill(
-                text = "已导入 $importedCount / $catalogCount 套",
-                tone = if (importedCount > 0) Tone.Good else Tone.Better
-            )
-        }
-        Note(
-            listOfNotNull(
-                "真题目录共 $catalogCount 套（2023.06–2025.12）",
-                if (sampleCount > 0) "原创样本 $sampleCount 套" else null
-            ).joinToString(" · ")
-        )
-        Text("导入你有权使用的结构化 JSON 资料。PDF / Word 请先在电脑本地转换并校对；扫描件暂不自动识别。",
-            style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = { import.launch(arrayOf("application/json", "text/plain", "application/octet-stream")) }, enabled = !state.busy) {
-                Text("导入 JSON 资料")
-            }
-            OutlinedButton(onClick = { export.launch("cet6-personal-exams.json") }, enabled = !state.busy && state.papers.isNotEmpty()) {
-                Text("导出个人题库")
-            }
-        }
-        if (state.status.isNotBlank()) Text(state.status, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
+    Group(header = "当前个人题库", footer = listOfNotNull(
+        "真题目录共 $catalogCount 套（2023.06–2025.12）",
+        if (sampleCount > 0) "原创样本 $sampleCount 套" else null
+    ).joinToString(" · ")) {
+        ValueRow("已导入", "$importedCount / $catalogCount 套", if (importedCount > 0) Tone.Good else Tone.Better)
     }
+    Group(footer = "导入你有权使用的结构化 JSON 资料。PDF / Word 请先在电脑本地转换并校对；扫描件暂不自动识别。") {
+        ActionRow("导入 JSON 资料", { import.launch(arrayOf("application/json", "text/plain", "application/octet-stream")) }, enabled = !state.busy)
+        GroupDivider()
+        ActionRow("导出个人题库", { export.launch("cet6-personal-exams.json") }, enabled = !state.busy && state.papers.isNotEmpty())
+    }
+    if (state.status.isNotBlank()) GroupFooter(state.status, color = MaterialTheme.colorScheme.primary)
     if (state.preview.isNotEmpty()) {
-        SectionCard {
-            CardTitle("导入预览（${state.preview.size} 套）")
+        Group(header = "导入预览（${state.preview.size} 套）") {
             state.preview.forEachIndexed { index, p ->
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(Modifier.fillMaxWidth().padding(horizontal = CardPadding, vertical = 11.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text("${p.label} · ${p.status}", style = MaterialTheme.typography.bodyLarge)
                     Note(p.issues().joinToString("；").ifBlank { "结构完整，使用权与套卷一致性由导入者确认" })
                 }
-                if (index < state.preview.lastIndex) Hairline()
+                GroupDivider()
             }
-            Button(onClick = { onIntent(ExamLibraryIntent.ConfirmImport) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) {
-                Text("确认保存个人题库")
-            }
+            ActionRow("确认保存个人题库", { onIntent(ExamLibraryIntent.ConfirmImport) }, enabled = !state.busy)
         }
     }
-    Note("「备份与恢复」可一次导出学习记录与个人题库。此处的题库 JSON 仅包含资料。")
-    TextButton(onClick = { runCatching { uriHandler.openUri(ExamCatalog.SET_SOURCE) } }) { Text("查看套次目录来源") }
+    Group(footer = "「备份与恢复」可一次导出学习记录与个人题库。此处的题库 JSON 仅包含资料。") {
+        ActionRow("查看套次目录来源", { runCatching { uriHandler.openUri(ExamCatalog.SET_SOURCE) } })
+    }
 }

@@ -2,6 +2,14 @@
 
 本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
 
+## Apple 风格界面：设计令牌与「我的」页面组（2026-10-29）
+
+- 全局令牌改为 iOS 风格：`theme/Color.kt` 用 iOS 系统色（分组背景 `#F2F2F7` / 深色 `#000000`，单元格白色 / `#1C1C1E`，0.5dp 分隔线）；系统蓝、绿和次要文字在不足 4.5:1 时改用更深的可访问变体（浅色主色 `#0066CC`，深色主色 `#409CFF`）。`Type.kt` 按 iOS 文本样式（Large Title 34、Headline 17、Body 17、Footnote 13 …）映射到 Material 角色，系统无衬线字体代替 San Francisco（不能随 Android 应用分发）。`Shape.kt` 圆角改为 iOS 分组单元格尺寸。
+- 共享组件：`ScreenTopBar` 改为居中标题 + 蓝色「‹ 返回」；`SectionLabel` 改为与单元格文字对齐的脚注灰字；`ListRow` 改为 44dp 行高、细 › 箭头，可选前置 `IconTile`；`SectionCard` 去掉边框和阴影。底部导航改为 iOS 式标签栏（无指示胶囊、选中项着色），仍是 `Role.Tab` 可选项，界面脚本照常识别。
+- 新增 `components/Grouped.kt`：`Group`（页眉 / 白色分组 / 页脚）、`ValueRow`、`ActionRow`（蓝色或红色操作行）、`ToggleRow`、`CheckRow`、`FieldRow`（行内无边框输入，Key 仍不进 saved state）、`IconTile`。
+- 「我的」改为设置列表样式（概览单元格 + 彩色图标行）；AI 连接、备份与恢复、题库管理改为分组表单（服务选择用勾选列表，按钮改为操作行，深度批改用开关行）。其他页面目前只随全局令牌变色，结构尚未重做。
+- 验证：174 项 JVM、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件与 `scenario ui` 通过；浅色和深色截图见 `test-evidence/apple-style-*-2026-10-29.png`。未在实体机查看。
+
 ## 页面 ViewModel：备份与题库管理（2026-10-29）
 
 - 「备份与恢复」：`BackupViewModel` 用 `combine` 合并备份、学习计划、练习、对话和题库五个服务的状态，得到 `BackupUiState`；原来散在按钮上的启用条件（导出、恢复预览、继续/确认合并）集中到 `BackupUiState.from`，由 `BackupUiStateTest` 在 JVM 上覆盖。`BackupCard(vm, standalone)` 保留为绑定入口（「我的」页和旧版今日页共用同一个 ViewModel），界面是无状态的 `BackupPanel(state, onIntent)`。

@@ -138,20 +138,17 @@ fun StatusBadge(
     }
 }
 
+/** A grouped cell holding one block of content: flat and borderless on the grouped background. */
 @Composable
 fun SectionCard(
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.surface,
-    borderColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(1.dp, borderColor, MaterialTheme.shapes.medium),
-        shape = MaterialTheme.shapes.medium,
-        color = containerColor,
-        tonalElevation = 1.dp
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = containerColor
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

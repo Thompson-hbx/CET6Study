@@ -1,11 +1,22 @@
 package com.example.cet6.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
+import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Hub
+import androidx.compose.material.icons.outlined.School
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
@@ -252,35 +263,52 @@ fun readingStatus(entry: CoachPractice): TaskStatus {
         else TaskStatus("$right/${known.size}", Tone.Ink, "已核对，${known.size} 题中 $right 题与参考一致")
 }
 
-/** Sections of the 我的 tab: connection, data and older screens; review material lives in 复盘. */
+/** The 我的 tab as an iOS settings list: an overview cell, then connection, data and older screens. */
 @Composable
 fun MeHome(vm: StudyViewModel, padding: PaddingValues, onRoute: (String) -> Unit) {
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { TabTitle("我的") }
         item {
+            Spacer(Modifier.height(12.dp))
+            PaperCard {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(56.dp).background(TileColors.Blue, CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Outlined.School, contentDescription = null, tint = Color.White, modifier = Modifier.size(30.dp))
+                    }
+                    Column(Modifier.padding(start = 14.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text("六级研习室", style = MaterialTheme.typography.titleLarge)
+                        Text("${vm.coach.history.count { it.submittedAt > 0 }} 次提交 · 学习数据只保存在本机",
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            }
+        }
+        item {
             SectionLabel("AI 连接")
             RowCard {
-                ListRow(vm.provider.label, subtitle = when {
-                    !vm.aiReady -> "未连接 · 配置后可以批改、讲解和追问"
-                    vm.chosenModel.isBlank() -> "已连接 · 还没有选择模型"
+                ListRow("AI 服务", subtitle = when {
+                    !vm.aiReady -> "未连接"
+                    vm.chosenModel.isBlank() -> "已连接 · 未选择模型"
                     else -> "已连接 · ${vm.models.firstOrNull { it.slug == vm.chosenModel }?.displayName ?: vm.chosenModel}"
-                }, trailing = if (vm.aiReady && vm.chosenModel.isNotBlank()) "可用" else null, trailingTone = Tone.Good) { onRoute("me/connection") }
+                }, trailing = vm.provider.label, leading = { IconTile(Icons.Outlined.Hub, TileColors.Blue) }) { onRoute("me/connection") }
             }
         }
         item {
             SectionLabel("数据")
             RowCard {
-                ListRow("备份与恢复", subtitle = "完整导出学习记录与个人题库，不含凭证", onClick = { onRoute("me/backup") })
-                RowDivider()
-                ListRow("题库管理", subtitle = "导入或导出个人题库", onClick = { onRoute("me/exams") })
+                ListRow("备份与恢复", leading = { IconTile(Icons.Outlined.Backup, TileColors.Green) }, onClick = { onRoute("me/backup") })
+                GroupDivider(TiledRowDividerStart)
+                ListRow("题库管理", trailing = "${vm.examPapers.size} 套",
+                    leading = { IconTile(Icons.AutoMirrored.Outlined.LibraryBooks, TileColors.Orange) }, onClick = { onRoute("me/exams") })
             }
+            GroupFooter("完整备份包含学习记录与个人题库，不含登录凭证或 API Key。", Modifier.padding(horizontal = CardMargin))
         }
         item {
             SectionLabel("其他")
             RowCard {
-                ListRow("单词与旧版功能", subtitle = "FSRS 单词复习、学习计划", onClick = { onRoute("me/legacy") })
-                RowDivider()
-                ListRow("旧版作文记录", subtitle = "早期版本保存的作文与批改", onClick = { onRoute("me/essays") })
+                ListRow("单词与旧版功能", leading = { IconTile(Icons.AutoMirrored.Outlined.MenuBook, TileColors.Indigo) }, onClick = { onRoute("me/legacy") })
+                GroupDivider(TiledRowDividerStart)
+                ListRow("旧版作文记录", leading = { IconTile(Icons.Outlined.Description, TileColors.Gray) }, onClick = { onRoute("me/essays") })
             }
         }
     }

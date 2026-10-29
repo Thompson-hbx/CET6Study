@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cet6.ui.components.*
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -48,33 +49,27 @@ fun BackupPanel(state: BackupUiState, onIntent: (BackupIntent) -> Unit, standalo
         }
     }
     if (expanded) {
-        ElevatedCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(
-                    "本机当前：词库 ${state.wordCount} 词 · 练习记录 ${state.practiceCount} 条 · 个人题库 ${state.paperCount} 套",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text("完整备份包含学习记录、草稿、批改、对话及个人题库，自动分段并校验完整性。不包含登录凭证、API Key 或原卷 PDF；原卷请单独保留。")
-                Text("备份 ZIP 内为明文，请选择可信位置。恢复支持完整 ZIP 和旧学习 JSON，先预览再合并；重复恢复不增加重复记录。")
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(
-                        onClick = { export.launch("CET6Study-complete-${state.today}.zip") },
-                        enabled = state.canExport
-                    ) { Text("导出完整备份") }
-                    OutlinedButton(
-                        onClick = { restore.launch(arrayOf("*/*")) },
-                        enabled = state.canPreview
-                    ) { Text("恢复预览") }
-                }
-                if (backup.restorePending) {
-                    Text("有未完成的恢复任务。已保留本机记录与恢复内容；重试会继续合并，不重复增加历史。若仍失败，请保留原备份和本机数据后联系维护者。")
-                    OutlinedButton(onClick = { onIntent(BackupIntent.Resume) }, enabled = state.canMerge) { Text("继续上次恢复") }
-                }
-                if (backup.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
-                if (backup.status.isNotBlank()) Text(backup.status, color = MaterialTheme.colorScheme.primary)
+        Group(header = "本机数据") {
+            ValueRow("词库", "${state.wordCount} 词")
+            GroupDivider()
+            ValueRow("练习记录", "${state.practiceCount} 条")
+            GroupDivider()
+            ValueRow("个人题库", "${state.paperCount} 套")
+        }
+        Group(footer = "完整备份包含学习记录、草稿、批改、对话及个人题库，自动分段并校验完整性。不包含登录凭证、API Key 或原卷 PDF；原卷请单独保留。备份 ZIP 内为明文，请选择可信位置。") {
+            ActionRow("导出完整备份", { export.launch("CET6Study-complete-${state.today}.zip") }, enabled = state.canExport)
+        }
+        Group(footer = "恢复支持完整 ZIP 和旧学习 JSON，先预览再合并；重复恢复不增加重复记录。") {
+            ActionRow("恢复预览", { restore.launch(arrayOf("*/*")) }, enabled = state.canPreview)
+        }
+        if (backup.restorePending) {
+            Group(header = "未完成的恢复",
+                footer = "已保留本机记录与恢复内容；重试会继续合并，不重复增加历史。若仍失败，请保留原备份和本机数据后联系维护者。") {
+                ActionRow("继续上次恢复", { onIntent(BackupIntent.Resume) }, enabled = state.canMerge)
             }
         }
+        if (backup.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+        if (backup.status.isNotBlank()) GroupFooter(backup.status, color = MaterialTheme.colorScheme.primary)
     }
     val preview = backup.preview
     if (preview != null) {

@@ -8,12 +8,13 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
+import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -91,36 +92,45 @@ fun labelWidth(samples: List<String>, style: TextStyle): Dp {
     }
 }
 
-/** Large title at the top of a tab root. */
+/** iOS-style large title at the top of a tab root. */
 @Composable
 fun TabTitle(title: String, subtitle: String? = null) {
-    Column(Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 24.dp, bottom = 4.dp),
+    Column(Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 12.dp, bottom = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(title, style = MaterialTheme.typography.headlineLarge, modifier = Modifier.semantics { heading() })
         if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
+/** iOS-style navigation bar: centred title, a tinted back chevron with its label, actions on the right. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenTopBar(title: String, subtitle: String? = null, onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {}) {
     Column {
-        TopAppBar(
+        CenterAlignedTopAppBar(
             title = {
-                Column {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodySmall,
+                    if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             },
             navigationIcon = {
-                if (onBack != null) IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "返回")
+                // One node named 返回 for screen readers; the chevron and label are drawn inside it.
+                if (onBack != null) Row(
+                    Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onBack)
+                        .semantics(mergeDescendants = true) { contentDescription = "返回" }
+                        .heightIn(min = 44.dp).padding(start = 4.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.AutoMirrored.Outlined.ArrowBackIos, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                    Text("返回", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
                 }
             },
             actions = actions,
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background)
         )
         Hairline()
     }
@@ -128,18 +138,19 @@ fun ScreenTopBar(title: String, subtitle: String? = null, onBack: (() -> Unit)? 
 
 @Composable
 fun Hairline(modifier: Modifier = Modifier, start: Dp = 0.dp) {
-    HorizontalDivider(modifier.padding(start = start), thickness = 0.8.dp, color = MaterialTheme.colorScheme.outlineVariant)
+    HorizontalDivider(modifier.padding(start = start), thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 /** Divider between rows of one card, starting where the row text starts. */
 @Composable
 fun RowDivider() = Hairline(start = CardPadding)
 
+/** Grouped-list section header: quiet footnote text lined up with the text inside the cells below. */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier, action: String? = null, onAction: (() -> Unit)? = null) {
-    Row(modifier.fillMaxWidth().padding(start = PageGutter, end = 8.dp, top = 22.dp, bottom = 6.dp),
+    Row(modifier.fillMaxWidth().padding(start = CardMargin + CardPadding, end = 8.dp, top = 24.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Text(text, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
+        Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f).semantics { heading() })
         if (action != null && onAction != null) TextButton(onClick = onAction) { Text(action) }
     }
@@ -176,15 +187,18 @@ fun ListRow(
     showChevron: Boolean = true,
     /** Extra one-line previews, each cut with its own ellipsis. */
     lines: List<String> = emptyList(),
+    /** Optional leading visual, e.g. an [IconTile]. */
+    leading: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
 ) {
     Row(
         modifier.fillMaxWidth().clickable(enabled = enabled, onClick = onClick)
-            .heightIn(min = 56.dp).padding(start = CardPadding, end = 8.dp, top = 14.dp, bottom = 14.dp),
+            .heightIn(min = 44.dp).padding(start = CardPadding, end = 10.dp, top = 11.dp, bottom = 11.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium,
+        if (leading != null) Box(Modifier.padding(end = 12.dp)) { leading() }
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge,
                 color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
             if (!subtitle.isNullOrBlank()) Text(subtitle, style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = subtitleLines, overflow = TextOverflow.Ellipsis)
@@ -194,11 +208,11 @@ fun ListRow(
             }
         }
         // Plain tinted words rather than a pill: long lists stay calm and the colour still carries the state.
-        if (!trailing.isNullOrBlank()) Text(trailing, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold,
+        if (!trailing.isNullOrBlank()) Text(trailing, style = MaterialTheme.typography.bodyMedium,
             color = trailingTone.color(), maxLines = 1, modifier = Modifier.padding(start = 12.dp)
             .then(if (trailingDescription != null) Modifier.semantics { contentDescription = trailingDescription } else Modifier))
-        if (showChevron && enabled) Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(start = 4.dp).size(20.dp))
+        if (showChevron && enabled) Icon(Icons.AutoMirrored.Outlined.ArrowForwardIos, contentDescription = null,
+            tint = MaterialTheme.colorScheme.outline, modifier = Modifier.padding(start = 8.dp).size(14.dp))
         else Spacer(Modifier.width(8.dp))
     }
 }
