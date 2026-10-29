@@ -1,0 +1,28 @@
+{
+  "feature": "Optional deep review",
+  "apk": "share\\CET6Study-deep-review.apk",
+  "sha256": "0420658a186a82f3753848b474840388935a501b6a594de5b632da9efd858718",
+  "bytes": 19727740,
+  "jvm": {
+    "tests": 168,
+    "failures": 0,
+    "newTests": 8
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 6
+  },
+  "emulator": "emulator-5556",
+  "androidScenariosPassed": [
+    "ai-connection",
+    "ai-interaction"
+  ],
+  "liveAiRequests": 0,
+  "privateExamAssetsIncluded": false,
+  "screenshot": "test-evidence/deep-review-settings.png",
+  "limitations": [
+    "No live model quality comparison",
+    "Provider may ignore reasoning parameters",
+    "No physical-device installation"
+  ]
+}

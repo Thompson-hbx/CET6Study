@@ -33,13 +33,14 @@ class ApiConnection private constructor(val baseUrl: String, val apiKey: String)
     }
 }
 
-internal fun chatPayload(model: String, prompt: String): JSONObject = JSONObject().apply {
+internal fun chatPayload(model: String, prompt: String, reasoning: ReviewReasoning? = null): JSONObject = JSONObject().apply {
     require(model.isNotBlank()) { "请先选择或填写模型" }
     put("model", model)
     put("messages", JSONArray()
         .put(JSONObject().put("role", "system").put("content", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。"))
         .put(JSONObject().put("role", "user").put("content", prompt)))
     put("stream", true)
+    reasoning?.applyToChat(this)
 }
 
 /** Only a stopped choice followed by [DONE] is a complete answer; reasoning is not answer text. */

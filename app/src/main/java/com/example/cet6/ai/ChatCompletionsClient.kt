@@ -39,17 +39,21 @@ class ChatCompletionsClient(http: OkHttpClient) {
     }
 
     suspend fun stream(connection: ApiConnection, model: String, prompt: String,
-        onDelta: suspend (String) -> Unit): String = withContext(Dispatchers.IO) {
+        onDelta: suspend (String) -> Unit): String = stream(connection, model, prompt, null, onDelta)
+
+    suspend fun stream(connection: ApiConnection, model: String, prompt: String,
+        reasoning: ReviewReasoning?, onDelta: suspend (String) -> Unit): String = withContext(Dispatchers.IO) {
         val request = Request.Builder().url(connection.endpoint("chat").newBuilder().addPathSegment("completions").build())
             .header("Authorization", "Bearer ${connection.apiKey}")
             .header("Accept", "text/event-stream")
-            .post(chatPayload(model, prompt).toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .post(chatPayload(model, prompt, reasoning).toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
             .build()
         val call = http.newCall(request)
         coroutineScope {
             val watcher = launch { try { awaitCancellation() } finally { call.cancel() } }
             try {
                 call.execute().use { response ->
+                    if (reasoning != null && response.code in setOf(400, 422)) throw DeepReviewRejectedException()
                     check(response.isSuccessful) { apiFailure(response.code) }
                     val body = response.body ?: error("响应流为空")
                     check(body.contentType()?.let { it.type == "text" && it.subtype == "event-stream" } == true) {

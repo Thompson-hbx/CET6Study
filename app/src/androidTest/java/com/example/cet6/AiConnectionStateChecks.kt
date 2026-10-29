@@ -7,6 +7,11 @@ import android.content.SharedPreferences
 import android.os.Looper
 import androidx.room.Room
 import com.example.cet6.ai.AiProvider
+import com.example.cet6.ai.ReasoningEffort
+import com.example.cet6.ai.ReasoningFormat
+import com.example.cet6.ai.DeepReviewRejectedException
+import org.json.JSONObject
+import okio.Buffer
 import com.example.cet6.data.EssayEntity
 import com.example.cet6.data.StudyDatabase
 import com.example.cet6.ui.AiConnectionState
@@ -37,12 +42,18 @@ class AiConnectionStateChecks(private val context: Context) {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         val mode = AtomicReference("success")
         val generations = AtomicInteger()
+        val lastPayload = AtomicReference<JSONObject>()
         val http = OkHttpClient.Builder().addInterceptor { chain ->
             val request = chain.request()
             val models = request.url.encodedPath.endsWith("/models")
             check(request.url.host in setOf("api.deepseek.com", "fixture.invalid")) { "Unexpected offline destination" }
-            if (!models) generations.incrementAndGet()
-            val code = if (!models && mode.get() == "429") 429 else 200
+            if (!models) {
+                generations.incrementAndGet()
+                val buffer = Buffer()
+                request.body!!.writeTo(buffer)
+                lastPayload.set(JSONObject(buffer.readUtf8()))
+            }
+            val code = if (!models) mode.get().toIntOrNull() ?: 200 else 200
             val body = if (models) """{"data":[{"id":"listed-model"},{"id":"second-model"}]}""" else if (code == 429) "{}" else {
                 "data: {\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Original reply.\"}}]}\n\n" +
                     if (mode.get() == "partial") "" else
@@ -126,6 +137,56 @@ class AiConnectionStateChecks(private val context: Context) {
             check(!reopened.aiReady && reopened.chosenModel == "legacy-chatgpt-model")
             check(generations.get() == 4) { "Provider restoration sent a generation request" }
             check(db.dao().essays().first() == listOf(saved))
+
+            // Deep-review preferences survive reopening and stay isolated by provider, URL and model.
+            reopened.selectProvider(AiProvider.DEEPSEEK)
+            idle(reopened)
+            check(!reopened.deepReviewEnabled && reopened.reviewFormat == ReasoningFormat.DEEPSEEK)
+            reopened.setDeepReview(true)
+            reopened.selectReviewEffort(ReasoningEffort.MAX)
+            val deep = state()
+            idle(deep)
+            check(deep.deepReviewEnabled && deep.reviewEffort == ReasoningEffort.MAX)
+            check(deep.reviewFormat == ReasoningFormat.DEEPSEEK)
+            deep.streamCoach("Offline review", deepReview = true) {}
+            check(lastPayload.get().getString("reasoning_effort") == "max")
+            check(lastPayload.get().getJSONObject("thinking").getString("type") == "enabled")
+            deep.streamCoach("Offline hint") {}
+            check(!lastPayload.get().has("reasoning_effort") && !lastPayload.get().has("thinking"))
+            deep.selectModel("other-model")
+            check(!deep.deepReviewEnabled && deep.reviewEffort == ReasoningEffort.HIGH)
+            deep.selectModel("manual-deep-model")
+            check(deep.deepReviewEnabled && deep.reviewEffort == ReasoningEffort.MAX)
+            deep.setDeepReview(false)
+            deep.streamCoach("Disabled review", deepReview = true) {}
+            check(!lastPayload.get().has("reasoning_effort"))
+            deep.setDeepReview(true)
+            val callsBeforeRejected = generations.get()
+            mode.set("400")
+            val rejected = runCatching { deep.streamCoach("Rejected review", deepReview = true) {} }.exceptionOrNull()
+            check(rejected is DeepReviewRejectedException && !deep.busy)
+            check(generations.get() == callsBeforeRejected + 1) { "Rejected depth retried automatically" }
+            mode.set("success")
+            deep.selectProvider(AiProvider.CUSTOM)
+            deep.selectModel("shared-model")
+            check(deep.saveApiConnection("https://fixture.invalid/v1", "original-custom-fixture-key"))
+            check(!deep.deepReviewEnabled && deep.reviewFormat == ReasoningFormat.OPENAI)
+            deep.setDeepReview(true)
+            deep.selectReviewEffort(ReasoningEffort.XHIGH)
+            deep.streamCoach("OpenAI-compatible review", deepReview = true) {}
+            check(lastPayload.get().getString("reasoning_effort") == "xhigh")
+            check(!lastPayload.get().has("thinking"))
+            deep.selectReviewFormat(ReasoningFormat.DEEPSEEK)
+            check(deep.reviewEffort == ReasoningEffort.HIGH)
+            deep.selectReviewEffort(ReasoningEffort.MAX)
+            check(deep.saveApiConnection("https://fixture.invalid/other", "other-fixture-key"))
+            check(!deep.deepReviewEnabled && deep.reviewFormat == ReasoningFormat.OPENAI)
+            check(deep.saveApiConnection("https://fixture.invalid/v1", "original-custom-fixture-key"))
+            check(deep.deepReviewEnabled && deep.reviewFormat == ReasoningFormat.DEEPSEEK && deep.reviewEffort == ReasoningEffort.MAX)
+            deep.selectProvider(AiProvider.CHATGPT)
+            check(!deep.deepReviewEnabled && deep.reviewFormat == ReasoningFormat.OPENAI)
+            check(db.dao().essays().first() == listOf(saved)) { "Depth configuration changed learner history" }
+
         } finally {
             scope.coroutineContext[Job]!!.cancelAndJoin()
             db.close()

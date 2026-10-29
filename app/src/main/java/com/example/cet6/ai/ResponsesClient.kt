@@ -38,18 +38,15 @@ class ResponsesClient(private val http: OkHttpClient, private val auth: ChatGptA
         }
     }
 
-    /** Streams text chunks, and only accepts success after response.completed. */
     suspend fun stream(model: String, prompt: String, onDelta: suspend (String) -> Unit): String =
+        stream(model, prompt, null, onDelta)
+
+    /** Streams text chunks, and only accepts success after response.completed. */
+    suspend fun stream(model: String, prompt: String, reasoning: ReviewReasoning?, onDelta: suspend (String) -> Unit): String =
         withContext(Dispatchers.IO) {
             val session = auth.validSession()
             check(session.canUsePlan) { "账号没有授权 chatgpt.tokens.use.direct" }
-            val payload = JSONObject().apply {
-                put("model", model)
-                put("instructions", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。")
-                put("input", JSONArray().put(JSONObject().put("role", "user").put("content", prompt)))
-                put("store", false)
-                put("stream", true)
-            }
+            val payload = responsesPayload(model, prompt, reasoning)
             val request = Request.Builder().url("https://api.openai.com/v1/responses")
                 .header("Authorization", "Bearer ${session.accessToken}")
                 .header("Accept", "text/event-stream")
@@ -59,15 +56,28 @@ class ResponsesClient(private val http: OkHttpClient, private val auth: ChatGptA
             // A blocking read cannot observe coroutine cancellation, so cancelling the caller closes the socket.
             coroutineScope {
                 val watcher = launch { try { awaitCancellation() } finally { call.cancel() } }
-                try { readResponsesStream(call.execute(), onDelta) } finally { watcher.cancel() }
+                try { readResponsesStream(call.execute(), deepReview = reasoning != null, onDelta = onDelta) } finally { watcher.cancel() }
             }
         }
 
 }
 
+internal fun responsesPayload(model: String, prompt: String, reasoning: ReviewReasoning? = null): JSONObject =
+    JSONObject().apply {
+        require(model.isNotBlank()) { "请先选择模型" }
+        require(reasoning == null || reasoning.format == ReasoningFormat.OPENAI) { "Responses 需要 OpenAI 请求格式" }
+        put("model", model)
+        put("instructions", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。")
+        put("input", JSONArray().put(JSONObject().put("role", "user").put("content", prompt)))
+        put("store", false)
+        put("stream", true)
+        reasoning?.let { put("reasoning", JSONObject().put("effort", it.effort.wire)) }
+    }
+
 /** Pure response parsing can be checked offline without opening an OAuth session. */
-internal suspend fun readResponsesStream(started: Response, onDelta: suspend (String) -> Unit): String =
+internal suspend fun readResponsesStream(started: Response, deepReview: Boolean = false, onDelta: suspend (String) -> Unit): String =
     started.use { response ->
+        if (deepReview && response.code in setOf(400, 422)) throw DeepReviewRejectedException()
         check(response.isSuccessful) { failureMessage("AI", response) }
         val contentType = response.body?.contentType()
         val headerMissing = response.header("Content-Type") == null
