@@ -2,12 +2,11 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:DesktopControls.kt$@Composable internal fun DeskButton(text: String, icon: ImageVector? = null, primary: Boolean = false, selected: Boolean = false, enabled: Boolean = true, modifier: Modifier = Modifier, trailingIcon: Boolean = false, onClick: () -&gt; Unit)</ID>
+    <ID>CyclomaticComplexMethod:DesktopControls.kt$@Composable internal fun DeskButton( text: String, icon: ImageVector? = null, primary: Boolean = false, selected: Boolean = false, enabled: Boolean = true, modifier: Modifier = Modifier, trailingIcon: Boolean = false, onClick: () -&gt; Unit, )</ID>
     <ID>CyclomaticComplexMethod:DesktopWorkspace.kt$@Composable private fun ColumnScope.PracticeArea(model: DesktopModel, compact: Boolean, narrow: Boolean)</ID>
     <ID>CyclomaticComplexMethod:DesktopWorkspace.kt$@Composable private fun Editor(model: DesktopModel, key: String, row: JSONObject, notes: List&lt;MarginNote&gt;, modifier: Modifier)</ID>
     <ID>CyclomaticComplexMethod:DesktopWorkspace.kt$@Composable private fun FeedbackDrawer(model: DesktopModel, row: JSONObject, expanded: Boolean, compact: Boolean, onToggle: () -&gt; Unit)</ID>
     <ID>CyclomaticComplexMethod:SavedFeedback.kt$internal fun readableFeedback(text: String): String</ID>
-    <ID>EmptyElseBlock:DesktopWorkspace.kt$if (value.isEmpty()) Text(placeholder, style = style, color = DeskColors.muted)</ID>
     <ID>LongMethod:DesktopWorkspaceTest.kt$DesktopWorkspaceTest$@Test fun editingSubmissionRevisionAndHistoryWorkWithoutOpeningWindows()</ID>
     <ID>MagicNumber:DesktopIcons.kt$DeskIcons$24f</ID>
     <ID>MagicNumber:DesktopModel.kt$DesktopModel$30_000</ID>
@@ -16,11 +15,6 @@
     <ID>MatchingDeclarationName:DesktopIcons.kt$DeskIcons</ID>
     <ID>MatchingDeclarationName:DesktopTheme.kt$DeskColors</ID>
     <ID>MatchingDeclarationName:SavedFeedback.kt$MarginNote</ID>
-    <ID>MaxLineLength:DesktopPages.kt$Text("${word.getInt("repetitions")} 次复习 · ${word.getString("source")}", style = MaterialTheme.typography.bodySmall, color = DeskColors.secondary)</ID>
-    <ID>MaxLineLength:DesktopPages.kt$if (word.getString("example").isNotBlank()) SelectionContainer { Text(word.getString("example"), style = MaterialTheme.typography.bodyMedium) }</ID>
-    <ID>MaxLineLength:DesktopWorkspace.kt$Column</ID>
-    <ID>MaxLineLength:DesktopWorkspace.kt$Icon(if (expanded) Icons.Outlined.KeyboardArrowDown else Icons.AutoMirrored.Outlined.KeyboardArrowRight, null, Modifier.size(20.dp), tint = DeskColors.secondary)</ID>
-    <ID>MaxLineLength:DesktopWorkspaceTest.kt$DesktopWorkspaceTest$assertTrue("Sync status is not visible: ${footer.boundsInRoot}", footer.boundsInRoot.width &gt; 0 &amp;&amp; footer.boundsInRoot.height &gt; 0 &amp;&amp; footer.boundsInRoot.top &gt;= 0 &amp;&amp; footer.boundsInRoot.bottom &lt;= 1024)</ID>
     <ID>MaxLineLength:DesktopWorkspaceTest.kt$DesktopWorkspaceTest$private val answer = "We do not need a complicated study plan every day. Writing down our questions and explaining them in our own words can help us understand what we need to learn."</ID>
     <ID>ReturnCount:DesktopWorkspace.kt$private fun questions(value: String): String</ID>
     <ID>TooGenericExceptionCaught:DesktopStore.kt$DesktopStore$e: Exception</ID>

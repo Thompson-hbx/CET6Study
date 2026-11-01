@@ -19,36 +19,69 @@ class BackupInstrumentationChecks(private val context: Context) {
         val aborting = open(file("rollback"))
         try {
             val at = 1_800_000_000_000L
-            val logs = (0 until 125).map { i -> WordReview("old-$i", "source", true, false, "2027-01-15",
-                at + i * 1000, at + i * 1000 + WordScheduler.DAY) }
-            source.dao().addWords(listOf(WordEntity("source", "原始词", "Original example.", logs.last().nextDueAt, 5, 30),
-                WordEntity("fsrs", "算法", "Original example.")))
+            val logs = (0 until 125).map { i ->
+                WordReview(
+                    "old-$i",
+                    "source",
+                    true,
+                    false,
+                    "2027-01-15",
+                    at + i * 1000,
+                    at + i * 1000 + WordScheduler.DAY,
+                )
+            }
+            source.dao().addWords(
+                listOf(
+                    WordEntity("source", "原始词", "Original example.", logs.last().nextDueAt, 5, 30),
+                    WordEntity("fsrs", "算法", "Original example."),
+                ),
+            )
             source.dao().addWordReviews(logs)
             check(StudyRepository(source).review("fsrs", WordRating.GOOD, at))
             source.dao().saveDailyPlan(DailyPlan("2026-10-16", 3, 5))
             source.dao().addReadingAttempts((0 until 40).map { ReadingAttempt(questionId = "question-$it", answer = "B", correct = true, createdAt = at + it) })
-            source.dao().addEssays((0 until 25).map { EssayEntity(topic = if (it == 0) "" else "topic-$it", content = "draft-$it\n中文与引号\"",
-                feedback = "feedback-$it", createdAt = at + it) })
+            source.dao().addEssays(
+                (0 until 25).map {
+                    EssayEntity(
+                        topic = if (it == 0) "" else "topic-$it",
+                        content = "draft-$it\n中文与引号\"",
+                        feedback = "feedback-$it",
+                        createdAt = at + it,
+                    )
+                },
+            )
             check(source.dao().wordReviewHistory().first().size == 100)
             check(source.dao().readingHistory().first().size == 30 && source.dao().essays().first().size == 20)
             val snapshot = BackupRepository(source).snapshot()
             val encoded = BackupCodec.encode(snapshot)
             val restored = BackupCodec.read(ByteArrayInputStream(encoded.toByteArray(Charsets.UTF_8)))
             check(snapshot == restored) { "codec roundtrip lost learning fields" }
-            val paper = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original archive test",
-                sourceUrl = "local:test", licenseStatus = "original", sample = true)
+            val paper = ExamPaper(
+                "sample-cet6-2026-06-13-1",
+                "2026-06-13",
+                "1",
+                sourceName = "Original archive test",
+                sourceUrl = "local:test",
+                licenseStatus = "original",
+                sample = true,
+            )
             val complete = CompleteBackup(snapshot, listOf(paper))
             val archive = ByteArrayOutputStream().also { CompleteBackupCodec.write(complete, it) }.toByteArray()
             check(CompleteBackupCodec.read(ByteArrayInputStream(archive)) == complete) { "complete ZIP lost study or unanswered papers" }
             check(CompleteBackupCodec.read(ByteArrayInputStream(encoded.toByteArray())).papers == null) { "legacy JSON misrepresented as complete" }
             check(restored.reviews.size == 126 && restored.reading.size == 40 && restored.essays.size == 25)
             val root = JSONObject(encoded)
-            check(root.keys().asSequence().toSet() == setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays", "coach", "turns"))
-            val invalid = listOf(encoded.dropLast(1), JSONObject(encoded).put("version", 99).toString(),
+            check(
+                root.keys().asSequence().toSet() == setOf("format", "version", "databaseVersion", "createdAt", "words", "reviews", "schedules", "plans", "reading", "essays", "coach", "turns"),
+            )
+            val invalid = listOf(
+                encoded.dropLast(1),
+                JSONObject(encoded).put("version", 99).toString(),
                 JSONObject(encoded).put("accessToken", "not-a-credential").toString(),
                 JSONObject(encoded).apply { getJSONArray("words").getJSONObject(0).put("repetitions", "5") }.toString(),
                 JSONObject(encoded).apply { getJSONArray("reviews").put(getJSONArray("reviews").getJSONObject(0)) }.toString(),
-                JSONObject(encoded).apply { getJSONArray("words").getJSONObject(0).put("dueAt", 123) }.toString())
+                JSONObject(encoded).apply { getJSONArray("words").getJSONObject(0).put("dueAt", 123) }.toString(),
+            )
             invalid.forEach { check(runCatching { BackupCodec.decode(it) }.isFailure) { "invalid backup accepted" } }
             check(runCatching { BackupCodec.read(ByteArrayInputStream(byteArrayOf(0xc3.toByte(), 0x28))) }.isFailure)
             target.dao().addWords(listOf(WordEntity("untouched", "保留本机", "Local example."), WordEntity("fsrs", "本机释义", "Local sentence.")))
@@ -78,11 +111,19 @@ class BackupInstrumentationChecks(private val context: Context) {
             BackupRepository(target).restore(restored, false)
             check(target.dao().schedule("fsrs") == latest) { "restore rewound newer learning" }
             BackupCodec.encode(BackupRepository(target).snapshot()) // merged result remains exportable
-            aborting.openHelper.writableDatabase.execSQL("CREATE TRIGGER reject_test_essay BEFORE INSERT ON essays BEGIN SELECT RAISE(ABORT, 'test rollback'); END")
+            aborting.openHelper.writableDatabase.execSQL(
+                "CREATE TRIGGER reject_test_essay BEFORE INSERT ON essays BEGIN SELECT RAISE(ABORT, 'test rollback'); END",
+            )
             check(runCatching { BackupRepository(aborting).restore(restored, true) }.isFailure)
             val afterAbort = BackupRepository(aborting).snapshot()
-            check(afterAbort.words.isEmpty() && afterAbort.schedules.isEmpty() && afterAbort.reviews.isEmpty() &&
-                afterAbort.plans.isEmpty() && afterAbort.reading.isEmpty() && afterAbort.essays.isEmpty()) { "partial restore survived rollback" }
-        } finally { source.close(); target.close(); aborting.close() }
+            check(
+                afterAbort.words.isEmpty() && afterAbort.schedules.isEmpty() && afterAbort.reviews.isEmpty() &&
+                    afterAbort.plans.isEmpty() && afterAbort.reading.isEmpty() && afterAbort.essays.isEmpty(),
+            ) { "partial restore survived rollback" }
+        } finally {
+            source.close()
+            target.close()
+            aborting.close()
+        }
     }
 }

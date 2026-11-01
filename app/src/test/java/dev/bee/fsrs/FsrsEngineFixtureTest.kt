@@ -6,7 +6,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.fail
 import org.junit.Test
-
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -48,8 +47,8 @@ class FsrsEngineFixtureTest {
                     integer(testCase, "elapsedDays"),
                     number(testCase, "desiredRetention"),
                     integer(testCase, "maximumInterval"),
-                )
-            )
+                ),
+            ),
         )
 
         assertState(name, output.nextState, asObject(testCase["expectedNextState"]))

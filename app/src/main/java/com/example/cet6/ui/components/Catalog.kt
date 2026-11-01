@@ -27,15 +27,21 @@ fun TrackSegments(options: List<String>, selected: Int, onSelect: (Int) -> Unit,
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         options.forEachIndexed { i, label ->
             val chosen = i == selected
-            Box(Modifier.weight(1f).heightIn(min = 40.dp).clip(chip)
-                .background(if (chosen) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLow)
-                .then(if (chosen) Modifier else Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, chip))
-                .selectable(selected = chosen, role = Role.RadioButton, onClick = { onSelect(i) })
-                .padding(horizontal = 12.dp),
-                contentAlignment = Alignment.Center) {
-                Text(label, style = MaterialTheme.typography.labelLarge, maxLines = 1,
+            Box(
+                Modifier.weight(1f).heightIn(min = 40.dp).clip(chip)
+                    .background(if (chosen) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLow)
+                    .then(if (chosen) Modifier else Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, chip))
+                    .selectable(selected = chosen, role = Role.RadioButton, onClick = { onSelect(i) })
+                    .padding(horizontal = 12.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    label,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
                     fontWeight = if (chosen) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (chosen) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant)
+                    color = if (chosen) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }
@@ -51,13 +57,19 @@ fun DotTabs(options: List<String>, selected: Int, onSelect: (Int) -> Unit, modif
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         options.forEachIndexed { i, label ->
             val chosen = i == selected
-            Column(Modifier.clip(RoundedCornerShape(10.dp))
-                .selectable(selected = chosen, role = Role.RadioButton, onClick = { onSelect(i) })
-                .heightIn(min = 48.dp).padding(horizontal = 10.dp, vertical = 6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(label, style = MaterialTheme.typography.titleLarge,
+            Column(
+                Modifier.clip(RoundedCornerShape(10.dp))
+                    .selectable(selected = chosen, role = Role.RadioButton, onClick = { onSelect(i) })
+                    .heightIn(min = 48.dp).padding(horizontal = 10.dp, vertical = 6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    label,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = if (chosen) FontWeight.Black else FontWeight.Normal,
-                    color = if (chosen) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
+                    color = if (chosen) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 Box(Modifier.size(6.dp).background(if (chosen) LocalMarks.current.brand else Color.Transparent, CircleShape))
             }
         }

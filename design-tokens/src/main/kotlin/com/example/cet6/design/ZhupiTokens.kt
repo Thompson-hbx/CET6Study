@@ -88,6 +88,7 @@ object ZhupiTokens {
         const val ROTATION = -12f
         const val PIVOT_X = 512f
         const val PIVOT_Y = 530f
+
         /** The ring's bounds within the artwork, for drawing it alone. */
         const val LEFT = 150f
         const val TOP = 220f

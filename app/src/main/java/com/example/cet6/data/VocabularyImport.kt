@@ -70,7 +70,11 @@ object VocabularyImport {
         var quoted = false
         var closed = false
         var index = 0
-        fun endField() { row += field.toString(); field.setLength(0); closed = false }
+        fun endField() {
+            row += field.toString()
+            field.setLength(0)
+            closed = false
+        }
         fun endRow() {
             endField()
             if (row.any { it.isNotBlank() }) rows += row.toList()
@@ -81,14 +85,32 @@ object VocabularyImport {
             val char = text[index++]
             if (quoted) {
                 if (char == '"') {
-                    if (index < text.length && text[index] == '"') { field.append('"'); index++ }
-                    else { quoted = false; closed = true }
-                } else field.append(char)
-            } else when (char) {
-                '"' -> { require(field.isEmpty() && !closed) { "CSV 引号位置错误" }; quoted = true }
-                ',' -> endField()
-                '\n', '\r' -> { if (char == '\r' && index < text.length && text[index] == '\n') index++; endRow() }
-                else -> { require(!closed) { "CSV 引号后只能是逗号或换行" }; field.append(char) }
+                    if (index < text.length && text[index] == '"') {
+                        field.append('"')
+                        index++
+                    } else {
+                        quoted = false
+                        closed = true
+                    }
+                } else {
+                    field.append(char)
+                }
+            } else {
+                when (char) {
+                    '"' -> {
+                        require(field.isEmpty() && !closed) { "CSV 引号位置错误" }
+                        quoted = true
+                    }
+                    ',' -> endField()
+                    '\n', '\r' -> {
+                        if (char == '\r' && index < text.length && text[index] == '\n') index++
+                        endRow()
+                    }
+                    else -> {
+                        require(!closed) { "CSV 引号后只能是逗号或换行" }
+                        field.append(char)
+                    }
+                }
             }
         }
         require(!quoted) { "CSV 存在未闭合的引号" }

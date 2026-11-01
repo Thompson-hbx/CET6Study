@@ -17,20 +17,22 @@ internal data class EvaluationInput(val id: String, val prompt: String)
 internal class EvaluationBatch(
     private val folder: File,
     private val inputs: List<EvaluationInput>,
-    private val metadata: JSONObject
+    private val metadata: JSONObject,
 ) {
     private fun checkpoint(file: File, bytes: ByteArray) {
         val output = AtomicFile(file)
         val stream = output.startWrite()
-        try { stream.write(bytes); output.finishWrite(stream) }
-        catch (failure: Throwable) { output.failWrite(stream); throw failure }
+        try {
+            stream.write(bytes)
+            output.finishWrite(stream)
+        } catch (failure: Throwable) {
+            output.failWrite(stream)
+            throw failure
+        }
         check(output.openRead().use { it.readBytes().contentEquals(bytes) }) { "Evaluation checkpoint did not persist; no further requests allowed" }
     }
 
-    suspend fun run(
-        checkReady: suspend () -> Unit = {},
-        request: suspend (EvaluationInput, suspend (String) -> Unit) -> String
-    ): JSONArray {
+    suspend fun run(checkReady: suspend () -> Unit = {}, request: suspend (EvaluationInput, suspend (String) -> Unit) -> String): JSONArray {
         require(inputs.isNotEmpty() && inputs.map { it.id }.toSet().size == inputs.size)
         check(folder.mkdir()) { "Evaluation run already exists or cannot be created; never replay an uncertain request" }
         checkpoint(File(folder, "metadata.json"), metadata.toString(2).toByteArray(Charsets.UTF_8))
@@ -59,7 +61,10 @@ internal class EvaluationBatch(
                 row.put("response", response).put("requestState", "complete").remove("error")
             } catch (failure: CancellationException) {
                 row.put("requestState", "failed").put("partial", partial).put("finishedAt", System.currentTimeMillis())
-                    .put("error", if (failure is TimeoutCancellationException) "Request timeout; no automatic retry" else "Request cancelled; no automatic retry")
+                    .put(
+                        "error",
+                        if (failure is TimeoutCancellationException) "Request timeout; no automatic retry" else "Request cancelled; no automatic retry",
+                    )
                 withContext(NonCancellable) { save() }
                 if (failure !is TimeoutCancellationException) throw failure
             } catch (failure: Exception) {

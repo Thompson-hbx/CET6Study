@@ -100,8 +100,10 @@ fun labelWidth(samples: List<String>, style: TextStyle): Dp {
 /** Large bold title at the top of a tab root. */
 @Composable
 fun TabTitle(title: String, subtitle: String? = null) {
-    Column(Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 12.dp, bottom = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(
+        Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 12.dp, bottom = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
         Text(title, style = MaterialTheme.typography.headlineLarge, modifier = Modifier/* .semantics { heading() } */)
         if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
@@ -110,11 +112,17 @@ fun TabTitle(title: String, subtitle: String? = null) {
 /** A 44dp round button with an ink chevron, the way back on every pushed screen. */
 @Composable
 fun BackButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
-    Box(modifier.size(44.dp).clip(CircleShape).clickable(onClick = onBack),
+    Box(
+        modifier.size(44.dp).clip(CircleShape).clickable(onClick = onBack),
         // .semantics { contentDescription = "返回" }
-        contentAlignment = Alignment.Center) {
-        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(22.dp))
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            Icons.AutoMirrored.Outlined.ArrowBack,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.size(22.dp),
+        )
     }
 }
 
@@ -123,15 +131,27 @@ fun BackButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
  * actions on the right. The hairline appears only once content has scrolled under the bar.
  */
 @Composable
-fun ScreenTopBar(title: String, subtitle: String? = null, onBack: (() -> Unit)? = null,
-    showDivider: Boolean = true, actions: @Composable RowScope.() -> Unit = {}) {
+fun ScreenTopBar(
+    title: String,
+    subtitle: String? = null,
+    onBack: (() -> Unit)? = null,
+    showDivider: Boolean = true,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
     Column(Modifier.background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
         Box(Modifier.fillMaxWidth().heightIn(min = 56.dp)) {
             if (onBack != null) BackButton(onBack, Modifier.align(Alignment.CenterStart).padding(start = 6.dp))
             Column(Modifier.align(Alignment.Center).padding(horizontal = 72.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (subtitle != null) {
+                    Text(
+                        subtitle,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
             Row(Modifier.align(Alignment.CenterEnd).padding(end = 4.dp), verticalAlignment = Alignment.CenterVertically, content = actions)
         }
@@ -151,29 +171,42 @@ fun RowDivider() = Hairline(start = CardPadding)
 /** Section heading on a tab: a short bold line just above its sheet, e.g. 今天的一页. */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier, action: String? = null, onAction: (() -> Unit)? = null) {
-    Row(modifier.fillMaxWidth().padding(start = CardMargin + 4.dp, end = 8.dp, top = 24.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        Text(text, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(1f)/* .semantics { heading() } */)
+    Row(
+        modifier.fillMaxWidth().padding(start = CardMargin + 4.dp, end = 8.dp, top = 24.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f), /* .semantics { heading() } */
+        )
         if (action != null && onAction != null) TextButton(onClick = onAction) { Text(action) }
     }
 }
 
 /** A card on the desk: one group of rows or one block of related content. */
 @Composable
-fun PaperCard(modifier: Modifier = Modifier, padding: PaddingValues = PaddingValues(CardPadding),
-    color: Color = MaterialTheme.colorScheme.surfaceContainerLow, border: BorderStroke? = null,
-    content: @Composable ColumnScope.() -> Unit) {
-    Surface(color = color, shape = MaterialTheme.shapes.large, border = border,
-        modifier = modifier.fillMaxWidth().padding(horizontal = CardMargin)) {
+fun PaperCard(
+    modifier: Modifier = Modifier,
+    padding: PaddingValues = PaddingValues(CardPadding),
+    color: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+    border: BorderStroke? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Surface(
+        color = color,
+        shape = MaterialTheme.shapes.large,
+        border = border,
+        modifier = modifier.fillMaxWidth().padding(horizontal = CardMargin),
+    ) {
         Column(Modifier.padding(padding), content = content)
     }
 }
 
 /** A card of [ListRow]s separated by inset dividers. */
 @Composable
-fun RowCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) =
-    PaperCard(modifier, padding = PaddingValues(0.dp), content = content)
+fun RowCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = PaperCard(modifier, padding = PaddingValues(0.dp), content = content)
 
 /** A tappable row inside a card: title, an optional quiet second line and a short status pill on the right. */
 @Composable
@@ -192,31 +225,60 @@ fun ListRow(
     lines: List<String> = emptyList(),
     /** Optional leading visual, e.g. an [IconTile]. */
     leading: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier.fillMaxWidth().clickable(enabled = enabled, onClick = onClick)
             .heightIn(min = 44.dp).padding(start = CardPadding, end = 10.dp, top = 11.dp, bottom = 11.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (leading != null) Box(Modifier.padding(end = 12.dp)) { leading() }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge,
-                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
-            if (!subtitle.isNullOrBlank()) Text(subtitle, style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = subtitleLines, overflow = TextOverflow.Ellipsis)
+            Text(
+                title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (!subtitle.isNullOrBlank()) {
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = subtitleLines,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
             lines.forEach { line ->
-                Text(line, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    line,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
         // Plain tinted words rather than a pill: long lists stay calm and the colour still carries the state.
-        if (!trailing.isNullOrBlank()) Text(trailing, style = MaterialTheme.typography.bodyMedium,
-            color = trailingTone.color(), maxLines = 1, modifier = Modifier.padding(start = 12.dp)
-            .then(if (trailingDescription != null) Modifier/* .semantics { contentDescription = trailingDescription } */ else Modifier))
-        if (showChevron && enabled) Icon(Icons.AutoMirrored.Outlined.ArrowForwardIos, contentDescription = null,
-            tint = MaterialTheme.colorScheme.outline, modifier = Modifier.padding(start = 8.dp).size(14.dp))
-        else Spacer(Modifier.width(8.dp))
+        if (!trailing.isNullOrBlank()) {
+            Text(
+                trailing,
+                style = MaterialTheme.typography.bodyMedium,
+                color = trailingTone.color(),
+                maxLines = 1,
+                modifier = Modifier.padding(start = 12.dp)
+                    .then(if (trailingDescription != null) Modifier/* .semantics { contentDescription = trailingDescription } */ else Modifier),
+            )
+        }
+        if (showChevron && enabled) {
+            Icon(
+                Icons.AutoMirrored.Outlined.ArrowForwardIos,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline,
+                modifier = Modifier.padding(start = 8.dp).size(14.dp),
+            )
+        } else {
+            Spacer(Modifier.width(8.dp))
+        }
     }
 }
 
@@ -226,7 +288,7 @@ fun BottomBar(modifier: Modifier = Modifier, hazeState: HazeState? = null, conte
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = if (hazeState != null) 0.94f else 1f),
         shadowElevation = 6.dp,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column {
             Hairline()
@@ -234,7 +296,7 @@ fun BottomBar(modifier: Modifier = Modifier, hazeState: HazeState? = null, conte
                 Modifier.fillMaxWidth().navigationBarsPadding().imePadding().padding(horizontal = PageGutter, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
-                content = content
+                content = content,
             )
         }
     }
@@ -248,15 +310,26 @@ fun Note(text: String, modifier: Modifier = Modifier, tone: Tone = Tone.Muted) {
 /** Small label with a soft background, used sparingly for categories. */
 @Composable
 fun Tag(text: String, tone: Tone = Tone.Muted) {
-    Text(text, style = MaterialTheme.typography.labelSmall, color = tone.color(), maxLines = 1,
-        modifier = Modifier.background(tone.soft(), RoundedCornerShape(50)).padding(horizontal = 8.dp, vertical = 2.dp))
+    Text(
+        text,
+        style = MaterialTheme.typography.labelSmall,
+        color = tone.color(),
+        maxLines = 1,
+        modifier = Modifier.background(tone.soft(), RoundedCornerShape(50)).padding(horizontal = 8.dp, vertical = 2.dp),
+    )
 }
 
 /** A short status such as 草稿 or 8 分档, as a tinted pill. */
 @Composable
 fun StatusPill(text: String, tone: Tone, modifier: Modifier = Modifier) {
-    Text(text, style = PillText, color = tone.color(), maxLines = 1, overflow = TextOverflow.Ellipsis,
-        modifier = modifier.background(tone.soft(), RoundedCornerShape(50)).padding(horizontal = PillPadding, vertical = 4.dp))
+    Text(
+        text,
+        style = PillText,
+        color = tone.color(),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = modifier.background(tone.soft(), RoundedCornerShape(50)).padding(horizontal = PillPadding, vertical = 4.dp),
+    )
 }
 
 private val PillPadding = 10.dp
@@ -269,8 +342,12 @@ fun pillWidth(labels: List<String>): Dp = labelWidth(labels, PillText) + PillPad
 /** Heading of a card's own content, e.g. 篇章 1 · 第 46–50 题. */
 @Composable
 fun CardTitle(text: String, modifier: Modifier = Modifier) {
-    Text(text, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier/* .semantics { heading() } */)
+    Text(
+        text,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier, /* .semantics { heading() } */
+    )
 }
 
 /** Honest, quiet provenance under generated text. */
@@ -289,7 +366,10 @@ fun MarkdownBody(text: String, modifier: Modifier = Modifier, style: TextStyle =
     val link = MaterialTheme.colorScheme.primary.toArgb()
     val size = style.fontSize.value
     AndroidView(modifier = modifier.fillMaxWidth(), factory = { ctx ->
-        TextView(ctx).apply { setTextIsSelectable(true); setLineSpacing(0f, 1.4f) }
+        TextView(ctx).apply {
+            setTextIsSelectable(true)
+            setLineSpacing(0f, 1.4f)
+        }
     }, update = { view ->
         view.setTextColor(color)
         view.setLinkTextColor(link)
@@ -306,14 +386,7 @@ data class TextMark(val id: Int, val range: IntRange, val tone: Tone)
  * each mark through the text's custom actions, named by tone and the marked words.
  */
 @Composable
-fun MarkedText(
-    text: String,
-    marks: List<TextMark>,
-    selected: Int?,
-    style: TextStyle,
-    onMark: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun MarkedText(text: String, marks: List<TextMark>, selected: Int?, style: TextStyle, onMark: (Int) -> Unit, modifier: Modifier = Modifier) {
     var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
     val colors = marks.associate { it.id to it.tone.color() }
     val softs = marks.associate { it.id to it.tone.soft() }
@@ -325,7 +398,10 @@ fun MarkedText(
     // val actions = valid.sortedBy { it.range.first }.map { mark ->
     //     CustomAccessibilityAction("${mark.tone.markLabel()}：${text.substring(mark.range).take(40)}") { onMark(mark.id); true }
     // }
-    Text(annotated, style = style.copy(color = MaterialTheme.colorScheme.onSurface), onTextLayout = { layout = it },
+    Text(
+        annotated,
+        style = style.copy(color = MaterialTheme.colorScheme.onSurface),
+        onTextLayout = { layout = it },
         modifier = modifier.fillMaxWidth()
             /* .semantics { if (actions.isNotEmpty()) customActions = actions } */
             .drawBehind {
@@ -338,9 +414,13 @@ fun MarkedText(
                         if (to <= from) continue
                         val y = result.getLineBaseline(line) + 3.dp.toPx()
                         // Optional polish is dashed so it differs from a must-fix by shape, not only by hue.
-                        drawLine(colors.getValue(mark.id), Offset(result.getBoundingBox(from).left, y),
-                            Offset(result.getBoundingBox(to - 1).right, y), strokeWidth = if (mark.id == selected) 2.5.dp.toPx() else 1.6.dp.toPx(),
-                            pathEffect = if (mark.tone == Tone.Better) PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 3.dp.toPx())) else null)
+                        drawLine(
+                            colors.getValue(mark.id),
+                            Offset(result.getBoundingBox(from).left, y),
+                            Offset(result.getBoundingBox(to - 1).right, y),
+                            strokeWidth = if (mark.id == selected) 2.5.dp.toPx() else 1.6.dp.toPx(),
+                            pathEffect = if (mark.tone == Tone.Better) PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 3.dp.toPx())) else null,
+                        )
                     }
                 }
             }
@@ -348,12 +428,15 @@ fun MarkedText(
                 detectTapGestures { position ->
                     val result = layout ?: return@detectTapGestures
                     val offset = result.getOffsetForPosition(position)
-                    (valid.firstOrNull { offset in it.range }
-                        ?: valid.minByOrNull { minOf(kotlin.math.abs(it.range.first - offset), kotlin.math.abs(it.range.last - offset)) }
-                            ?.takeIf { minOf(kotlin.math.abs(it.range.first - offset), kotlin.math.abs(it.range.last - offset)) <= 2 })
+                    (
+                        valid.firstOrNull { offset in it.range }
+                            ?: valid.minByOrNull { minOf(kotlin.math.abs(it.range.first - offset), kotlin.math.abs(it.range.last - offset)) }
+                                ?.takeIf { minOf(kotlin.math.abs(it.range.first - offset), kotlin.math.abs(it.range.last - offset)) <= 2 }
+                        )
                         ?.let { onMark(it.id) }
                 }
-            })
+            },
+    )
 }
 
 /** Two words of status with a coloured dot, for dense lists where a badge would be too loud. */
@@ -373,21 +456,37 @@ fun DotStatus(text: String, tone: Tone, modifier: Modifier = Modifier) {
 fun MarkBadge(number: Int, tone: Tone, modifier: Modifier = Modifier) {
     val marks = LocalMarks.current
     val solid = tone != Tone.Better
-    val fill = when (tone) { Tone.Must -> marks.brand; Tone.Good -> marks.good; else -> MaterialTheme.colorScheme.surfaceContainerLowest }
-    Box(modifier.size(24.dp).background(fill, CircleShape)
-        .then(if (solid) Modifier else Modifier.border(1.5.dp, marks.better, CircleShape)),
-        contentAlignment = Alignment.Center) {
-        Text("$number", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold,
-            color = if (solid) Color.White else marks.better)
+    val fill = when (tone) {
+        Tone.Must -> marks.brand
+        Tone.Good -> marks.good
+        else -> MaterialTheme.colorScheme.surfaceContainerLowest
+    }
+    Box(
+        modifier.size(24.dp).background(fill, CircleShape)
+            .then(if (solid) Modifier else Modifier.border(1.5.dp, marks.better, CircleShape)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            "$number",
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+            color = if (solid) Color.White else marks.better,
+        )
     }
 }
 
 /** The ink sheet behind signature numbers: near-black on light paper, a raised charcoal in dark mode so it does not glare. */
 val InkSheet: Color
-    @Composable get() = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) MaterialTheme.colorScheme.surfaceContainerHigh
-        else MaterialTheme.colorScheme.inverseSurface
+    @Composable get() = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
+        MaterialTheme.colorScheme.surfaceContainerHigh
+    } else {
+        MaterialTheme.colorScheme.inverseSurface
+    }
 
 /** Text on [InkSheet]. */
 val OnInkSheet: Color
-    @Composable get() = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) MaterialTheme.colorScheme.onSurface
-        else MaterialTheme.colorScheme.inverseOnSurface
+    @Composable get() = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.inverseOnSurface
+    }

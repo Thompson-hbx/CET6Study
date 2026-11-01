@@ -19,7 +19,10 @@ object PassageLayout {
             lines.forEach { line ->
                 if (current.isNotEmpty()) current.append(' ')
                 current.append(line.trim())
-                if (sentenceEnd.containsMatchIn(line)) { paragraphs += current.toString(); current.clear() }
+                if (sentenceEnd.containsMatchIn(line)) {
+                    paragraphs += current.toString()
+                    current.clear()
+                }
             }
             if (current.isNotBlank()) paragraphs += current.toString()
             paragraphs

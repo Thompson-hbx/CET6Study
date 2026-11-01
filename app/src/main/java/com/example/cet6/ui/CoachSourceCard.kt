@@ -2,11 +2,11 @@ package com.example.cet6.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,32 +22,32 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
     ) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (entry.practiceGoal.isNotBlank()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
                     Icon(
                         Icons.Default.Star,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     Text("AI 原创练习 · 非真题", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 }
                 Surface(
                     shape = MaterialTheme.shapes.extraSmall,
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
                 ) {
                     Text(
                         "训练目标：${entry.practiceGoal}",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
                     )
                 }
             }
@@ -55,13 +55,13 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
                 Text(
                     "来源练习暂不可用，当前内容仍保存在本机。",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
                 Text(
                     "来源练习：${source.title.ifBlank { "未命名练习" }}",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
                 )
                 TextButton(onClick = { compare = !compare }) {
                     Text(if (compare) "收起来源作答" else "对照来源")
@@ -70,7 +70,7 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
                     Surface(
                         shape = MaterialTheme.shapes.small,
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             Text("来源作答", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)

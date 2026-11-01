@@ -36,12 +36,19 @@ import com.example.cet6.ui.components.*
 fun WorkingLine(label: String, onStop: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(1f))
+            Text(
+                label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
+            )
             TextButton(onClick = onStop) { Text("停止") }
         }
-        LinearProgressIndicator(Modifier.fillMaxWidth().height(2.dp), color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.outlineVariant)
+        LinearProgressIndicator(
+            Modifier.fillMaxWidth().height(2.dp),
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.outlineVariant,
+        )
     }
 }
 
@@ -51,14 +58,26 @@ fun FailureLine(failure: ConversationService.Failure, onDismiss: () -> Unit, mod
     val tone = if (failure.stopped) Tone.Muted else Tone.Must
     Surface(color = tone.soft(), shape = MaterialTheme.shapes.medium, modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 14.dp, vertical = 8.dp)) {
-            Column(Modifier.fillMaxWidth()/* .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite } */,
-                verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                if (failure.question.isNotBlank()) Text("问题：${failure.question.take(120)}",
-                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Column(
+                Modifier.fillMaxWidth()/* .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite } */,
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                if (failure.question.isNotBlank()) {
+                    Text(
+                        "问题：${failure.question.take(120)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
                 Text(failure.message, style = MaterialTheme.typography.bodyMedium, color = tone.color())
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                failure.retry?.let { retry -> TextButton(onClick = { onDismiss(); retry() }) { Text(if (failure.stopped) "重新生成" else "重试") } }
+                failure.retry?.let { retry ->
+                    TextButton(onClick = {
+                        onDismiss()
+                        retry()
+                    }) { Text(if (failure.stopped) "重新生成" else "重试") }
+                }
                 TextButton(onClick = onDismiss) { Text("收起") }
             }
         }
@@ -72,13 +91,23 @@ fun FailureLine(failure: ConversationService.Failure, onDismiss: () -> Unit, mod
 @Composable
 fun QuickAsks(items: List<String>, enabled: Boolean, onPick: (String) -> Unit, modifier: Modifier = Modifier, edge: Dp = 0.dp) {
     if (items.isEmpty()) return
-    Row(modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = edge, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(
+        modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = edge, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
         items.forEach { item ->
-            Surface(onClick = { onPick(item) }, enabled = enabled, shape = RoundedCornerShape(50),
-                color = MaterialTheme.colorScheme.surfaceContainer) {
-                Text(item, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                    color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+            Surface(
+                onClick = { onPick(item) },
+                enabled = enabled,
+                shape = RoundedCornerShape(50),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+            ) {
+                Text(
+                    item,
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                    color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }
@@ -86,16 +115,24 @@ fun QuickAsks(items: List<String>, enabled: Boolean, onPick: (String) -> Unit, m
 
 /** Follow-up thread of one anchor: the learner's questions on the right, replies as plain reading text. */
 @Composable
-fun ThreadView(turns: List<CoachTurn>, pending: ConversationService.Pending?, onStop: () -> Unit, modifier: Modifier = Modifier,
-    kinds: Set<String> = setOf(TurnKind.CHAT)) {
+fun ThreadView(
+    turns: List<CoachTurn>,
+    pending: ConversationService.Pending?,
+    onStop: () -> Unit,
+    modifier: Modifier = Modifier,
+    kinds: Set<String> = setOf(TurnKind.CHAT),
+) {
     val chat = turns.filter { it.kind in kinds }
     if (chat.isEmpty() && pending?.kind !in kinds) return
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         chat.forEach { turn ->
-            if (turn.fromUser) Question(turn.content)
-            else Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                MarkdownBody(turn.content)
-                ReplyActions(turn)
+            if (turn.fromUser) {
+                Question(turn.content)
+            } else {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    MarkdownBody(turn.content)
+                    ReplyActions(turn)
+                }
             }
         }
         if (pending != null && pending.kind in kinds) {
@@ -113,10 +150,16 @@ private fun ReplyActions(turn: CoachTurn) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Provenance(turn.model)
-            Text("已保存 · ${shortTime(turn.createdAt)}", style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                "已保存 · ${shortTime(turn.createdAt)}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
-        TextButton(onClick = { clipboard.setText(AnnotatedString(turn.content)); copied = true }) {
+        TextButton(onClick = {
+            clipboard.setText(AnnotatedString(turn.content))
+            copied = true
+        }) {
             Text(if (copied) "已复制" else "复制回复")
         }
     }
@@ -125,10 +168,17 @@ private fun ReplyActions(turn: CoachTurn) {
 @Composable
 private fun Question(text: String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        Surface(shape = RoundedCornerShape(18.dp, 4.dp, 18.dp, 18.dp), color = MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier.widthIn(max = 300.dp)) {
-            Text(text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp))
+        Surface(
+            shape = RoundedCornerShape(18.dp, 4.dp, 18.dp, 18.dp),
+            color = MaterialTheme.colorScheme.primaryContainer,
+            modifier = Modifier.widthIn(max = 300.dp),
+        ) {
+            Text(
+                text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+            )
         }
     }
 }
@@ -138,26 +188,50 @@ private fun Question(text: String) {
  * A [failure] of what was just asked shows right above it, where the learner is looking.
  */
 @Composable
-fun AskBar(placeholder: String, busy: Boolean, enabled: Boolean, onSend: (String) -> Unit, onStop: () -> Unit,
-    modifier: Modifier = Modifier, draftKey: String = "", failure: ConversationService.Failure? = null, onDismissFailure: () -> Unit = {}) {
+fun AskBar(
+    placeholder: String,
+    busy: Boolean,
+    enabled: Boolean,
+    onSend: (String) -> Unit,
+    onStop: () -> Unit,
+    modifier: Modifier = Modifier,
+    draftKey: String = "",
+    failure: ConversationService.Failure? = null,
+    onDismissFailure: () -> Unit = {},
+) {
     var text by rememberSaveable(draftKey) { mutableStateOf("") }
     val focus = LocalFocusManager.current
     fun send() {
         if (text.isBlank() || !enabled || busy) return
-        onSend(text.trim()); text = ""; focus.clearFocus()
+        onSend(text.trim())
+        text = ""
+        focus.clearFocus()
     }
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         failure?.let {
             FailureLine(it, onDismissFailure)
-            if (it.question.isNotBlank()) TextButton(onClick = { text = it.question; onDismissFailure() },
-                enabled = text.isBlank() || text == it.question) { Text("编辑问题后再发") }
+            if (it.question.isNotBlank()) {
+                TextButton(
+                    onClick = {
+                        text = it.question
+                        onDismissFailure()
+                    },
+                    enabled = text.isBlank() || text == it.question,
+                ) { Text("编辑问题后再发") }
+            }
         }
-        if (busy) Text("AI 正在处理，可随时停止", style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier/* .semantics { liveRegion = LiveRegionMode.Polite } */)
+        if (busy) {
+            Text(
+                "AI 正在处理，可随时停止",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier, /* .semantics { liveRegion = LiveRegionMode.Polite } */
+            )
+        }
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerHigh, modifier = Modifier.weight(1f)) {
-                BasicTextField(text, { text = it.take(2000) }, enabled = enabled, maxLines = 5,
+                BasicTextField(
+                    text, { text = it.take(2000) }, enabled = enabled, maxLines = 5,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
@@ -166,16 +240,26 @@ fun AskBar(placeholder: String, busy: Boolean, enabled: Boolean, onSend: (String
                     // The placeholder lives inside the field so screen readers announce it as the field's label.
                     decorationBox = { inner ->
                         Box(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
-                            if (text.isEmpty()) Text(placeholder, style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (text.isEmpty()) {
+                                Text(
+                                    placeholder,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
                             inner()
                         }
-                    })
+                    },
+                )
             }
-            if (busy) FilledTonalIconButton(onClick = onStop, modifier = Modifier.size(48.dp)) {
-                Icon(Icons.Outlined.Stop, contentDescription = null /* "停止回复" */)
-            } else FilledIconButton(onClick = ::send, enabled = enabled && text.isNotBlank(), modifier = Modifier.size(48.dp)) {
-                Icon(Icons.Outlined.ArrowUpward, contentDescription = null /* "发送" */)
+            if (busy) {
+                FilledTonalIconButton(onClick = onStop, modifier = Modifier.size(48.dp)) {
+                    Icon(Icons.Outlined.Stop, contentDescription = null /* "停止回复" */)
+                }
+            } else {
+                FilledIconButton(onClick = ::send, enabled = enabled && text.isNotBlank(), modifier = Modifier.size(48.dp)) {
+                    Icon(Icons.Outlined.ArrowUpward, contentDescription = null /* "发送" */)
+                }
             }
         }
     }

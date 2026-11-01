@@ -53,6 +53,9 @@ class ShareInstrumentationChecks(private val context: Context) {
             check(calls == 1 && db.dao().coachById(active.id)?.feedback == "Complete feedback.")
             check(db.dao().coachById(old.id) == old)
             check(db.dao().allCoach().size == 4)
-        } finally { job.cancelAndJoin(); db.close() }
+        } finally {
+            job.cancelAndJoin()
+            db.close()
+        }
     }
 }

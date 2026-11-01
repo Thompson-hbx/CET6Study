@@ -9,20 +9,40 @@ import kotlinx.coroutines.*
 import java.io.File
 
 class ExamInstrumentationChecks(private val context: Context) {
-    private fun sample() = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1",
+    private fun sample() = ExamPaper(
+        "sample-cet6-2026-06-13-1", "2026-06-13", "1",
         sourceName = "Original test", sourceUrl = "local:test", licenseStatus = "original", reviewed = true, sample = true,
-        passages = (1..2).map { code -> ExamPassage("$code", "Original sample", "Libraries provide quiet rooms.",
-            (if (code == 1) 46..50 else 51..55).map { n -> ExamQuestion(n, "What is provided?",
-                "ABCD".map { ExamOption("$it", "Option $it") }, "A", "local:test", "quiet rooms") }) },
-        writingPrompt = "Original writing task", writingInstructions = "Write 150 words", chineseText = "图书馆提供空间。")
+        passages = (1..2).map { code ->
+            ExamPassage(
+                "$code",
+                "Original sample",
+                "Libraries provide quiet rooms.",
+                (if (code == 1) 46..50 else 51..55).map { n ->
+                    ExamQuestion(
+                        n,
+                        "What is provided?",
+                        "ABCD".map { ExamOption("$it", "Option $it") },
+                        "A",
+                        "local:test",
+                        "quiet rooms",
+                    )
+                },
+            )
+        },
+        writingPrompt = "Original writing task", writingInstructions = "Write 150 words", chineseText = "图书馆提供空间。",
+    )
 
     suspend fun verify() = withContext(Dispatchers.Main) {
         val folder = File(context.cacheDir, "exam-store-${System.nanoTime()}").apply { mkdirs() }
-        val isolated = object : ContextWrapper(context) { override fun getFilesDir() = folder }
+        val isolated = object : ContextWrapper(context) {
+            override fun getFilesDir() = folder
+        }
         val store = ExamStore(isolated)
         if ("personal-exam-pack.json" in context.assets.list("").orEmpty()) {
             val bundledFolder = File(context.cacheDir, "bundled-exams-${System.nanoTime()}").apply { mkdirs() }
-            val bundledStore = ExamStore(object : ContextWrapper(context) { override fun getFilesDir() = bundledFolder })
+            val bundledStore = ExamStore(object : ContextWrapper(context) {
+                override fun getFilesDir() = bundledFolder
+            })
             val expected = context.assets.open("personal-exam-pack.json").bufferedReader().use { ExamCodec.decode(it.readText()) }
             check(bundledStore.load().isEmpty())
             check(bundledStore.loadWithBundledContent() == expected)
@@ -39,9 +59,11 @@ class ExamInstrumentationChecks(private val context: Context) {
                     if (kind == CoachKind.READING) {
                         val questions = ExamCodec.passages(practice).flatMap { it.questions }
                         check(questions.map { it.number } == (46..55).toList())
-                        check(questions.all {
-                            it.referenceAnswer in setOf("A", "B", "C", "D") && it.answerSource.isNotBlank()
-                        })
+                        check(
+                            questions.all {
+                                it.referenceAnswer in setOf("A", "B", "C", "D") && it.answerSource.isNotBlank()
+                            },
+                        )
                     }
                 }
             }
@@ -67,7 +89,10 @@ class ExamInstrumentationChecks(private val context: Context) {
         check(ExamCodec.metadata(writingSnapshot)?.optString("referenceWritingSource") == "local:original")
         check(ExamCodec.metadata(ExamCodec.practice(withWriting, CoachKind.TRANSLATION))?.optString("referenceWriting") == "")
         val legacyJson = org.json.JSONObject(ExamCodec.encode(listOf(p))).apply {
-            getJSONArray("papers").getJSONObject(0).apply { remove("referenceWriting"); remove("referenceWritingSource") }
+            getJSONArray("papers").getJSONObject(0).apply {
+                remove("referenceWriting")
+                remove("referenceWritingSource")
+            }
         }.toString()
         check(ExamCodec.decode(legacyJson) == listOf(p))
         check(store.combineBundled(emptyList(), listOf(withWriting)) == listOf(withWriting))
@@ -160,6 +185,9 @@ class ExamInstrumentationChecks(private val context: Context) {
             check(db.dao().coachById(id) == submitted)
             val fullBackup = BackupCodec.decode(BackupCodec.encode(BackupRepository(db).snapshot()))
             check(fullBackup.coach.any { it.id == fullId && it.questions == savedFull.questions && it.answer == fullAnswer })
-        } finally { job.cancelAndJoin(); db.close() }
+        } finally {
+            job.cancelAndJoin()
+            db.close()
+        }
     }
 }

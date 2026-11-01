@@ -28,7 +28,7 @@ fun PaperRow(
     skillLabel: String? = null,
     statusLabel: String? = null,
     statusTone: Tone = Tone.Muted,
-    note: String? = null
+    note: String? = null,
 ) {
     Surface(
         onClick = onClick,
@@ -36,12 +36,12 @@ fun PaperRow(
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp)
+        modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -55,8 +55,13 @@ fun PaperRow(
                 StatusPill(statusLabel, statusTone)
             } else {
                 Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f)) {
-                    Text("进入", modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                    Text(
+                        "进入",
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
                 }
             }
         }
@@ -79,13 +84,13 @@ fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -> Unit) {
         onValueChange = { query = it.take(200) },
         label = { Text("搜索标题、目标与错因") },
         singleLine = true,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         FilterChip(
             selected = kindFilter == null,
             onClick = { kindFilter = null },
-            label = { Text("全部题型 ${allValid.size}") }
+            label = { Text("全部题型 ${allValid.size}") },
         )
         CoachKind.entries.forEach { kind ->
             val count = allValid.count { it.kind == kind.name }
@@ -93,7 +98,7 @@ fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -> Unit) {
                 FilterChip(
                     selected = kindFilter == kind.name,
                     onClick = { kindFilter = if (kindFilter == kind.name) null else kind.name },
-                    label = { Text("${kind.label} $count") }
+                    label = { Text("${kind.label} $count") },
                 )
             }
         }
@@ -103,7 +108,7 @@ fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -> Unit) {
             FilterChip(
                 selected = statusFilter == code,
                 onClick = { statusFilter = code },
-                label = { Text(label) }
+                label = { Text(label) },
             )
         }
     }
@@ -138,13 +143,15 @@ fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -> Unit) {
                 if (known.isNotEmpty()) {
                     val right = known.count { ReadingQuestions.selected(e.answer, "${it.number}") == it.referenceAnswer }
                     "$right/${known.size}" to Tone.Ink
-                } else "已核对" to Tone.Good
+                } else {
+                    "已核对" to Tone.Good
+                }
             }
             else -> "已提交" to Tone.Good
         }
         val note = listOfNotNull(
             e.practiceGoal.takeIf(String::isNotBlank)?.let { "训练目标：$it" },
-            e.errorReason.takeIf(String::isNotBlank)?.let { "错因：$it" }
+            e.errorReason.takeIf(String::isNotBlank)?.let { "错因：$it" },
         ).joinToString(" · ").takeIf(String::isNotBlank)
         PaperRow(
             title = e.title.ifBlank { "自定义${kind.label}" },
@@ -154,7 +161,7 @@ fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -> Unit) {
             skillLabel = kind.label,
             statusLabel = statusLabel,
             statusTone = statusTone,
-            note = note
+            note = note,
         )
     }
     if (records.size > limit) TextButton(onClick = { limit += 20 }) { Text("更多记录（剩余 ${records.size - limit} 条）") }

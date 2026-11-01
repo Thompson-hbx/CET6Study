@@ -1,49 +1,44 @@
 package com.example.cet6
 
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.EditNote
-import androidx.compose.material.icons.filled.Hub
-import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.EditNote
-import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.ui.unit.dp
+import com.example.cet6.data.CoachPractice
+import com.example.cet6.data.SharedReading
+import com.example.cet6.data.WordRating
+import com.example.cet6.data.WordScheduler
+import com.example.cet6.ui.AppRoot
+import com.example.cet6.ui.BackupCard
+import com.example.cet6.ui.LegacyScreens
+import com.example.cet6.ui.StudyViewModel
+import com.example.cet6.ui.VocabularyImportCard
+import com.example.cet6.ui.WeaknessReviewCard
+import com.example.cet6.ui.WordContentLicenses
+import com.example.cet6.ui.theme.CET6Theme
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import com.example.cet6.ui.StudyViewModel
-import com.example.cet6.ui.VocabularyImportCard
-import com.example.cet6.ui.WordContentLicenses
-import com.example.cet6.ui.BackupCard
-import com.example.cet6.ui.AppRoot
-import com.example.cet6.ui.LegacyScreens
-import com.example.cet6.ui.theme.CET6Theme
-import com.example.cet6.data.CoachKind
-import com.example.cet6.data.WordRating
-import com.example.cet6.data.WordScheduler
-import com.example.cet6.data.SharedReading
-import com.example.cet6.data.CoachPractice
-import com.example.cet6.ui.WeaknessReviewCard
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val vm: StudyViewModel by viewModels()
@@ -52,10 +47,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CET6Theme(style = vm.uiStyle) {
-                AppRoot(vm, LegacyScreens(
-                    words = { WordScreen(vm) },
-                    today = { onWords, onReading, onWriting, onReview -> TodayScreen(vm, onWords, onReading, onWriting, onReview) }
-                ))
+                AppRoot(
+                    vm,
+                    LegacyScreens(
+                        words = { WordScreen(vm) },
+                        today = { onWords, onReading, onWriting, onReview -> TodayScreen(vm, onWords, onReading, onWriting, onReview) },
+                    ),
+                )
             }
         }
         if (savedInstanceState == null) receiveShare(intent)
@@ -83,55 +81,66 @@ class MainActivity : ComponentActivity() {
     private fun receiveShare(incoming: Intent?) {
         if (incoming?.action != Intent.ACTION_SEND) return
         try {
-            val input = SharedReading.from(incoming.type, incoming.getCharSequenceExtra(Intent.EXTRA_TEXT),
-                incoming.getCharSequenceExtra(Intent.EXTRA_SUBJECT))
+            val input = SharedReading.from(
+                incoming.type,
+                incoming.getCharSequenceExtra(Intent.EXTRA_TEXT),
+                incoming.getCharSequenceExtra(Intent.EXTRA_SUBJECT),
+            )
             vm.coach.importReading(input)
-        } catch (e: IllegalArgumentException) { vm.coach.shareFailed(e.message ?: "分享内容无法导入")
-        } catch (_: Exception) { vm.coach.shareFailed("分享内容无法读取，请重新分享纯文本。")
+        } catch (e: IllegalArgumentException) {
+            vm.coach.shareFailed(e.message ?: "分享内容无法导入")
+        } catch (_: Exception) {
+            vm.coach.shareFailed("分享内容无法读取，请重新分享纯文本。")
         } finally {
             incoming.action = Intent.ACTION_MAIN
             incoming.removeExtra(Intent.EXTRA_TEXT)
             incoming.removeExtra(Intent.EXTRA_SUBJECT)
         }
     }
-    override fun onResume() { super.onResume(); preferSmoothRefreshRate(); vm.refreshStudyClock() }
-    override fun onStop() { vm.saveDrafts(); super.onStop() }
+    override fun onResume() {
+        super.onResume()
+        preferSmoothRefreshRate()
+        vm.refreshStudyClock()
+    }
+    override fun onStop() {
+        vm.saveDrafts()
+        super.onStop()
+    }
 }
 
 @Composable
-private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -> Unit, onWriting: () -> Unit,
-    onReview: (CoachPractice) -> Unit) {
+private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -> Unit, onWriting: () -> Unit, onReview: (CoachPractice) -> Unit) {
     SectionTitle("今天，从一篇阅读开始", "${vm.today} · 学习数据保存在本机，AI 解析需要网络。")
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text("六级专项训练", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 val records = vm.coach.history.filter { it.submittedAt > 0 }
                 Surface(
                     shape = MaterialTheme.shapes.extraSmall,
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f),
                 ) {
                     Text(
                         "${records.size} 次训练 · ${records.count { it.feedback.isNotBlank() }} 次反馈",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
             Button(
                 onClick = onReading,
                 modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.small,
             ) {
                 Icon(Icons.Outlined.AutoStories, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
@@ -140,7 +149,7 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
             OutlinedButton(
                 onClick = onWriting,
                 modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.small,
             ) {
                 Icon(Icons.Outlined.EditNote, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
@@ -150,7 +159,7 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
             Text(
                 "已作答 ${records.size} 次 · 已存 AI 反馈 ${records.count { it.feedback.isNotBlank() }} 次",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -160,7 +169,7 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
     OutlinedButton(
         onClick = { legacyWords = !legacyWords },
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.small
+        shape = MaterialTheme.shapes.small,
     ) {
         Icon(Icons.AutoMirrored.Outlined.MenuBook, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(8.dp))
@@ -183,11 +192,14 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
                     val availableReviewGoal = minOf(plan.reviewGoal, reviewCount + due)
                     val total = availableNewGoal + availableReviewGoal
                     val done = minOf(newCount, availableNewGoal) + minOf(reviewCount, availableReviewGoal)
-                    LinearProgressIndicator(progress = { if (total == 0) 1f else done.toFloat() / total },
-                        modifier = Modifier.fillMaxWidth())
+                    LinearProgressIndicator(
+                        progress = { if (total == 0) 1f else done.toFloat() / total },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
                     Text(if (done >= total) "当前可执行的单词任务已完成。" else "优先复习到期词，再学习新词。")
-                    if (availableNewGoal < plan.newGoal || availableReviewGoal < plan.reviewGoal)
+                    if (availableNewGoal < plan.newGoal || availableReviewGoal < plan.reviewGoal) {
                         Text("词量不足或无到期词时，按实际可学数量计算进度。", style = MaterialTheme.typography.bodySmall)
+                    }
                 }
                 Button(onClick = onWords, modifier = Modifier.fillMaxWidth()) { Text("开始单词学习") }
             }
@@ -195,13 +207,27 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
         var newGoal by rememberSaveable(plan?.date, plan?.newGoal) { mutableStateOf(plan?.newGoal?.toString().orEmpty()) }
         var reviewGoal by rememberSaveable(plan?.date, plan?.reviewGoal) { mutableStateOf(plan?.reviewGoal?.toString().orEmpty()) }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(value = newGoal, onValueChange = { newGoal = it.take(3) }, label = { Text("每日新词") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.weight(1f), singleLine = true)
-            OutlinedTextField(value = reviewGoal, onValueChange = { reviewGoal = it.take(3) }, label = { Text("每日复习") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.weight(1f), singleLine = true)
+            OutlinedTextField(
+                value = newGoal,
+                onValueChange = { newGoal = it.take(3) },
+                label = { Text("每日新词") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f),
+                singleLine = true,
+            )
+            OutlinedTextField(
+                value = reviewGoal,
+                onValueChange = { reviewGoal = it.take(3) },
+                label = { Text("每日复习") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f),
+                singleLine = true,
+            )
         }
-        OutlinedButton(onClick = { vm.savePlan(newGoal.toInt(), reviewGoal.toInt()) },
-            enabled = plan != null && !vm.savingStudy && newGoal.toIntOrNull() in 1..100 && reviewGoal.toIntOrNull() in 1..200) {
+        OutlinedButton(
+            onClick = { vm.savePlan(newGoal.toInt(), reviewGoal.toInt()) },
+            enabled = plan != null && !vm.savingStudy && newGoal.toIntOrNull() in 1..100 && reviewGoal.toIntOrNull() in 1..200,
+        ) {
             Text("保存学习目标")
         }
         if (vm.studyStatus.isNotBlank()) Text(vm.studyStatus)
@@ -224,8 +250,11 @@ private fun TodayScreen(vm: StudyViewModel, onWords: () -> Unit, onReading: () -
 @Composable
 private fun SectionTitle(title: String, subtitle: String) {
     Text(title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-    Text(subtitle, style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(
+        subtitle,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 @Composable
@@ -233,7 +262,7 @@ private fun WordScreen(vm: StudyViewModel) {
     Text(
         "FSRS-6 离线复习 · 先看语境，再回忆词义。内置原创学术词汇练习，可导入有权使用的词库。",
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     val due = vm.words.filter { it.dueAt <= vm.now }.sortedWith(compareBy({ it.dueAt == 0L }, { it.dueAt }, { it.word }))
     val progress = vm.todayProgress
@@ -243,9 +272,11 @@ private fun WordScreen(vm: StudyViewModel) {
     val dueReviewCount = due.count { it.dueAt > 0 }
     val newAvailableCount = due.count { it.dueAt == 0L }
     var extra by rememberSaveable(vm.today) { mutableStateOf(false) }
-    val planned = due.filter { word -> extra || vm.schedules[word.word]?.phase?.let { it != WordScheduler.REVIEW } == true || plan?.let {
-        if (word.dueAt == 0L) newCount < it.newGoal else reviewCount < it.reviewGoal
-    } == true }
+    val planned = due.filter { word ->
+        extra || vm.schedules[word.word]?.phase?.let { it != WordScheduler.REVIEW } == true || plan?.let {
+            if (word.dueAt == 0L) newCount < it.newGoal else reviewCount < it.reviewGoal
+        } == true
+    }
     ElevatedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -253,7 +284,7 @@ private fun WordScreen(vm: StudyViewModel) {
                 Text(
                     "新词 $newCount/${plan?.newGoal ?: "…"} · 复习 $reviewCount/${plan?.reviewGoal ?: "…"}",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
             if (plan != null) {
@@ -263,13 +294,13 @@ private fun WordScreen(vm: StudyViewModel) {
                 val done = minOf(newCount, availableNewGoal) + minOf(reviewCount, availableReviewGoal)
                 LinearProgressIndicator(
                     progress = { if (total == 0) 1f else done.toFloat() / total },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
             Text(
                 "当前到期 $dueReviewCount · 未学 $newAvailableCount · 词库 ${vm.words.size}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -281,7 +312,7 @@ private fun WordScreen(vm: StudyViewModel) {
                     Text(
                         "下次到期：${Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -301,13 +332,13 @@ private fun WordScreen(vm: StudyViewModel) {
                     }
                     Surface(
                         shape = MaterialTheme.shapes.extraSmall,
-                        color = if (word.dueAt == 0L) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
+                        color = if (word.dueAt == 0L) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
                     ) {
                         Text(
                             if (word.dueAt == 0L) "新词" else "复习",
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = if (word.dueAt == 0L) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer
+                            color = if (word.dueAt == 0L) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                     }
                 }
@@ -317,7 +348,7 @@ private fun WordScreen(vm: StudyViewModel) {
                 Surface(
                     shape = MaterialTheme.shapes.small,
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     SelectionContainer {
                         Text(word.example, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(12.dp))
@@ -327,7 +358,12 @@ private fun WordScreen(vm: StudyViewModel) {
                     Button(onClick = { reveal = true }, modifier = Modifier.fillMaxWidth()) { Text("显示释义") }
                 } else {
                     SelectionContainer {
-                        Text(word.meaning, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+                        Text(
+                            word.meaning,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
                     }
                     Text("来源：${word.source}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -340,7 +376,7 @@ private fun WordScreen(vm: StudyViewModel) {
                                     OutlinedButton(
                                         onClick = { vm.review(word, rating) },
                                         enabled = !vm.savingStudy,
-                                        modifier = Modifier.weight(1f)
+                                        modifier = Modifier.weight(1f),
                                     ) {
                                         Text("${rating.label} · ${interval?.let(WordScheduler::intervalText) ?: "保存后安排"}")
                                     }
@@ -364,19 +400,32 @@ private fun WordScreen(vm: StudyViewModel) {
     var browse by rememberSaveable { mutableStateOf(false) }
     OutlinedButton(onClick = { browse = !browse }) { Text(if (browse) "收起词库" else "浏览与搜索词库") }
     if (browse) {
-    OutlinedTextField(value = search, onValueChange = { search = it }, label = { Text("搜索全部词库") },
-        modifier = Modifier.fillMaxWidth(), singleLine = true)
-    vm.words.filter { it.word.contains(search.trim(), true) || it.meaning.contains(search.trim()) }.take(50).forEach { word ->
-        ElevatedCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(word.word, fontWeight = FontWeight.Bold)
-                Text(word.meaning)
-                Text(word.example)
-                Text("来源：${word.source}", style = MaterialTheme.typography.bodySmall)
-                Text(if (word.dueAt == 0L) "尚未学习" else "下次复习：${Instant.ofEpochMilli(word.dueAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}",
-                    style = MaterialTheme.typography.bodySmall)
+        OutlinedTextField(
+            value = search,
+            onValueChange = { search = it },
+            label = { Text("搜索全部词库") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+        )
+        vm.words.filter { it.word.contains(search.trim(), true) || it.meaning.contains(search.trim()) }.take(50).forEach { word ->
+            ElevatedCard(Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(word.word, fontWeight = FontWeight.Bold)
+                    Text(word.meaning)
+                    Text(word.example)
+                    Text("来源：${word.source}", style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        if (word.dueAt == 0L) {
+                            "尚未学习"
+                        } else {
+                            "下次复习：${Instant.ofEpochMilli(
+                                word.dueAt,
+                            ).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))}"
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
             }
         }
-    }
     }
 }

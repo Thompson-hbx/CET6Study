@@ -7,38 +7,67 @@ import com.example.cet6.data.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.Executor
-import org.json.JSONObject
 
 /** Every file and database belongs to a unique cache folder, never the learner's stores. */
 class CompleteRestoreChecks(private val context: Context) {
-    private val paper = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original recovery test",
-        sourceUrl = "local:test", licenseStatus = "original", sample = true)
-    private val practice = CoachPractice(id = "recovery-original", title = "Original restore test", material = "Original prompt.",
-        answer = "Original draft.", updatedAt = 1000)
-    private val snapshot = StudyBackup(1000, emptyList(), emptyList(), emptyList(), listOf(DailyPlan("2026-10-24", 3, 5)),
+    private val paper = ExamPaper(
+        "sample-cet6-2026-06-13-1",
+        "2026-06-13",
+        "1",
+        sourceName = "Original recovery test",
+        sourceUrl = "local:test",
+        licenseStatus = "original",
+        sample = true,
+    )
+    private val practice = CoachPractice(
+        id = "recovery-original",
+        title = "Original restore test",
+        material = "Original prompt.",
+        answer = "Original draft.",
+        updatedAt = 1000,
+    )
+    private val snapshot = StudyBackup(
+        1000,
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        listOf(DailyPlan("2026-10-24", 3, 5)),
         listOf(ReadingAttempt(1, "original-question", "B", true, 1000)),
-        listOf(EssayEntity(1, "Original topic", "Original essay.", "Original feedback.", 1000)), listOf(practice))
+        listOf(EssayEntity(1, "Original topic", "Original essay.", "Original feedback.", 1000)),
+        listOf(practice),
+    )
 
-    private class Fixture(context: Context,
-        val folder: File = File(context.cacheDir, "complete-restore-${System.nanoTime()}").apply { check(mkdirs()) }) {
-        val isolated = object : ContextWrapper(context) { override fun getFilesDir() = folder }
+    private class Fixture(
+        context: Context,
+        val folder: File = File(context.cacheDir, "complete-restore-${System.nanoTime()}").apply { check(mkdirs()) },
+    ) {
+        val isolated = object : ContextWrapper(context) {
+            override fun getFilesDir() = folder
+        }
         val bank = File(folder, "exam-content-v1.json")
         val intent = File(folder, "restore-pending-v1.bin")
         fun open(blockBankOnInsert: Boolean = false): StudyDatabase {
             val builder = Room.databaseBuilder(isolated, StudyDatabase::class.java, File(folder, "study.db").absolutePath)
-            if (blockBankOnInsert) builder.setQueryCallback({ sql, _ ->
-                if (sql.startsWith("INSERT", ignoreCase = true) && sql.contains("essays") && !bank.exists()) {
-                    check(bank.mkdir())
-                    File(bank, "test-blocker").writeText("Original test fixture")
-                }
-            }, Executor { it.run() })
+            if (blockBankOnInsert) {
+                builder.setQueryCallback({ sql, _ ->
+                    if (sql.startsWith("INSERT", ignoreCase = true) && sql.contains("essays") && !bank.exists()) {
+                        check(bank.mkdir())
+                        File(bank, "test-blocker").writeText("Original test fixture")
+                    }
+                }, Executor { it.run() })
+            }
             return builder.build()
         }
         suspend fun useDatabase(blockBankOnInsert: Boolean = false, action: suspend (StudyDatabase) -> Unit) {
             val db = open(blockBankOnInsert)
-            try { action(db) } finally { db.close() }
+            try {
+                action(db)
+            } finally {
+                db.close()
+            }
         }
         fun coordinator(db: StudyDatabase) = CompleteRestoreRepository(BackupRepository(db), ExamStore(isolated), RestoreJournal(isolated))
         fun unblock() {
@@ -90,8 +119,10 @@ class CompleteRestoreChecks(private val context: Context) {
             check(db.dao().allEssays().size == 1 && RestoreJournal(f.isolated).hasPending())
         }
         f.unblock()
-        File(context.cacheDir, "restore-process-fixture.json").writeText(JSONObject()
-            .put("folder", f.folder.canonicalPath).put("pid", android.os.Process.myPid()).toString())
+        File(context.cacheDir, "restore-process-fixture.json").writeText(
+            JSONObject()
+                .put("folder", f.folder.canonicalPath).put("pid", android.os.Process.myPid()).toString(),
+        )
     }
 
     suspend fun resumeProcessRetry() {

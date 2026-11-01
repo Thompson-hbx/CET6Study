@@ -30,9 +30,13 @@ class OidcVerifier(private val http: OkHttpClient) {
         for (i in 0 until keys.length()) {
             val j = keys.getJSONObject(i)
             if (j.optString("kid") == header.getString("kid") && j.optString("kty") == "RSA" &&
-                j.optString("use", "sig") == "sig" && j.optString("alg", "RS256") == "RS256") {
-                pub = KeyFactory.getInstance("RSA").generatePublic(RSAPublicKeySpec(
-                    BigInteger(1, decode(j.getString("n"))), BigInteger(1, decode(j.getString("e")))))
+                j.optString("use", "sig") == "sig" && j.optString("alg", "RS256") == "RS256"
+            ) {
+                pub = KeyFactory.getInstance("RSA").generatePublic(
+                    RSAPublicKeySpec(
+                        BigInteger(1, decode(j.getString("n"))), BigInteger(1, decode(j.getString("e"))),
+                    ),
+                )
                 break
             }
         }
@@ -63,5 +67,7 @@ class OidcVerifier(private val http: OkHttpClient) {
         Identity(subject, claims.optString("email", ""))
     }
     private fun decode(text: String) = Base64.decode(
-        text + "=".repeat((4 - text.length % 4) % 4), Base64.URL_SAFE or Base64.NO_WRAP)
+        text + "=".repeat((4 - text.length % 4) % 4),
+        Base64.URL_SAFE or Base64.NO_WRAP,
+    )
 }

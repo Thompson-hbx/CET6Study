@@ -18,9 +18,11 @@ class CoachFailureInstrumentationChecks(private val context: Context) {
         val job = SupervisorJob()
         val scope = CoroutineScope(job + Dispatchers.Main)
         try {
-            val original = CoachPractice(title = "原创异常恢复检查", material = "Libraries need quiet rooms.",
+            val original = CoachPractice(
+                title = "原创异常恢复检查", material = "Libraries need quiet rooms.",
                 questions = "1. What do libraries need?", answer = "Quiet rooms.", feedback = "Previously completed feedback.",
-                model = "old-model", errorReason = "长难句", savedSentences = "Libraries need quiet rooms.", submittedAt = 100)
+                model = "old-model", errorReason = "长难句", savedSentences = "Libraries need quiet rooms.", submittedAt = 100,
+            )
             db.dao().saveCoach(original)
             var failure: Exception? = null
             var calls = 0
@@ -36,11 +38,12 @@ class CoachFailureInstrumentationChecks(private val context: Context) {
             waitFor { !state.working }
             val beforeRecords = db.dao().allCoach().associateBy { it.id }
             val failures = listOf(
-                IOException("simulated connection reset"), SocketTimeoutException("simulated timeout"),
+                IOException("simulated connection reset"),
+                SocketTimeoutException("simulated timeout"),
                 IllegalStateException("AI 请求失败：HTTP 429，code=rate_limit_exceeded"),
                 IllegalStateException("AI 请求失败：HTTP 429，code=insufficient_quota"),
                 IllegalStateException("OAuth Token 请求失败：HTTP 400，invalid_grant"),
-                IllegalStateException("网络流提前中断，没有收到 response.completed")
+                IllegalStateException("网络流提前中断，没有收到 response.completed"),
             )
             for (problem in failures) {
                 failure = problem
@@ -64,8 +67,12 @@ class CoachFailureInstrumentationChecks(private val context: Context) {
             check(afterRecords.keys == beforeRecords.keys) { "retry created an additional practice" }
             check(afterRecords.filterKeys { it != original.id } == beforeRecords.filterKeys { it != original.id })
             // Writing feedback is additive: a focused second pass must not erase the first.
-            val writing = original.copy(id = "writing-focused-check", kind = CoachKind.WRITING.name,
-                questions = "", title = "原创写作专项保全检查")
+            val writing = original.copy(
+                id = "writing-focused-check",
+                kind = CoachKind.WRITING.name,
+                questions = "",
+                title = "原创写作专项保全检查",
+            )
             db.dao().saveCoach(writing)
             state.open(CoachKind.WRITING, writing)
             waitFor { !state.working }
@@ -82,6 +89,9 @@ class CoachFailureInstrumentationChecks(private val context: Context) {
             db.close()
             db = open()
             check(db.dao().coachById(original.id) == completed)
-        } finally { job.cancelAndJoin(); db.close() }
+        } finally {
+            job.cancelAndJoin()
+            db.close()
+        }
     }
 }

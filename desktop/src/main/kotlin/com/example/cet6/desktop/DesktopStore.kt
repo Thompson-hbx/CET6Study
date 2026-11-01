@@ -24,13 +24,17 @@ class DesktopStore(val directory: File) : SyncLocalStore, Closeable {
             it.execute("CREATE TABLE IF NOT EXISTS records (record_key TEXT PRIMARY KEY, payload TEXT NOT NULL)")
         }
         val rows = sortedMapOf<String, String>()
-        db.createStatement().use { s -> s.executeQuery("SELECT record_key,payload FROM records").use { r ->
-            while (r.next()) rows[r.getString(1)] = r.getString(2)
-        } }
+        db.createStatement().use { s ->
+            s.executeQuery("SELECT record_key,payload FROM records").use { r ->
+                while (r.next()) rows[r.getString(1)] = r.getString(2)
+            }
+        }
         // A damaged store is rejected; an empty replacement is never written over it.
         document = SyncDocument.decode(SyncDocument(rows).encode())
     }
+
     @Synchronized override fun snapshot() = document
+
     @Synchronized override fun apply(expected: SyncDocument, updated: SyncDocument): Boolean {
         if (document != expected) return false
         val valid = SyncDocument.decode(updated.encode())
@@ -39,20 +43,30 @@ class DesktopStore(val directory: File) : SyncLocalStore, Closeable {
         db.autoCommit = false
         try {
             db.prepareStatement("INSERT INTO records VALUES(?,?) ON CONFLICT(record_key) DO UPDATE SET payload=excluded.payload").use { s ->
-                changed.forEach { (key, value) -> s.setString(1, key); s.setString(2, value); s.addBatch() }
+                changed.forEach { (key, value) ->
+                    s.setString(1, key)
+                    s.setString(2, value)
+                    s.addBatch()
+                }
                 s.executeBatch()
             }
             db.commit()
             document = valid
-        } catch (e: Exception) { db.rollback(); throw e
-        } finally { db.autoCommit = true }
+        } catch (e: Exception) {
+            db.rollback()
+            throw e
+        } finally {
+            db.autoCommit = true
+        }
         return true
     }
+
     @Synchronized fun edit(key: String, transform: (JSONObject) -> Unit) {
         val row = JSONObject(requireNotNull(document.records[key]))
         transform(row)
         check(apply(document, SyncDocument(document.records + (key to canonical(row)))))
     }
+
     @Synchronized fun create(kind: String, source: JSONObject? = null): String {
         val id = UUID.randomUUID().toString()
         val row = source?.let { JSONObject(it.toString()).put("sourcePracticeId", it.getString("id")) }
@@ -64,5 +78,10 @@ class DesktopStore(val directory: File) : SyncLocalStore, Closeable {
         check(apply(document, SyncDocument(document.records + (key to canonical(row)))))
         return key
     }
-    @Synchronized override fun close() { db.close(); lock.release(); channel.close() }
+
+    @Synchronized override fun close() {
+        db.close()
+        lock.release()
+        channel.close()
+    }
 }

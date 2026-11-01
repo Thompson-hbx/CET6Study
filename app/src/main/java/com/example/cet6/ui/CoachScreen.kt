@@ -1,7 +1,5 @@
 package com.example.cet6.ui
 
-import com.example.cet6.ui.components.StatusBadge
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
@@ -9,9 +7,9 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Save
@@ -27,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.*
+import com.example.cet6.ui.components.StatusBadge
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -54,19 +53,19 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text("${kind.label}练习", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         StatusBadge(
             text = if (editable) "可编辑" else if (entry.submittedAt > 0) "已作答" else "只读",
-            isSuccess = editable
+            isSuccess = editable,
         )
     }
 
     Text(
         state.messages[kind].orEmpty(),
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     var panel by rememberSaveable(entry.id, entry.feedback.isNotBlank()) {
         mutableIntStateOf(if (entry.feedback.isNotBlank()) 1 else 0)
@@ -82,7 +81,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         modifier = Modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.small),
-        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
     ) {
         panels.forEachIndexed { index, label ->
             val enabled = index != 2 || entry.submittedAt > 0
@@ -94,9 +93,9 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     Text(
                         label,
                         style = MaterialTheme.typography.titleSmall,
-                        fontWeight = if (panel == index) FontWeight.Bold else FontWeight.Medium
+                        fontWeight = if (panel == index) FontWeight.Bold else FontWeight.Medium,
                     )
-                }
+                },
             )
         }
     }
@@ -105,7 +104,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         onClick = { state.open(kind) },
         enabled = !state.working,
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.small
+        shape = MaterialTheme.shapes.small,
     ) {
         Icon(Icons.Outlined.Add, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(6.dp))
@@ -125,16 +124,20 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
             readOnly = !editable,
             enabled = !state.working,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
             entry.material,
             { value -> state.edit(kind) { it.copy(material = value) } },
-            label = { Text(when (kind) {
-                CoachKind.READING -> "粘贴英文阅读文章"
-                CoachKind.WRITING -> "作文题目要求"
-                CoachKind.TRANSLATION -> "待翻译的中文原文"
-            }) },
+            label = {
+                Text(
+                    when (kind) {
+                        CoachKind.READING -> "粘贴英文阅读文章"
+                        CoachKind.WRITING -> "作文题目要求"
+                        CoachKind.TRANSLATION -> "待翻译的中文原文"
+                    },
+                )
+            },
             supportingText = {
                 Text((if (kind == CoachKind.READING) "英文约 $materialWords 词 · " else "") + "${entry.material.length}/60000 字符")
             },
@@ -143,7 +146,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
             minLines = 4,
             maxLines = 10,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         if (kind == CoachKind.READING) {
@@ -157,12 +160,12 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 minLines = 3,
                 maxLines = 6,
                 shape = MaterialTheme.shapes.small,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             OutlinedButton(
                 onClick = { if (state.addReadingQuestion(question)) question = "" },
                 enabled = editable && question.isNotBlank() && entry.questions.length + question.length + 2 <= 20_000,
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.small,
             ) {
                 Text("添加题目")
             }
@@ -175,7 +178,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 minLines = 3,
                 maxLines = 8,
                 shape = MaterialTheme.shapes.small,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             ReadingChoices(entry, editable) { value -> state.edit(kind) { it.copy(answer = value) } }
         }
@@ -192,24 +195,24 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
             minLines = 4,
             maxLines = 10,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         val isSaved = state.history.any { it == entry }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             Icon(
                 if (isSaved) Icons.Outlined.CheckCircle else Icons.Outlined.Info,
                 contentDescription = null,
                 tint = if (isSaved) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
             Text(
                 if (isSaved) "已保存" else "尚未确认保存，请保存重试",
                 style = MaterialTheme.typography.bodySmall,
-                color = if (isSaved) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.tertiary
+                color = if (isSaved) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.tertiary,
             )
         }
 
@@ -217,7 +220,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
             Text(
                 "修改作答：在「错因难句」选择「再练」。",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -226,7 +229,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -234,7 +237,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                         onClick = { state.save(kind) },
                         enabled = !state.working,
                         shape = MaterialTheme.shapes.small,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         Icon(Icons.Outlined.Save, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(6.dp))
@@ -245,7 +248,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                             onClick = { state.submit(kind, false) },
                             enabled = entry.material.isNotBlank() && entry.answer.isNotBlank(),
                             shape = MaterialTheme.shapes.small,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         ) {
                             Icon(Icons.Outlined.Check, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
@@ -255,17 +258,20 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                 }
 
                 Button(
-                    onClick = { panel = 1; state.submit(kind, true) },
+                    onClick = {
+                        panel = 1
+                        state.submit(kind, true)
+                    },
                     enabled = !state.working && !vm.busy &&
                         entry.material.isNotBlank() && entry.answer.isNotBlank() && (kind != CoachKind.READING || entry.questions.isNotBlank()),
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(Icons.Outlined.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(
                         if (entry.feedback.isBlank()) "AI ${if (kind == CoachKind.READING) "解析" else "批改"}" else "重新请求 AI",
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
 
@@ -273,7 +279,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     Text(
                         "AI 未连接，请到「我的」连接并选择模型。",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -284,23 +290,23 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         Surface(
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Icon(
                     Icons.Outlined.ChatBubbleOutline,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(36.dp),
                 )
                 Text(
                     "暂无 AI 反馈",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -312,24 +318,24 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         ) {
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(if (receiving) "正在接收临时响应" else "未完成的临时响应", fontWeight = FontWeight.Bold)
                     Surface(
                         shape = MaterialTheme.shapes.extraSmall,
-                        color = MaterialTheme.colorScheme.tertiaryContainer
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
                     ) {
                         Text(
                             if (receiving) "流式传输中" else "部分内容",
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                     }
                 }
@@ -346,25 +352,25 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text("AI 反馈 · ${entry.model}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
                     Surface(
                         shape = MaterialTheme.shapes.extraSmall,
-                        color = MaterialTheme.colorScheme.secondaryContainer
+                        color = MaterialTheme.colorScheme.secondaryContainer,
                     ) {
                         Text(
                             "完整已保存",
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         )
                     }
                 }
@@ -375,12 +381,12 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     label = { Text("继续追问") },
                     enabled = !state.working,
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 OutlinedButton(
                     onClick = { state.submit(kind, true, followUp) },
                     enabled = !state.working && !vm.busy && followUp.isNotBlank(),
-                    shape = MaterialTheme.shapes.small
+                    shape = MaterialTheme.shapes.small,
                 ) {
                     Icon(Icons.Outlined.Send, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(6.dp))
@@ -397,7 +403,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("错因归档与复习", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -405,12 +411,14 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     WeaknessReview.choices(kind).forEach { category ->
                         val selected = entry.errorReason.contains(category)
                         SuggestionChip(
-                            onClick = { state.edit(kind) {
-                                it.copy(errorReason = if (it.errorReason.isBlank()) category else "${it.errorReason}；$category")
-                            } },
+                            onClick = {
+                                state.edit(kind) {
+                                    it.copy(errorReason = if (it.errorReason.isBlank()) category else "${it.errorReason}；$category")
+                                }
+                            },
                             label = { Text(category) },
                             enabled = !state.working,
-                            shape = MaterialTheme.shapes.small
+                            shape = MaterialTheme.shapes.small,
                         )
                     }
                 }
@@ -421,13 +429,13 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     enabled = !state.working,
                     minLines = 2,
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Button(
                     onClick = { state.generate(kind) },
                     enabled = !state.working && !vm.busy && entry.errorReason.isNotBlank(),
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(Icons.Outlined.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
@@ -437,7 +445,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     onClick = { state.open(kind, entry, retry = true) },
                     enabled = !state.working,
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(Icons.Outlined.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
@@ -451,7 +459,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("本地${kind.label}历史", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -464,33 +472,35 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null) },
                     singleLine = true,
                     shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(onlyMistakes, { onlyMistakes = it })
                     Spacer(Modifier.width(4.dp))
                     Text("只看已记录错因的练习", style = MaterialTheme.typography.bodyMedium)
                 }
-                val records = state.history.filter { it.kind == kind.name && (it.material.isNotBlank() || it.answer.isNotBlank()) &&
-                    (!onlyMistakes || it.errorReason.isNotBlank()) &&
-                    (search.isBlank() || listOf(it.title, it.errorReason, it.practiceGoal).any { text -> text.contains(search.trim(), ignoreCase = true) }) }
+                val records = state.history.filter {
+                    it.kind == kind.name && (it.material.isNotBlank() || it.answer.isNotBlank()) &&
+                        (!onlyMistakes || it.errorReason.isNotBlank()) &&
+                        (search.isBlank() || listOf(it.title, it.errorReason, it.practiceGoal).any { text -> text.contains(search.trim(), ignoreCase = true) })
+                }
                 Surface(
                     shape = MaterialTheme.shapes.small,
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
                         "找到 ${records.size} 条记录",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 if (records.isEmpty()) {
                     Text(
                         if (search.isNotBlank() || onlyMistakes) "没有匹配记录，请调整关键词或筛选。" else "暂无记录。离线也能保存和回看练习。",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 var visibleCount by rememberSaveable(kind, onlyMistakes, search) { mutableIntStateOf(10) }
@@ -499,19 +509,19 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                         shape = MaterialTheme.shapes.small,
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     saved.title.ifBlank { "未命名${kind.label}练习" },
                                     fontWeight = FontWeight.SemiBold,
                                     style = MaterialTheme.typography.titleSmall,
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier.weight(1f),
                                 )
                                 val statusText = when {
                                     saved.submittedAt == 0L -> "草稿"
@@ -524,13 +534,13 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                                         saved.submittedAt == 0L -> MaterialTheme.colorScheme.surfaceVariant
                                         saved.feedback.isBlank() -> MaterialTheme.colorScheme.tertiaryContainer
                                         else -> MaterialTheme.colorScheme.secondaryContainer
-                                    }
+                                    },
                                 ) {
                                     Text(
                                         statusText,
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                         style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.Medium
+                                        fontWeight = FontWeight.Medium,
                                     )
                                 }
                             }
@@ -538,19 +548,19 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                                 Text(
                                     "针对练习：${saved.practiceGoal}",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = MaterialTheme.colorScheme.primary,
                                 )
                             }
                             Text(
                                 Instant.ofEpochMilli(saved.updatedAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd HH:mm")),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             if (saved.errorReason.isNotBlank()) {
                                 Text(
                                     "错因：${saved.errorReason}",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.tertiary
+                                    color = MaterialTheme.colorScheme.tertiary,
                                 )
                             }
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -558,7 +568,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                                     onClick = { state.open(kind, saved) },
                                     enabled = !state.working,
                                     shape = MaterialTheme.shapes.small,
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier.weight(1f),
                                 ) {
                                     Icon(Icons.Outlined.Visibility, contentDescription = null, modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(4.dp))
@@ -568,7 +578,7 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                                     onClick = { state.open(kind, saved, retry = true) },
                                     enabled = !state.working,
                                     shape = MaterialTheme.shapes.small,
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier.weight(1f),
                                 ) {
                                     Icon(Icons.Outlined.Refresh, contentDescription = null, modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(4.dp))
@@ -588,8 +598,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
                     TextButton(onClick = { legacy = !legacy }) {
                         Text(if (legacy) "收起旧版阅读记录" else "查看旧版阅读记录")
                     }
-                    if (legacy) vm.readingAttempts.forEach { saved ->
-                        Text("${saved.questionId} · 作答 ${saved.answer} · ${if (saved.correct) "旧版本地判题正确" else "旧版本地判题有误"}")
+                    if (legacy) {
+                        vm.readingAttempts.forEach { saved ->
+                            Text("${saved.questionId} · 作答 ${saved.answer} · ${if (saved.correct) "旧版本地判题正确" else "旧版本地判题有误"}")
+                        }
                     }
                 }
             }

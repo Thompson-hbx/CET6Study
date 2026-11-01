@@ -42,10 +42,9 @@
     <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$8L</ID>
     <ID>MagicNumber:SyncEngine.kt$SyncEngine$3</ID>
     <ID>MatchingDeclarationName:FileSyncStore.kt$FileSyncStateStore : SyncStateStore</ID>
-    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$fields(root, setOf("format", "version", "databaseVersion", "createdAt", "coach", "turns", "words", "reviews", "schedules", "plans", "reading", "essays"))</ID>
-    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$in integers</ID>
-    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$require(row.getString("kind") in setOf("write-review/1", "write-plan/1", "trans-review/1", "trans-hint/1", "read-explain/1", "read-para/1", "read-overview/1", "chat/1"))</ID>
-    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$val integers = setOf("submittedAt", "updatedAt", "createdAt", "dueAt", "repetitions", "intervalDays", "nextDueAt", "rating", "elapsedDays", "lastReviewedAt", "phase", "step", "newGoal", "reviewGoal")</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$integer(row, field)</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$row.getString("kind") in setOf("write-review/1", "write-plan/1", "trans-review/1", "trans-hint/1", "read-explain/1", "read-para/1", "read-overview/1", "chat/1")</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$setOf("submittedAt", "updatedAt", "createdAt", "dueAt", "repetitions", "intervalDays", "nextDueAt", "rating", "elapsedDays", "lastReviewedAt", "phase", "step", "newGoal", "reviewGoal")</ID>
     <ID>ReturnCount:SyncEngine.kt$SyncEngine$fun synchronize(choices: List&lt;ConflictChoice&gt; = emptyList()): SyncResult</ID>
     <ID>ReturnCount:SyncEngineTest.kt$SyncEngineTest.Server$override fun push(expected: RemoteSnapshot, document: SyncDocument): RemoteSnapshot?</ID>
   </CurrentIssues>

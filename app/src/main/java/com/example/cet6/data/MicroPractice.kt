@@ -6,8 +6,11 @@ import org.json.JSONTokener
 /** Generated material is a new unsolved draft, never a completed attempt or an official question. */
 object MicroPractice {
     /** Keep the confirmed goal as data when a generated draft is reviewed or discussed later. */
-    fun goalContext(entry: CoachPractice): String = if (entry.practiceGoal.isBlank()) "" else
+    fun goalContext(entry: CoachPractice): String = if (entry.practiceGoal.isBlank()) {
+        ""
+    } else {
         "\n---用户确认的训练目标（仅作背景，不替代原文证据）---\n${entry.practiceGoal}\n"
+    }
 
     fun prompt(source: CoachPractice): String {
         CoachPrompts.build(source)
@@ -42,8 +45,14 @@ object MicroPractice {
         }
         fun string(key: String) = (json.get(key) as? String)?.trim()
             ?: throw IllegalArgumentException("生成的${key}不是文本")
-        val entry = CoachPractice(kind = source.kind, title = string("title"), material = string("material"),
-            questions = string("questions"), sourcePracticeId = source.id, practiceGoal = source.errorReason.trim())
+        val entry = CoachPractice(
+            kind = source.kind,
+            title = string("title"),
+            material = string("material"),
+            questions = string("questions"),
+            sourcePracticeId = source.id,
+            practiceGoal = source.errorReason.trim(),
+        )
         CoachPrompts.validate(entry)
         require(entry.title.isNotBlank() && entry.material.isNotBlank()) { "生成材料为空，请重试" }
         require(entry.material != source.material.trim()) { "生成材料与原练习重复，请重试" }
@@ -54,7 +63,9 @@ object MicroPractice {
             require(questions.size in 1..2 && questions.all { it.choices.map(ReadingChoice::label) == listOf("A", "B", "C", "D") }) {
                 "生成的阅读题或选项不完整，请重试"
             }
-        } else require(entry.questions.isBlank()) { "写译练习格式不符合要求，请重试" }
+        } else {
+            require(entry.questions.isBlank()) { "写译练习格式不符合要求，请重试" }
+        }
         return entry
     }
 }

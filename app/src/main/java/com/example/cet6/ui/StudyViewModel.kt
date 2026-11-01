@@ -2,12 +2,12 @@ package com.example.cet6.ui
 
 import android.app.Application
 import android.net.Uri
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import com.example.cet6.ai.AvailableModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cet6.ai.AiProvider
+import com.example.cet6.ai.AvailableModel
 import com.example.cet6.data.*
 import com.example.cet6.domain.StudyServices
 import com.example.cet6.ui.theme.UiStyle
@@ -46,16 +46,18 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     val status: String get() = aiConnection.status
     val result: String get() = aiConnection.result
 
-    internal suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String =
-        aiConnection.streamCoach(prompt, onDelta = onDelta)
+    internal suspend fun streamCoach(prompt: String, onDelta: suspend (String) -> Unit): String = aiConnection.streamCoach(prompt, onDelta = onDelta)
     val coach = CoachState(services.practice)
+
     /** Saved explanations and follow-ups; independent of the practice rows above. */
     val talk = CoachTalk(services.conversation)
     var reviewTurns by androidx.compose.runtime.mutableStateOf<List<CoachTurn>>(emptyList())
         private set
     var lastTab: String
         get() = prefs.getString("tab", "writing") ?: "writing"
-        set(value) { prefs.edit().putString("tab", value).apply() }
+        set(value) {
+            prefs.edit().putString("tab", value).apply()
+        }
 
     var uiStyle by androidx.compose.runtime.mutableStateOf(UiStyle.fromKey(prefs.getString("ui_style", null)))
         private set
@@ -91,9 +93,15 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         viewModelScope.launch {
-            try { services.coachRepository.reviews.collectLatest { reviewTurns = it } }
-            catch (e: CancellationException) { throw e }
-            catch (_: Exception) { services.exams.setStatus("批改记录读取失败，请重启应用重试；不要清除数据。") }
+            try {
+                services.coachRepository.reviews.collectLatest { reviewTurns = it }
+            } catch (
+                e: CancellationException,
+            ) {
+                throw e
+            } catch (_: Exception) {
+                services.exams.setStatus("批改记录读取失败，请重启应用重试；不要清除数据。")
+            }
         }
         viewModelScope.launch { dao.readingHistory().collectLatest { readingAttempts = it } }
         viewModelScope.launch { dao.essays().collectLatest { essays = it } }
@@ -125,7 +133,9 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
         prefs.edit().putString("reading_position_$id", "$tab:$question").apply()
     }
 
-    fun saveDrafts() { if (!backupRecoveryRunning) viewModelScope.launch { coach.flush() } }
+    fun saveDrafts() {
+        if (!backupRecoveryRunning) viewModelScope.launch { coach.flush() }
+    }
 
     fun savePlan(newGoal: Int, reviewGoal: Int) = services.study.savePlan(newGoal, reviewGoal)
     fun importVocabulary(uri: Uri, source: String) = services.study.importVocabulary(uri, source)
@@ -134,10 +144,13 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
 
     fun recordReading(choice: String) {
         viewModelScope.launch {
-            dao.addReadingAttempt(ReadingAttempt(
-                questionId = "reading_demo_1", answer = choice,
-                correct = choice == "B"
-            ))
+            dao.addReadingAttempt(
+                ReadingAttempt(
+                    questionId = "reading_demo_1",
+                    answer = choice,
+                    correct = choice == "B",
+                ),
+            )
         }
     }
 }

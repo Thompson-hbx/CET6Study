@@ -9,13 +9,16 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
-import java.io.File
 import org.junit.Test
+import java.io.File
 
 class AiStreamTest {
     @Test fun malformedChatStreamsAreRejected() = verify("chat", false)
+
     @Test fun compatibleChatStreamsKeepEveryTextChunk() = verify("chat", true)
+
     @Test fun malformedResponsesStreamsAreRejected() = verify("responses", false)
+
     @Test fun compatibleResponsesStreamsKeepEveryTextChunk() = verify("responses", true)
 
     private fun verify(protocol: String, valid: Boolean) = runBlocking {

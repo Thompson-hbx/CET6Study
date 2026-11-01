@@ -44,7 +44,8 @@ class SseReaderTest {
         assertNull(stream.next())
     }
 
-    @Test(expected = IllegalStateException::class) fun rejectsOversizedEvents() {
+    @Test(expected = IllegalStateException::class)
+    fun rejectsOversizedEvents() {
         reader("data:" + "a".repeat(1_048_576)).next()
     }
 }

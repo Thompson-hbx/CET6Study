@@ -48,11 +48,15 @@ object BrandIcons {
         }
     }.build()
 
-    private fun icon(name: String, block: ImageVector.Builder.() -> Unit) =
-        ImageVector.Builder(name, 24.dp, 24.dp, 24f, 24f).apply(block).build()
+    private fun icon(name: String, block: ImageVector.Builder.() -> Unit) = ImageVector.Builder(name, 24.dp, 24.dp, 24f, 24f).apply(block).build()
 
-    private fun ImageVector.Builder.stroke(color: Color, d: String) = addPath(addPathNodes(d), stroke = SolidColor(color),
-        strokeLineWidth = Icons.STROKE_WIDTH, strokeLineCap = StrokeCap.Round, strokeLineJoin = StrokeJoin.Round)
+    private fun ImageVector.Builder.stroke(color: Color, d: String) = addPath(
+        addPathNodes(d),
+        stroke = SolidColor(color),
+        strokeLineWidth = Icons.STROKE_WIDTH,
+        strokeLineCap = StrokeCap.Round,
+        strokeLineJoin = StrokeJoin.Round,
+    )
 
     private fun ImageVector.Builder.fill(color: Color, d: String) = addPath(addPathNodes(d), fill = SolidColor(color))
 }

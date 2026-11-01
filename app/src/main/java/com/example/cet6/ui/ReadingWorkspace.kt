@@ -21,7 +21,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -56,7 +55,10 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val hazeState = remember { HazeState() }
     val talk = vm.talk
     val entry = state.entries[CoachKind.READING]
-    if (entry == null) { LoadingScreen(onBack); return }
+    if (entry == null) {
+        LoadingScreen(onBack)
+        return
+    }
     val passages = remember(entry.questions) { ExamCodec.passages(entry) }
     if (passages.isEmpty()) {
         if (ExamCodec.metadata(entry) == null) {
@@ -76,8 +78,12 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val initiallySubmitted = remember(entry.id) { submitted }
     // Always default to the unified Passage + Question split workbench (tab = 1) whether answering or reviewing.
     var tab by rememberSaveable(entry.id) { mutableIntStateOf(1) }
-    var selected by rememberSaveable(entry.id) { mutableIntStateOf(savedPosition?.second ?:
-        questions.firstOrNull { submitted && ReadingGuidance.verdict(it, answers[it.number].orEmpty()) == "需要回看" }?.number ?: questions.first().number) }
+    var selected by rememberSaveable(entry.id) {
+        mutableIntStateOf(
+            savedPosition?.second
+                ?: questions.firstOrNull { submitted && ReadingGuidance.verdict(it, answers[it.number].orEmpty()) == "需要回看" }?.number ?: questions.first().number,
+        )
+    }
     var invalid by rememberSaveable(entry.id) { mutableStateOf("") }
     var focus by remember(entry.id) { mutableStateOf<ReaderFocus?>(null) }
     var asking by rememberSaveable(entry.id) { mutableStateOf(false) }
@@ -121,11 +127,11 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     TextButton(
                         onClick = { tab = if (tab == 0) 1 else 0 },
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                        modifier = Modifier.heightIn(min = 32.dp)
+                        modifier = Modifier.heightIn(min = 32.dp),
                     ) {
                         Text(
                             if (tab == 0) (if (submitted) "同屏精析" else "同屏做题") else "答题卡",
-                            style = MaterialTheme.typography.labelMedium
+                            style = MaterialTheme.typography.labelMedium,
                         )
                     }
                     WorkspaceMenu(
@@ -133,11 +139,14 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         entry,
                         listOf(
                             (if (submitted) "同屏精析" else "同屏做题") to { tab = 1 },
-                            "全文与逐段讲解" to { focus = focus ?: savedFocus; tab = 2 },
-                            "快录答题卡" to { tab = 0 }
-                        )
+                            "全文与逐段讲解" to {
+                                focus = focus ?: savedFocus
+                                tab = 2
+                            },
+                            "快录答题卡" to { tab = 0 },
+                        ),
                     )
-                }
+                },
             )
         },
         bottomBar = {
@@ -147,20 +156,20 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                         Text("已答 $answeredCount / ${questions.size}", style = MaterialTheme.typography.titleSmall, maxLines = 1)
                         Note(
                             if (invalid.isNotBlank()) "有一篇输入格式不对" else saveLabel(state.messages[CoachKind.READING]),
-                            tone = if (invalid.isNotBlank()) Tone.Must else Tone.Muted
+                            tone = if (invalid.isNotBlank()) Tone.Must else Tone.Muted,
                         )
                     }
                     OutlinedButton(
                         onClick = { tab = if (tab == 0) 1 else 0 },
                         modifier = Modifier.height(42.dp),
-                        contentPadding = PaddingValues(horizontal = 12.dp)
+                        contentPadding = PaddingValues(horizontal = 12.dp),
                     ) {
                         Text(if (tab == 0) "同屏做题" else "纸上快录")
                     }
                     Button(
                         onClick = { state.submit(CoachKind.READING, false) },
                         enabled = answeredCount > 0 && invalid.isBlank() && !state.working,
-                        modifier = Modifier.height(42.dp)
+                        modifier = Modifier.height(42.dp),
                     ) { Text("核对答案") }
                 }
                 tab == 0 -> BottomBar(hazeState = hazeState) {
@@ -170,79 +179,106 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
                     }
                     OutlinedButton(
                         onClick = { tab = 1 },
-                        modifier = Modifier.height(42.dp)
+                        modifier = Modifier.height(42.dp),
                     ) { Text("回到精析") }
                     Button(
                         onClick = { state.open(CoachKind.READING, entry, retry = true) },
                         enabled = !state.working,
-                        modifier = Modifier.height(42.dp)
+                        modifier = Modifier.height(42.dp),
                     ) { Text("再练一次") }
                 }
-                desk && (asking || talk.failureFor(entry.id, anchor, chat = true) != null ||
-                    talk.pendingFor(entry.id, anchor)?.kind == TurnKind.CHAT) -> BottomBar(hazeState = hazeState) {
-                    AskBar("问问这道题…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop,
+                desk && (
+                    asking || talk.failureFor(entry.id, anchor, chat = true) != null ||
+                        talk.pendingFor(entry.id, anchor)?.kind == TurnKind.CHAT
+                    ) -> BottomBar(hazeState = hazeState) {
+                    AskBar(
+                        "问问这道题…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop,
                         modifier = Modifier.weight(1f), draftKey = entry.id + anchor,
-                        failure = talk.failureFor(entry.id, anchor, chat = true), onDismissFailure = talk::dismissFailure)
-                    if (!talk.busy) TextButton(onClick = { asking = false; talk.failureFor(entry.id, anchor, chat = true)?.let { talk.dismissFailure() } }) { Text("收起") }
+                        failure = talk.failureFor(entry.id, anchor, chat = true), onDismissFailure = talk::dismissFailure,
+                    )
+                    if (!talk.busy) {
+                        TextButton(onClick = {
+                            asking = false
+                            talk.failureFor(entry.id, anchor, chat = true)?.let { talk.dismissFailure() }
+                        }) { Text("收起") }
+                    }
                 }
             }
-        }
+        },
     ) { padding ->
         Column(Modifier.padding(top = padding.calculateTopPadding()).haze(hazeState).fillMaxSize()) {
             if (!desk) {
                 TrackSegments(
                     listOf("答题卡", if (submitted) "同屏精析" else "同屏做题", "全文精读"),
                     tab,
-                    { focus = null; tab = it },
-                    Modifier.padding(horizontal = CardMargin, vertical = 8.dp)
+                    {
+                        focus = null
+                        tab = it
+                    },
+                    Modifier.padding(horizontal = CardMargin, vertical = 8.dp),
                 )
             }
-            if (desk) BoxWithConstraints(Modifier.fillMaxSize()) {
-                val q = questions.firstOrNull { it.number == selected } ?: questions.first()
-                val savedQuote = savedFocus?.takeIf { it.passage == current.code }?.quote
-                val panelMax = maxHeight * if (tallPanel) 0.72f else 0.54f
-                Column(Modifier.fillMaxSize()) {
-                    if (savedQuote != null) Text("AI 定位 · 已匹配原文，待人工确认", style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier.padding(horizontal = PageGutter, vertical = 2.dp))
-                    PassagePeek(
-                        passages = passages,
-                        passage = current,
-                        q = q,
-                        quote = focus?.takeIf { it.passage == current.code }?.quote ?: savedQuote,
-                        tallPanel = tallPanel,
-                        onToggleRatio = { tallPanel = !tallPanel },
-                        onOpenFull = { focus = focus ?: savedFocus; tab = 2 },
-                        onSelectPassage = { targetPassage ->
-                            focus = null
-                            selected = targetPassage.questions.minOf { item -> item.number }
-                        },
-                        modifier = Modifier.weight(1f)
-                    )
-                    QuestionPanel(
-                        vm = vm,
-                        entry = entry,
-                        passage = current,
-                        allQuestions = questions,
-                        answers = answers,
-                        submitted = submitted,
-                        turns = turns,
-                        selected = selected,
-                        maxHeight = panelMax,
-                        scroll = scroll,
-                        bottomPadding = padding.calculateBottomPadding(),
-                        onSelect = { focus = null; selected = it },
-                        onChooseOption = { qNum, opt ->
-                            state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "$qNum", opt)) }
-                        },
-                        onAsk = ::ask
-                    ) { code, quote -> focus = ReaderFocus(code, quote) }
-                }
-            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
-                when (tab) {
-                    0 -> AnswerCardPane(vm, entry, passages, answers, submitted) { code, bad ->
-                        invalid = if (bad) (invalid + code).toSet().joinToString("") else invalid.replace(code, "")
+            if (desk) {
+                BoxWithConstraints(Modifier.fillMaxSize()) {
+                    val q = questions.firstOrNull { it.number == selected } ?: questions.first()
+                    val savedQuote = savedFocus?.takeIf { it.passage == current.code }?.quote
+                    val panelMax = maxHeight * if (tallPanel) 0.72f else 0.54f
+                    Column(Modifier.fillMaxSize()) {
+                        if (savedQuote != null) {
+                            Text(
+                                "AI 定位 · 已匹配原文，待人工确认",
+                                style = MaterialTheme.typography.labelSmall,
+                                modifier = Modifier.padding(horizontal = PageGutter, vertical = 2.dp),
+                            )
+                        }
+                        PassagePeek(
+                            passages = passages,
+                            passage = current,
+                            q = q,
+                            quote = focus?.takeIf { it.passage == current.code }?.quote ?: savedQuote,
+                            tallPanel = tallPanel,
+                            onToggleRatio = { tallPanel = !tallPanel },
+                            onOpenFull = {
+                                focus = focus ?: savedFocus
+                                tab = 2
+                            },
+                            onSelectPassage = { targetPassage ->
+                                focus = null
+                                selected = targetPassage.questions.minOf { item -> item.number }
+                            },
+                            modifier = Modifier.weight(1f),
+                        )
+                        QuestionPanel(
+                            vm = vm,
+                            entry = entry,
+                            passage = current,
+                            allQuestions = questions,
+                            answers = answers,
+                            submitted = submitted,
+                            turns = turns,
+                            selected = selected,
+                            maxHeight = panelMax,
+                            scroll = scroll,
+                            bottomPadding = padding.calculateBottomPadding(),
+                            onSelect = {
+                                focus = null
+                                selected = it
+                            },
+                            onChooseOption = { qNum, opt ->
+                                state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "$qNum", opt)) }
+                            },
+                            onAsk = ::ask,
+                        ) { code, quote -> focus = ReaderFocus(code, quote) }
                     }
-                    else -> PassagePane(vm, entry, passages, turns, focus ?: savedFocus)
+                }
+            } else {
+                Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
+                    when (tab) {
+                        0 -> AnswerCardPane(vm, entry, passages, answers, submitted) { code, bad ->
+                            invalid = if (bad) (invalid + code).toSet().joinToString("") else invalid.replace(code, "")
+                        }
+                        else -> PassagePane(vm, entry, passages, turns, focus ?: savedFocus)
+                    }
                 }
             }
         }
@@ -252,8 +288,14 @@ fun ReadingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
 /** Answer sheet: five cells per passage plus a one-line entry such as CADCB, both kept in sync. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: List<ExamPassage>, answers: Map<Int, String>,
-    submitted: Boolean, onValidity: (String, Boolean) -> Unit) {
+private fun AnswerCardPane(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    passages: List<ExamPassage>,
+    answers: Map<Int, String>,
+    submitted: Boolean,
+    onValidity: (String, Boolean) -> Unit,
+) {
     val state = vm.coach
     val focusManager = LocalFocusManager.current
     val requesters = remember(entry.id, passages.size) { List(passages.size) { FocusRequester() } }
@@ -269,7 +311,10 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
         focusTarget = null
     }
     fun shown(p: ExamPassage) = typed[p.code] ?: SequentialAnswers.sequence(entry.answer, p.questions)
-    fun focusAfter(index: Int) { focusTarget = if (index + 1 < passages.size) index + 1 else -1 }
+    fun focusAfter(index: Int) {
+        focusTarget = if (index + 1 < passages.size) index + 1 else -1
+    }
+
     // Answers as saved by the latest edit, which may not have been composed into [entry] yet.
     fun latestAnswer() = state.entries[CoachKind.READING]?.answer ?: entry.answer
     fun onType(index: Int, raw: String) {
@@ -287,7 +332,9 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
             if (updated != null && state.edit(CoachKind.READING) { it.copy(answer = updated) }) {
                 touched.forEach { (offset, chunk) ->
                     val code = passages[index + offset].code
-                    typed[code] = chunk; errors.remove(code); onValidity(code, false)
+                    typed[code] = chunk
+                    errors.remove(code)
+                    onValidity(code, false)
                 }
                 val last = touched.last()
                 if (last.value.length == 5) focusAfter(index + last.index) else focusTarget = index + last.index
@@ -307,127 +354,138 @@ private fun AnswerCardPane(vm: StudyViewModel, entry: CoachPractice, passages: L
         }
     }
     Spacer(Modifier.height(10.dp))
-    passages.forEachIndexed { index, p -> key(p.code) {
-        val ordered = p.questions.sortedBy { it.number }
-        var picking by rememberSaveable(entry.id, p.code) { mutableIntStateOf(-1) }
-        val error = errors[p.code].orEmpty()
-        val filledCount = ordered.count { answers[it.number].orEmpty().isNotBlank() }
-        PaperCard(
-            modifier = Modifier.padding(bottom = 14.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerLowest,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-            padding = PaddingValues(0.dp)
-        ) {
-            Row(
-                Modifier.fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f))
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+    passages.forEachIndexed { index, p ->
+        key(p.code) {
+            val ordered = p.questions.sortedBy { it.number }
+            var picking by rememberSaveable(entry.id, p.code) { mutableIntStateOf(-1) }
+            val error = errors[p.code].orEmpty()
+            val filledCount = ordered.count { answers[it.number].orEmpty().isNotBlank() }
+            PaperCard(
+                modifier = Modifier.padding(bottom = 14.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
+                padding = PaddingValues(0.dp),
             ) {
-                Tag("篇章 ${p.code}", Tone.Ink)
-                CardTitle("第 ${ordered.first().number}–${ordered.last().number} 题", Modifier.weight(1f))
-                StatusPill(
-                    "$filledCount / ${ordered.size} 已填",
-                    if (filledCount == ordered.size) Tone.Good else if (filledCount > 0) Tone.Ink else Tone.Muted
-                )
-            }
-            Hairline()
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    ordered.forEachIndexed { i, q ->
-                        val mine = answers[q.number].orEmpty()
-                        val verdict = if (submitted) ReadingGuidance.verdict(q, mine) else ""
-                        AnswerCell(
-                            number = "${i + 1}",
-                            questionNo = "${q.number}",
-                            value = mine,
-                            selected = picking == i,
-                            tone = if (submitted) verdictTone(verdict) else null,
-                            modifier = Modifier.weight(1f),
-                            spoken = "篇章 ${p.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}",
-                            enabled = !submitted && !state.working
-                        ) {
-                            if (!submitted) picking = if (picking == i) -1 else i
-                        }
-                    }
+                Row(
+                    Modifier.fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f))
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Tag("篇章 ${p.code}", Tone.Ink)
+                    CardTitle("第 ${ordered.first().number}–${ordered.last().number} 题", Modifier.weight(1f))
+                    StatusPill(
+                        "$filledCount / ${ordered.size} 已填",
+                        if (filledCount == ordered.size) Tone.Good else if (filledCount > 0) Tone.Ink else Tone.Muted,
+                    )
                 }
-                if (picking in ordered.indices && !submitted) {
-                    val target = ordered[picking]
-                    Surface(
-                        color = MaterialTheme.colorScheme.surfaceContainerLow,
-                        shape = RoundedCornerShape(12.dp),
-                        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        // Wraps instead of squeezing 清除 off the card at large font sizes.
-                        FlowRow(
-                            Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Note("第 ${picking + 1} 题", Modifier.width(labelWidth(listOf("第 5 题"), MaterialTheme.typography.bodySmall))
-                                .align(Alignment.CenterVertically), tone = Tone.Ink)
-                            listOf("A", "B", "C", "D").forEach { c ->
-                                FilterChip(
-                                    selected = answers[target.number] == c,
-                                    onClick = {
-                                        state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "${target.number}", c)) }
-                                        typed.remove(p.code); errors.remove(p.code); onValidity(p.code, false)
-                                        picking = if (picking < ordered.lastIndex) picking + 1 else -1
-                                    },
-                                    label = { Text(c, fontWeight = FontWeight.SemiBold) },
-                                    enabled = !state.working,
-                                    shape = RoundedCornerShape(10.dp),
-                                    border = null,
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
-                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
-                                    )
-                                )
+                Hairline()
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        ordered.forEachIndexed { i, q ->
+                            val mine = answers[q.number].orEmpty()
+                            val verdict = if (submitted) ReadingGuidance.verdict(q, mine) else ""
+                            AnswerCell(
+                                number = "${i + 1}",
+                                questionNo = "${q.number}",
+                                value = mine,
+                                selected = picking == i,
+                                tone = if (submitted) verdictTone(verdict) else null,
+                                modifier = Modifier.weight(1f),
+                                spoken = "篇章 ${p.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}",
+                                enabled = !submitted && !state.working,
+                            ) {
+                                if (!submitted) picking = if (picking == i) -1 else i
                             }
-                            if (answers[target.number].orEmpty().isNotBlank()) TextButton(onClick = {
-                                state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "${target.number}", "")) }
-                                typed.remove(p.code)
-                            }, modifier = Modifier.align(Alignment.CenterVertically)) { Text("清除") }
                         }
                     }
+                    if (picking in ordered.indices && !submitted) {
+                        val target = ordered[picking]
+                        Surface(
+                            color = MaterialTheme.colorScheme.surfaceContainerLow,
+                            shape = RoundedCornerShape(12.dp),
+                            border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            // Wraps instead of squeezing 清除 off the card at large font sizes.
+                            FlowRow(
+                                Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Note(
+                                    "第 ${picking + 1} 题",
+                                    Modifier.width(labelWidth(listOf("第 5 题"), MaterialTheme.typography.bodySmall))
+                                        .align(Alignment.CenterVertically),
+                                    tone = Tone.Ink,
+                                )
+                                listOf("A", "B", "C", "D").forEach { c ->
+                                    FilterChip(
+                                        selected = answers[target.number] == c,
+                                        onClick = {
+                                            state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "${target.number}", c)) }
+                                            typed.remove(p.code)
+                                            errors.remove(p.code)
+                                            onValidity(p.code, false)
+                                            picking = if (picking < ordered.lastIndex) picking + 1 else -1
+                                        },
+                                        label = { Text(c, fontWeight = FontWeight.SemiBold) },
+                                        enabled = !state.working,
+                                        shape = RoundedCornerShape(10.dp),
+                                        border = null,
+                                        colors = FilterChipDefaults.filterChipColors(
+                                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                                        ),
+                                    )
+                                }
+                                if (answers[target.number].orEmpty().isNotBlank()) {
+                                    TextButton(onClick = {
+                                        state.edit(CoachKind.READING) { it.copy(answer = ReadingQuestions.choose(it.answer, "${target.number}", "")) }
+                                        typed.remove(p.code)
+                                    }, modifier = Modifier.align(Alignment.CenterVertically)) { Text("清除") }
+                                }
+                            }
+                        }
+                    }
+                    val more = index < passages.lastIndex
+                    TextField(
+                        value = shown(p),
+                        onValueChange = { onType(index, it) },
+                        label = { Text("按顺序连续输入") },
+                        placeholder = { Text("如 CADCB，没做的写 ?") },
+                        supportingText = {
+                            if (error.isNotBlank()) {
+                                Text(error, color = Tone.Must.color())
+                            } else if (more && !submitted) Text("可以一次输入 ${passages.size * 5} 个，超出的自动接到下一篇")
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Characters,
+                            keyboardType = KeyboardType.Ascii,
+                            imeAction = if (more) ImeAction.Next else ImeAction.Done,
+                        ),
+                        keyboardActions = KeyboardActions(onNext = { focusAfter(index) }, onDone = { focusManager.clearFocus() }),
+                        textStyle = MaterialTheme.typography.titleMedium.copy(letterSpacing = 4.sp, fontWeight = FontWeight.SemiBold),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                            errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        singleLine = true,
+                        readOnly = submitted,
+                        enabled = !state.working,
+                        isError = error.isNotBlank(),
+                        modifier = Modifier.fillMaxWidth().focusRequester(requesters[index]),
+                    )
                 }
-                val more = index < passages.lastIndex
-                TextField(
-                    value = shown(p),
-                    onValueChange = { onType(index, it) },
-                    label = { Text("按顺序连续输入") },
-                    placeholder = { Text("如 CADCB，没做的写 ?") },
-                    supportingText = {
-                        if (error.isNotBlank()) Text(error, color = Tone.Must.color())
-                        else if (more && !submitted) Text("可以一次输入 ${passages.size * 5} 个，超出的自动接到下一篇")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Characters,
-                        keyboardType = KeyboardType.Ascii,
-                        imeAction = if (more) ImeAction.Next else ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(onNext = { focusAfter(index) }, onDone = { focusManager.clearFocus() }),
-                    textStyle = MaterialTheme.typography.titleMedium.copy(letterSpacing = 4.sp, fontWeight = FontWeight.SemiBold),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                        errorContainerColor = MaterialTheme.colorScheme.errorContainer,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    singleLine = true,
-                    readOnly = submitted,
-                    enabled = !state.working,
-                    isError = error.isNotBlank(),
-                    modifier = Modifier.fillMaxWidth().focusRequester(requesters[index])
-                )
             }
         }
-    } }
+    }
     val missingKey = passages.flatMap { it.questions }.count { it.referenceAnswer.isBlank() || it.answerSource.isBlank() }
     if (missingKey > 0) Note("$missingKey 题缺少有来源的参考答案，核对时只显示待核对。", Modifier.padding(horizontal = PageGutter, vertical = 4.dp))
     if (submitted) Note("这一次已经核对，答案已锁定；要重新做一遍，点下方「再练一次」。", Modifier.padding(horizontal = PageGutter, vertical = 4.dp))
@@ -444,7 +502,7 @@ private fun AnswerCell(
     modifier: Modifier = Modifier,
     spoken: String,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val marked = tone == Tone.Good || tone == Tone.Must
     val filled = value.isNotBlank()
@@ -472,15 +530,15 @@ private fun AnswerCell(
                 marked -> tone!!.color().copy(alpha = 0.4f)
                 filled -> MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                 else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            }
-        )
+            },
+        ),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 "$number · Q$questionNo",
                 style = MaterialTheme.typography.labelSmall,
                 color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 6.dp)
+                modifier = Modifier.padding(top = 6.dp),
             )
             Text(
                 value.ifBlank { "—" },
@@ -491,7 +549,7 @@ private fun AnswerCell(
                     filled -> MaterialTheme.colorScheme.primary
                     else -> MaterialTheme.colorScheme.outline
                 },
-                modifier = Modifier.weight(1f).wrapContentHeight()
+                modifier = Modifier.weight(1f).wrapContentHeight(),
             )
             Box(Modifier.fillMaxWidth().height(3.dp).background(stripe))
         }
@@ -504,7 +562,11 @@ private fun verdictTone(verdict: String) = when (verdict) {
     else -> Tone.Muted
 }
 
-private fun verdictLabel(verdict: String) = when (verdict) { "未录入" -> "未录入"; "暂无可核实答案" -> "待核对"; else -> verdict }
+private fun verdictLabel(verdict: String) = when (verdict) {
+    "未录入" -> "未录入"
+    "暂无可核实答案" -> "待核对"
+    else -> verdict
+}
 
 /** The question sheet under the passage: a single-line strip of this passage's 5 questions, then the selected question in detail. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -524,7 +586,7 @@ private fun QuestionPanel(
     onSelect: (Int) -> Unit,
     onChooseOption: (Int, String) -> Unit,
     onAsk: (String) -> Unit,
-    onLocate: (String, String) -> Unit
+    onLocate: (String, String) -> Unit,
 ) {
     val ordered = passage.questions.sortedBy { it.number }
     val known = ordered.filter { it.referenceAnswer.isNotBlank() && it.answerSource.isNotBlank() && answers[it.number].orEmpty().isNotBlank() }
@@ -534,21 +596,21 @@ private fun QuestionPanel(
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
         shadowElevation = 4.dp,
-        modifier = Modifier.fillMaxWidth().heightIn(max = maxHeight)
+        modifier = Modifier.fillMaxWidth().heightIn(max = maxHeight),
     ) {
         Column {
             Column(
                 Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.6f))
-                    .padding(top = 6.dp, bottom = 8.dp)
+                    .padding(top = 6.dp, bottom = 8.dp),
             ) {
                 Box(
                     Modifier.size(width = 36.dp, height = 4.dp).align(Alignment.CenterHorizontally)
-                        .background(MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(2.dp))
+                        .background(MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(2.dp)),
                 )
                 Row(
                     Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, top = 6.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     ordered.forEachIndexed { i, q ->
                         val mine = answers[q.number].orEmpty()
@@ -561,7 +623,7 @@ private fun QuestionPanel(
                             tone = if (submitted) verdictTone(verdict) else if (mine.isNotBlank()) Tone.Ink else Tone.Muted,
                             spoken = "篇章 ${passage.code} 第 ${i + 1} 题，${mine.ifBlank { "未填" }}" +
                                 if (submitted) "，${verdictLabel(verdict)}" else "",
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         ) { onSelect(q.number) }
                     }
                 }
@@ -588,7 +650,7 @@ private fun QuestionPanel(
                         onChooseOption = { opt -> onChooseOption(q.number, opt) },
                         turns = turns,
                         onAsk = onAsk,
-                        onLocate = onLocate
+                        onLocate = onLocate,
                     )
                 }
             }
@@ -606,7 +668,7 @@ private fun AnswerCircle(
     tone: Tone,
     spoken: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val marked = tone == Tone.Good || tone == Tone.Must
     Surface(
@@ -618,21 +680,25 @@ private fun AnswerCircle(
             answered -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
             else -> MaterialTheme.colorScheme.surfaceContainerLowest
         },
-        border = if (selected) null else BorderStroke(
-            0.5.dp,
-            when {
-                marked -> tone.color().copy(alpha = 0.4f)
-                answered -> MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
-                else -> MaterialTheme.colorScheme.outlineVariant
-            }
-        ),
-        modifier = modifier.height(42.dp)
-            /* .semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" } */
+        border = if (selected) {
+            null
+        } else {
+            BorderStroke(
+                0.5.dp,
+                when {
+                    marked -> tone.color().copy(alpha = 0.4f)
+                    answered -> MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
+                    else -> MaterialTheme.colorScheme.outlineVariant
+                },
+            )
+        },
+        modifier = modifier.height(42.dp),
+        /* .semantics { contentDescription = spoken; if (selected) stateDescription = "已选中" } */
     ) {
         Column(
             Modifier.padding(horizontal = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 "Q$questionNo",
@@ -640,7 +706,7 @@ private fun AnswerCircle(
                 color = when {
                     selected -> MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                     else -> MaterialTheme.colorScheme.onSurfaceVariant
-                }
+                },
             )
             Text(
                 label,
@@ -651,7 +717,7 @@ private fun AnswerCircle(
                     marked -> tone.color()
                     answered -> MaterialTheme.colorScheme.primary
                     else -> MaterialTheme.colorScheme.onSurfaceVariant
-                }
+                },
             )
         }
     }
@@ -674,7 +740,7 @@ private fun QuestionDetail(
     onChooseOption: (String) -> Unit,
     turns: List<CoachTurn>,
     onAsk: (String) -> Unit,
-    onLocate: (String, String) -> Unit
+    onLocate: (String, String) -> Unit,
 ) {
     val talk = vm.talk
     val anchor = Anchor.question(q.number)
@@ -703,14 +769,14 @@ private fun QuestionDetail(
                         TextButton(
                             onClick = { onSelectQuestion(prevNo) },
                             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                            modifier = Modifier.heightIn(min = 28.dp)
+                            modifier = Modifier.heightIn(min = 28.dp),
                         ) { Text("‹ Q$prevNo", style = MaterialTheme.typography.labelMedium) }
                     }
                     if (nextNo != null) {
                         TextButton(
                             onClick = { onSelectQuestion(nextNo) },
                             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                            modifier = Modifier.heightIn(min = 28.dp)
+                            modifier = Modifier.heightIn(min = 28.dp),
                         ) { Text("Q$nextNo ›", style = MaterialTheme.typography.labelMedium) }
                     }
                 }
@@ -750,14 +816,14 @@ private fun QuestionDetail(
                                 !submitted && isMine -> MaterialTheme.colorScheme.primary
                                 isKey || isMine -> optionTone.color().copy(alpha = 0.45f)
                                 else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-                            }
+                            },
                         ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Row(
                             Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.Top
+                            verticalAlignment = Alignment.Top,
                         ) {
                             Surface(
                                 color = when {
@@ -766,14 +832,14 @@ private fun QuestionDetail(
                                     else -> MaterialTheme.colorScheme.surfaceContainerHigh
                                 },
                                 shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier.padding(top = 2.dp).size(26.dp)
+                                modifier = Modifier.padding(top = 2.dp).size(26.dp),
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Text(
                                         option.label,
                                         style = MaterialTheme.typography.labelLarge,
                                         fontWeight = FontWeight.Bold,
-                                        color = if (isKey || isMine) Color.White else MaterialTheme.colorScheme.onSurface
+                                        color = if (isKey || isMine) Color.White else MaterialTheme.colorScheme.onSurface,
                                     )
                                 }
                             }
@@ -781,11 +847,13 @@ private fun QuestionDetail(
                                 Text(
                                     option.text,
                                     style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 23.sp),
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
                                 )
-                                if (submitted && (isMine || isKey)) FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                    if (isMine) Tag("我的选择", if (verdict == "需要回看") Tone.Must else if (verdict == "与参考一致") Tone.Good else Tone.Muted)
-                                    if (isKey) Tag("参考答案", Tone.Good)
+                                if (submitted && (isMine || isKey)) {
+                                    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                        if (isMine) Tag("我的选择", if (verdict == "需要回看") Tone.Must else if (verdict == "与参考一致") Tone.Good else Tone.Muted)
+                                        if (isKey) Tag("参考答案", Tone.Good)
+                                    }
                                 }
                                 if (note != null && note.note.isNotBlank()) Note(note.note, tone = if (note.correct) Tone.Good else Tone.Muted)
                             }
@@ -803,12 +871,19 @@ private fun QuestionDetail(
                         explanation?.takeIf { it.structured }?.let { ExplanationView(it, null) { quote -> onLocate(passage.code, quote) } }
                     }
                     explanation == null -> {
-                        Button(onClick = { talk.send(entry, anchor, TurnKind.READING_EXPLAIN) { ReadingCoach.explainPrompt(passage, entry.answer, q.number) } },
-                            enabled = !talk.busy, modifier = Modifier.height(48.dp)) { Text("讲解这题") }
+                        Button(
+                            onClick = { talk.send(entry, anchor, TurnKind.READING_EXPLAIN) { ReadingCoach.explainPrompt(passage, entry.answer, q.number) } },
+                            enabled = !talk.busy,
+                            modifier = Modifier.height(48.dp),
+                        ) { Text("讲解这题") }
                         Note("回到原文讲清定位、同义替换和每个选项；不确定的地方会说明。")
                         if (!vm.aiReady || vm.chosenModel.isBlank()) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型。")
                     }
-                    !explanation.structured -> { Note("回复未完整通过结构检查，以下保留全部原文。"); MarkdownBody(explanation.raw); Provenance(explainTurn?.model.orEmpty()) }
+                    !explanation.structured -> {
+                        Note("回复未完整通过结构检查，以下保留全部原文。")
+                        MarkdownBody(explanation.raw)
+                        Provenance(explainTurn?.model.orEmpty())
+                    }
                     else -> ExplanationView(explanation, explainTurn?.model) { quote -> onLocate(passage.code, quote) }
                 }
                 ReadingDiagnosis.saved(entry.feedback, q.number).takeIf(String::isNotBlank)?.let { legacy ->
@@ -823,8 +898,12 @@ private fun QuestionDetail(
         LocalHints(entry, passage, q)
         if (!explaining) {
             SectionLabel("继续问")
-            QuickAsks(CoachChat.suggestions(CoachKind.READING, anchor, mine.takeIf { verdict == "需要回看" }.orEmpty()),
-                enabled = !talk.busy, onPick = onAsk, edge = PageGutter)
+            QuickAsks(
+                CoachChat.suggestions(CoachKind.READING, anchor, mine.takeIf { verdict == "需要回看" }.orEmpty()),
+                enabled = !talk.busy,
+                onPick = onAsk,
+                edge = PageGutter,
+            )
             ThreadView(CoachTurns.thread(turns, anchor), pending, talk::stop, Modifier.padding(start = PageGutter, end = PageGutter, top = 12.dp))
         }
         ErrorNote(vm, entry, passage, ordinal)
@@ -840,7 +919,7 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -850,16 +929,24 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
                             TextButton(
                                 onClick = { onLocate(locate.quote) },
                                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                                modifier = Modifier.heightIn(min = 28.dp)
+                                modifier = Modifier.heightIn(min = 28.dp),
                             ) { Text("在原文中看", style = MaterialTheme.typography.labelMedium) }
                         }
                     }
                     // The located sentence quoted on a paper-coloured slip, like a cutting from the passage.
-                    if (locate.quote.isNotBlank()) Surface(color = MaterialTheme.colorScheme.background,
-                        shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth()) {
-                        SelectionContainer {
-                            Text(locate.quote, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp),
-                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp))
+                    if (locate.quote.isNotBlank()) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.background,
+                            shape = MaterialTheme.shapes.medium,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            SelectionContainer {
+                                Text(
+                                    locate.quote,
+                                    style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp),
+                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                                )
+                            }
                         }
                     }
                     if (locate.note.isNotBlank()) Text(locate.note, style = MaterialTheme.typography.bodyMedium)
@@ -871,7 +958,7 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 val rowLabel = labelWidth(listOf("题干", "原文", "选项"), MaterialTheme.typography.bodySmall)
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -894,7 +981,7 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
             Surface(
                 color = Tone.Must.soft().copy(alpha = 0.65f),
                 shape = RoundedCornerShape(14.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Tag("可能的误读", Tone.Must)
@@ -908,13 +995,16 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Tag("自测检验", Tone.Ink)
                     Text(explanation.checkQuestion, style = MaterialTheme.typography.bodyMedium)
-                    if (show) Text(explanation.checkAnswer, style = MaterialTheme.typography.bodyMedium, color = Tone.Good.color())
-                    else TextButton(onClick = { show = true }, contentPadding = PaddingValues(0.dp)) { Text("想好了，看答案") }
+                    if (show) {
+                        Text(explanation.checkAnswer, style = MaterialTheme.typography.bodyMedium, color = Tone.Good.color())
+                    } else {
+                        TextButton(onClick = { show = true }, contentPadding = PaddingValues(0.dp)) { Text("想好了，看答案") }
+                    }
                 }
             }
         }
@@ -923,7 +1013,7 @@ private fun ExplanationView(explanation: ReadingExplanation, model: String?, onL
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Tag("这类题怎么做", Tone.Ink)
@@ -944,15 +1034,21 @@ private fun LocalHints(entry: CoachPractice, passage: ExamPassage, q: ExamQuesti
     PaperCard {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val steps = listOf("圈出题干线索", "回到原文定位", "读懂证据关系", "对照选项与参考")
-            Text("${level} / 4 · ${steps[level - 1]}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-            Text(when (level) {
-                1 -> "圈出题干里的主体、时间和限定词，想清楚要找的是什么信息。"
-                2 -> ReadingGuidance.paragraph(passage, q)?.let { "回到篇章 ${passage.code} 第 $it 段，找题干说法的同义表达。" }
-                    ?: "这份资料没有记录证据位置。从题干关键词出发逐段找同义表达，不要把猜测当作确定位置。"
-                3 -> if (q.verifiedEvidence(passage) != null) "证据句：“${q.evidence}”。来源：${q.evidenceSource}。核对主语、转折、因果和范围。"
-                    else "资料没有经过原文匹配的证据句，可以请求讲解，再自己回原文核实。"
-                else -> "参考答案：${q.referenceAnswer.ifBlank { "暂无可核实答案" }}" + if (q.answerSource.isNotBlank()) "（来源已记录）" else ""
-            }, style = MaterialTheme.typography.bodyLarge)
+            Text("$level / 4 · ${steps[level - 1]}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+            Text(
+                when (level) {
+                    1 -> "圈出题干里的主体、时间和限定词，想清楚要找的是什么信息。"
+                    2 -> ReadingGuidance.paragraph(passage, q)?.let { "回到篇章 ${passage.code} 第 $it 段，找题干说法的同义表达。" }
+                        ?: "这份资料没有记录证据位置。从题干关键词出发逐段找同义表达，不要把猜测当作确定位置。"
+                    3 -> if (q.verifiedEvidence(passage) != null) {
+                        "证据句：“${q.evidence}”。来源：${q.evidenceSource}。核对主语、转折、因果和范围。"
+                    } else {
+                        "资料没有经过原文匹配的证据句，可以请求讲解，再自己回原文核实。"
+                    }
+                    else -> "参考答案：${q.referenceAnswer.ifBlank { "暂无可核实答案" }}" + if (q.answerSource.isNotBlank()) "（来源已记录）" else ""
+                },
+                style = MaterialTheme.typography.bodyLarge,
+            )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 if (level > 1) OutlinedButton(onClick = { level-- }) { Text("上一步") }
                 if (level < 4) Button(onClick = { level++ }) { Text("下一步") }
@@ -972,19 +1068,39 @@ private fun ErrorNote(vm: StudyViewModel, entry: CoachPractice, passage: ExamPas
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("词汇理解", "长难句", "逻辑推断", "选项陷阱", "录入更正").forEach { reason ->
-                    SuggestionChip(onClick = { state.edit(CoachKind.READING) {
-                        val note = "$reason：篇章 ${passage.code} 第 $ordinal 题"
-                        it.copy(errorReason = if (it.errorReason.split('；').contains(note)) it.errorReason
-                            else listOf(it.errorReason, note).filter(String::isNotBlank).joinToString("；"))
-                    } }, label = { Text(reason) }, enabled = !state.working, border = null,
-                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer))
+                    SuggestionChip(
+                        onClick = {
+                            state.edit(CoachKind.READING) {
+                                val note = "$reason：篇章 ${passage.code} 第 $ordinal 题"
+                                it.copy(
+                                    errorReason = if (it.errorReason.split('；').contains(note)) {
+                                        it.errorReason
+                                    } else {
+                                        listOf(it.errorReason, note).filter(String::isNotBlank).joinToString("；")
+                                    },
+                                )
+                            }
+                        },
+                        label = { Text(reason) },
+                        enabled = !state.working,
+                        border = null,
+                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    )
                 }
             }
             Hairline()
-            FieldRow(null, entry.errorReason, { value -> state.edit(CoachKind.READING) { it.copy(errorReason = value) } },
-                placeholder = "我的错因与定位笔记", enabled = !state.working, minLines = 3)
-            if (entry.errorReason.isNotBlank()) TextButton(onClick = { state.generate(CoachKind.READING) }, enabled = !state.working && !vm.busy) {
-                Text("按错因出一道练习")
+            FieldRow(
+                null,
+                entry.errorReason,
+                { value -> state.edit(CoachKind.READING) { it.copy(errorReason = value) } },
+                placeholder = "我的错因与定位笔记",
+                enabled = !state.working,
+                minLines = 3,
+            )
+            if (entry.errorReason.isNotBlank()) {
+                TextButton(onClick = { state.generate(CoachKind.READING) }, enabled = !state.working && !vm.busy) {
+                    Text("按错因出一道练习")
+                }
             }
             state.messages[CoachKind.READING]?.takeIf { it.isNotBlank() && it != "已保存到本机" && it != "正在保存……" }?.let { Note(it) }
         }
@@ -1005,7 +1121,7 @@ private fun PassagePeek(
     onToggleRatio: () -> Unit,
     onOpenFull: () -> Unit,
     onSelectPassage: (ExamPassage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val paragraphs = remember(passage.content) { PassageLayout.paragraphs(passage.content) }
     val evidence = quote?.takeIf(String::isNotBlank) ?: q.verifiedEvidence(passage)
@@ -1019,7 +1135,7 @@ private fun PassagePeek(
                 .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f))
                 .padding(start = 12.dp, end = 6.dp, top = 4.dp, bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             passages.forEach { p ->
                 val active = p.code == passage.code
@@ -1027,14 +1143,14 @@ private fun PassagePeek(
                     onClick = { if (!active) onSelectPassage(p) },
                     shape = RoundedCornerShape(8.dp),
                     color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLowest,
-                    border = if (active) null else BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant)
+                    border = if (active) null else BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
                     Text(
                         "篇章 ${p.code}",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = if (active) FontWeight.Bold else FontWeight.Medium,
                         color = if (active) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     )
                 }
             }
@@ -1042,12 +1158,12 @@ private fun PassagePeek(
             TextButton(
                 onClick = onToggleRatio,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                modifier = Modifier.heightIn(min = 30.dp)
+                modifier = Modifier.heightIn(min = 30.dp),
             ) { Text(if (tallPanel) "扩大原文" else "扩大题目", style = MaterialTheme.typography.labelMedium) }
             TextButton(
                 onClick = onOpenFull,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                modifier = Modifier.heightIn(min = 30.dp)
+                modifier = Modifier.heightIn(min = 30.dp),
             ) { Text("逐段讲解", style = MaterialTheme.typography.labelMedium) }
         }
         Hairline()
@@ -1057,7 +1173,7 @@ private fun PassagePeek(
             Modifier.fillMaxWidth().weight(1f),
             state = list,
             contentPadding = PaddingValues(start = 12.dp, end = 16.dp, top = 10.dp, bottom = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             itemsIndexed(paragraphs) { i, paragraph ->
                 Row {
@@ -1067,7 +1183,7 @@ private fun PassagePeek(
                         color = if (marks[i] != null) Tone.Better.color() else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = if (marks[i] != null) FontWeight.Bold else FontWeight.Medium,
                         modifier = Modifier.width(numberWidth).padding(top = 4.dp),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.End
+                        textAlign = androidx.compose.ui.text.style.TextAlign.End,
                     )
                     Spacer(Modifier.width(10.dp))
                     SelectionContainer {
@@ -1076,7 +1192,7 @@ private fun PassagePeek(
                                 append(paragraph)
                                 marks[i]?.let { addStyle(SpanStyle(background = soft), it.first, it.last + 1) }
                             },
-                            style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)
+                            style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp),
                         )
                     }
                 }
@@ -1104,7 +1220,7 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
         SectionLabel(
             "篇章 ${p.code} · 约 $words 词 · ${paragraphs.size} 段",
             action = if (overviewTurn == null && pending == null) "梳理结构" else null,
-            onAction = { talk.send(entry, overviewAnchor, TurnKind.READING_OVERVIEW) { ReadingCoach.overviewPrompt(p) } }
+            onAction = { talk.send(entry, overviewAnchor, TurnKind.READING_OVERVIEW) { ReadingCoach.overviewPrompt(p) } },
         )
         talk.failureFor(entry.id, overviewAnchor)?.let {
             FailureLine(it, talk::dismissFailure, Modifier.padding(start = CardMargin, end = CardMargin, bottom = 8.dp))
@@ -1114,7 +1230,7 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
             Surface(
                 color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
                 shape = RoundedCornerShape(14.dp),
-                modifier = Modifier.fillMaxWidth().padding(start = CardMargin, end = CardMargin, bottom = 10.dp)
+                modifier = Modifier.fillMaxWidth().padding(start = CardMargin, end = CardMargin, bottom = 10.dp),
             ) {
                 Column(Modifier.padding(horizontal = 14.dp, vertical = 10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Tag("篇章导读", Tone.Ink)
@@ -1127,7 +1243,7 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
         PaperCard(
             color = MaterialTheme.colorScheme.surfaceContainerLowest,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-            padding = PaddingValues(vertical = 8.dp)
+            padding = PaddingValues(vertical = 8.dp),
         ) {
             paragraphs.forEachIndexed { i, paragraph ->
                 val index = i + 1
@@ -1139,8 +1255,8 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
                 Row(
                     Modifier.fillMaxWidth()
                         .bringIntoViewRequester(requester)
-                        .clickable(/* onClickLabel = "翻译、拆解长句或看段意" */ ) { sheet = anchor }
-                        .padding(start = 12.dp, end = 16.dp, top = 10.dp, bottom = 10.dp)
+                        .clickable(/* onClickLabel = "翻译、拆解长句或看段意" */) { sheet = anchor }
+                        .padding(start = 12.dp, end = 16.dp, top = 10.dp, bottom = 10.dp),
                 ) {
                     Text(
                         "$index",
@@ -1148,19 +1264,19 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
                         color = if (hasNotes) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = if (hasNotes) FontWeight.Bold else FontWeight.Medium,
                         modifier = Modifier.width(numberWidth).padding(top = 5.dp),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.End
+                        textAlign = androidx.compose.ui.text.style.TextAlign.End,
                     )
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         if (gist != null) {
                             Surface(
                                 color = MaterialTheme.colorScheme.surfaceContainerLow,
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
                             ) {
                                 Note(
                                     listOf(gist.role, gist.gist).filter(String::isNotBlank).joinToString(" · "),
                                     Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                                    tone = Tone.Ink
+                                    tone = Tone.Ink,
                                 )
                             }
                         }
@@ -1170,7 +1286,7 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
                                 append(paragraph)
                                 highlight?.let { addStyle(SpanStyle(background = soft), it.first, it.last + 1) }
                             },
-                            style = PassageText
+                            style = PassageText,
                         )
                         if (hasNotes) Tag("已有讲解 · 点开查看", Tone.Ink)
                     }
@@ -1189,30 +1305,54 @@ private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ParagraphSheet(vm: StudyViewModel, entry: CoachPractice, passage: ExamPassage, index: Int, anchor: String,
-    turns: List<CoachTurn>, onDismiss: () -> Unit) {
+private fun ParagraphSheet(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    passage: ExamPassage,
+    index: Int,
+    anchor: String,
+    turns: List<CoachTurn>,
+    onDismiss: () -> Unit,
+) {
     val talk = vm.talk
     val thread = CoachTurns.thread(turns, anchor)
     val pending = talk.pendingFor(entry.id, anchor)
     val paragraph = PassageLayout.paragraphs(passage.content).getOrNull(index - 1).orEmpty()
     fun ask(question: String) = talk.send(entry, anchor, TurnKind.CHAT, question) { CoachChat.prompt(entry, anchor, thread, question) }
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
         Column(Modifier.fillMaxWidth().padding(horizontal = PageGutter).padding(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             CardTitle("篇章 ${passage.code} · 第 $index 段")
             Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 SelectionContainer { Text(paragraph, style = PassageText.copy(fontSize = 16.sp, lineHeight = 26.sp)) }
                 ThreadView(thread, pending, talk::stop, kinds = setOf(TurnKind.CHAT, TurnKind.READING_PARAGRAPH))
-                QuickAsks(ParagraphHelp.entries.map { it.label } + CoachChat.suggestions(CoachKind.READING, anchor).takeIf { thread.isNotEmpty() }.orEmpty(),
-                    enabled = !talk.busy, onPick = { label ->
+                QuickAsks(
+                    ParagraphHelp.entries.map { it.label } + CoachChat.suggestions(CoachKind.READING, anchor).takeIf { thread.isNotEmpty() }.orEmpty(),
+                    enabled = !talk.busy,
+                    onPick = { label ->
                         val help = ParagraphHelp.entries.firstOrNull { it.label == label }
-                        if (help != null) talk.send(entry, anchor, TurnKind.READING_PARAGRAPH, help.label) { ReadingCoach.paragraphPrompt(passage, index, help) }
-                        else ask(label)
-                    })
+                        if (help != null) {
+                            talk.send(entry, anchor, TurnKind.READING_PARAGRAPH, help.label) { ReadingCoach.paragraphPrompt(passage, index, help) }
+                        } else {
+                            ask(label)
+                        }
+                    },
+                )
                 if (!vm.aiReady || vm.chosenModel.isBlank()) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型。")
             }
-            AskBar("关于这一段，想问什么…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop, draftKey = entry.id + anchor,
-                failure = talk.failureFor(entry.id, anchor), onDismissFailure = talk::dismissFailure)
+            AskBar(
+                "关于这一段，想问什么…",
+                busy = talk.busy,
+                enabled = !talk.busy,
+                onSend = ::ask,
+                onStop = talk::stop,
+                draftKey = entry.id + anchor,
+                failure = talk.failureFor(entry.id, anchor),
+                onDismissFailure = talk::dismissFailure,
+            )
         }
     }
 }

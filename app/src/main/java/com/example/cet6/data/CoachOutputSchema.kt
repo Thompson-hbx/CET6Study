@@ -49,7 +49,10 @@ internal object CoachOutputSchema {
 
     private fun singletons(rows: List<JSONObject>, types: Set<String>): Boolean {
         val seen = mutableSetOf<String>()
-        return rows.all { val type = it.optString("type"); type !in types || seen.add(type) }
+        return rows.all {
+            val type = it.optString("type")
+            type !in types || seen.add(type)
+        }
     }
 
     private fun uniqueIndexes(rows: List<JSONObject>, type: String): Boolean = rows.filter { it.optString("type") == type }

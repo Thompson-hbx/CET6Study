@@ -16,7 +16,9 @@ object CoachTurnFixtures {
         }
         val repository = CoachRepository(StudyDatabase.get(context))
         val now = System.currentTimeMillis()
-        val essay = CoachPractice(kind = CoachKind.WRITING.name, title = "布局样本 · 非真题 · 作文",
+        val essay = CoachPractice(
+            kind = CoachKind.WRITING.name,
+            title = "布局样本 · 非真题 · 作文",
             material = "原创布局样本（非真题）。Directions: Write an essay that begins with the sentence “Libraries matter in the digital age.” " +
                 "You should write at least 150 words but no more than 200 words.",
             answer = "Libraries matter in the digital age. Many student think that internet can replace library, but I disagree with this opinion.\n\n" +
@@ -24,7 +26,9 @@ object CoachTurnFixtures {
                 "In the library, everyone keep silent, so I can concentrate on my work.\n\n" +
                 "Second, libraries has many books which is not available online. Some academic books are very expensive, and students can borrow them freely.\n\n" +
                 "In a word, libraries is still very important for us. We should make full use of them.",
-            submittedAt = now - 60_000, updatedAt = now - 60_000)
+            submittedAt = now - 60_000,
+            updatedAt = now - 60_000,
+        )
         repository.save(essay)
         val review = listOf(
             """{"type":"score","band":8,"summary":"切题，观点清楚，但主谓一致错误较多，例证可以更具体。"}""",
@@ -43,21 +47,50 @@ object CoachTurnFixtures {
             """{"type":"issue","quote":"libraries is still very important for us","fix":"libraries remain essential to students","reason":"主谓一致；remain essential 更具体。","category":"用词","level":"better"}""",
             """{"type":"tip","text":"第二段可以加一个具体经历，比如期末周在图书馆找到的参考书。"}""",
             """{"type":"tip","text":"每段开头用主题句点明理由，结尾呼应开头句。"}""",
-            """{"type":"rewrite","text":"Libraries matter in the digital age. Many students think that the Internet can replace libraries, but I disagree.\n\nFirst, the library provides a quiet place for study. In my dormitory there is always a lot of noise and I cannot focus, while in the library everyone keeps quiet.\n\nSecond, libraries have many books that are not available online, and students can borrow expensive academic books for free.\n\nIn conclusion, libraries remain essential to students, and we should make full use of them."}"""
+            """{"type":"rewrite","text":"Libraries matter in the digital age. Many students think that the Internet can replace libraries, but I disagree.\n\nFirst, the library provides a quiet place for study. In my dormitory there is always a lot of noise and I cannot focus, while in the library everyone keeps quiet.\n\nSecond, libraries have many books that are not available online, and students can borrow expensive academic books for free.\n\nIn conclusion, libraries remain essential to students, and we should make full use of them."}""",
         ).joinToString("\n")
-        repository.saveTurn(CoachTurn(practiceId = essay.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
-            role = CoachTurn.ASSISTANT, content = review, model = MODEL, createdAt = now - 50_000))
-        repository.saveTurn(CoachTurn(practiceId = essay.id, anchor = Anchor.REVIEW, kind = TurnKind.CHAT,
-            role = CoachTurn.USER, content = "哪一处最影响得分？", createdAt = now - 40_000))
-        repository.saveTurn(CoachTurn(practiceId = essay.id, anchor = Anchor.REVIEW, kind = TurnKind.CHAT,
-            role = CoachTurn.ASSISTANT, content = "（布局样本）最影响得分的是**主谓一致**：\n\n- “library provide”\n- “everyone keep silent”\n\n这类错误重复出现，会让阅卷人判断语言基础不稳。",
-            model = MODEL, createdAt = now - 39_000))
+        repository.saveTurn(
+            CoachTurn(
+                practiceId = essay.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT,
+                content = review,
+                model = MODEL,
+                createdAt = now - 50_000,
+            ),
+        )
+        repository.saveTurn(
+            CoachTurn(
+                practiceId = essay.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.CHAT,
+                role = CoachTurn.USER,
+                content = "哪一处最影响得分？",
+                createdAt = now - 40_000,
+            ),
+        )
+        repository.saveTurn(
+            CoachTurn(
+                practiceId = essay.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.CHAT,
+                role = CoachTurn.ASSISTANT,
+                content = "（布局样本）最影响得分的是**主谓一致**：\n\n- “library provide”\n- “everyone keep silent”\n\n这类错误重复出现，会让阅卷人判断语言基础不稳。",
+                model = MODEL,
+                createdAt = now - 39_000,
+            ),
+        )
 
-        val translation = CoachPractice(kind = CoachKind.TRANSLATION.name, title = "布局样本 · 非真题 · 翻译",
+        val translation = CoachPractice(
+            kind = CoachKind.TRANSLATION.name,
+            title = "布局样本 · 非真题 · 翻译",
             material = "大学图书馆不仅提供书籍，也为学生创造安静的学习空间。随着数字资源日益丰富，图书馆的作用正在发生变化。许多图书馆开设了讨论室和电子阅览区，方便学生合作学习。",
             answer = "University libraries not only provide books, but also create quiet study space for student. With digital resources becoming more rich, " +
                 "the role of library is changing. Many libraries open discussion rooms and electronic reading area.",
-            submittedAt = now - 30_000, updatedAt = now - 30_000)
+            submittedAt = now - 30_000,
+            updatedAt = now - 30_000,
+        )
         repository.save(translation)
         val translationReview = listOf(
             """{"type":"score","band":11,"summary":"主要信息基本译出，第三句漏译“方便学生合作学习”，有几处单复数问题。"}""",
@@ -72,10 +105,19 @@ object CoachTurnFixtures {
             """{"type":"term","zh":"数字资源","en":"digital resources"}""",
             """{"type":"term","zh":"电子阅览区","en":"electronic reading areas"}""",
             """{"type":"term","zh":"合作学习","en":"collaborative learning","note":"facilitate collaborative learning 可作目的状语"}""",
-            """{"type":"tip","text":"先找出每句的主干，再处理“随着……”这类状语，最后逐句核对有没有漏掉的信息点。"}"""
+            """{"type":"tip","text":"先找出每句的主干，再处理“随着……”这类状语，最后逐句核对有没有漏掉的信息点。"}""",
         ).joinToString("\n")
-        repository.saveTurn(CoachTurn(practiceId = translation.id, anchor = Anchor.REVIEW, kind = TurnKind.TRANSLATION_REVIEW,
-            role = CoachTurn.ASSISTANT, content = translationReview, model = MODEL, createdAt = now - 20_000))
+        repository.saveTurn(
+            CoachTurn(
+                practiceId = translation.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.TRANSLATION_REVIEW,
+                role = CoachTurn.ASSISTANT,
+                content = translationReview,
+                model = MODEL,
+                createdAt = now - 20_000,
+            ),
+        )
         return "SEEDED emulator-only labelled review fixtures: writing ${essay.id}; translation ${translation.id}\n"
     }
 }

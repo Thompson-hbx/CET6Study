@@ -24,7 +24,8 @@ val preparePersonalExamAssets = tasks.register<Sync>("preparePersonalExamAssets"
 }
 tasks.configureEach {
     if (personalExamPack.isPresent &&
-        ((name.startsWith("merge") && name.endsWith("Assets")) || name.contains("lint", ignoreCase = true))) {
+        ((name.startsWith("merge") && name.endsWith("Assets")) || name.contains("lint", ignoreCase = true))
+    ) {
         dependsOn(preparePersonalExamAssets)
     }
 }

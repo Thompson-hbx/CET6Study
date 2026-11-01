@@ -14,7 +14,7 @@
     <ID>MagicNumber:Server.kt$7</ID>
     <ID>MagicNumber:Server.kt$8192</ID>
     <ID>MagicNumber:StudyStore.kt$StudyStore$3</ID>
-    <ID>MaxLineLength:StudyStore.kt$StudyStore$it.execute("CREATE TABLE IF NOT EXISTS history (revision INTEGER NOT NULL, record_key TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(revision,record_key))")</ID>
+    <ID>MaxLineLength:StudyStore.kt$StudyStore$"CREATE TABLE IF NOT EXISTS history (revision INTEGER NOT NULL, record_key TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(revision,record_key))"</ID>
     <ID>NestedBlockDepth:StudyStore.kt$StudyStore$@Synchronized fun update(serverId: String, revision: Long, changes: Map&lt;String, String&gt;): RemoteSnapshot?</ID>
     <ID>ReturnCount:StudyStore.kt$StudyStore$@Synchronized fun update(serverId: String, revision: Long, changes: Map&lt;String, String&gt;): RemoteSnapshot?</ID>
     <ID>TooGenericExceptionCaught:StudyStore.kt$StudyStore$e: Exception</ID>

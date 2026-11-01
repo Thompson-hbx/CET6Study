@@ -8,7 +8,10 @@ package com.example.cet6.data
 object ReadingLocation {
     private fun passage(entry: CoachPractice, turn: CoachTurn): ExamPassage? {
         if (entry.id != turn.practiceId || entry.kind != CoachKind.READING.name ||
-            turn.role != CoachTurn.ASSISTANT || turn.kind != TurnKind.READING_EXPLAIN) return null
+            turn.role != CoachTurn.ASSISTANT || turn.kind != TurnKind.READING_EXPLAIN
+        ) {
+            return null
+        }
         val number = turn.anchor.removePrefix("q:").toIntOrNull()
             ?.takeIf { turn.anchor == Anchor.question(it) } ?: return null
         return ExamCodec.passages(entry).singleOrNull { p -> p.questions.any { it.number == number } }

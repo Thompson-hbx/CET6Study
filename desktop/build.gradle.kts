@@ -30,7 +30,10 @@ compose.desktop {
             packageName = "Xiye"
             packageVersion = "0.1.0"
             modules("java.sql", "java.naming", "jdk.crypto.ec", "jdk.unsupported")
-            windows { menuGroup = "Xiye"; shortcut = true }
+            windows {
+                menuGroup = "Xiye"
+                shortcut = true
+            }
         }
     }
 }
@@ -54,11 +57,13 @@ tasks.register<Exec>("packagePortable") {
         val image = output.resolve("Xiye")
         check(image.canonicalFile.toPath().startsWith(layout.buildDirectory.get().asFile.canonicalFile.toPath()))
         project.delete(image)
-        commandLine(launcher.get().metadata.installationPath.file("bin/jpackage.exe").asFile,
+        commandLine(
+            launcher.get().metadata.installationPath.file("bin/jpackage.exe").asFile,
             "--type", "app-image", "--name", "Xiye", "--app-version", "0.1.0",
             "--input", layout.buildDirectory.dir("portable-input").get().asFile,
             "--main-jar", tasks.jar.get().archiveFileName.get(), "--main-class", "com.example.cet6.desktop.MainKt",
             "--dest", output, "--java-options", "-Dfile.encoding=UTF-8",
-            "--add-modules", "java.desktop,java.sql,java.naming,java.logging,java.management,jdk.crypto.ec,jdk.unsupported,jdk.charsets")
+            "--add-modules", "java.desktop,java.sql,java.naming,java.logging,java.management,jdk.crypto.ec,jdk.unsupported,jdk.charsets",
+        )
     }
 }

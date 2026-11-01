@@ -3,7 +3,7 @@ package com.example.cet6.data
 enum class ParagraphHelp(val label: String, val task: String) {
     TRANSLATE("翻译这段", "把这一段译成通顺的中文，然后列出段中 3–5 个关键词或短语在本文语境中的意思。"),
     SENTENCE("拆解长句", "选出这一段里最难的一到两个句子，拆出主干、从句和修饰成分，再给出中文意思。"),
-    GIST("这段讲什么", "用一两句话概括这一段，并说明它在全文中的作用（引出话题、举例、转折、让步、结论等）。")
+    GIST("这段讲什么", "用一两句话概括这一段，并说明它在全文中的作用（引出话题、举例、转折、让步、结论等）。"),
 }
 
 /** Reading prompts. Paragraph numbers always come from [PassageLayout], the same split the reader shows. */

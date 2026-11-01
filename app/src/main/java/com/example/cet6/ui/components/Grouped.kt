@@ -34,8 +34,14 @@ import com.example.cet6.ui.theme.LocalMarks
 @Composable
 fun Group(header: String? = null, footer: String? = null, content: @Composable ColumnScope.() -> Unit) {
     Column(Modifier.fillMaxWidth()) {
-        if (header != null) Text(header, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(start = CardPadding, end = CardPadding, top = 8.dp, bottom = 6.dp)/* .semantics { heading() } */)
+        if (header != null) {
+            Text(
+                header,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(start = CardPadding, end = CardPadding, top = 8.dp, bottom = 6.dp), /* .semantics { heading() } */
+            )
+        }
         Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
             Column(content = content)
         }
@@ -46,8 +52,12 @@ fun Group(header: String? = null, footer: String? = null, content: @Composable C
 /** Explanatory grey text under a group; also used on its own for status lines. */
 @Composable
 fun GroupFooter(text: String, modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.onSurfaceVariant) {
-    Text(text, style = MaterialTheme.typography.bodySmall, color = color,
-        modifier = modifier.padding(start = CardPadding, end = CardPadding, top = 6.dp))
+    Text(
+        text,
+        style = MaterialTheme.typography.bodySmall,
+        color = color,
+        modifier = modifier.padding(start = CardPadding, end = CardPadding, top = 6.dp),
+    )
 }
 
 @Composable
@@ -58,8 +68,10 @@ private val RowPadding = Modifier.heightIn(min = 44.dp).padding(horizontal = Car
 /** A read-only line: title on the left, its value in grey on the right. */
 @Composable
 fun ValueRow(title: String, value: String, valueTone: Tone = Tone.Muted) {
-    Row(Modifier.fillMaxWidth().then(RowPadding)/* .semantics(mergeDescendants = true) {} */,
-        verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        Modifier.fillMaxWidth().then(RowPadding)/* .semantics(mergeDescendants = true) {} */,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Text(value, style = MaterialTheme.typography.bodyLarge, color = valueTone.color(), modifier = Modifier.padding(start = 12.dp))
     }
@@ -73,8 +85,10 @@ fun ActionRow(text: String, onClick: () -> Unit, enabled: Boolean = true, destru
         destructive -> LocalMarks.current.must
         else -> LocalMarks.current.good
     }
-    Box(Modifier.fillMaxWidth().clickable(enabled = enabled, role = Role.Button, onClick = onClick).then(RowPadding),
-        contentAlignment = Alignment.CenterStart) {
+    Box(
+        Modifier.fillMaxWidth().clickable(enabled = enabled, role = Role.Button, onClick = onClick).then(RowPadding),
+        contentAlignment = Alignment.CenterStart,
+    ) {
         Text(text, style = MaterialTheme.typography.bodyLarge, color = color)
     }
 }
@@ -82,32 +96,50 @@ fun ActionRow(text: String, onClick: () -> Unit, enabled: Boolean = true, destru
 /** A line with a switch; the whole row toggles. */
 @Composable
 fun ToggleRow(title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, enabled: Boolean = true) {
-    Row(Modifier.fillMaxWidth()
-        .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onCheckedChange)
-        /* .semantics { contentDescription = title } */
-        .heightIn(min = 44.dp).padding(start = CardPadding, end = 12.dp, top = 6.dp, bottom = 6.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f),
-            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
-        Switch(checked = checked, onCheckedChange = null, enabled = enabled, colors = SwitchDefaults.colors(
-            checkedTrackColor = MaterialTheme.colorScheme.primary, checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-            checkedBorderColor = Color.Transparent,
-            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest, uncheckedThumbColor = MaterialTheme.colorScheme.outline,
-            uncheckedBorderColor = Color.Transparent,
-            disabledCheckedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f), disabledCheckedThumbColor = Color.White,
-            disabledCheckedBorderColor = Color.Transparent,
-            disabledUncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.6f),
-            disabledUncheckedThumbColor = Color.White, disabledUncheckedBorderColor = Color.Transparent))
+    Row(
+        Modifier.fillMaxWidth()
+            .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onCheckedChange)
+            /* .semantics { contentDescription = title } */
+            .heightIn(min = 44.dp).padding(start = CardPadding, end = 12.dp, top = 6.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            title,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f),
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Switch(
+            checked = checked,
+            onCheckedChange = null,
+            enabled = enabled,
+            colors = SwitchDefaults.colors(
+                checkedTrackColor = MaterialTheme.colorScheme.primary, checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                checkedBorderColor = Color.Transparent,
+                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest, uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                uncheckedBorderColor = Color.Transparent,
+                disabledCheckedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f), disabledCheckedThumbColor = Color.White,
+                disabledCheckedBorderColor = Color.Transparent,
+                disabledUncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.6f),
+                disabledUncheckedThumbColor = Color.White, disabledUncheckedBorderColor = Color.Transparent,
+            ),
+        )
     }
 }
 
 /** One choice of a list where exactly one is picked; the picked one carries a tinted check mark. */
 @Composable
 fun CheckRow(title: String, selected: Boolean, onClick: () -> Unit, enabled: Boolean = true) {
-    Row(Modifier.fillMaxWidth().selectable(selected = selected, enabled = enabled, role = Role.RadioButton, onClick = onClick).then(RowPadding),
-        verticalAlignment = Alignment.CenterVertically) {
-        Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f),
-            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
+    Row(
+        Modifier.fillMaxWidth().selectable(selected = selected, enabled = enabled, role = Role.RadioButton, onClick = onClick).then(RowPadding),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            title,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f),
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
         if (selected) Icon(Icons.Outlined.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
     }
 }
@@ -127,13 +159,15 @@ fun FieldRow(
     keyboardType: KeyboardType = KeyboardType.Text,
     minLines: Int = 1,
     accessibilityLabel: String = label ?: placeholder,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
 ) {
     val style = MaterialTheme.typography.bodyLarge.copy(
-        color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
+        color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+    )
     Row(Modifier.fillMaxWidth().then(RowPadding), verticalAlignment = if (minLines > 1) Alignment.Top else Alignment.CenterVertically) {
         if (label != null) Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.widthIn(min = 96.dp).padding(end = 12.dp))
-        BasicTextField(value, onValueChange, enabled = enabled, textStyle = style, singleLine = minLines == 1, minLines = minLines, maxLines = maxLines,
+        BasicTextField(
+            value, onValueChange, enabled = enabled, textStyle = style, singleLine = minLines == 1, minLines = minLines, maxLines = maxLines,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else keyboardType),
@@ -143,7 +177,8 @@ fun FieldRow(
                     if (value.isEmpty()) Text(placeholder, style = style, color = MaterialTheme.colorScheme.outline)
                     field()
                 }
-            })
+            },
+        )
     }
 }
 
@@ -166,8 +201,10 @@ object TileColors {
 fun IconTile(icon: ImageVector, color: Color) {
     val alert = color == TileColors.Red
     val marks = LocalMarks.current
-    Box(Modifier.size(TileSize).background(if (alert) marks.mustSoft else MaterialTheme.colorScheme.background, RoundedCornerShape(10.dp)),
-        contentAlignment = Alignment.Center) {
+    Box(
+        Modifier.size(TileSize).background(if (alert) marks.mustSoft else MaterialTheme.colorScheme.background, RoundedCornerShape(10.dp)),
+        contentAlignment = Alignment.Center,
+    ) {
         Icon(icon, contentDescription = null, tint = if (alert) marks.must else MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(19.dp))
     }
 }

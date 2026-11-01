@@ -2,16 +2,37 @@ package com.example.cet6.data
 
 /** Task choices are instructions, never inferred scores or automatic edits to a learner's draft. */
 enum class WritingFocus(val label: String, val kind: CoachKind?, val instruction: String, val summary: String) {
-    COMPLETE("完整批改", null, "先给出最值得修改的三处，再逐句列出原句、建议修改和理由；最后给出保留原意的参考修订全文。",
-        "模拟档位、逐处修改与修改后全文"),
-    STRUCTURE("审题与结构", CoachKind.WRITING, "只检查是否回应题目、中心观点、段落推进和例证。引用我的原句说明问题，给可执行的提纲修改建议，不代写全文。",
-        "是否切题，论点与段落推进"),
-    EXPRESSION("逐句精修", CoachKind.WRITING, "按原稿顺序编号，逐句列出原句、最小必要修改、中文理由。区分必须纠正的错误与可选润色，保留作者观点，不堆砌生僻词。",
-        "逐句语言问题，分清必改与可改"),
-    COVERAGE("检查遗漏", CoachKind.TRANSLATION, "按中文原文的信息点编号，对照我的译文逐项检查遗漏、误译、数字与逻辑关系。引用对应中英文，未表达的内容明确标为遗漏，不擅自补充事实。",
-        "逐句核对有没有漏译、误译"),
-    SYNTAX("句法与表达", CoachKind.TRANSLATION, "按中文句序对照原译和建议修改，解释主干、从句、时态及搭配。说明哪些是语法错误、哪些只是另一种正确译法，保留准确表达。",
-        "句子主干、时态与搭配");
+    COMPLETE(
+        "完整批改",
+        null,
+        "先给出最值得修改的三处，再逐句列出原句、建议修改和理由；最后给出保留原意的参考修订全文。",
+        "模拟档位、逐处修改与修改后全文",
+    ),
+    STRUCTURE(
+        "审题与结构",
+        CoachKind.WRITING,
+        "只检查是否回应题目、中心观点、段落推进和例证。引用我的原句说明问题，给可执行的提纲修改建议，不代写全文。",
+        "是否切题，论点与段落推进",
+    ),
+    EXPRESSION(
+        "逐句精修",
+        CoachKind.WRITING,
+        "按原稿顺序编号，逐句列出原句、最小必要修改、中文理由。区分必须纠正的错误与可选润色，保留作者观点，不堆砌生僻词。",
+        "逐句语言问题，分清必改与可改",
+    ),
+    COVERAGE(
+        "检查遗漏",
+        CoachKind.TRANSLATION,
+        "按中文原文的信息点编号，对照我的译文逐项检查遗漏、误译、数字与逻辑关系。引用对应中英文，未表达的内容明确标为遗漏，不擅自补充事实。",
+        "逐句核对有没有漏译、误译",
+    ),
+    SYNTAX(
+        "句法与表达",
+        CoachKind.TRANSLATION,
+        "按中文句序对照原译和建议修改，解释主干、从句、时态及搭配。说明哪些是语法错误、哪些只是另一种正确译法，保留准确表达。",
+        "句子主干、时态与搭配",
+    ),
+    ;
 
     /** What this choice returns for [kind]; a full translation review aligns sentences instead of rewriting. */
     fun summaryFor(kind: CoachKind) = if (this == COMPLETE && kind == CoachKind.TRANSLATION) "模拟档位、逐句对照与重点词语" else summary
@@ -33,8 +54,12 @@ data class WritingTask(val opening: String?, val minWords: Int?, val maxWords: I
                 ?: material.takeIf { it.contains("begins with the sentence above", ignoreCase = true) }
                     ?.substringBefore("\n\n")?.trim()?.takeIf { it.length in 8..400 && !it.startsWith("Directions", true) }
             val range = limits.find(material)?.groupValues
-            return WritingTask(opening, range?.get(1)?.toIntOrNull(), range?.get(2)?.toIntOrNull(),
-                material.contains("not including the sentence given", ignoreCase = true))
+            return WritingTask(
+                opening,
+                range?.get(1)?.toIntOrNull(),
+                range?.get(2)?.toIntOrNull(),
+                material.contains("not including the sentence given", ignoreCase = true),
+            )
         }
     }
 }
@@ -45,9 +70,11 @@ object WritingCoach {
 
     fun instruction(kind: CoachKind, focus: WritingFocus): String {
         require(focus in WritingFocus.forKind(kind)) { "批改方向与训练类型不一致" }
-        val specialty = if (kind == CoachKind.WRITING)
+        val specialty = if (kind == CoachKind.WRITING) {
             "作文先核对题目要求及限定条件，再检查论点、论据和衔接；不能凭模板偏好否定正确表达。"
-        else "翻译以中文原文为依据，先检查遗漏、误译和信息准确性，再检查语法和表达；参考译文不是唯一答案。"
+        } else {
+            "翻译以中文原文为依据，先检查遗漏、误译和信息准确性，再检查语法和表达；参考译文不是唯一答案。"
+        }
         return "$specialty\n${focus.instruction}\n使用简短标题和编号段落，避免手机上难读的宽表格。引用必须来自本次原稿，不能编造用户写过的句子。任何估分仅为模拟参考，不是官方成绩；证据不足时说明不确定。"
     }
 
@@ -76,13 +103,20 @@ object WritingCoach {
         require(entry.material.isNotBlank() && entry.answer.isNotBlank()) { "请先写好作文再批改" }
         val task = WritingTask.of(entry.material)
         val count = words(entry.answer)
-        val rewriteLength = if (task.minWords != null && task.maxWords != null)
-            "${task.minWords}–${task.maxWords} 词" else "遵循题目实际字数或句数，未规定篇幅时保留原稿规模"
+        val rewriteLength = if (task.minWords != null && task.maxWords != null) {
+            "${task.minWords}–${task.maxWords} 词"
+        } else {
+            "遵循题目实际字数或句数，未规定篇幅时保留原稿规模"
+        }
         val facts = buildList {
             add("学生作文约 $count 词")
             if (entry.practiceGoal.isNotBlank()) add("本次为针对性微练习，按题目实际要求检查，不套用完整作文篇幅；档位仅供本题参考")
-            if (task.minWords != null && task.maxWords != null) add("题目要求 ${task.minWords}–${task.maxWords} 词" +
-                if (task.excludesOpening) "（不含给定开头句）" else "")
+            if (task.minWords != null && task.maxWords != null) {
+                add(
+                    "题目要求 ${task.minWords}–${task.maxWords} 词" +
+                        if (task.excludesOpening) "（不含给定开头句）" else "",
+                )
+            }
             task.opening?.let { add("题目要求以这句话开头：$it") }
         }.joinToString("；")
         return """
@@ -123,9 +157,11 @@ ${entry.answer}
         CoachPrompts.validate(entry)
         require(entry.material.isNotBlank()) { "缺少作文题目" }
         require(note.length <= 2000) { "补充说明请控制在 2000 字以内" }
-        val outline = if (entry.practiceGoal.isNotBlank())
-            "### 句子安排\n按题目实际要求的句数或篇幅给中文要点，可附简短句式骨架，不扩成完整作文。" else
+        val outline = if (entry.practiceGoal.isNotBlank()) {
+            "### 句子安排\n按题目实际要求的句数或篇幅给中文要点，可附简短句式骨架，不扩成完整作文。"
+        } else {
             "### 三段式提纲\n每段一行中文要点，并附一个可以直接改写使用的英文主题句。"
+        }
         return """
 你是大学英语六级写作老师，正在帮学生审题和构思。不要写出完整作文，学生要自己动笔。
 用简洁的 Markdown 输出，依次包含：

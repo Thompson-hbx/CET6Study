@@ -19,8 +19,13 @@ object ReadingQuestions {
             val prompt = body.substring(0, options.first().range.first).trim()
             if (prompt.isBlank()) return emptyList()
             val choices = options.mapIndexed { i, item ->
-                ReadingChoice(item.groupValues[1], body.substring(item.range.last + 1,
-                    options.getOrNull(i + 1)?.range?.first ?: body.length).trim())
+                ReadingChoice(
+                    item.groupValues[1],
+                    body.substring(
+                        item.range.last + 1,
+                        options.getOrNull(i + 1)?.range?.first ?: body.length,
+                    ).trim(),
+                )
             }
             if (choices.any { it.text.isBlank() }) return emptyList()
             ReadingQuestion(match.groupValues[1], prompt, choices)
@@ -49,13 +54,11 @@ object ReadingEvidence {
         return Regex(words.joinToString("\\s+") { Regex.escape(it) }).find(material)?.range
     }
 
-    fun quotations(feedback: String): List<String> =
-        Regex("[“\"「]([^”\"」]{12,600})[”\"」]").findAll(feedback).map { it.groupValues[1] }
-            .distinct().toList()
+    fun quotations(feedback: String): List<String> = Regex("[“\"「]([^”\"」]{12,600})[”\"」]").findAll(feedback).map { it.groupValues[1] }
+        .distinct().toList()
 
     /** Only offer quotes which actually occur in the material; no semantic/fuzzy matching. */
-    fun suggestions(material: String, feedback: String): List<String> =
-        quotations(feedback).filter { find(material, it) != null }.take(8)
+    fun suggestions(material: String, feedback: String): List<String> = quotations(feedback).filter { find(material, it) != null }.take(8)
 
     fun saved(text: String) = text.lineSequence().filter(String::isNotBlank).toList()
     fun add(material: String, savedText: String, quote: String): String {

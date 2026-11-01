@@ -12,19 +12,33 @@ import java.util.zip.ZipOutputStream
 
 class CompleteBackupTest {
     private val empty = StudyBackup(1000, emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
-    private val paper = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original test",
-        sourceUrl = "local:test", licenseStatus = "original", sample = true)
+    private val paper = ExamPaper(
+        "sample-cet6-2026-06-13-1",
+        "2026-06-13",
+        "1",
+        sourceName = "Original test",
+        sourceUrl = "local:test",
+        licenseStatus = "original",
+        sample = true,
+    )
     private fun encode(data: CompleteBackup) = ByteArrayOutputStream().also { CompleteBackupCodec.write(data, it) }.toByteArray()
     private fun decode(bytes: ByteArray) = CompleteBackupCodec.read(ByteArrayInputStream(bytes))
     private fun entries(bytes: ByteArray): LinkedHashMap<String, ByteArray> = linkedMapOf<String, ByteArray>().apply {
         ZipInputStream(ByteArrayInputStream(bytes)).use { zip ->
-            while (true) { val entry = zip.nextEntry ?: break; put(entry.name, zip.readBytes()) }
+            while (true) {
+                val entry = zip.nextEntry ?: break
+                put(entry.name, zip.readBytes())
+            }
         }
     }
     private fun zip(entries: Map<String, ByteArray>) = ByteArrayOutputStream().also { out ->
-        ZipOutputStream(out).use { zip -> entries.forEach { (name, bytes) ->
-            zip.putNextEntry(ZipEntry(name)); zip.write(bytes); zip.closeEntry()
-        } }
+        ZipOutputStream(out).use { zip ->
+            entries.forEach { (name, bytes) ->
+                zip.putNextEntry(ZipEntry(name))
+                zip.write(bytes)
+                zip.closeEntry()
+            }
+        }
     }.toByteArray()
 
     @Test fun roundTripIncludesUnansweredPapersAndAnEmptyLibrary() {
@@ -40,9 +54,11 @@ class CompleteBackupTest {
             original.filterKeys { it != "papers/0.json" },
             original + ("papers/0.json" to ExamCodec.encode(listOf(paper.copy(revision = 2))).toByteArray()),
             original + ("../unexpected.json" to "{}".toByteArray()),
-            original + ("manifest.json" to JSONObject(String(original.getValue("manifest.json")))
-                .put("paperCount", 2).toString().toByteArray()),
-            original.filterKeys { it != "manifest.json" }
+            original + (
+                "manifest.json" to JSONObject(String(original.getValue("manifest.json")))
+                    .put("paperCount", 2).toString().toByteArray()
+                ),
+            original.filterKeys { it != "manifest.json" },
         )
         variants.forEach { assertTrue(runCatching { decode(zip(it)) }.isFailure) }
     }
@@ -55,10 +71,20 @@ class CompleteBackupTest {
     @Test fun chunksLearningLargerThanTheLegacy32MiBLimit() {
         val practice = CoachPractice(id = "large-practice", updatedAt = 1000)
         val content = "a".repeat(CoachTurns.MAX_CONTENT)
-        val data = empty.copy(coach = listOf(practice), turns = (0 until 570).map {
-            CoachTurn(id = "turn-$it", practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.CHAT,
-                role = CoachTurn.ASSISTANT, content = content, createdAt = 1000L + it)
-        })
+        val data = empty.copy(
+            coach = listOf(practice),
+            turns = (0 until 570).map {
+                CoachTurn(
+                    id = "turn-$it",
+                    practiceId = practice.id,
+                    anchor = Anchor.REVIEW,
+                    kind = TurnKind.CHAT,
+                    role = CoachTurn.ASSISTANT,
+                    content = content,
+                    createdAt = 1000L + it,
+                )
+            },
+        )
         assertTrue(runCatching { BackupCodec.encode(data) }.isFailure)
         val encoded = encode(CompleteBackup(data, emptyList()))
         assertTrue(entries(encoded).keys.count { it.startsWith("study/turns-") } > 1)

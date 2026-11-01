@@ -16,7 +16,10 @@ class ServiceState<T>(initial: T) {
     val value: T get() = mutable.value
 
     fun update(transform: (T) -> T): T = synchronized(this) {
-        transform(mutable.value).also { mutable.value = it; listener?.invoke(it) }
+        transform(mutable.value).also {
+            mutable.value = it
+            listener?.invoke(it)
+        }
     }
 
     fun observe(listener: (T) -> Unit) = synchronized(this) {

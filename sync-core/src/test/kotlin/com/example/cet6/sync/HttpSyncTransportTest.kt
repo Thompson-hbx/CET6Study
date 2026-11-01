@@ -19,8 +19,10 @@ class HttpSyncTransportTest {
             server.useHttps(serverCertificates.sslSocketFactory(), false)
             server.start()
             val secret = "test-only-sync-pairing-not-a-real-secret"
-            val transport = HttpSyncTransport(SyncConnection.create(server.url("/").toString(), secret),
-                OkHttpClient.Builder().sslSocketFactory(clientCertificates.sslSocketFactory(), clientCertificates.trustManager).build())
+            val transport = HttpSyncTransport(
+                SyncConnection.create(server.url("/").toString(), secret),
+                OkHttpClient.Builder().sslSocketFactory(clientCertificates.sslSocketFactory(), clientCertificates.trustManager).build(),
+            )
             val initial = RemoteSnapshot("11111111-1111-1111-1111-111111111111", 0, SyncDocument())
             server.enqueue(MockResponse().setBody(initial.json().toString()))
             assertEquals(initial, transport.fetch(null))
@@ -48,12 +50,15 @@ class HttpSyncTransportTest {
         val tls = HandshakeCertificates.Builder().heldCertificate(certificate).build()
         val trusted = HandshakeCertificates.Builder().addTrustedCertificate(certificate.certificate).build()
         MockWebServer().use { server ->
-            server.useHttps(tls.sslSocketFactory(), false); server.start()
+            server.useHttps(tls.sslSocketFactory(), false)
+            server.start()
             val connection = SyncConnection.create(server.url("/").toString(), "test-only-sync-material-at-least-32-characters")
             assertThrows(IOException::class.java) { HttpSyncTransport(connection).fetch(null) }
             server.enqueue(MockResponse().setResponseCode(302).addHeader("Location", "https://example.invalid/"))
-            val transport = HttpSyncTransport(connection,
-                OkHttpClient.Builder().sslSocketFactory(trusted.sslSocketFactory(), trusted.trustManager).build())
+            val transport = HttpSyncTransport(
+                connection,
+                OkHttpClient.Builder().sslSocketFactory(trusted.sslSocketFactory(), trusted.trustManager).build(),
+            )
             assertThrows(IllegalStateException::class.java) { transport.fetch(null) }
             assertEquals(1, server.requestCount)
         }

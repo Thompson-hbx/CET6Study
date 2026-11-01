@@ -11,21 +11,47 @@ import java.util.zip.ZipOutputStream
 /** Original archives shared by JVM/Android tests; no learner files or credentials. */
 class CompleteManifestChecks {
     private val practice = CoachPractice(id = "manifest-original", title = "Original manifest check", updatedAt = 1000)
-    private val study = StudyBackup(1_800_000_000_000L, emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(),
-        listOf(practice), listOf(CoachTurn(id = "manifest-turn", practiceId = practice.id, anchor = Anchor.REVIEW,
-            kind = TurnKind.CHAT, role = CoachTurn.ASSISTANT, content = "Original complete reply.", createdAt = 1000)))
-    private val paper = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original manifest check",
-        sourceUrl = "local:test", licenseStatus = "original", sample = true)
+    private val study = StudyBackup(
+        1_800_000_000_000L, emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(),
+        listOf(practice),
+        listOf(
+            CoachTurn(
+                id = "manifest-turn",
+                practiceId = practice.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.CHAT,
+                role = CoachTurn.ASSISTANT,
+                content = "Original complete reply.",
+                createdAt = 1000,
+            ),
+        ),
+    )
+    private val paper = ExamPaper(
+        "sample-cet6-2026-06-13-1",
+        "2026-06-13",
+        "1",
+        sourceName = "Original manifest check",
+        sourceUrl = "local:test",
+        licenseStatus = "original",
+        sample = true,
+    )
 
     private fun encode(value: CompleteBackup) = ByteArrayOutputStream().also { CompleteBackupCodec.write(value, it) }.toByteArray()
     private fun entries(bytes: ByteArray) = linkedMapOf<String, ByteArray>().apply {
         ZipInputStream(ByteArrayInputStream(bytes)).use { zip ->
-            while (true) { val entry = zip.nextEntry ?: break; put(entry.name, zip.readBytes()) }
+            while (true) {
+                val entry = zip.nextEntry ?: break
+                put(entry.name, zip.readBytes())
+            }
         }
     }
     private fun zip(entries: Map<String, ByteArray>) = ByteArrayOutputStream().also { output ->
         ZipOutputStream(output).use { zip ->
-            entries.forEach { (name, bytes) -> zip.putNextEntry(ZipEntry(name)); zip.write(bytes); zip.closeEntry() }
+            entries.forEach { (name, bytes) ->
+                zip.putNextEntry(ZipEntry(name))
+                zip.write(bytes)
+                zip.closeEntry()
+            }
         }
     }.toByteArray()
 

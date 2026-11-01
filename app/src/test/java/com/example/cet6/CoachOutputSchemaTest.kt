@@ -39,12 +39,15 @@ class CoachOutputSchemaTest {
     @Test fun malformedReviewFieldsPreserveRawAndDisableActions() {
         cases().filter { it.getString("kind") == "review" && !it.getBoolean("structured") }.forEach(::verify)
     }
+
     @Test fun malformedReadingFieldsAreNeverInferredAsWrongAnswers() {
         cases().filter { it.getString("kind") == "reading" && !it.getBoolean("structured") }.forEach(::verify)
     }
+
     @Test fun malformedOverviewReferencesCannotLookComplete() {
         cases().filter { it.getString("kind") == "overview" && !it.getBoolean("structured") }.forEach(::verify)
     }
+
     @Test fun validLegacyShapesAndRecordedRepliesRemainReadableOffline() {
         cases().filter { it.getBoolean("structured") }.forEach(::verify)
     }

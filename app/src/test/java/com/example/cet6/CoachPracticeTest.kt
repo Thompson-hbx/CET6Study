@@ -5,8 +5,11 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class CoachPracticeTest {
-    private fun reading() = CoachPractice(material = "Libraries need both digital resources and quiet rooms.",
-        questions = "1. What should universities maintain?\nA. Both\nB. Neither", answer = "1. A")
+    private fun reading() = CoachPractice(
+        material = "Libraries need both digital resources and quiet rooms.",
+        questions = "1. What should universities maintain?\nA. Both\nB. Neither",
+        answer = "1. A",
+    )
 
     @Test fun readingRequiresIndependentAnswerAndQuestions() {
         assertTrue(runCatching { CoachPrompts.build(reading().copy(answer = "")) }.isFailure)

@@ -11,9 +11,10 @@ object CoachChat {
         val kind = CoachKind.valueOf(entry.kind)
         val context = when (kind) {
             CoachKind.WRITING -> "---作文题目---\n${entry.material}\n---学生作文---\n${entry.answer.ifBlank { "（尚未动笔）" }}"
-            CoachKind.TRANSLATION -> "---中文原文（已按句编号）---\n" +
-                TranslationCoach.sentences(entry.material).mapIndexed { i, s -> "[${i + 1}] $s" }.joinToString("\n") +
-                "\n---学生译文---\n${entry.answer.ifBlank { "（尚未动笔）" }}"
+            CoachKind.TRANSLATION ->
+                "---中文原文（已按句编号）---\n" +
+                    TranslationCoach.sentences(entry.material).mapIndexed { i, s -> "[${i + 1}] $s" }.joinToString("\n") +
+                    "\n---学生译文---\n${entry.answer.ifBlank { "（尚未动笔）" }}"
             CoachKind.READING -> readingContext(entry, anchor)
         }
         val role = when (kind) {
@@ -62,8 +63,12 @@ $question
         kind == CoachKind.WRITING -> listOf("哪一处最影响得分？", "开头怎样写得更有力？", "怎样再提高一档？")
         kind == CoachKind.TRANSLATION && anchor.startsWith("sent:") -> listOf("还有别的译法吗？", "这句的主干是什么？")
         kind == CoachKind.TRANSLATION -> listOf("哪些词是采分点？", "有没有中式英语？", "最难的一句还能怎么译？")
-        anchor.startsWith("q:") -> listOfNotNull(wrongChoice.takeIf(String::isNotBlank)?.let { "为什么不能选 $it？" },
-            "定位句再讲细一点", "这题属于哪种出题套路？", "出一道类似的题")
+        anchor.startsWith("q:") -> listOfNotNull(
+            wrongChoice.takeIf(String::isNotBlank)?.let { "为什么不能选 $it？" },
+            "定位句再讲细一点",
+            "这题属于哪种出题套路？",
+            "出一道类似的题",
+        )
         anchor.startsWith("para:") -> listOf("讲得再简单一点", "这段的难词怎么记？")
         else -> listOf("再讲细一点")
     }

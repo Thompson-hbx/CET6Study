@@ -2,7 +2,7 @@ package com.example.cet6.data
 
 enum class SentenceHelp(val label: String, val task: String) {
     TERMS("难词怎么译", "只列出这句中的难点词语及推荐英文（中文 → 英文，可附一句用法说明），不要给出整句译文。"),
-    STRUCTURE("句子怎么搭", "说明这句英文该怎样搭建：主干选什么、哪些信息做从句或非谓语、语序如何调整，可以给出类似 “S + V + O, which …” 的骨架，但不要写出完整译文。")
+    STRUCTURE("句子怎么搭", "说明这句英文该怎样搭建：主干选什么、哪些信息做从句或非谓语、语序如何调整，可以给出类似 “S + V + O, which …” 的骨架，但不要写出完整译文。"),
 }
 
 object TranslationCoach {
@@ -25,7 +25,10 @@ object TranslationCoach {
                     !cjk.matches(before.toString()) && !cjk.matches(after.toString())
                 if (latinBoth) out.append(' ')
                 i = j
-            } else { out.append(c); i++ }
+            } else {
+                out.append(c)
+                i++
+            }
         }
         return out.toString()
     }
@@ -66,7 +69,7 @@ object TranslationCoach {
 你是大学英语六级翻译阅卷与辅导老师。请对照中文原文批改学生的英文译文，严格按「输出格式」返回。
 
 【评分参照】六级翻译按 15 分制分五个档次（参照公开评分标准的描述）：
-${BANDS}
+$BANDS
 参考译文不是唯一答案，意思准确、表达地道的不同译法都应认可。这只是模拟评估，不是官方成绩。
 
 【本次侧重】${focusRules(focus)}

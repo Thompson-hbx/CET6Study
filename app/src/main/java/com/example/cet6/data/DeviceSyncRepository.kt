@@ -6,8 +6,10 @@ import com.example.cet6.sync.SyncDocument
 /** Sync applies only after comparing a fresh Room snapshot inside the write transaction. */
 class DeviceSyncRepository(private val db: StudyDatabase) {
     private val dao = db.dao()
-    private suspend fun read() = StudyBackup(0, dao.allWords(), dao.allWordReviews(), dao.allSchedules(),
-        dao.allPlans(), dao.allReading(), dao.allEssays(), dao.allCoach(), dao.allTurns())
+    private suspend fun read() = StudyBackup(
+        0, dao.allWords(), dao.allWordReviews(), dao.allSchedules(),
+        dao.allPlans(), dao.allReading(), dao.allEssays(), dao.allCoach(), dao.allTurns(),
+    )
     private fun document(data: StudyBackup) = SyncDocument.fromBackup(BackupCodec.encode(data))
 
     suspend fun snapshot(): SyncDocument = db.withTransaction { document(read()) }
@@ -39,7 +41,12 @@ class DeviceSyncRepository(private val db: StudyDatabase) {
             val counts = old.groupingBy { it }.eachCount().toMutableMap()
             return rows.filter { row ->
                 val count = counts[row] ?: 0
-                if (count == 0) true else { counts[row] = count - 1; false }
+                if (count == 0) {
+                    true
+                } else {
+                    counts[row] = count - 1
+                    false
+                }
             }
         }
         dao.addReadingAttempts(missing(current.reading.map { it.copy(id = 0) }, next.reading.map { it.copy(id = 0) }))

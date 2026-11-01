@@ -12,12 +12,21 @@ class ReadingProgressTest {
         sourceName = "Original test", sourceUrl = "local:test", licenseStatus = "original",
         reviewed = true, sample = true,
         passages = (1..2).map { code ->
-            ExamPassage("$code", "Original sample", "Libraries provide quiet rooms.",
+            ExamPassage(
+                "$code",
+                "Original sample",
+                "Libraries provide quiet rooms.",
                 (if (code == 1) 46..50 else 51..55).map { number ->
-                    ExamQuestion(number, "What is provided?", "ABCD".map { ExamOption("$it", "Option $it") },
-                        "A", "local:test")
-                })
-        }
+                    ExamQuestion(
+                        number,
+                        "What is provided?",
+                        "ABCD".map { ExamOption("$it", "Option $it") },
+                        "A",
+                        "local:test",
+                    )
+                },
+            )
+        },
     )
 
     @Test fun openedButUnansweredReadingIsStillUnstarted() {
@@ -41,7 +50,10 @@ class ReadingProgressTest {
 
     @Test fun openingAnEmptyRetryDoesNotChangeTheCompletedAttempt() {
         val submitted = ExamCodec.practice(paper(), CoachKind.READING).copy(
-            answer = "46. A\n55. A", submittedAt = 100, updatedAt = 200)
+            answer = "46. A\n55. A",
+            submittedAt = 100,
+            updatedAt = 200,
+        )
         val retry = submitted.retryCopy()
         assertFalse(ExamCodec.hasReadingProgress(retry))
         assertTrue(ExamCodec.hasReadingProgress(submitted))

@@ -30,8 +30,14 @@ class CoachInstrumentationChecks(private val context: Context) {
             check(state.addReadingQuestion(question))
             check(!state.addReadingQuestion(question))
             check(state.entries.getValue(kind).questions == question)
-            state.edit(kind) { it.copy(title = "原创阅读", material = "Libraries need quiet rooms.",
-                questions = "1. What do libraries need?", answer = "1. quiet rooms") }
+            state.edit(kind) {
+                it.copy(
+                    title = "原创阅读",
+                    material = "Libraries need quiet rooms.",
+                    questions = "1. What do libraries need?",
+                    answer = "1. quiet rooms",
+                )
+            }
             waitFor { state.messages[kind] == "已保存到本机" }
             val original = state.entries.getValue(kind)
             check(db.dao().coachDraft(kind.name)?.answer == original.answer)
@@ -72,18 +78,30 @@ class CoachInstrumentationChecks(private val context: Context) {
                 check(revision.feedback.isBlank() && revision.errorReason.isBlank() && revision.submittedAt == 0L)
                 check(db.dao().coachById(previous.id) == previous)
             }
-            val turn = CoachTurn(practiceId = complete.id, anchor = Anchor.question(1), kind = TurnKind.CHAT,
-                role = CoachTurn.ASSISTANT, content = "原文证据：quiet rooms", model = "fake-model")
+            val turn = CoachTurn(
+                practiceId = complete.id,
+                anchor = Anchor.question(1),
+                kind = TurnKind.CHAT,
+                role = CoachTurn.ASSISTANT,
+                content = "原文证据：quiet rooms",
+                model = "fake-model",
+            )
             CoachRepository(db).saveTurn(turn)
             val snapshot = BackupRepository(db).snapshot()
             check(snapshot.turns == listOf(turn)) { "turn missing from snapshot" }
             check(BackupCodec.decode(BackupCodec.encode(snapshot)) == snapshot)
-            val v4 = JSONObject(BackupCodec.encode(snapshot)).apply { put("version", 4); put("databaseVersion", 7); remove("turns") }
+            val v4 = JSONObject(BackupCodec.encode(snapshot)).apply {
+                put("version", 4)
+                put("databaseVersion", 7)
+                remove("turns")
+            }
             check(BackupCodec.decode(v4.toString()).turns.isEmpty())
             val orphan = JSONObject(BackupCodec.encode(snapshot)).apply { getJSONArray("turns").getJSONObject(0).put("practiceId", "missing") }
             check(runCatching { BackupCodec.decode(orphan.toString()) }.isFailure) { "turn without its practice accepted" }
             val v2 = JSONObject(BackupCodec.encode(snapshot)).apply {
-                put("version", 2); put("databaseVersion", 5); remove("turns")
+                put("version", 2)
+                put("databaseVersion", 5)
+                remove("turns")
                 val rows = getJSONArray("coach")
                 for (i in 0 until rows.length()) rows.getJSONObject(i).remove("savedSentences")
             }
@@ -91,17 +109,22 @@ class CoachInstrumentationChecks(private val context: Context) {
             state.edit(CoachKind.WRITING) { it.copy(answer = "Immediate background save.") }
             check(state.flush())
             check(db.dao().coachDraft(CoachKind.WRITING.name)?.answer == "Immediate background save.")
-            db.openHelper.writableDatabase.execSQL("""
+            db.openHelper.writableDatabase.execSQL(
+                """
                 CREATE TEMP TRIGGER fail_reading_save BEFORE UPDATE ON coach_practices
                 WHEN NEW.kind = 'READING' BEGIN SELECT RAISE(ABORT, 'controlled draft failure'); END
-            """.trimIndent())
+                """.trimIndent(),
+            )
             state.edit(CoachKind.TRANSLATION) { it.copy(answer = "Other drafts still save.") }
             check(!state.flush())
             check(db.dao().coachDraft(CoachKind.TRANSLATION.name)?.answer == "Other drafts still save.")
             db.openHelper.writableDatabase.execSQL("DROP TRIGGER fail_reading_save")
             check(state.flush())
             val legacy = JSONObject(BackupCodec.encode(snapshot)).apply {
-                put("version", 1); put("databaseVersion", 4); remove("coach"); remove("turns")
+                put("version", 1)
+                put("databaseVersion", 4)
+                remove("coach")
+                remove("turns")
             }
             check(BackupCodec.decode(legacy.toString()).coach.isEmpty())
             job.cancelAndJoin()
@@ -111,6 +134,9 @@ class CoachInstrumentationChecks(private val context: Context) {
             check(db.dao().allCoach().single { it.id == complete.id }.savedSentences == "quiet rooms.")
             check(db.dao().coachDraft(CoachKind.WRITING.name)?.answer == "Immediate background save.")
             check(db.dao().coachDraft(CoachKind.TRANSLATION.name)?.answer == "Other drafts still save.")
-        } finally { job.cancelAndJoin(); db.close() }
+        } finally {
+            job.cancelAndJoin()
+            db.close()
+        }
     }
 }

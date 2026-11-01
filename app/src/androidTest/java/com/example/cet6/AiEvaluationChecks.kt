@@ -4,12 +4,12 @@ import android.app.Instrumentation
 import android.content.Intent
 import android.os.Bundle
 import android.util.AtomicFile
-import androidx.lifecycle.ViewModelProvider
 import androidx.compose.runtime.snapshotFlow
-import kotlinx.coroutines.flow.first
+import androidx.lifecycle.ViewModelProvider
 import com.example.cet6.data.*
 import com.example.cet6.ui.StudyViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -23,8 +23,10 @@ internal suspend fun awaitEvaluationReady(isReady: () -> Boolean) {
 /** Explicit opt-in only: exactly one request per original case, no learning rows are added. */
 class AiEvaluationChecks(private val runner: Instrumentation) {
     fun verify(): String {
-        val activity = runner.startActivitySync(Intent(runner.targetContext, MainActivity::class.java)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) as MainActivity
+        val activity = runner.startActivitySync(
+            Intent(runner.targetContext, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        ) as MainActivity
         lateinit var vm: StudyViewModel
         runner.runOnMainSync { vm = ViewModelProvider(activity)[StudyViewModel::class.java] }
         val fixture = runner.context.assets.open("coach-evaluation-v1.json").bufferedReader().use { it.readText() }
@@ -40,10 +42,15 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
                 check(!vm.busy && !vm.coach.working && !vm.talk.busy) { "Existing operation is still active" }
                 vm.provider to vm.chosenModel
             }
-            File(folder, "metadata.json").writeText(JSONObject().put("provider", chosen.first.name)
-                .put("model", chosen.second).put("createdAt", System.currentTimeMillis())
-                .put("fixtureSha256", MessageDigest.getInstance("SHA-256").digest(fixture.toByteArray())
-                    .joinToString("") { "%02x".format(it.toInt() and 255) }).toString(2))
+            File(folder, "metadata.json").writeText(
+                JSONObject().put("provider", chosen.first.name)
+                    .put("model", chosen.second).put("createdAt", System.currentTimeMillis())
+                    .put(
+                        "fixtureSha256",
+                        MessageDigest.getInstance("SHA-256").digest(fixture.toByteArray())
+                            .joinToString("") { "%02x".format(it.toInt() and 255) },
+                    ).toString(2),
+            )
             for (index in 0 until cases.length()) {
                 val case = cases.getJSONObject(index)
                 val prompt = prompt(case)
@@ -54,7 +61,10 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
                         check(vm.provider == chosen.first && vm.chosenModel == chosen.second && !vm.busy && !vm.talk.busy)
                         withTimeout(180_000) {
                             var partial = ""
-                            vm.streamCoach(prompt) { delta -> partial += delta; CoachTurns.checkReplyLength(partial) }
+                            vm.streamCoach(prompt) { delta ->
+                                partial += delta
+                                CoachTurns.checkReplyLength(partial)
+                            }
                         }
                     }
                     CoachTurns.checkReplyLength(response)
@@ -69,10 +79,23 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
                 row.put("finishedAt", System.currentTimeMillis())
                 result.put(row)
                 val stream = output.startWrite()
-                try { stream.write(result.toString(2).toByteArray()); output.finishWrite(stream) }
-                catch (e: Throwable) { output.failWrite(stream); throw e }
-                runner.sendStatus(0, Bundle().apply { putString("stream", "Evaluation ${index + 1}/11 ${case.getString("id")}: " +
-                    if (row.has("error")) "request failed; no retry\n" else "complete ${row.getString("response").length} chars\n") })
+                try {
+                    stream.write(result.toString(2).toByteArray())
+                    output.finishWrite(stream)
+                } catch (e: Throwable) {
+                    output.failWrite(stream)
+                    throw e
+                }
+                runner.sendStatus(
+                    0,
+                    Bundle().apply {
+                        putString(
+                            "stream",
+                            "Evaluation ${index + 1}/11 ${case.getString("id")}: " +
+                                if (row.has("error")) "request failed; no retry\n" else "complete ${row.getString("response").length} chars\n",
+                        )
+                    },
+                )
             }
         }
         return "Evaluation output: ${folder.absolutePath}; 11 cases attempted once."
@@ -82,7 +105,9 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
         val fixture = runner.context.assets.open("coach-evaluation-v2.json").bufferedReader().use { it.readText() }
         val hash = MessageDigest.getInstance("SHA-256").digest(fixture.toByteArray(Charsets.UTF_8))
             .joinToString("") { "%02x".format(it.toInt() and 255) }
-        check(hash == "5975178a561026d5eb7e75d2b2be2c4f4cc9517f51d546eeb553c20b9e443249") { "Original evaluation corpus changed; review the new request scope first" }
+        check(
+            hash == "5975178a561026d5eb7e75d2b2be2c4f4cc9517f51d546eeb553c20b9e443249",
+        ) { "Original evaluation corpus changed; review the new request scope first" }
         val data = JSONObject(fixture)
         check(data.getInt("version") == 2)
         val cases = data.getJSONArray("cases")
@@ -98,8 +123,10 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
     fun verifyV2(runId: String): String {
         val identifier = java.util.UUID.fromString(runId).toString()
         val (fixtureHash, inputs) = planV2()
-        val activity = runner.startActivitySync(Intent(runner.targetContext, MainActivity::class.java)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) as MainActivity
+        val activity = runner.startActivitySync(
+            Intent(runner.targetContext, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        ) as MainActivity
         lateinit var vm: StudyViewModel
         runner.runOnMainSync { vm = ViewModelProvider(activity)[StudyViewModel::class.java] }
         val parent = requireNotNull(runner.targetContext.getExternalFilesDir(null)) { "Evaluation storage unavailable" }
@@ -113,7 +140,9 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
             }
             val chosen = withContext(Dispatchers.Main) {
                 check(vm.aiReady && vm.chosenModel.isNotBlank()) { "Configure the selected service/model first" }
-                check(!vm.busy && !vm.coach.working && !vm.talk.busy && !vm.backupBusy && !vm.backupRecoveryRunning) { "Operation state changed after startup; no live requests sent" }
+                check(!vm.busy && !vm.coach.working && !vm.talk.busy && !vm.backupBusy && !vm.backupRecoveryRunning) {
+                    "Operation state changed after startup; no live requests sent"
+                }
                 vm.provider to vm.chosenModel
             }
             val metadata = JSONObject().put("provider", chosen.first.name).put("model", chosen.second)
@@ -122,8 +151,10 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
                 .put("calibrationStatus", "Author-provisional; independent review pending")
             val results = EvaluationBatch(folder, inputs, metadata).run(checkReady = {
                 withContext(Dispatchers.Main) {
-                    check(vm.provider == chosen.first && vm.chosenModel == chosen.second && !vm.busy &&
-                        !vm.coach.working && !vm.talk.busy && !vm.backupBusy && !vm.backupRecoveryRunning) { "Service or operation state changed; batch stopped" }
+                    check(
+                        vm.provider == chosen.first && vm.chosenModel == chosen.second && !vm.busy &&
+                            !vm.coach.working && !vm.talk.busy && !vm.backupBusy && !vm.backupRecoveryRunning,
+                    ) { "Service or operation state changed; batch stopped" }
                 }
             }) { input, delta ->
                 val response = withContext(Dispatchers.Main) {
@@ -138,15 +169,33 @@ class AiEvaluationChecks(private val runner: Instrumentation) {
     }
 
     internal fun prompt(case: JSONObject): String = when (case.getString("kind")) {
-        "writing" -> WritingCoach.reviewPrompt(CoachPractice(kind = CoachKind.WRITING.name,
-            title = "Original evaluation fixture", material = case.getString("material"), answer = case.getString("answer")), WritingFocus.COMPLETE)
-        "translation" -> TranslationCoach.reviewPrompt(CoachPractice(kind = CoachKind.TRANSLATION.name,
-            title = "Original evaluation fixture", material = case.getString("material"), answer = case.getString("answer")), WritingFocus.COMPLETE)
+        "writing" -> WritingCoach.reviewPrompt(
+            CoachPractice(
+                kind = CoachKind.WRITING.name,
+                title = "Original evaluation fixture",
+                material = case.getString("material"),
+                answer = case.getString("answer"),
+            ),
+            WritingFocus.COMPLETE,
+        )
+        "translation" -> TranslationCoach.reviewPrompt(
+            CoachPractice(
+                kind = CoachKind.TRANSLATION.name,
+                title = "Original evaluation fixture",
+                material = case.getString("material"),
+                answer = case.getString("answer"),
+            ),
+            WritingFocus.COMPLETE,
+        )
         "reading" -> {
             val options = case.getJSONObject("options")
             // Do not reveal the gold answer to the model: evaluate its own reading judgement.
-            val passage = ExamPassage("1", "Original evaluation fixture", case.getString("material"),
-                listOf(ExamQuestion(46, case.getString("question"), "ABCD".map { ExamOption("$it", options.getString("$it")) })))
+            val passage = ExamPassage(
+                "1",
+                "Original evaluation fixture",
+                case.getString("material"),
+                listOf(ExamQuestion(46, case.getString("question"), "ABCD".map { ExamOption("$it", options.getString("$it")) })),
+            )
             ReadingCoach.explainPrompt(passage, "46. A", 46)
         }
         else -> error("Unknown original fixture kind")

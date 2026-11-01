@@ -22,8 +22,14 @@ class CoachDecisionStateChecks(private val appContext: Context, private val fixt
             val cases = corpus.getJSONArray("cases")
             for (i in 0 until cases.length()) {
                 val case = cases.getJSONObject(i)
-                val turn = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
-                    role = CoachTurn.ASSISTANT, content = content, state = case.getString("state"))
+                val turn = CoachTurn(
+                    practiceId = practice.id,
+                    anchor = Anchor.REVIEW,
+                    kind = TurnKind.WRITING_REVIEW,
+                    role = CoachTurn.ASSISTANT,
+                    content = content,
+                    state = case.getString("state"),
+                )
                 repository.saveTurn(turn)
                 if (case.getBoolean("valid")) {
                     repository.updateDecision(turn.id, 1, ReviewDecision.ACCEPT)
@@ -41,27 +47,45 @@ class CoachDecisionStateChecks(private val appContext: Context, private val fixt
                     check(db.dao().turnById(turn.id) == turn) { "Rejected update changed stored content or state" }
                 }
             }
-            val legacy = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
-                role = CoachTurn.ASSISTANT, content = content, state = """{"accepted":[0]}""")
+            val legacy = CoachTurn(
+                practiceId = practice.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT,
+                content = content,
+                state = """{"accepted":[0]}""",
+            )
             repository.saveTurn(legacy)
             repository.updateDecision(legacy.id, 1, ReviewDecision.DISMISS)
             check(ReviewDecisions.decode(db.dao().turnById(legacy.id)!!.state) == ReviewDecisions(setOf(0), setOf(1)))
 
-            val concurrent = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
-                role = CoachTurn.ASSISTANT, content = (0..39).joinToString("\n") {
+            val concurrent = CoachTurn(
+                practiceId = practice.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT,
+                content = (0..39).joinToString("\n") {
                     """{"type":"issue","quote":"sample $it","fix":"fixed $it","level":"must"}"""
-                })
+                },
+            )
             repository.saveTurn(concurrent)
             val other = CoachRepository(db)
             coroutineScope {
-                (0..39).map { id -> async(Dispatchers.Default) {
-                    (if (id % 2 == 0) repository else other).updateDecision(concurrent.id, id,
-                        if (id % 2 == 0) ReviewDecision.ACCEPT else ReviewDecision.DISMISS)
-                } }.awaitAll()
+                (0..39).map { id ->
+                    async(Dispatchers.Default) {
+                        (if (id % 2 == 0) repository else other).updateDecision(
+                            concurrent.id,
+                            id,
+                            if (id % 2 == 0) ReviewDecision.ACCEPT else ReviewDecision.DISMISS,
+                        )
+                    }
+                }.awaitAll()
             }
             val saved = requireNotNull(db.dao().turnById(concurrent.id))
             check(ReviewDecisions.decode(saved.state) == ReviewDecisions((0..38 step 2).toSet(), (1..39 step 2).toSet()))
             check(saved.copy(state = "") == concurrent)
-        } finally { db.close() }
+        } finally {
+            db.close()
+        }
     }
 }

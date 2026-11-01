@@ -12,8 +12,12 @@ import okhttp3.OkHttpClient
 
 /** Compose view of [AiGateway] for screens that read ViewModel properties. */
 internal class AiConnectionState(val gateway: AiGateway) {
-    constructor(context: Context, scope: CoroutineScope, http: OkHttpClient,
-        saveEssay: suspend (Pair<String, String>, String) -> Unit) : this(AiGateway(context, scope, http, saveEssay))
+    constructor(
+        context: Context,
+        scope: CoroutineScope,
+        http: OkHttpClient,
+        saveEssay: suspend (Pair<String, String>, String) -> Unit,
+    ) : this(AiGateway(context, scope, http, saveEssay))
 
     private val ui by gateway.state.composeState()
     val provider: AiProvider get() = ui.provider

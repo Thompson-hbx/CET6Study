@@ -17,10 +17,23 @@ fun DeviceSyncScreen(vm: StudyViewModel) {
     Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("手机与电脑接着学", style = MaterialTheme.typography.titleLarge)
         Text("两端填写相同服务器和配对密钥。同步学习记录、草稿、批改与追问；AI 凭证、原卷 PDF 和未作答题库单独保存在设备上。")
-        OutlinedTextField(address, { address = it }, label = { Text("HTTPS 服务器地址") }, singleLine = true,
-            enabled = !state.busy, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(secret, { secret = it }, label = { Text("配对密钥") }, singleLine = true,
-            visualTransformation = PasswordVisualTransformation(), enabled = !state.busy, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(
+            address,
+            { address = it },
+            label = { Text("HTTPS 服务器地址") },
+            singleLine = true,
+            enabled = !state.busy,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        OutlinedTextField(
+            secret,
+            { secret = it },
+            label = { Text("配对密钥") },
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
+            enabled = !state.busy,
+            modifier = Modifier.fillMaxWidth(),
+        )
         Button(onClick = { if (vm.configureSync(address, secret)) secret = "" }, enabled = !state.busy && secret.isNotBlank()) { Text("加密保存并同步") }
         if (state.address.isNotBlank()) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -32,7 +45,11 @@ fun DeviceSyncScreen(vm: StudyViewModel) {
         if (state.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
         Text(state.status)
         state.conflicts.forEach { conflict ->
-            Card(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)) {
+            Card(
+                Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.large,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+            ) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text("两端修改冲突", style = MaterialTheme.typography.titleMedium)
                     SelectionContainer { Text(conflictPreview("本机", conflict.local) + "\n\n" + conflictPreview("服务器", conflict.remote)) }
@@ -50,8 +67,16 @@ fun DeviceSyncScreen(vm: StudyViewModel) {
 private fun conflictPreview(label: String, text: String): String {
     val row = JSONObject(text)
     val title = row.optString("title", row.optString("word", row.optString("date", "学习记录")))
-    val labels = linkedMapOf("material" to "材料", "answer" to "作答", "feedback" to "批改", "content" to "内容",
-        "errorReason" to "错因", "savedSentences" to "收藏", "practiceGoal" to "训练目标", "state" to "采纳状态")
+    val labels = linkedMapOf(
+        "material" to "材料",
+        "answer" to "作答",
+        "feedback" to "批改",
+        "content" to "内容",
+        "errorReason" to "错因",
+        "savedSentences" to "收藏",
+        "practiceGoal" to "训练目标",
+        "state" to "采纳状态",
+    )
     val content = labels.mapNotNull { (key, name) -> (row.opt(key) as? String)?.takeIf { it.isNotBlank() }?.let { "$name\n$it" } }
         .joinToString("\n\n").ifBlank { row.toString(2) }
     return "$label · $title\n$content"

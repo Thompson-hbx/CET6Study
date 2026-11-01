@@ -8,15 +8,21 @@ import java.io.File
 import java.util.UUID
 
 class DesktopModel(val store: DesktopStore, private val scope: CoroutineScope) {
-    var document by mutableStateOf(store.snapshot()); private set
+    var document by mutableStateOf(store.snapshot())
+        private set
     var selected by mutableStateOf<String?>(null)
     var section by mutableStateOf("TODAY")
     var status by mutableStateOf("所有编辑自动保存在这台电脑")
-    var busy by mutableStateOf(false); private set
-    var saveFailed by mutableStateOf(false); private set
-    var conflicts by mutableStateOf<List<SyncConflict>>(emptyList()); private set
-    var address by mutableStateOf(""); private set
-    var enabled by mutableStateOf(false); private set
+    var busy by mutableStateOf(false)
+        private set
+    var saveFailed by mutableStateOf(false)
+        private set
+    var conflicts by mutableStateOf<List<SyncConflict>>(emptyList())
+        private set
+    var address by mutableStateOf("")
+        private set
+    var enabled by mutableStateOf(false)
+        private set
     private val secrets = DesktopSecrets(store.directory)
     private var connection: SyncConnection? = null
     private val choices = mutableListOf<ConflictChoice>()
@@ -32,7 +38,9 @@ class DesktopModel(val store: DesktopStore, private val scope: CoroutineScope) {
                 enabled = saved.getBoolean("enabled")
                 generation = saved.optString("generation", "initial")
             }
-        } catch (_: Exception) { status = "同步配置读取失败，请重新保存连接；学习数据仍保留" }
+        } catch (_: Exception) {
+            status = "同步配置读取失败，请重新保存连接；学习数据仍保留"
+        }
         scope.launch {
             while (isActive) {
                 if (enabled && conflicts.isEmpty()) synchronize()
@@ -72,14 +80,21 @@ class DesktopModel(val store: DesktopStore, private val scope: CoroutineScope) {
         return try {
             val next = SyncConnection.create(url, secret)
             secrets.save(next)
-            connection = next; address = next.baseUrl
-            conflicts = emptyList(); choices.clear()
+            connection = next
+            address = next.baseUrl
+            conflicts = emptyList()
+            choices.clear()
             generation = UUID.randomUUID().toString()
             setAutoSync(true)
             synchronize()
             true
-        } catch (e: IllegalArgumentException) { status = e.message.orEmpty(); false
-        } catch (_: Exception) { status = "连接保存失败，请检查 Windows 用户加密存储和数据目录"; false }
+        } catch (e: IllegalArgumentException) {
+            status = e.message.orEmpty()
+            false
+        } catch (_: Exception) {
+            status = "连接保存失败，请检查 Windows 用户加密存储和数据目录"
+            false
+        }
     }
     fun setAutoSync(value: Boolean) = attempt {
         atomicWrite(preferences, JSONObject().put("enabled", value).put("generation", generation).toString())
@@ -93,7 +108,8 @@ class DesktopModel(val store: DesktopStore, private val scope: CoroutineScope) {
     fun synchronize() {
         val selectedConnection = connection ?: return
         if (busy) return
-        busy = true; status = "正在同步……"
+        busy = true
+        status = "正在同步……"
         val selectedGeneration = generation
         val decisions = choices.toList()
         scope.launch {
@@ -105,22 +121,41 @@ class DesktopModel(val store: DesktopStore, private val scope: CoroutineScope) {
                     }
                 }
                 val result = withContext(Dispatchers.IO) {
-                    SyncEngine(adapter, FileSyncStateStore(File(store.directory, "sync/${digest(selectedConnection.baseUrl)}/$selectedGeneration")),
-                        HttpSyncTransport(selectedConnection)).synchronize(decisions)
+                    SyncEngine(
+                        adapter,
+                        FileSyncStateStore(File(store.directory, "sync/${digest(selectedConnection.baseUrl)}/$selectedGeneration")),
+                        HttpSyncTransport(selectedConnection),
+                    ).synchronize(decisions)
                 }
-                conflicts = result.conflicts; status = result.message
+                conflicts = result.conflicts
+                status = result.message
                 if (conflicts.isEmpty()) choices.clear()
-            } catch (e: CancellationException) { throw e
-            } catch (e: IllegalArgumentException) { status = "同步未完成：${e.message}；本机记录已保留"
-            } catch (e: IllegalStateException) { status = "同步未完成：${e.message}；本机记录已保留"
-            } catch (_: Exception) { status = "同步未完成，请检查网络与服务器；本机记录已保留"
-            } finally { busy = false }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: IllegalArgumentException) {
+                status = "同步未完成：${e.message}；本机记录已保留"
+            } catch (e: IllegalStateException) {
+                status = "同步未完成：${e.message}；本机记录已保留"
+            } catch (_: Exception) {
+                status = "同步未完成，请检查网络与服务器；本机记录已保留"
+            } finally {
+                busy = false
+            }
         }
     }
     private fun attempt(action: () -> Unit) {
-        try { action(); saveFailed = false
-        } catch (e: IllegalArgumentException) { saveFailed = true; status = e.message.orEmpty()
-        } catch (e: IllegalStateException) { saveFailed = true; status = e.message.orEmpty()
-        } catch (_: Exception) { saveFailed = true; status = "本机保存失败，请保留窗口和输入内容，检查数据目录后重试" }
+        try {
+            action()
+            saveFailed = false
+        } catch (e: IllegalArgumentException) {
+            saveFailed = true
+            status = e.message.orEmpty()
+        } catch (e: IllegalStateException) {
+            saveFailed = true
+            status = e.message.orEmpty()
+        } catch (_: Exception) {
+            saveFailed = true
+            status = "本机保存失败，请保留窗口和输入内容，检查数据目录后重试"
+        }
     }
 }

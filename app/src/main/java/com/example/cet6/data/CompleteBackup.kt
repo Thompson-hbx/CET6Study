@@ -3,7 +3,6 @@ package com.example.cet6.data
 import com.example.cet6.data.BackupCodec.int
 import com.example.cet6.data.BackupCodec.long
 import com.example.cet6.data.BackupCodec.string
-
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -60,11 +59,13 @@ object CompleteBackupCodec {
                     val length = row.toString().toByteArray(Charsets.UTF_8).size + 1
                     if (chunk.length() > 0 && size + length > CHUNK_BYTES) {
                         entry("study/$table-${index++}.json", chunk.toString())
-                        chunk = JSONArray(); size = 2
+                        chunk = JSONArray()
+                        size = 2
                     }
-                    chunk.put(row); size += length
+                    chunk.put(row)
+                    size += length
                 }
-                entry("study/$table-${index}.json", chunk.toString())
+                entry("study/$table-$index.json", chunk.toString())
             }
             val examText = ExamCodec.encode(papers)
             if (papers.isNotEmpty()) ExamCodec.decode(examText)
@@ -72,18 +73,24 @@ object CompleteBackupCodec {
             papers.forEachIndexed { index, paper -> entry("papers/$index.json", ExamCodec.encode(listOf(paper))) }
             val manifest = JSONObject().put("format", "CET6CompleteBackup").put("version", 1)
                 .put("createdAt", backup.study.createdAt).put("paperCount", papers.size)
-                .put("entries", descriptors).put("counts", JSONObject().apply {
-                    tables.forEach { put(it, root.getJSONArray(it).length()) }
-                })
+                .put("entries", descriptors).put(
+                    "counts",
+                    JSONObject().apply {
+                        tables.forEach { put(it, root.getJSONArray(it).length()) }
+                    },
+                )
             val manifestBytes = manifest.toString().toByteArray(Charsets.UTF_8)
             require(manifestBytes.size <= MAX_ENTRY && total + manifestBytes.size <= MAX_TOTAL) { "备份清单或总容量超限" }
-            zip.putNextEntry(ZipEntry("manifest.json")); zip.write(manifestBytes); zip.closeEntry()
+            zip.putNextEntry(ZipEntry("manifest.json"))
+            zip.write(manifestBytes)
+            zip.closeEntry()
         }
     }
 
     fun read(input: InputStream): CompleteBackup {
         val buffered = PushbackInputStream(input.buffered(), 2)
-        val first = buffered.read(); val second = buffered.read()
+        val first = buffered.read()
+        val second = buffered.read()
         if (second >= 0) buffered.unread(second)
         if (first >= 0) buffered.unread(first)
         if (first != 'P'.code || second != 'K'.code) return CompleteBackup(BackupCodec.read(buffered), null)
@@ -138,8 +145,10 @@ object CompleteBackupCodec {
         for (i in 0 until declared.length()) {
             val item = declared.getJSONObject(i)
             val name = item.string("name")
-            require(name != "manifest.json" && names.add(name) &&
-                actual[name] == (item.int("bytes") to item.string("sha256"))) { "备份完整性校验失败" }
+            require(
+                name != "manifest.json" && names.add(name) &&
+                    actual[name] == (item.int("bytes") to item.string("sha256")),
+            ) { "备份完整性校验失败" }
         }
         require(names == actual.keys - "manifest.json") { "备份清单与内容不一致" }
         require(meta.int("paperCount") == papers.size && paperIndexes == papers.indices.toSet()) { "题库条目缺失" }
@@ -148,8 +157,10 @@ object CompleteBackupCodec {
             .put("createdAt", meta.long("createdAt"))
         for (table in tables) {
             val indexes = chunkIndexes.getValue(table)
-            require(indexes.isNotEmpty() && indexes == (0 until indexes.size).toSet() &&
-                meta.getJSONObject("counts").int(table) == rows.getValue(table).length()) { "学习记录条目缺失" }
+            require(
+                indexes.isNotEmpty() && indexes == (0 until indexes.size).toSet() &&
+                    meta.getJSONObject("counts").int(table) == rows.getValue(table).length(),
+            ) { "学习记录条目缺失" }
             root.put(table, rows.getValue(table))
         }
         return CompleteBackup(BackupCodec.decodeRoot(root), papers)

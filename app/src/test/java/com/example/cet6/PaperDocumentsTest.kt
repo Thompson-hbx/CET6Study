@@ -14,12 +14,18 @@ class PaperDocumentsTest {
         assertNull(PaperDocuments.sharedReadingPaperId(march.copy(passages = listOf(ExamPassage("1", "", "Imported", emptyList())))))
         assertNull(PaperDocuments.sharedReadingPaperId(march.copy(examDate = "2024-06-15")))
         assertEquals("待导入", march.status)
-        val imported = march.copy(licenseStatus = "personal-use", reviewed = true,
-            writingPrompt = "Original prompt", writingInstructions = "Write a paragraph", chineseText = "测试原文")
+        val imported = march.copy(
+            licenseStatus = "personal-use",
+            reviewed = true,
+            writingPrompt = "Original prompt",
+            writingInstructions = "Write a paragraph",
+            chineseText = "测试原文",
+        )
         assertEquals("阅读共用", imported.status)
         assertEquals("待校对", imported.copy(reviewed = false).status)
         assertEquals("待校对", imported.copy(chineseText = "").status)
     }
+
     @Test fun sharedMarchSourceAndRegularSetsResolveToTheirActualFiles() {
         val march = ExamCatalog.papers().first { it.examDate == "2023-03-12" && it.setCode == "2" }
         assertEquals(listOf("cet6_2023_03_2-3.pdf", "cet6_2023_03_2-3_ans.pdf"), PaperDocuments.filenames(march))
