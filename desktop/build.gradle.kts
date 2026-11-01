@@ -1,9 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.compose")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.kotlin.compose)
 }
 kotlin { jvmToolchain(21) }
 // The serif and its OFL licence come from the phone app, so both platforms ship the same font files.
@@ -14,12 +14,12 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
-    implementation("org.json:json:20240303")
-    implementation("org.xerial:sqlite-jdbc:3.47.1.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("net.java.dev.jna:jna-platform:5.15.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.1")
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.json)
+    implementation(libs.sqlite.jdbc)
+    implementation(libs.okhttp)
+    implementation(libs.jna.platform)
+    implementation(libs.coroutines.swing)
+    testImplementation(libs.junit)
 }
 compose.desktop {
     application {
