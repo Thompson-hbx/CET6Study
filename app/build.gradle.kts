@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 val personalExamPack = providers.gradleProperty("personalExamPack")
 val personalExamPdfs = providers.gradleProperty("personalExamPdfs")
@@ -77,6 +78,8 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.core.ktx)
     implementation(libs.navigation.compose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)

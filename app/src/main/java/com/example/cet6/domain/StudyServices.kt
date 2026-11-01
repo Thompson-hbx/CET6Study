@@ -7,11 +7,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * Builds and wires the services. It lives as long as [scope] (today the ViewModel), so a new
- * ViewModel still starts from disk exactly as before, including resuming a journaled restore.
+ * Builds and wires the services. Hilt creates one per [com.example.cet6.ui.StudyViewModel] and [scope] ends with it,
+ * so a new ViewModel still starts from disk exactly as before, including resuming a journaled restore.
  */
-class StudyServices(app: Application, scope: CoroutineScope) {
-    val db: StudyDatabase = StudyDatabase.get(app)
+class StudyServices(app: Application, val db: StudyDatabase, scope: CoroutineScope) {
     val coachRepository = CoachRepository(db)
     private val examStore = ExamStore(app)
     private val restoreJournal = RestoreJournal(app)

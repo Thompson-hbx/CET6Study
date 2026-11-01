@@ -6,6 +6,7 @@
         <package android:name="com.google.android.documentsui" />
     </queries>
     <application
+        android:name=".CET6App"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"

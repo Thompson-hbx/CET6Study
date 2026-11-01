@@ -36,10 +36,12 @@ import com.example.cet6.ui.VocabularyImportCard
 import com.example.cet6.ui.WeaknessReviewCard
 import com.example.cet6.ui.WordContentLicenses
 import com.example.cet6.ui.theme.CET6Theme
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val vm: StudyViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {

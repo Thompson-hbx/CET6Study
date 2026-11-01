@@ -11,14 +11,19 @@ import com.example.cet6.ai.AvailableModel
 import com.example.cet6.data.*
 import com.example.cet6.domain.StudyServices
 import com.example.cet6.ui.theme.UiStyle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /** Exposes the services to the current screens as Compose-observable properties; holds no business rules itself. */
-class StudyViewModel(app: Application) : AndroidViewModel(app) {
+@HiltViewModel
+class StudyViewModel @Inject constructor(
+    app: Application,
     /** Shared with screen ViewModels that live in the same ViewModelStore. */
-    internal val services = StudyServices(app, viewModelScope)
+    internal val services: StudyServices,
+) : AndroidViewModel(app) {
     private val dao = services.db.dao()
     private val prefs = app.getSharedPreferences("study_ui", android.content.Context.MODE_PRIVATE)
     private val aiConnection = AiConnectionState(services.ai)
