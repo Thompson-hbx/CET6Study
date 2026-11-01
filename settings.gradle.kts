@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     repositories { google(); mavenCentral() }
 }
 rootProject.name = "CET6Study"
-include(":app", ":sync-core", ":sync-server", ":desktop")
+include(":app", ":sync-core", ":sync-server", ":desktop", ":design-tokens")

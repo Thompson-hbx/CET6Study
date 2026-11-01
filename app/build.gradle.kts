@@ -62,6 +62,7 @@ ksp {
 }
 dependencies {
     implementation(project(":sync-core"))
+    implementation(project(":design-tokens"))
     implementation(platform(libs.compose.bom))
     implementation(libs.activity.compose)
     implementation(libs.activity.ktx)

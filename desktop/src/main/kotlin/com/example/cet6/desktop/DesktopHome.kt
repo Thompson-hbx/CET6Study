@@ -74,7 +74,7 @@ internal fun ColumnScope.TodayPage(model: DesktopModel) {
                         Row(verticalAlignment = Alignment.Bottom) {
                             // The ring stretches with the number, so two or three digits stay circled.
                             Box(contentAlignment = Alignment.Center) {
-                                Image(painterResource("brand/ring.svg"), null, Modifier.matchParentSize(), contentScale = ContentScale.FillBounds)
+                                Image(DeskIcons.ring(DeskColors.brand), null, Modifier.matchParentSize(), contentScale = ContentScale.FillBounds)
                                 Text("${week.size}", style = Numerals.copy(fontSize = 72.sp, lineHeight = 80.sp), color = Color(0xFFF5F1E8),
                                     modifier = Modifier.padding(horizontal = 34.dp, vertical = 16.dp))
                             }

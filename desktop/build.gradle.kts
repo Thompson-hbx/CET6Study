@@ -11,6 +11,7 @@ sourceSets { main { resources.srcDir("../app/src/main/res/font") } }
 tasks.processResources { from("../app/src/main/assets/licenses/source-serif.txt") { into("licenses") } }
 dependencies {
     implementation(project(":sync-core"))
+    implementation(project(":design-tokens"))
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)

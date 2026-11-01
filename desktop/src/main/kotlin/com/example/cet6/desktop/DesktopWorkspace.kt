@@ -242,7 +242,7 @@ private fun PracticeLibrary(rows: List<Pair<String, JSONObject>>, selected: Stri
 private fun ColumnScope.EmptyPractice(model: DesktopModel) {
     Box(Modifier.weight(1f).fillMaxWidth().background(DeskColors.canvas), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Image(painterResource("brand/ring.svg"), null, Modifier.size(72.dp, 62.dp))
+            Image(DeskIcons.ring(DeskColors.brand), null, Modifier.size(72.dp, 62.dp))
             Text("从一份${sectionName(model.section)}草稿开始", style = MaterialTheme.typography.headlineSmall)
             Text("独立作答，慢慢打磨。也可以同步手机上已有的练习。", color = DeskColors.secondary)
             DeskButton("新建练习", Icons.Outlined.Add, primary = true, onClick = model::create)

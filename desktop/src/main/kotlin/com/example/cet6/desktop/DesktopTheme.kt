@@ -13,26 +13,29 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.sp
+import com.example.cet6.design.ZhupiTokens
 import java.awt.GraphicsEnvironment
 import java.io.File
 
-/** 朱批 palette, shared with the phone: ink on paper, vermilion only for corrections and brand marks. */
+/** 朱批 palette from :design-tokens, shared with the phone: ink on paper, vermilion only for corrections and brand marks. */
 internal object DeskColors {
-    val ink = Color(0xFF16181D)
-    val secondary = Color(0xFF5F626A)
-    val muted = Color(0xFF8A8D94)
+    private val t = ZhupiTokens.Light
+    val ink = Color(t.ink)
+    val secondary = Color(t.textSecondary)
+    val muted = Color(t.textMuted)
     val line = Color(0xFFE4E1DA)
-    val canvas = Color(0xFFF5F4F1)
+    val canvas = Color(t.ground)
+    // The sidebar sits one step darker than the paper so the writing area reads as the page.
     val sidebar = Color(0xFFEDEBE6)
     val hover = Color(0xFFE4E1DA)
-    val sheet = Color(0xFFFFFFFF)
-    val chip = Color(0xFFECEAE4)
-    val brand = Color(0xFFE0452B)
-    val must = Color(0xFFC0351E)
-    val mustSoft = Color(0xFFFCEBE7)
-    val better = Color(0xFFA35F00)
-    val betterSoft = Color(0xFFFFF3E2)
-    val good = Color(0xFF1F5F99)
+    val sheet = Color(t.sheet)
+    val chip = Color(t.chip)
+    val brand = Color(t.brand)
+    val must = Color(t.must)
+    val mustSoft = Color(t.mustSoft)
+    val better = Color(t.better)
+    val betterSoft = Color(t.betterSoft)
+    val good = Color(t.good)
     val danger = must
 }
 
