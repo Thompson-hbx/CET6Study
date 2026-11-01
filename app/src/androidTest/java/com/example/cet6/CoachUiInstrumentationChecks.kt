@@ -123,7 +123,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         automation.waitForIdle(500, 5000)
         click("练习")
         click("阅读")
-        click("粘贴一篇英文文章练习")
+        click("自选文章练习")
         awaitState("a new reading draft") { currentId() != before }
         check(runBlocking { StudyDatabase.get(runner.targetContext).dao().coachDraft("READING")?.questions?.isBlank() == true }) {
             "New exercise was not opened; stopping before editing existing work"

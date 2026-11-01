@@ -17,6 +17,7 @@ import org.json.JSONObject
 
 /** Default suite uses isolated databases. Explicit fixture mode only adds a new practice; never reads credentials. */
 class LocalDataInstrumentation : Instrumentation() {
+    private var deviceSyncScenario = false
     private var aiConnectionScenario = false
     private var manifestScenario = false
     private var draftProcessScenario = ""
@@ -43,6 +44,7 @@ class LocalDataInstrumentation : Instrumentation() {
     private var reviewFixture = false
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
+        deviceSyncScenario = arguments?.getString("scenario") == "device-sync"
         aiConnectionScenario = arguments?.getString("scenario") == "ai-connection"
         manifestScenario = arguments?.getString("scenario") == "backup-manifest"
         draftProcessScenario = arguments?.getString("scenario")?.takeIf {
@@ -85,6 +87,12 @@ class LocalDataInstrumentation : Instrumentation() {
     override fun onStart() {
         val results = Bundle()
         try {
+            if (deviceSyncScenario) {
+                runBlocking { DeviceSyncChecks(targetContext).verify() }
+                results.putString("stream", "PASS: isolated Room phone/desktop continuation, repeat sync, legacy deduplication, concurrent edit preservation and deletion rejection.\n")
+                finish(-1, results)
+                return
+            }
             if (aiConnectionScenario) {
                 runBlocking { AiConnectionStateChecks(targetContext).verify() }
                 results.putString("stream", "PASS: isolated AI provider/model preferences, encrypted profile restoration, busy/cancellation, partial/429 failures and completed-only essay persistence.\n")

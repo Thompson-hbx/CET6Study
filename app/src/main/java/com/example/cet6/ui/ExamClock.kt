@@ -11,7 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+// import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.example.cet6.data.TrainingClock
 import com.example.cet6.ui.components.*
@@ -39,16 +39,16 @@ fun ExamClock(key: String, minutes: Int = 30) {
     val startedAt = clock?.wallStartedAt ?: 0L
     val left = minutes * 60 - (clock?.elapsedMillis(now, elapsedNow, boot) ?: 0L) / 1000
 
-    // The face alone ("30 分钟", "12:04") does not say it is a timer or what tapping does.
     val estimated = clock?.estimated(elapsedNow, boot) == true
-    val spoken = (if (saveFailed) "计时未保存，请点按重试。" else if (estimated) "设备重启后按系统时间估算。" else "") + when {
-        startedAt == 0L -> "考试计时 $minutes 分钟，点按开始"
-        left >= 0 -> "计时中，剩余 ${left / 60} 分 ${left % 60} 秒，点按停止"
-        else -> "已超时 ${-left / 60} 分 ${-left % 60} 秒，点按停止"
-    }
+    // The face alone ("30 分钟", "12:04") does not say it is a timer or what tapping does.
+    // val spoken = (if (saveFailed) "计时未保存，请点按重试。" else if (estimated) "设备重启后按系统时间估算。" else "") + when {
+        // startedAt == 0L -> "考试计时 $minutes 分钟，点按开始"
+        // left >= 0 -> "计时中，剩余 ${left / 60} 分 ${left % 60} 秒，点按停止"
+        // else -> "已超时 ${-left / 60} 分 ${-left % 60} 秒，点按停止"
+    // }
     Column {
-        // A pill beside the word count: the timer reads as a control, not as a link.
-        OutlinedButton(onClick = {
+        // A quiet toolbar control keeps attention on the draft and its primary action.
+        TextButton(onClick = {
             if (!saving) {
                 saving = true
                 val next = if (clock == null) TrainingClock(System.currentTimeMillis(), SystemClock.elapsedRealtime(), boot) else null
@@ -64,8 +64,8 @@ fun ExamClock(key: String, minutes: Int = 30) {
                 }
             }
         }, enabled = !saving, shape = RoundedCornerShape(50), contentPadding = PaddingValues(horizontal = 12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.background),
-            modifier = Modifier.semantics { contentDescription = spoken }) {
+            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.primary),
+            modifier = Modifier/* .semantics { contentDescription = spoken } */) {
             Icon(Icons.Outlined.Timer, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(4.dp))
             Text((if (estimated) "约 " else "") + when {
@@ -73,7 +73,7 @@ fun ExamClock(key: String, minutes: Int = 30) {
                 startedAt == 0L -> "$minutes 分钟"
                 left >= 0 -> "%d:%02d".format(left / 60, left % 60)
                 else -> "超时 %d:%02d".format(-left / 60, -left % 60)
-            }, style = MaterialTheme.typography.labelLarge, color = when {
+            }, style = MaterialTheme.typography.titleSmall, color = when {
                 startedAt == 0L -> MaterialTheme.colorScheme.primary
                 left < 0 -> Tone.Must.color()
                 left < 300 -> Tone.Better.color()

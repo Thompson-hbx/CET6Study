@@ -22,9 +22,9 @@ private val LightColorScheme = lightColorScheme(
     surface = LightSurface, onSurface = LightOnSurface,
     surfaceVariant = LightSurfaceVariant, onSurfaceVariant = LightOnSurfaceVariant,
     surfaceTint = LightPrimary,
-    inverseSurface = Color(0xFF2C3036), inverseOnSurface = Color(0xFFEEF1F5),
+    inverseSurface = Color(0xFF16181D), inverseOnSurface = Color(0xFFF5F1E8),
     error = LightMarkMust, onError = Color.White,
-    errorContainer = LightMarkMustSoft, onErrorContainer = Color(0xFF5C1610),
+    errorContainer = LightMarkMustSoft, onErrorContainer = Color(0xFF5C1608),
     outline = LightOutline, outlineVariant = LightOutlineVariant,
     scrim = Color.Black,
     surfaceBright = LightSurfaceLowest, surfaceDim = LightSurfaceHighest,
@@ -45,9 +45,9 @@ private val DarkColorScheme = darkColorScheme(
     surface = DarkSurface, onSurface = DarkOnSurface,
     surfaceVariant = DarkSurfaceVariant, onSurfaceVariant = DarkOnSurfaceVariant,
     surfaceTint = DarkPrimary,
-    inverseSurface = Color(0xFFE5E8ED), inverseOnSurface = Color(0xFF22272E),
-    error = DarkMarkMust, onError = Color(0xFF4A0E08),
-    errorContainer = DarkMarkMustSoft, onErrorContainer = Color(0xFFFFDAD5),
+    inverseSurface = Color(0xFFF5F1E8), inverseOnSurface = Color(0xFF16181D),
+    error = DarkMarkMust, onError = Color(0xFF3A0C04),
+    errorContainer = DarkMarkMustSoft, onErrorContainer = Color(0xFFFFD9D0),
     outline = DarkOutline, outlineVariant = DarkOutlineVariant,
     scrim = Color.Black,
     surfaceBright = DarkSurfaceHighest, surfaceDim = DarkSurfaceLowest,
@@ -56,24 +56,36 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = DarkSurfaceHighest
 )
 
-/** Correction tones shared by every review: must-fix, optional polish and sound work. */
+/** Correction tones shared by every review: must-fix, optional polish and sound work, plus the brand fill. */
 @Immutable
 data class MarkColors(
     val must: Color, val mustSoft: Color,
     val better: Color, val betterSoft: Color,
-    val good: Color, val goodSoft: Color
+    val good: Color, val goodSoft: Color,
+    val brand: Color
 )
 
-private val LightMarks = MarkColors(LightMarkMust, LightMarkMustSoft, LightMarkBetter, LightMarkBetterSoft, LightMarkGood, LightMarkGoodSoft)
-private val DarkMarks = MarkColors(DarkMarkMust, DarkMarkMustSoft, DarkMarkBetter, DarkMarkBetterSoft, DarkMarkGood, DarkMarkGoodSoft)
+private val LightMarks = MarkColors(LightMarkMust, LightMarkMustSoft, LightMarkBetter, LightMarkBetterSoft, LightMarkGood, LightMarkGoodSoft, LightBrand)
+private val DarkMarks = MarkColors(DarkMarkMust, DarkMarkMustSoft, DarkMarkBetter, DarkMarkBetterSoft, DarkMarkGood, DarkMarkGoodSoft, DarkBrand)
 
 val LocalMarks = staticCompositionLocalOf { LightMarks }
+val LocalUiStyle = staticCompositionLocalOf { UiStyle.ZHUPI }
 
 @Composable
 fun CET6Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    style: UiStyle = UiStyle.ZHUPI,
     content: @Composable () -> Unit
 ) {
+    CompositionLocalProvider(LocalUiStyle provides style) {
+        when (style) {
+            UiStyle.ZHUPI -> ZhupiTheme(darkTheme, content)
+        }
+    }
+}
+
+@Composable
+private fun ZhupiTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalMarks provides if (darkTheme) DarkMarks else LightMarks) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,

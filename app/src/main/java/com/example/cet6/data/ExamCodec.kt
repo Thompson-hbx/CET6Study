@@ -76,6 +76,13 @@ object ExamCodec {
         val all = meta.optJSONArray("passages") ?: return emptyList()
         return (0 until all.length()).map { passage(all.getJSONObject(it)) }
     }
+
+    fun readingAnswered(entry: CoachPractice): Int = passages(entry).flatMap { it.questions }
+        .count { ReadingQuestions.selected(entry.answer, "${it.number}").orEmpty().isNotBlank() }
+
+    /** Opening a snapshot saves an empty draft; that alone is not reading progress. */
+    fun hasReadingProgress(entry: CoachPractice): Boolean = entry.kind == CoachKind.READING.name &&
+        (entry.submittedAt > 0 || readingAnswered(entry) > 0)
 }
 
 /** One atomic, versioned local content file. Revisions never alter snapshots already stored in Room. */

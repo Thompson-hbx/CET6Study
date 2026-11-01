@@ -137,6 +137,29 @@ class ExamInstrumentationChecks(private val context: Context) {
             check(db.dao().coachById(id) == submitted)
             val restored = BackupCodec.decode(BackupCodec.encode(BackupRepository(db).snapshot()))
             check(restored.coach.any { it.id == id && it.questions == submitted.questions && it.answer == answer })
+
+            val fullDraft = ExamCodec.practice(p, CoachKind.READING)
+            state.startExam(fullDraft)
+            waitFor { !state.working }
+            val fullId = state.entries.getValue(CoachKind.READING).id
+            check(!ExamCodec.hasReadingProgress(state.entries.getValue(CoachKind.READING)))
+            val sequences = SequentialAnswers.split("CADCBADCBA", p.passages.size)
+            val fullAnswer = p.passages.foldIndexed("") { index, existing, passage ->
+                SequentialAnswers.apply(existing, sequences[index], passage.questions)
+            }
+            check(state.edit(CoachKind.READING) { it.copy(answer = fullAnswer) })
+            check(ExamCodec.readingAnswered(state.entries.getValue(CoachKind.READING)) == 10)
+            state.submit(CoachKind.READING, false)
+            waitFor { !state.working }
+            val savedFull = requireNotNull(db.dao().coachById(fullId))
+            check(savedFull.submittedAt > 0 && savedFull.answer == fullAnswer)
+            check(ExamCodec.hasReadingProgress(savedFull) && ExamCodec.readingAnswered(savedFull) == 10)
+            state.open(CoachKind.READING, savedFull)
+            waitFor { !state.working }
+            check(state.entries.getValue(CoachKind.READING) == savedFull)
+            check(db.dao().coachById(id) == submitted)
+            val fullBackup = BackupCodec.decode(BackupCodec.encode(BackupRepository(db).snapshot()))
+            check(fullBackup.coach.any { it.id == fullId && it.questions == savedFull.questions && it.answer == fullAnswer })
         } finally { job.cancelAndJoin(); db.close() }
     }
 }

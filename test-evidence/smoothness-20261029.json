@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-29",
+  "device": "Pixel_7_API_36 / emulator-5554 / 1080x2400 / 60Hz",
+  "build": "debug",
+  "scenario": "Writing catalogue; 2 warmup pairs, then 2 trials of 12 alternating 400ms swipes; gfxinfo reset per trial",
+  "before": [
+    {
+      "Total frames rendered": "303",
+      "Janky frames": "42 (13.86%)",
+      "50th percentile": "25ms",
+      "90th percentile": "42ms",
+      "95th percentile": "46ms",
+      "99th percentile": "61ms",
+      "Number Missed Vsync": "7"
+    },
+    {
+      "Total frames rendered": "291",
+      "Janky frames": "57 (19.59%)",
+      "50th percentile": "27ms",
+      "90th percentile": "46ms",
+      "95th percentile": "48ms",
+      "99th percentile": "61ms",
+      "Number Missed Vsync": "6"
+    }
+  ],
+  "after": [
+    {
+      "Total frames rendered": "297",
+      "Janky frames": "51 (17.17%)",
+      "50th percentile": "27ms",
+      "90th percentile": "44ms",
+      "95th percentile": "46ms",
+      "99th percentile": "53ms",
+      "Number Missed Vsync": "7"
+    },
+    {
+      "Total frames rendered": "300",
+      "Janky frames": "45 (15.00%)",
+      "50th percentile": "27ms",
+      "90th percentile": "42ms",
+      "95th percentile": "44ms",
+      "99th percentile": "48ms",
+      "Number Missed Vsync": "2"
+    }
+  ],
+  "interpretation": "Median frame duration is effectively unchanged and jank percentages overlap. P99 was lower in these samples. This does not establish a reproducible overall FPS improvement.",
+  "limitations": [
+    "Emulator only; host load and graphics emulation are uncontrolled.",
+    "No 90/120Hz physical device connected.",
+    "Cross-over recheck interrupted because emulator process exited before that run. Cold-booted the existing AVD for functional regression only."
+  ],
+  "changes": [
+    "Background-only Haze sampling scale 0.66; preserve foreground resolution, blur radius and tint.",
+    "Memoize glass style, catalogue validation/grouping and reading attempt lookup.",
+    "Request highest supported refresh rate at the current resolution via window preference; OS retains power/thermal control.",
+    "Reuse the root blur state across tab changes instead of recreating it per tab/route. Added after the scroll sample; not measured as a tab-transition benchmark."
+  ]
+}

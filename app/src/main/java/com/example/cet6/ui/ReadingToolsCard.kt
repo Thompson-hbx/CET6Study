@@ -47,10 +47,10 @@ fun ReadingChoices(entry: CoachPractice, editable: Boolean, onAnswer: (String) -
         }
     }
     questions.forEach { question ->
-        ElevatedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
@@ -105,7 +105,7 @@ fun ReadingEvidenceCard(state: CoachState, entry: CoachPractice) {
     var message by rememberSaveable(entry.id) { mutableStateOf("") }
     val range = remember(entry.material, quote) { ReadingEvidence.find(entry.material, quote) }
     val suggestions = remember(entry.material, entry.feedback) { ReadingEvidence.suggestions(entry.material, entry.feedback) }
-    ElevatedCard(Modifier.fillMaxWidth()) {
+    Card(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)) {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("原文证据与难句", style = MaterialTheme.typography.titleMedium)
             if (suggestions.isNotEmpty()) {

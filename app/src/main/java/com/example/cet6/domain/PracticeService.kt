@@ -191,9 +191,28 @@ class PracticeService(
     suspend fun flush(): Boolean {
         if (!tryStartWork()) return false
         return try {
+            ready.values.forEach { it.await() }
             writes.values.toList().forEach { it.cancelAndJoin() }
             writes.clear()
             current.entries.map { (kind, entry) -> persist(kind, entry) }.all { it }
+        } finally { setWorking(false) }
+    }
+
+    /** Briefly locks editor writes while a checked external transaction is applied, then reloads drafts. */
+    suspend fun applyExternal(block: suspend () -> Boolean): Boolean {
+        if (!tryStartWork()) return false
+        return try {
+            ready.values.forEach { it.await() }
+            writes.values.toList().forEach { it.cancelAndJoin() }
+            writes.clear()
+            if (!current.entries.map { (kind, entry) -> persist(kind, entry) }.all { it }) return false
+            if (!block()) return false
+            current.entries.toMap().forEach { (kind, entry) ->
+                val latest = repository.get(entry.id)
+                val draft = repository.draft(kind)
+                setEntry(kind, if (entry.answer.isBlank() && entry.material.isBlank() && draft != null) draft else latest ?: entry)
+            }
+            true
         } finally { setWorking(false) }
     }
 

@@ -3,80 +3,87 @@ package com.example.cet6.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Paper desk, ink-blue pen. White sheets sit on a warm paper desk; every Material role is set explicitly so no
-// library default tint leaks in. Text roles keep at least 4.5:1 against the desk, cards and chips.
-val LightPrimary = Color(0xFF2A4BA8)
+// 朱批: ink on paper, vermilion for corrections. Primary is ink (filled buttons, selection), never the brand red,
+// so red keeps meaning "a mark worth your attention". White sheets sit on a warm paper ground; dark mode inverts
+// to paper-coloured ink on near-black. Text colours hold 4.5:1 on both the ground and the sheets.
+// Every Material role is set explicitly so no library default tint leaks in.
+val LightPrimary = Color(0xFF16181D)
 val LightOnPrimary = Color(0xFFFFFFFF)
-val LightPrimaryContainer = Color(0xFFE8EDFA)
-val LightOnPrimaryContainer = Color(0xFF13265E)
+val LightPrimaryContainer = Color(0xFFECEAE4)
+val LightOnPrimaryContainer = Color(0xFF16181D)
 
-val LightSecondary = Color(0xFF4C5A73)
+val LightSecondary = Color(0xFF3A3D44)
 val LightOnSecondary = Color(0xFFFFFFFF)
-val LightSecondaryContainer = Color(0xFFEEECE6)
-val LightOnSecondaryContainer = Color(0xFF1F2A3D)
+val LightSecondaryContainer = Color(0xFFECEAE4)
+val LightOnSecondaryContainer = Color(0xFF16181D)
 
-val LightTertiary = Color(0xFF8A4B00)
+val LightTertiary = Color(0xFFC0351E)
 val LightOnTertiary = Color(0xFFFFFFFF)
-val LightTertiaryContainer = Color(0xFFFDE9CC)
-val LightOnTertiaryContainer = Color(0xFF4A2800)
+val LightTertiaryContainer = Color(0xFFFCEBE7)
+val LightOnTertiaryContainer = Color(0xFF5C1608)
 
-val LightBackground = Color(0xFFF7F6F2)
-val LightOnBackground = Color(0xFF1B1E23)
-val LightSurface = Color(0xFFF7F6F2)
-val LightOnSurface = Color(0xFF1B1E23)
-val LightSurfaceVariant = Color(0xFFEEECE6)
-val LightOnSurfaceVariant = Color(0xFF555B66)
-val LightOutline = Color(0xFF7E7A70)
-val LightOutlineVariant = Color(0xFFE2DFD8)
+val LightBackground = Color(0xFFF5F4F1)
+val LightOnBackground = Color(0xFF16181D)
+val LightSurface = Color(0xFFF5F4F1)
+val LightOnSurface = Color(0xFF16181D)
+val LightSurfaceVariant = Color(0xFFECEAE4)
+val LightOnSurfaceVariant = Color(0xFF5F626A)
+val LightOutline = Color(0xFF8A8D94)
+val LightOutlineVariant = Color(0xFFDEDBD3)
 val LightSurfaceLowest = Color(0xFFFFFFFF)
 val LightSurfaceLow = Color(0xFFFFFFFF)
-val LightSurfaceMid = Color(0xFFF0EEE8)
-val LightSurfaceHigh = Color(0xFFEAE7E0)
-val LightSurfaceHighest = Color(0xFFE3E0D8)
+val LightSurfaceMid = Color(0xFFF0EEE9)
+val LightSurfaceHigh = Color(0xFFECEAE4)
+val LightSurfaceHighest = Color(0xFFDEDBD3)
 
-val DarkPrimary = Color(0xFFA8C0FF)
-val DarkOnPrimary = Color(0xFF0B2667)
-val DarkPrimaryContainer = Color(0xFF243B7A)
-val DarkOnPrimaryContainer = Color(0xFFDCE5FF)
+val DarkPrimary = Color(0xFFF5F1E8)
+val DarkOnPrimary = Color(0xFF16181D)
+val DarkPrimaryContainer = Color(0xFF2E3036)
+val DarkOnPrimaryContainer = Color(0xFFF5F1E8)
 
-val DarkSecondary = Color(0xFFB7C3D8)
-val DarkOnSecondary = Color(0xFF1F2A3D)
-val DarkSecondaryContainer = Color(0xFF2B3445)
-val DarkOnSecondaryContainer = Color(0xFFDCE3EF)
+val DarkSecondary = Color(0xFFC9C6BE)
+val DarkOnSecondary = Color(0xFF16181D)
+val DarkSecondaryContainer = Color(0xFF2E3036)
+val DarkOnSecondaryContainer = Color(0xFFF5F1E8)
 
-val DarkTertiary = Color(0xFFF2BE6B)
-val DarkOnTertiary = Color(0xFF452A00)
-val DarkTertiaryContainer = Color(0xFF5A3B00)
-val DarkOnTertiaryContainer = Color(0xFFFFDDB0)
+val DarkTertiary = Color(0xFFFF8A73)
+val DarkOnTertiary = Color(0xFF3A0C04)
+val DarkTertiaryContainer = Color(0xFF3D1C16)
+val DarkOnTertiaryContainer = Color(0xFFFFD9D0)
 
-val DarkBackground = Color(0xFF0F1217)
-val DarkOnBackground = Color(0xFFE5E8ED)
-val DarkSurface = Color(0xFF0F1217)
-val DarkOnSurface = Color(0xFFE5E8ED)
-val DarkSurfaceVariant = Color(0xFF232931)
-val DarkOnSurfaceVariant = Color(0xFFA6AFBC)
-val DarkOutline = Color(0xFF7A8494)
-val DarkOutlineVariant = Color(0xFF2C333D)
-val DarkSurfaceLowest = Color(0xFF0B0E12)
-val DarkSurfaceLow = Color(0xFF171B21)
-val DarkSurfaceMid = Color(0xFF1C2128)
-val DarkSurfaceHigh = Color(0xFF232931)
-val DarkSurfaceHighest = Color(0xFF2B323B)
+val DarkBackground = Color(0xFF111214)
+val DarkOnBackground = Color(0xFFF5F1E8)
+val DarkSurface = Color(0xFF111214)
+val DarkOnSurface = Color(0xFFF5F1E8)
+val DarkSurfaceVariant = Color(0xFF2E3036)
+val DarkOnSurfaceVariant = Color(0xFFA9AAB0)
+val DarkOutline = Color(0xFF6E7077)
+val DarkOutlineVariant = Color(0xFF34363C)
+val DarkSurfaceLowest = Color(0xFF1B1D21)
+val DarkSurfaceLow = Color(0xFF1B1D21)
+val DarkSurfaceMid = Color(0xFF24262B)
+val DarkSurfaceHigh = Color(0xFF2E3036)
+val DarkSurfaceHighest = Color(0xFF3A3D44)
 
-// Correction marks: red pen for must-fix, amber for optional polish, green for sound work. Each tone
-// reads at 4.5:1 or more as text on the desk, on cards and on its own soft background, in both themes.
-val LightMarkMust = Color(0xFFBE3328)
-val LightMarkMustSoft = Color(0xFFFDE8E5)
-val LightMarkBetter = Color(0xFF965300)
-val LightMarkBetterSoft = Color(0xFFFCF0DA)
-val LightMarkGood = Color(0xFF1B7647)
-val LightMarkGoodSoft = Color(0xFFE1F3E8)
-val DarkMarkMust = Color(0xFFFF9488)
-val DarkMarkMustSoft = Color(0xFF3D1E1B)
-val DarkMarkBetter = Color(0xFFF0BE62)
-val DarkMarkBetterSoft = Color(0xFF382C13)
-val DarkMarkGood = Color(0xFF78CFA0)
-val DarkMarkGoodSoft = Color(0xFF153020)
+// Correction marks: vermilion for must-fix (solid line), ochre for optional polish (dashed line), indigo for
+// sound work. The line style differs too, so the three never rely on hue alone. Each tone reads at 4.5:1 or
+// more as text on the ground, on sheets and on its own soft background, in both themes.
+val LightMarkMust = Color(0xFFC0351E)
+val LightMarkMustSoft = Color(0xFFFCEBE7)
+val LightMarkBetter = Color(0xFFA35F00)
+val LightMarkBetterSoft = Color(0xFFFFF3E2)
+val LightMarkGood = Color(0xFF1F5F99)
+val LightMarkGoodSoft = Color(0xFFE6EEF6)
+val DarkMarkMust = Color(0xFFFF8A73)
+val DarkMarkMustSoft = Color(0xFF3D1C16)
+val DarkMarkBetter = Color(0xFFF0B45A)
+val DarkMarkBetterSoft = Color(0xFF392A14)
+val DarkMarkGood = Color(0xFF8DBBEA)
+val DarkMarkGoodSoft = Color(0xFF17283A)
+
+/** The brand's vermilion as a fill: dots, badges and the hand-drawn ring. Use [MarkColors.must] for red text. */
+val LightBrand = Color(0xFFE0452B)
+val DarkBrand = Color(0xFFFF6A4F)
 
 // Older screens use these accents; mapped to LocalMarks so light and dark themes both keep >= 4.5:1 contrast.
 val AccentSuccess: Color
@@ -87,5 +94,5 @@ val AccentWarning: Color
     @Composable get() = LocalMarks.current.better
 val AccentWarningContainer: Color
     @Composable get() = LocalMarks.current.betterSoft
-val AccentInfo = Color(0xFF2A4BA8)
-val AccentInfoContainer = Color(0xFFE8EDFA)
+val AccentInfo = Color(0xFF1F5F99)
+val AccentInfoContainer = Color(0xFFE6EEF6)

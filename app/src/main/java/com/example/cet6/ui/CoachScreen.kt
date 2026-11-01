@@ -223,10 +223,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     }
 
     if (panel == 0 || (panel == 1 && kind == CoachKind.READING)) {
-        ElevatedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -309,9 +309,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     if (panel == 1 && kind == CoachKind.READING && state.partial.isNotBlank() && state.partialEntryId == entry.id) {
         val receiving = state.activeRequest == entry.id
         var showPartial by rememberSaveable(entry.id, receiving) { mutableStateOf(receiving) }
-        ElevatedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(
@@ -342,10 +343,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     }
 
     if (panel == 1 && kind == CoachKind.READING && entry.feedback.isNotBlank()) {
-        ElevatedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(
@@ -393,10 +394,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     if (panel == 2 && entry.submittedAt > 0) {
         if (kind == CoachKind.READING) ReadingEvidenceCard(state, entry)
 
-        ElevatedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("错因归档与复习", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -447,10 +448,10 @@ fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? =
     }
 
     if (panel == 3) {
-        ElevatedCard(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("本地${kind.label}历史", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)

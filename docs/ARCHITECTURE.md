@@ -2,6 +2,59 @@
 
 本文描述既有实现，不对后续开发设置约定、审批或技术路线限制。
 
+## 真机高刷验证（2026-10-29）
+
+- V2359A（API 36，1260×2800，最高 120Hz）上，使用同一 Apple 界面的优化前包作基线，与最终优化包比较。均为同 applicationId、同签名调试包，覆盖安装；原安装包无内置个人 JSON/PDF 资产，旧 APK 已留本地副本。没有卸载、清除数据、修改系统刷新率/省电设置、作答提交或真实 AI 请求。
+- 写作目录相同预热与滑动动作，前后各两轮：窗口目标周期从 11.111ms（90Hz）变为 8.333ms（120Hz）；`DisplayPresentTime` 相邻间隔中位数从两轮均 11.049ms 变为两轮均 8.286ms，绘制开始、交换缓冲与完成时间的节奏相符。可以确认这组目录滚动采样从约 90 帧提升到约 120 帧，不能外推成所有页面长期稳定 120 帧。
+- 帧处理耗时中位数仍为 6ms，未证明每帧处理成本下降。设备的优化后 `FrameDeadline` 距 `IntendedVsync` 有数秒异常偏移，因此不采信汇总中的“0 掉帧”作为无卡顿证明，也不将 `gfxinfo` 帧计数除以手势时长当作 FPS。
+- 最终包的窗口报告 `preferredRefreshRate=120.00001`，手机 APK SHA-256 与本地构建输出一致，四个根标签切换及目录/「我的」布局已查看。详见 [真机采样记录](../test-evidence/phone-smoothness-20261029.json) 和 `phone-smoothness-catalog-2026-10-29.png`、`phone-xiye-me-2026-10-29.png`。
+
+## 刷新率与滚动开销（2026-10-29）
+
+- `MainActivity` 在窗口附着与恢复前台时，通过 `preferredRefreshRate` 请求当前分辨率下设备支持的最高刷新率，不指定显示模式 ID、不更改系统刷新率或省电设置；系统仍可按温控、功耗及设备策略决定实际刷新率。参考 [Android 刷新率偏好](https://developer.android.com/reference/android/view/WindowManager.LayoutParams#preferredRefreshRate)。高刷新率可能增加显示耗电；目前没有高刷实体机可验证。
+- `GlassSurface` 复用主题相关的 `HazeStyle`，使用 Haze 1.1.1 的 `HazeInputScale.Fixed(0.66f)` 缩小背景采样；采样宽高各为原来的 66%，前景图标与文字仍按原分辨率绘制，28dp 模糊和底色保持不变。参考 [该版本采样说明](https://chrisbanes.github.io/haze/1.1.1/usage/#input-scale)。根标签切换复用一个 `HazeState`，避免按标签和路由反复创建捕获状态。
+- `TaskHome` / `ReadingHome` 按题库与历史快照缓存目录分组、校验和状态；阅读条目复用已查到的练习，避免在可见条目重新组成时再次扫描历史并解析快照 JSON。题库、草稿或批改结果变化时相应缓存会失效，不修改原筛选、排序、判题或保存逻辑。
+- 60Hz / API 36 模拟器的调试包采样：写作目录预热后，每轮 12 次 400ms 交替滑动，前后各两轮。优化前中位数 25/27ms、P99 61/61ms、掉帧率 13.86%/19.59%；优化后中位数 27/27ms、P99 53/48ms、掉帧率 17.17%/15.00%。掉帧率重叠、中位数未改善，仅这次样本的 P99 较低，不能据此宣称整体 FPS 已稳定提高。根切页状态复用在这组采样后加入，未做单独切页性能基准。
+- 追加交叉对照开始前模拟器退出，未形成追加结果；随后保留 userdata、以无窗口冷启动现有 AVD，只进行功能回归。性能摘要与局限见 [smoothness-20261029.json](../test-evidence/smoothness-20261029.json)。正式性能结论仍需代表性真机和接近发布配置的测量。
+
+## 可选界面风格与应用品牌（2026-10-29）
+
+- 「我的 → 界面风格」列出已经实现的风格，首版只收录 Apple，并显示当前选择。`theme/UiStyle.kt` 用稳定的 `apple` 标识与显示名分开；`StudyViewModel` 经原有 `study_ui` 偏好读取/保存 `ui_style`，未设置或已不支持的标识回到 Apple。`CET6Theme` 是风格分发入口，并向子组件提供 `LocalUiStyle`；当前 Apple 的配色、字体、圆角及批注色在 `AppleTheme` 内组装。后续公司风格需补对应主题与组件实现，再加入注册项，不提前展示空选项。
+- 用户选择「习页」与蓝色翻页 A 方案作为当前品牌：Manifest 显示名、「我的」页名称与图标、AI 连接页默认测试消息已同步。原有 `com.example.cet6`、签名、数据库文件及备份格式保留，覆盖安装继续使用已有数据。
+- 图标使用原生矢量前景与纯色背景，新增 Android 8+ 自适应图标及 Android 13+ 单色图层；应用内使用同一翻页图形。参考 [Android 自适应图标规范](https://developer.android.com/develop/ui/compose/system/icon_design_adaptive)。初轮图像生成对比稿仅用于讨论，正式资源位于 `res/drawable/ic_study*.xml` 与 `res/mipmap-anydpi/ic_launcher.xml`。名称与图形可以分别继续调整。
+- 验证：新增风格设置与品牌后的构建、174 项 JVM、模拟器完整隔离套件及 `scenario ui` 通过；启动图标资源合并后的构建与 Lint 再次通过，最终仍为 0 错误 / 6 个既有警告。已查看「我的 → 界面风格」、重启后的默认 Apple 选择、应用内图标和桌面显示名；APK 标识核对仍为 `com.example.cet6`。截图见 `test-evidence/xiye-me-2026-10-29.png` 与 `test-evidence/apple-style-picker-2026-10-29.png`。
+
+## Apple 风格界面：练习目录、工作页与毛玻璃（2026-10-29）
+
+- 练习目录按考次放入圆角分组，套次名、两行题目预览、状态和进入箭头统一复用 `ListRow`；全部 / 未做 / 进行中使用现有 `TrackSegments`，筛选条件、排序和继续草稿的行为不变。
+- 写作、翻译工作页的作答 / 批改 / 修改改为等宽分段控件，保留完成、禁用与 `Role.Tab` 语义；自拟题目的输入复用无边框 `FieldRow`。正文、译文增加分组标题，保留英文衬线正文；翻译仍支持固定原文与键盘弹出时的上下对照。阅读答题卡使用分段切换和填充式输入框，核对后的原文与逐题讲解放入两个圆角分组，定位、段号和判题逻辑沿用原实现。
+- 新增 `components/Glass.kt`，通过 Haze 1.1.1 捕获页面背景，只对标签栏和工作页底部操作栏进行 28dp 模糊，叠加 72% 主题底色、细描边及阴影，图标与文字保持清晰。四个根页继续把底部余量放在滚动内容内；工作页的滚动内容也延伸至浮层下方，并按实际操作栏高度留出滚动余量。
+- Haze 1.1.1 与当前 Kotlin 2.0.21 / Compose 1.7 系列匹配，不升级 Compose BOM 或构建插件。参考 [官方用法](https://chrisbanes.github.io/haze/1.1.1/usage/) 与 [该版本构建版本表](https://github.com/chrisbanes/haze/blob/1.1.1/gradle/libs.versions.toml)。这实现的是背景毛玻璃，不包含 iOS Liquid Glass 的折射效果；不能模糊时使用不透明主题底色，避免透字。
+- 验证：174 项 JVM 通过，Lint 0 错误 / 6 个既有警告；模拟器（API 36）的完整隔离套件通过，`scenario ui` 在浅色 / 1.0 字号和深色 / 1.3 字号下各通过一次。检查了目录和三个工作页的浅色、深色大字号布局，以及写作、翻译弹出键盘的基本布局。之前的 `UI element not found: 阅读` 本轮未复现，其根因仍未定位，不称作已修复。
+- 截图见 `test-evidence/apple-glass-*-2026-10-29.png`。仅向模拟器覆盖安装普通调试包与测试包，没有实体机安装、真实 AI 请求、数据库迁移或备份格式变更。Android 12 以下的不透明回退和低端实体机的模糊性能未实测。
+
+## Apple 风格界面：导航、今日与复盘（2026-10-29）
+
+- 导航栏改为 iOS 样式：`ScreenTopBar` 不再用 Material `TopAppBar`，高 44dp，左侧蓝色 ‹ 加上一页标题（由 `AppRoot` 经 `LocalBackLabel` 提供，路由标题集中在 `routeTitles`），标题居中；`SimpleScreen` 只在内容滚动后显示分隔线。读屏仍读作「返回」。
+- 底部标签栏改为 iOS 26 悬浮胶囊：左右留边、带阴影和细描边，选中项衬浅色内胶囊；线条图标、选中变实心（今日 ☀、练习 ✎、复盘 ↺、我的 👤），10sp 标签。页面内容继续滚到胶囊下方。胶囊不透明，因为 Compose 本身做不到 Liquid Glass 的背景模糊，半透明会透出底下文字。
+- 「今日」：继续卡片带技能图标；今天要做改为彩色图标行，数量放右侧；近 7 天为带技能图标的统计卡。「复盘」同样改为图标行。写作、翻译、阅读工作页只换了导航栏，正文仍是旧样式。
+- 验证：174 项 JVM、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件与 `scenario ui` 通过；截图更新于 `test-evidence/apple-style-*-2026-10-29.png`。
+
+## Apple 风格界面：设计令牌与「我的」页面组（2026-10-29）
+
+- 全局令牌改为 iOS 风格：`theme/Color.kt` 用 iOS 系统色（分组背景 `#F2F2F7` / 深色 `#000000`，单元格白色 / `#1C1C1E`，0.5dp 分隔线）；系统蓝、绿和次要文字在不足 4.5:1 时改用更深的可访问变体（浅色主色 `#0066CC`，深色主色 `#409CFF`）。`Type.kt` 按 iOS 文本样式（Large Title 34、Headline 17、Body 17、Footnote 13 …）映射到 Material 角色，系统无衬线字体代替 San Francisco（不能随 Android 应用分发）。`Shape.kt` 圆角改为 iOS 分组单元格尺寸。
+- 共享组件：`ScreenTopBar` 改为居中标题 + 蓝色「‹ 返回」；`SectionLabel` 改为与单元格文字对齐的脚注灰字；`ListRow` 改为 44dp 行高、细 › 箭头，可选前置 `IconTile`；`SectionCard` 去掉边框和阴影。底部导航改为 iOS 式标签栏（无指示胶囊、选中项着色），仍是 `Role.Tab` 可选项，界面脚本照常识别。
+- 新增 `components/Grouped.kt`：`Group`（页眉 / 白色分组 / 页脚）、`ValueRow`、`ActionRow`（蓝色或红色操作行）、`ToggleRow`、`CheckRow`、`FieldRow`（行内无边框输入，Key 仍不进 saved state）、`IconTile`。
+- 「我的」改为设置列表样式（概览单元格 + 彩色图标行）；AI 连接、备份与恢复、题库管理改为分组表单（服务选择用勾选列表，按钮改为操作行，深度批改用开关行）。其他页面目前只随全局令牌变色，结构尚未重做。
+- 验证：174 项 JVM、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件与 `scenario ui` 通过；浅色和深色截图见 `test-evidence/apple-style-*-2026-10-29.png`。未在实体机查看。
+
+## 页面 ViewModel：备份与题库管理（2026-10-29）
+
+- 「备份与恢复」：`BackupViewModel` 用 `combine` 合并备份、学习计划、练习、对话和题库五个服务的状态，得到 `BackupUiState`；原来散在按钮上的启用条件（导出、恢复预览、继续/确认合并）集中到 `BackupUiState.from`，由 `BackupUiStateTest` 在 JVM 上覆盖。`BackupCard(vm, standalone)` 保留为绑定入口（「我的」页和旧版今日页共用同一个 ViewModel），界面是无状态的 `BackupPanel(state, onIntent)`。
+- 「题库管理」：`ExamLibraryViewModel` 暴露 `ExamLibrary.state.flow`，`ExamManagement(state, onIntent)` 无状态，由 `ExamManagementRoute` 绑定。
+- `StudyViewModel.services` 改为 `internal`，页面 ViewModel 统一从这里取服务（AI 连接页随之改用 `vm.services.ai`）；不再被任何页面使用的备份/题库委托方法和属性已删除，仪器测试仍在用的 `backupBusy`、`backupStatus`、`backupRestorePending` 等保留。
+- 验证：174 项 JVM（新增 6 项）、Lint（0 错误 / 6 既有警告）、模拟器完整隔离套件与 `scenario ui` 通过；模拟器上手动打开备份页、题库管理页和旧版今日页的备份卡片，数量与按钮状态正常。恢复预览对话框需经系统文件选择器，未手动走完；启动续恢复场景（`restore-startup-*`）本次未跑。
+
 ## 页面 ViewModel：AI 连接（2026-10-29）
 
 - 「我的 → AI 连接」是第一个按页面拆分的界面：`ConnectionViewModel` 直接暴露 `AiGateway.state.flow`（`StateFlow<AiState>`），用 `ConnectionIntent` 接收操作，用 `ConnectionEffect.ApiKeySaved` 通知页面清空已保存的 Key 输入；`ConnectionScreen(state, effects, onIntent)` 本身无状态，由 `ConnectionRoute` 以 `collectAsStateWithLifecycle` 绑定。

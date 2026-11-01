@@ -18,7 +18,7 @@ fun VocabularyImportCard(vm: StudyViewModel) {
     }
     OutlinedButton(onClick = { expanded = !expanded }) { Text(if (expanded) "收起导入" else "导入我的词库") }
     if (expanded) {
-        ElevatedCard(Modifier.fillMaxWidth()) {
+        Card(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("支持 UTF-8 CSV 或 JSON，最大 2 MiB / 10000 词。CSV 表头：word,meaning,example；JSON：对象数组，每项含相同三个文本字段。例句可为空。")
                 Text("已有单词会跳过，保留原释义、来源与复习进度。任一条无效则整份文件不导入。")

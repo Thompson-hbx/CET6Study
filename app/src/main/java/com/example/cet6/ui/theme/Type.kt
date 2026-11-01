@@ -8,92 +8,104 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.cet6.R
 
+// Type scale: large title 34, section 20, body 17, footnote 13. Chinese UI uses the system sans serif (Noto Sans
+// CJK on Android); English the learner reads or writes, and the big counts, use the bundled Source Serif.
 val Typography = Typography(
+    // Large Title
     headlineLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.Bold,
-        fontSize = 30.sp,
-        lineHeight = 38.sp,
-        letterSpacing = (-0.5).sp
+        fontSize = 34.sp,
+        lineHeight = 41.sp
     ),
+    // Title 1
     headlineMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.Bold,
-        fontSize = 26.sp,
-        lineHeight = 34.sp,
-        letterSpacing = (-0.25).sp
+        fontSize = 28.sp,
+        lineHeight = 34.sp
     ),
+    // Title 2
     headlineSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
-        lineHeight = 30.sp
+        lineHeight = 28.sp
     ),
+    // Title 3
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.SemiBold,
-        fontSize = 19.sp,
-        lineHeight = 27.sp
+        fontSize = 20.sp,
+        lineHeight = 25.sp
     ),
+    // Headline
     titleMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.SemiBold,
         fontSize = 17.sp,
-        lineHeight = 24.sp
+        lineHeight = 22.sp
     ),
+    // Subheadline, emphasised
     titleSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontFeatureSettings = "tnum",
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontFeatureSettings = "tnum",
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 26.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontFeatureSettings = "tnum",
-        fontWeight = FontWeight.Normal,
-        fontSize = 15.sp,
-        lineHeight = 23.sp
-    ),
-    bodySmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontFeatureSettings = "tnum",
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp,
-        lineHeight = 19.sp
-    ),
-    labelLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.SemiBold,
         fontSize = 15.sp,
         lineHeight = 20.sp
     ),
-    labelMedium = TextStyle(
+    // Body; extra leading for Chinese
+    bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
+        fontSize = 17.sp,
+        lineHeight = 26.sp
+    ),
+    // Subheadline / Callout
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontFeatureSettings = "tnum",
+        fontWeight = FontWeight.Normal,
+        fontSize = 15.sp,
+        lineHeight = 22.sp
+    ),
+    // Footnote
+    bodySmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontFeatureSettings = "tnum",
+        fontWeight = FontWeight.Normal,
         fontSize = 13.sp,
         lineHeight = 18.sp
     ),
-    labelSmall = TextStyle(
+    // Button text
+    labelLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontFeatureSettings = "tnum",
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        lineHeight = 21.sp
+    ),
+    // Caption 1
+    labelMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontFeatureSettings = "tnum",
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp
+    ),
+    // Caption 2 / tab bar
+    labelSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontFeatureSettings = "tnum",
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 13.sp
     )
 )
 
@@ -109,6 +121,15 @@ val PassageText = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 17.sp,
     lineHeight = 28.sp
+)
+
+/** Large counts set like print: the signature numerals on 今日 and 复盘. */
+val NumeralText = TextStyle(
+    fontFamily = SourceSerif,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 34.sp,
+    lineHeight = 40.sp,
+    fontFeatureSettings = "lnum, tnum"
 )
 
 /** Chinese source text in translation tasks; a little more leading for dense characters. */

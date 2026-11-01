@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cet6.PaperPdfActivity
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
+import dev.chrisbanes.haze.HazeState
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -72,7 +73,7 @@ fun WorkspaceMenu(vm: StudyViewModel, entry: CoachPractice, extra: List<Pair<Str
     var open by remember { mutableStateOf(false) }
     var showWord by remember { mutableStateOf(false) }
     Box {
-        IconButton(onClick = { open = true }) { Icon(Icons.Outlined.MoreVert, contentDescription = "更多") }
+        IconButton(onClick = { open = true }) { Icon(Icons.Outlined.MoreVert, contentDescription = null /* "更多" */) }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(text = { Text("加入生词复习") }, onClick = { open = false; showWord = true })
             extra.forEach { (label, action) -> DropdownMenuItem(text = { Text(label) }, onClick = { open = false; action() }) }
@@ -126,7 +127,7 @@ fun SubmitDialog(words: Int, minWords: Int?, onConfirm: () -> Unit, onDismiss: (
 
 /** Count with a target, e.g. "126 词 · 目标 150–200"; colour only signals being outside the range. */
 @Composable
-fun WordCount(words: Int, min: Int?, max: Int?, modifier: Modifier = Modifier) {
+fun WordCount(words: Int, min: Int?, max: Int?, modifier: Modifier = Modifier, showTarget: Boolean = true) {
     val tone = when {
         min == null || words == 0 -> Tone.Muted
         words < min -> Tone.Muted
@@ -135,7 +136,7 @@ fun WordCount(words: Int, min: Int?, max: Int?, modifier: Modifier = Modifier) {
     }
     Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Text("$words 词", style = MaterialTheme.typography.titleSmall, color = tone.color())
-        if (min != null && max != null) Note("目标 $min–$max")
+        if (showTarget && min != null && max != null) Note("目标 $min–$max")
     }
 }
 
@@ -154,12 +155,14 @@ fun SkillErrorNote(vm: StudyViewModel, entry: CoachPractice, kind: CoachKind) {
                     SuggestionChip(onClick = { state.edit(kind) {
                         it.copy(errorReason = if (it.errorReason.split('；').contains(reason)) it.errorReason
                             else listOf(it.errorReason, reason).filter(String::isNotBlank).joinToString("；"))
-                    } }, label = { Text(reason) }, enabled = !state.working)
+                    } }, label = { Text(reason) }, enabled = !state.working, border = null,
+                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer))
                 }
             }
-            OutlinedTextField(entry.errorReason, { value -> state.edit(kind) { it.copy(errorReason = value) } },
-                label = { Text("我的错因与改进笔记") }, enabled = !state.working, modifier = Modifier.fillMaxWidth())
-            if (entry.errorReason.isNotBlank()) OutlinedButton(onClick = { state.generate(kind) }, enabled = !state.working && !vm.busy) {
+            Hairline()
+            FieldRow(null, entry.errorReason, { value -> state.edit(kind) { it.copy(errorReason = value) } },
+                placeholder = "我的错因与改进笔记", enabled = !state.working, minLines = 3)
+            if (entry.errorReason.isNotBlank()) TextButton(onClick = { state.generate(kind) }, enabled = !state.working && !vm.busy) {
                 Text("按错因出一道练习")
             }
             state.messages[kind]?.takeIf { it.isNotBlank() && it != "已保存到本机" && it != "正在保存……" }?.let { Note(it) }
@@ -189,14 +192,14 @@ fun placedReview(answer: String, reviewTurn: CoachTurn?): List<PlacedIssue>? {
  */
 @Composable
 fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, placed: List<PlacedIssue>?, asking: Boolean,
-    onAsking: (Boolean) -> Unit, onAsk: (String) -> Unit) {
+    onAsking: (Boolean) -> Unit, hazeState: HazeState, onAsk: (String) -> Unit) {
     val talk = vm.talk
     val failure = talk.failureFor(entry.id, Anchor.REVIEW, chat = true)
-    if (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT) BottomBar {
+    if (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT) BottomBar(hazeState = hazeState) {
         AskBar(placeholder, busy = talk.busy, enabled = !talk.busy, onSend = onAsk, onStop = talk::stop,
             modifier = Modifier.weight(1f), draftKey = entry.id, failure = failure, onDismissFailure = talk::dismissFailure)
         if (!talk.busy) TextButton(onClick = { onAsking(false); failure?.let { talk.dismissFailure() } }) { Text("收起") }
-    } else BottomBar {
+    } else BottomBar(hazeState = hazeState) {
         val accepted = placed?.count { it.accepted && it.range != null } ?: 0
         Text(if (placed.isNullOrEmpty()) saveLabel(vm.coach.messages[CoachKind.valueOf(entry.kind)]) else "已采纳 $accepted / ${placed.size} 条",
             style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
@@ -208,5 +211,5 @@ fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, 
 /** 追问 in a review's top bar; it opens the follow-up composer in the footer. */
 @Composable
 fun AskAction(onClick: () -> Unit) {
-    IconButton(onClick = onClick) { Icon(Icons.AutoMirrored.Outlined.Chat, contentDescription = "追问", tint = MaterialTheme.colorScheme.primary) }
+    IconButton(onClick = onClick) { Icon(Icons.AutoMirrored.Outlined.Chat, contentDescription = null /* "追问" */, tint = MaterialTheme.colorScheme.primary) }
 }

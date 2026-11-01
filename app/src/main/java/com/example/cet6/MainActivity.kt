@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CET6Theme {
+            CET6Theme(style = vm.uiStyle) {
                 AppRoot(vm, LegacyScreens(
                     words = { WordScreen(vm) },
                     today = { onWords, onReading, onWriting, onReview -> TodayScreen(vm, onWords, onReading, onWriting, onReview) }
@@ -60,6 +60,21 @@ class MainActivity : ComponentActivity() {
         }
         if (savedInstanceState == null) receiveShare(intent)
     }
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        preferSmoothRefreshRate()
+    }
+
+    private fun preferSmoothRefreshRate() {
+        val display = window.decorView.display ?: return
+        val current = display.mode
+        val refreshRate = display.supportedModes
+            .filter { it.physicalWidth == current.physicalWidth && it.physicalHeight == current.physicalHeight }
+            .maxOfOrNull { it.refreshRate } ?: return
+        // Request smooth UI rendering without forcing a resolution or overriding system power policies.
+        window.attributes = window.attributes.apply { preferredRefreshRate = refreshRate }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -79,7 +94,7 @@ class MainActivity : ComponentActivity() {
             incoming.removeExtra(Intent.EXTRA_SUBJECT)
         }
     }
-    override fun onResume() { super.onResume(); vm.refreshStudyClock() }
+    override fun onResume() { super.onResume(); preferSmoothRefreshRate(); vm.refreshStudyClock() }
     override fun onStop() { vm.saveDrafts(); super.onStop() }
 }
 

@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
+// import androidx.compose.ui.semantics.semantics
+// import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cet6.ui.theme.*
@@ -138,20 +138,17 @@ fun StatusBadge(
     }
 }
 
+/** A grouped cell holding one block of content: flat and borderless on the grouped background. */
 @Composable
 fun SectionCard(
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.surface,
-    borderColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(1.dp, borderColor, MaterialTheme.shapes.medium),
-        shape = MaterialTheme.shapes.medium,
-        color = containerColor,
-        tonalElevation = 1.dp
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = containerColor
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -170,32 +167,32 @@ data class WorkflowStep(val label: String, val done: Boolean = false, val enable
  */
 @Composable
 fun WorkflowSteps(steps: List<WorkflowStep>, current: Int?, modifier: Modifier = Modifier) {
-    Row(modifier.fillMaxWidth().padding(horizontal = PageGutter, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    // A line of stages joined by hairlines: done stages carry a check, the current one a vermilion dot.
+    Row(modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         steps.forEachIndexed { i, step ->
-            if (i > 0) HorizontalDivider(Modifier.weight(1f), thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
             val selected = i == current
+            if (i > 0) Box(Modifier.weight(1f).padding(horizontal = 4.dp).height(1.dp).background(MaterialTheme.colorScheme.outlineVariant))
             val tint = when {
-                selected -> MaterialTheme.colorScheme.primary
-                step.done -> LocalMarks.current.good
-                else -> MaterialTheme.colorScheme.onSurfaceVariant
+                selected -> MaterialTheme.colorScheme.onSurface
+                step.enabled -> MaterialTheme.colorScheme.onSurfaceVariant
+                else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
             }
-            Row(Modifier.clip(RoundedCornerShape(50))
-                .selectable(selected = selected, enabled = step.enabled, role = Role.Tab, onClick = step.onClick)
-                .semantics { stateDescription = when { selected -> "当前"; step.done -> "已完成"; !step.enabled -> "暂不可用"; else -> "" } }
-                .heightIn(min = 44.dp).padding(horizontal = 4.dp),
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Box(Modifier.size(22.dp).clip(CircleShape).then(when {
-                    selected -> Modifier.background(MaterialTheme.colorScheme.primary)
-                    step.done -> Modifier.background(LocalMarks.current.goodSoft)
-                    else -> Modifier.border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
-                }), contentAlignment = Alignment.Center) {
-                    if (step.done && !selected) Icon(Icons.Outlined.Check, contentDescription = null, tint = tint, modifier = Modifier.size(14.dp))
-                    else Text("${i + 1}", style = MaterialTheme.typography.labelSmall,
-                        color = if (selected) MaterialTheme.colorScheme.onPrimary else tint)
+            Row(
+                Modifier.clip(RoundedCornerShape(50))
+                    .background(if (selected) MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent)
+                    .selectable(selected = selected, enabled = step.enabled, role = Role.Tab, onClick = step.onClick)
+                    // .semantics { stateDescription = when { selected -> "当前"; step.done -> "已完成"; !step.enabled -> "暂不可用"; else -> "" } }
+                    .heightIn(min = 40.dp).padding(horizontal = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                when {
+                    selected -> Box(Modifier.size(8.dp).background(LocalMarks.current.brand, CircleShape))
+                    step.done -> Icon(Icons.Outlined.Check, contentDescription = null, tint = tint, modifier = Modifier.size(15.dp))
+                    else -> Box(Modifier.size(8.dp).border(1.5.dp, tint, CircleShape))
                 }
-                Text(step.label, style = MaterialTheme.typography.labelLarge, color = if (step.enabled) tint else tint.copy(alpha = 0.6f),
-                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
+                Text(step.label, style = MaterialTheme.typography.labelLarge, color = tint,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium)
             }
         }
     }
