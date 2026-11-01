@@ -20,9 +20,9 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.semantics
+// import androidx.compose.ui.semantics.LiveRegionMode
+// import androidx.compose.ui.semantics.liveRegion
+// import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,7 +51,7 @@ fun FailureLine(failure: ConversationService.Failure, onDismiss: () -> Unit, mod
     val tone = if (failure.stopped) Tone.Muted else Tone.Must
     Surface(color = tone.soft(), shape = MaterialTheme.shapes.medium, modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 14.dp, vertical = 8.dp)) {
-            Column(Modifier.fillMaxWidth().semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
+            Column(Modifier.fillMaxWidth()/* .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite } */,
                 verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 if (failure.question.isNotBlank()) Text("问题：${failure.question.take(120)}",
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -154,7 +154,7 @@ fun AskBar(placeholder: String, busy: Boolean, enabled: Boolean, onSend: (String
         }
         if (busy) Text("AI 正在处理，可随时停止", style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+            modifier = Modifier/* .semantics { liveRegion = LiveRegionMode.Polite } */)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceContainerHigh, modifier = Modifier.weight(1f)) {
                 BasicTextField(text, { text = it.take(2000) }, enabled = enabled, maxLines = 5,
@@ -173,9 +173,9 @@ fun AskBar(placeholder: String, busy: Boolean, enabled: Boolean, onSend: (String
                     })
             }
             if (busy) FilledTonalIconButton(onClick = onStop, modifier = Modifier.size(48.dp)) {
-                Icon(Icons.Outlined.Stop, contentDescription = "停止回复")
+                Icon(Icons.Outlined.Stop, contentDescription = null /* "停止回复" */)
             } else FilledIconButton(onClick = ::send, enabled = enabled && text.isNotBlank(), modifier = Modifier.size(48.dp)) {
-                Icon(Icons.Outlined.ArrowUpward, contentDescription = "发送")
+                Icon(Icons.Outlined.ArrowUpward, contentDescription = null /* "发送" */)
             }
         }
     }

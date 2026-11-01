@@ -19,10 +19,10 @@ fun CoachSourceCard(state: CoachState, entry: CoachPractice) {
     val source = state.history.firstOrNull { it.id == entry.sourcePracticeId }
     var compare by rememberSaveable(entry.id) { mutableStateOf(false) }
     var showFeedback by rememberSaveable(entry.id) { mutableStateOf(false) }
-    ElevatedCard(
+    Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (entry.practiceGoal.isNotBlank()) {

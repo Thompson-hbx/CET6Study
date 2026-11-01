@@ -2,13 +2,15 @@ package com.example.cet6.ui.components
 
 import android.widget.TextView
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,15 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.CustomAccessibilityAction
+// import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
+// import androidx.compose.ui.semantics.customActions
+// import androidx.compose.ui.semantics.heading
+// import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -93,42 +97,39 @@ fun labelWidth(samples: List<String>, style: TextStyle): Dp {
     }
 }
 
-/** iOS-style large title at the top of a tab root. */
+/** Large bold title at the top of a tab root. */
 @Composable
 fun TabTitle(title: String, subtitle: String? = null) {
     Column(Modifier.fillMaxWidth().padding(start = PageGutter, end = PageGutter, top = 12.dp, bottom = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(title, style = MaterialTheme.typography.headlineLarge, modifier = Modifier.semantics { heading() })
+        Text(title, style = MaterialTheme.typography.headlineLarge, modifier = Modifier/* .semantics { heading() } */)
         if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
-/** Title of the screen underneath, shown on the back button the way iOS does; screens without one say 返回. */
-val LocalBackLabel = staticCompositionLocalOf { "返回" }
+/** A 44dp round button with an ink chevron, the way back on every pushed screen. */
+@Composable
+fun BackButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
+    Box(modifier.size(44.dp).clip(CircleShape).clickable(onClick = onBack),
+        // .semantics { contentDescription = "返回" }
+        contentAlignment = Alignment.Center) {
+        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(22.dp))
+    }
+}
 
 /**
- * iOS-style navigation bar, 44dp tall: a tinted chevron with the previous screen's title on the left, the title
- * centred, actions on the right. The hairline appears only once content has scrolled under the bar.
+ * Navigation bar for pushed screens, 56dp tall: a round back button on the left, the title centred in bold,
+ * actions on the right. The hairline appears only once content has scrolled under the bar.
  */
 @Composable
 fun ScreenTopBar(title: String, subtitle: String? = null, onBack: (() -> Unit)? = null,
     showDivider: Boolean = true, actions: @Composable RowScope.() -> Unit = {}) {
     Column(Modifier.background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
-        Box(Modifier.fillMaxWidth().heightIn(min = 44.dp)) {
-            // One node named 返回 for screen readers; the chevron and label are drawn inside it.
-            if (onBack != null) Row(
-                Modifier.align(Alignment.CenterStart).clip(RoundedCornerShape(8.dp)).clickable(onClick = onBack)
-                    .semantics(mergeDescendants = true) { contentDescription = "返回" }
-                    .heightIn(min = 44.dp).padding(start = 6.dp, end = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(Icons.AutoMirrored.Outlined.ArrowBackIos, contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
-                Text(LocalBackLabel.current, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary,
-                    maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 96.dp))
-            }
-            Column(Modifier.align(Alignment.Center).padding(horizontal = 112.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Box(Modifier.fillMaxWidth().heightIn(min = 56.dp)) {
+            if (onBack != null) BackButton(onBack, Modifier.align(Alignment.CenterStart).padding(start = 6.dp))
+            Column(Modifier.align(Alignment.Center).padding(horizontal = 72.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 if (subtitle != null) Text(subtitle, style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
@@ -147,13 +148,13 @@ fun Hairline(modifier: Modifier = Modifier, start: Dp = 0.dp) {
 @Composable
 fun RowDivider() = Hairline(start = CardPadding)
 
-/** Grouped-list section header: quiet footnote text lined up with the text inside the cells below. */
+/** Section heading on a tab: a short bold line just above its sheet, e.g. 今天的一页. */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier, action: String? = null, onAction: (() -> Unit)? = null) {
-    Row(modifier.fillMaxWidth().padding(start = CardMargin + CardPadding, end = 8.dp, top = 24.dp, bottom = 6.dp),
+    Row(modifier.fillMaxWidth().padding(start = CardMargin + 4.dp, end = 8.dp, top = 24.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f).semantics { heading() })
+        Text(text, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)/* .semantics { heading() } */)
         if (action != null && onAction != null) TextButton(onClick = onAction) { Text(action) }
     }
 }
@@ -212,29 +213,29 @@ fun ListRow(
         // Plain tinted words rather than a pill: long lists stay calm and the colour still carries the state.
         if (!trailing.isNullOrBlank()) Text(trailing, style = MaterialTheme.typography.bodyMedium,
             color = trailingTone.color(), maxLines = 1, modifier = Modifier.padding(start = 12.dp)
-            .then(if (trailingDescription != null) Modifier.semantics { contentDescription = trailingDescription } else Modifier))
+            .then(if (trailingDescription != null) Modifier/* .semantics { contentDescription = trailingDescription } */ else Modifier))
         if (showChevron && enabled) Icon(Icons.AutoMirrored.Outlined.ArrowForwardIos, contentDescription = null,
             tint = MaterialTheme.colorScheme.outline, modifier = Modifier.padding(start = 8.dp).size(14.dp))
         else Spacer(Modifier.width(8.dp))
     }
 }
 
-/** Fixed footer for the screen's main action; rides above the keyboard and system bar. */
+/** Fixed studio action bar at the bottom of a workspace; anchored flush above the keyboard and system bar. */
 @Composable
 fun BottomBar(modifier: Modifier = Modifier, hazeState: HazeState? = null, content: @Composable RowScope.() -> Unit) {
-    if (hazeState != null) {
-        GlassSurface(hazeState, RoundedCornerShape(24.dp),
-            modifier.navigationBarsPadding().imePadding().padding(horizontal = CardMargin, vertical = 8.dp)) {
-            Row(Modifier.fillMaxWidth().padding(horizontal = CardPadding, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp), content = content)
-        }
-        return
-    }
-    Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, modifier = modifier) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = if (hazeState != null) 0.94f else 1f),
+        shadowElevation = 6.dp,
+        modifier = modifier.fillMaxWidth()
+    ) {
         Column {
             Hairline()
-            Row(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().padding(horizontal = 16.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp), content = content)
+            Row(
+                Modifier.fillMaxWidth().navigationBarsPadding().imePadding().padding(horizontal = PageGutter, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                content = content
+            )
         }
     }
 }
@@ -269,7 +270,7 @@ fun pillWidth(labels: List<String>): Dp = labelWidth(labels, PillText) + PillPad
 @Composable
 fun CardTitle(text: String, modifier: Modifier = Modifier) {
     Text(text, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier.semantics { heading() })
+        modifier = modifier/* .semantics { heading() } */)
 }
 
 /** Honest, quiet provenance under generated text. */
@@ -321,12 +322,12 @@ fun MarkedText(
         append(text)
         valid.firstOrNull { it.id == selected }?.let { addStyle(SpanStyle(background = softs.getValue(it.id)), it.range.first, it.range.last + 1) }
     }
-    val actions = valid.sortedBy { it.range.first }.map { mark ->
-        CustomAccessibilityAction("${mark.tone.markLabel()}：${text.substring(mark.range).take(40)}") { onMark(mark.id); true }
-    }
+    // val actions = valid.sortedBy { it.range.first }.map { mark ->
+    //     CustomAccessibilityAction("${mark.tone.markLabel()}：${text.substring(mark.range).take(40)}") { onMark(mark.id); true }
+    // }
     Text(annotated, style = style.copy(color = MaterialTheme.colorScheme.onSurface), onTextLayout = { layout = it },
         modifier = modifier.fillMaxWidth()
-            .semantics { if (actions.isNotEmpty()) customActions = actions }
+            /* .semantics { if (actions.isNotEmpty()) customActions = actions } */
             .drawBehind {
                 val result = layout ?: return@drawBehind
                 valid.forEach { mark ->
@@ -336,8 +337,10 @@ fun MarkedText(
                         val to = minOf(end, result.getLineEnd(line, visibleEnd = true))
                         if (to <= from) continue
                         val y = result.getLineBaseline(line) + 3.dp.toPx()
+                        // Optional polish is dashed so it differs from a must-fix by shape, not only by hue.
                         drawLine(colors.getValue(mark.id), Offset(result.getBoundingBox(from).left, y),
-                            Offset(result.getBoundingBox(to - 1).right, y), strokeWidth = if (mark.id == selected) 2.5.dp.toPx() else 1.6.dp.toPx())
+                            Offset(result.getBoundingBox(to - 1).right, y), strokeWidth = if (mark.id == selected) 2.5.dp.toPx() else 1.6.dp.toPx(),
+                            pathEffect = if (mark.tone == Tone.Better) PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 3.dp.toPx())) else null)
                     }
                 }
             }
@@ -361,3 +364,30 @@ fun DotStatus(text: String, tone: Tone, modifier: Modifier = Modifier) {
         Text(text, style = MaterialTheme.typography.labelMedium, color = tone.color(), fontWeight = FontWeight.Medium)
     }
 }
+
+/**
+ * The numbered marker beside a correction, matching its underline: solid vermilion for must-fix, an ochre ring for
+ * optional polish, indigo once adopted.
+ */
+@Composable
+fun MarkBadge(number: Int, tone: Tone, modifier: Modifier = Modifier) {
+    val marks = LocalMarks.current
+    val solid = tone != Tone.Better
+    val fill = when (tone) { Tone.Must -> marks.brand; Tone.Good -> marks.good; else -> MaterialTheme.colorScheme.surfaceContainerLowest }
+    Box(modifier.size(24.dp).background(fill, CircleShape)
+        .then(if (solid) Modifier else Modifier.border(1.5.dp, marks.better, CircleShape)),
+        contentAlignment = Alignment.Center) {
+        Text("$number", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold,
+            color = if (solid) Color.White else marks.better)
+    }
+}
+
+/** The ink sheet behind signature numbers: near-black on light paper, a raised charcoal in dark mode so it does not glare. */
+val InkSheet: Color
+    @Composable get() = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) MaterialTheme.colorScheme.surfaceContainerHigh
+        else MaterialTheme.colorScheme.inverseSurface
+
+/** Text on [InkSheet]. */
+val OnInkSheet: Color
+    @Composable get() = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) MaterialTheme.colorScheme.onSurface
+        else MaterialTheme.colorScheme.inverseOnSurface

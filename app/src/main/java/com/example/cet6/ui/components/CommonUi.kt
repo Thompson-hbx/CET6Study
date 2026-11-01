@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
+// import androidx.compose.ui.semantics.semantics
+// import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cet6.ui.theme.*
@@ -167,25 +167,32 @@ data class WorkflowStep(val label: String, val done: Boolean = false, val enable
  */
 @Composable
 fun WorkflowSteps(steps: List<WorkflowStep>, current: Int?, modifier: Modifier = Modifier) {
-    Row(modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 8.dp)
-        .clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceContainer).padding(3.dp)) {
+    // A line of stages joined by hairlines: done stages carry a check, the current one a vermilion dot.
+    Row(modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         steps.forEachIndexed { i, step ->
             val selected = i == current
+            if (i > 0) Box(Modifier.weight(1f).padding(horizontal = 4.dp).height(1.dp).background(MaterialTheme.colorScheme.outlineVariant))
             val tint = when {
                 selected -> MaterialTheme.colorScheme.onSurface
-                step.done -> LocalMarks.current.good
-                else -> MaterialTheme.colorScheme.onSurfaceVariant
+                step.enabled -> MaterialTheme.colorScheme.onSurfaceVariant
+                else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
             }
-            Row(Modifier.weight(1f).clip(RoundedCornerShape(13.dp))
-                .background(if (selected) MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent)
-                .selectable(selected = selected, enabled = step.enabled, role = Role.Tab, onClick = step.onClick)
-                .semantics { stateDescription = when { selected -> "当前"; step.done -> "已完成"; !step.enabled -> "暂不可用"; else -> "" } }
-                .heightIn(min = 44.dp).padding(horizontal = 4.dp),
-                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                if (step.done && !selected) Icon(Icons.Outlined.Check, contentDescription = null, tint = tint,
-                    modifier = Modifier.padding(end = 4.dp).size(16.dp))
-                Text(step.label, style = MaterialTheme.typography.labelLarge, color = if (step.enabled) tint else tint.copy(alpha = 0.6f),
-                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
+            Row(
+                Modifier.clip(RoundedCornerShape(50))
+                    .background(if (selected) MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent)
+                    .selectable(selected = selected, enabled = step.enabled, role = Role.Tab, onClick = step.onClick)
+                    // .semantics { stateDescription = when { selected -> "当前"; step.done -> "已完成"; !step.enabled -> "暂不可用"; else -> "" } }
+                    .heightIn(min = 40.dp).padding(horizontal = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                when {
+                    selected -> Box(Modifier.size(8.dp).background(LocalMarks.current.brand, CircleShape))
+                    step.done -> Icon(Icons.Outlined.Check, contentDescription = null, tint = tint, modifier = Modifier.size(15.dp))
+                    else -> Box(Modifier.size(8.dp).border(1.5.dp, tint, CircleShape))
+                }
+                Text(step.label, style = MaterialTheme.typography.labelLarge, color = tint,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium)
             }
         }
     }

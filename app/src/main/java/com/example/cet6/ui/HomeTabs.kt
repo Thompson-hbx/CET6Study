@@ -1,5 +1,6 @@
 package com.example.cet6.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
@@ -15,11 +16,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+// import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
+import com.example.cet6.ui.theme.LocalMarks
+import com.example.cet6.ui.theme.NumeralText
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -35,7 +41,9 @@ private fun latestDraft(vm: StudyViewModel): CoachPractice? = vm.coach.entries.v
 private fun nextReading(vm: StudyViewModel): ExamPaper? = allPapers(vm)
     .filter { !it.sample && it.issues(CoachKind.READING).isEmpty() && PaperDocuments.sharedReadingPaperId(it) == null }
     .sortedWith(compareByDescending<ExamPaper> { it.examDate }.thenBy { it.setCode })
-    .firstOrNull { paper -> vm.coach.history.none { ExamCodec.itemId(it)?.startsWith("${paper.stableId}/READING/") == true } }
+    .firstOrNull { paper -> vm.coach.history.none {
+        ExamCodec.itemId(it)?.startsWith("${paper.stableId}/READING/") == true && ExamCodec.hasReadingProgress(it)
+    } }
 
 private fun kindLabel(kind: String) = when (kind) {
     CoachKind.WRITING.name -> "写作"
@@ -60,6 +68,13 @@ fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice
     val date = LocalDate.now().format(DateTimeFormatter.ofPattern("M 月 d 日 · EEEE", Locale.CHINA))
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { TabTitle("今日", date) }
+        item {
+            Spacer(Modifier.height(12.dp))
+            WeekSheet(week.size, listOf(
+                "写作" to week.count { it.kind == CoachKind.WRITING.name },
+                "翻译" to week.count { it.kind == CoachKind.TRANSLATION.name },
+                "阅读" to week.count { it.kind == CoachKind.READING.name }))
+        }
         if (draft != null) item {
             SectionLabel("继续")
             PaperCard {
@@ -92,7 +107,7 @@ fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice
             }
         }
         item {
-            SectionLabel("今天要做")
+            SectionLabel("今天的一页")
             RowCard {
                 ListRow("单词复习", subtitle = if (vm.words.isEmpty()) "导入词库或在练习中加入生词" else "来自词库与练习原句",
                     trailing = if (vm.words.isEmpty()) null else "$due", trailingTone = if (due > 0) Tone.Ink else Tone.Muted,
@@ -118,20 +133,41 @@ fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice
                 }
             }
         }
-        item {
-            SectionLabel("近 7 天")
-            Row(Modifier.fillMaxWidth().padding(horizontal = CardMargin), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                listOf(
-                    Triple(CoachKind.WRITING.name, week.count { it.kind == CoachKind.WRITING.name }, "篇作文"),
-                    Triple(CoachKind.TRANSLATION.name, week.count { it.kind == CoachKind.TRANSLATION.name }, "篇翻译"),
-                    Triple(CoachKind.READING.name, week.count { it.kind == CoachKind.READING.name }, "次阅读核对")
-                ).forEach { (kind, count, label) ->
-                    Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = MaterialTheme.shapes.large, modifier = Modifier.weight(1f)) {
-                        Column(Modifier.padding(14.dp).semantics(mergeDescendants = true) {}, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Icon(kindIcon(kind), contentDescription = null, tint = kindTile(kind), modifier = Modifier.size(22.dp))
-                            Text("$count", style = MaterialTheme.typography.headlineMedium)
-                            Note(label)
-                        }
+    }
+}
+
+/**
+ * The ink sheet at the top of 今日: submissions in the last seven days, circled with the logo's vermilion ring,
+ * and how they split across the three skills. Counts come from saved records only.
+ */
+@Composable
+private fun WeekSheet(total: Int, perSkill: List<Pair<String, Int>>) {
+    val ink = InkSheet
+    val onInk = OnInkSheet
+    val brand = LocalMarks.current.brand
+    val ring = remember(brand) { BrandIcons.ring(brand) }
+    Surface(color = ink, contentColor = onInk, shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = CardMargin)) {
+        Row(Modifier.padding(horizontal = 22.dp, vertical = 20.dp)/* .semantics(mergeDescendants = true) {} */,
+            verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text("近 7 天提交", style = MaterialTheme.typography.bodySmall, color = onInk.copy(alpha = 0.72f))
+                Row(verticalAlignment = Alignment.Bottom) {
+                    // The ring stretches with the number, so two or three digits stay circled.
+                    Box(contentAlignment = Alignment.Center) {
+                        Image(ring, contentDescription = null, contentScale = ContentScale.FillBounds, modifier = Modifier.matchParentSize())
+                        Text("$total", style = NumeralText.copy(fontSize = 56.sp, lineHeight = 62.sp), color = onInk,
+                            modifier = Modifier.padding(horizontal = 26.dp, vertical = 12.dp))
+                    }
+                    Text("次", style = MaterialTheme.typography.bodyLarge, color = onInk, modifier = Modifier.padding(start = 2.dp, bottom = 16.dp))
+                }
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                perSkill.forEach { (label, count) ->
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text(label, style = MaterialTheme.typography.bodySmall, color = onInk.copy(alpha = 0.72f))
+                        Text("$count", style = NumeralText.copy(fontSize = 20.sp, lineHeight = 24.sp), color = onInk,
+                            modifier = Modifier.widthIn(min = 22.dp))
                     }
                 }
             }
@@ -151,18 +187,15 @@ private fun kindTile(kind: String) = when (kind) {
     else -> TileColors.Orange
 }
 
-/** 练习: one catalogue with the three skills behind a segmented switch instead of three tabs. */
+/** 练习: large title and a three-way skill switch; the catalogue below carries the content. */
 @Composable
 fun PracticeHeader(kind: CoachKind, onKind: (CoachKind) -> Unit) {
-    TabTitle("练习")
     val kinds = listOf(CoachKind.WRITING, CoachKind.TRANSLATION, CoachKind.READING)
-    TrackSegments(kinds.map { kindLabel(it.name) }, kinds.indexOf(kind), { onKind(kinds[it]) },
-        Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
-    Note(when (kind) {
-        CoachKind.WRITING -> "六级 Part I · 30 分钟 · 150–200 词"
-        CoachKind.TRANSLATION -> "六级 Part IV · 30 分钟 · 段落汉译英"
-        CoachKind.READING -> "仔细阅读 · 纸上做完，再来核对和弄懂"
-    }, Modifier.padding(horizontal = PageGutter))
+    Column {
+        TabTitle("练习")
+        DotTabs(listOf("写作", "翻译", "阅读"), kinds.indexOf(kind), { onKind(kinds[it]) },
+            Modifier.padding(horizontal = CardMargin - 10.dp, vertical = 4.dp))
+    }
 }
 
 /** 复盘: everything that looks back across skills — mistakes, trends, records and the word queue. */
@@ -172,6 +205,13 @@ fun ReviewHome(vm: StudyViewModel, padding: PaddingValues, onRoute: (String) -> 
     val due = vm.words.count { it.dueAt in 1..vm.now }
     LazyColumn(Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()), contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 24.dp)) {
         item { TabTitle("复盘") }
+        item {
+            Row(Modifier.fillMaxWidth().padding(start = CardMargin, end = CardMargin, top = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                ReviewCount("待回顾错因", reviews.size, LocalMarks.current.must.takeIf { reviews.isNotEmpty() }, Modifier.weight(1f))
+                ReviewCount("已提交", vm.coach.history.count { it.submittedAt > 0 }, null, Modifier.weight(1f))
+                ReviewCount("待复习词", due, null, Modifier.weight(1f))
+            }
+        }
         item {
             SectionLabel("错题与错因")
             RowCard {
@@ -198,6 +238,17 @@ fun ReviewHome(vm: StudyViewModel, padding: PaddingValues, onRoute: (String) -> 
                     leading = { IconTile(Icons.AutoMirrored.Outlined.ShowChart, TileColors.Green) }, onClick = { onRoute("me/trends") })
             }
             GroupFooter("趋势只统计本机记录，含重练与样本难度差异，不代表成绩预测。", Modifier.padding(horizontal = CardMargin))
+        }
+    }
+}
+
+/** One count on a white sheet, set in the serif numerals; vermilion only when it asks for attention. */
+@Composable
+private fun ReviewCount(label: String, count: Int, tone: Color?, modifier: Modifier) {
+    Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = MaterialTheme.shapes.large, modifier = modifier) {
+        Column(Modifier.padding(horizontal = 14.dp, vertical = 12.dp)/* .semantics(mergeDescendants = true) {} */) {
+            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+            Text("$count", style = NumeralText, color = tone ?: MaterialTheme.colorScheme.onSurface)
         }
     }
 }

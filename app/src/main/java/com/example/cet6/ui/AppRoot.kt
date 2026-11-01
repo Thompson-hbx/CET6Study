@@ -10,15 +10,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.WbSunny
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,13 +19,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cet6.data.*
 import com.example.cet6.domain.ExamLibraryState
 import com.example.cet6.ui.components.*
+import com.example.cet6.ui.theme.LocalMarks
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 
@@ -50,7 +42,7 @@ private val routeTitles = mapOf(
     "work/WRITING" to "写作", "work/TRANSLATION" to "翻译", "work/READING" to "阅读", "custom/READING" to "自己的文章",
     "me/style" to "界面风格", "me/connection" to "AI 连接", "me/review" to "错因回顾", "me/trends" to "学习趋势", "me/records" to "练习记录",
     "me/backup" to "备份与恢复", "me/exams" to "题库管理", "me/legacy" to "单词与旧版功能", "me/words" to "六级词汇",
-    "me/essays" to "旧版作文记录"
+    "me/essays" to "旧版作文记录", "me/sync" to "设备同步"
 )
 
 /**
@@ -94,14 +86,14 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         vm.coach.importedReadingId?.let { vm.coach.consumeReadingImport(it); push("custom/READING") }
     }
     LaunchedEffect(vm.coach.shareStatus) { if (vm.coach.shareStatus.isNotBlank()) snackbar.showSnackbar(vm.coach.shareStatus) }
-    val backLabel = routes.getOrNull(routes.size - 2)?.let(routeTitles::get) ?: tab.label
 
-    CompositionLocalProvider(LocalBackLabel provides backLabel) { when {
+    when {
         top == null -> Scaffold(
             containerColor = MaterialTheme.colorScheme.background,
             snackbarHost = { SnackbarHost(snackbar) },
             bottomBar = {
-                HomeTabBar(tab, hazeState) { item -> if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key } }
+                val reviewsWaiting = remember(vm.coach.history) { WeaknessReview.records(vm.coach.history).isNotEmpty() }
+                HomeTabBar(tab, hazeState, reviewsWaiting) { item -> if (item == HomeTab.PRACTICE) showPractice(practice) else { tab = item; vm.lastTab = item.key } }
             }
         ) { padding ->
             val header: @Composable () -> Unit = { PracticeHeader(practice, ::showPractice) }
@@ -136,6 +128,7 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         top == "me/trends" -> SimpleScreen(routeTitles.getValue(top), ::pop) { LearningTrendsScreen(vm) }
         top == "me/records" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ExamHistory(vm, onOpen = ::open) }
         top == "me/backup" -> SimpleScreen(routeTitles.getValue(top), ::pop) { BackupCard(vm, standalone = true) }
+        top == "me/sync" -> SimpleScreen(routeTitles.getValue(top), ::pop) { DeviceSyncScreen(vm) }
         top == "me/exams" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ExamManagementRoute(vm) }
         top == "me/legacy" -> SimpleScreen(routeTitles.getValue(top), ::pop) {
             legacy.today({ push("me/words") }, { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
@@ -144,38 +137,47 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         top == "me/words" -> SimpleScreen(routeTitles.getValue(top), ::pop) { legacy.words() }
         top == "me/essays" -> SimpleScreen(routeTitles.getValue(top), ::pop) { LegacyEssays(vm) }
         else -> LaunchedEffect(top) { pop() }
-    } }
+    }
 }
 
 /**
- * iOS 26-style floating tab bar: a capsule hovering above the content, which keeps scrolling underneath it,
- * with the current tab on a soft inner pill. Each item is a selectable tab so screen readers and the UI
- * scripts see which one is current.
+ * Floating tab bar: a frosted capsule hovering above the content, which keeps scrolling underneath it, with the
+ * current tab on a soft inner pill and its icon's accent stroke in vermilion. A vermilion dot on 复盘 says
+ * corrections are waiting. Each item is a selectable tab so screen readers and the UI scripts see which one is current.
  */
 @Composable
-private fun HomeTabBar(current: HomeTab, hazeState: HazeState, onSelect: (HomeTab) -> Unit) {
+private fun HomeTabBar(current: HomeTab, hazeState: HazeState, reviewsWaiting: Boolean, onSelect: (HomeTab) -> Unit) {
     val capsule = RoundedCornerShape(percent = 50)
+    val brand = LocalMarks.current.brand
     GlassSurface(
         state = hazeState,
         shape = capsule,
         modifier = Modifier.navigationBarsPadding().padding(start = 20.dp, end = 20.dp, bottom = 8.dp).fillMaxWidth()
     ) {
-        Row(Modifier.fillMaxWidth().height(62.dp).padding(4.dp)) {
+        Row(Modifier.fillMaxWidth().height(64.dp).padding(6.dp)) {
             HomeTab.entries.forEach { item ->
                 val selected = item == current
-                val tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                val tint = if (selected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
+                val accent = if (selected) brand else tint
+                val icon = remember(item, tint, accent) {
+                    when (item) {
+                        HomeTab.TODAY -> BrandIcons.today(tint, accent)
+                        HomeTab.PRACTICE -> BrandIcons.practice(tint, accent)
+                        HomeTab.REVIEW -> BrandIcons.review(tint, accent)
+                        HomeTab.ME -> BrandIcons.me(tint)
+                    }
+                }
                 Column(Modifier.weight(1f).fillMaxHeight().clip(capsule)
                     .background(if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Transparent)
                     .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item) }),
                     horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    // Line icons that fill in when selected, as SF Symbols do in an iOS tab bar.
-                    Icon(when (item) {
-                        HomeTab.TODAY -> if (selected) Icons.Filled.WbSunny else Icons.Outlined.WbSunny
-                        HomeTab.PRACTICE -> if (selected) Icons.Filled.Create else Icons.Outlined.Create
-                        HomeTab.REVIEW -> if (selected) Icons.Filled.History else Icons.Outlined.History
-                        HomeTab.ME -> if (selected) Icons.Filled.AccountCircle else Icons.Outlined.AccountCircle
-                    }, contentDescription = null, tint = tint, modifier = Modifier.size(25.dp))
-                    Text(item.label, style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, lineHeight = 12.sp),
+                    Box {
+                        Icon(icon, contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(24.dp))
+                        if (item == HomeTab.REVIEW && reviewsWaiting) Box(Modifier.align(Alignment.TopEnd).offset(x = 4.dp, y = (-2).dp)
+                            .size(8.dp).background(brand, RoundedCornerShape(50)))
+                    }
+                    Text(item.label, style = MaterialTheme.typography.labelSmall,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                         color = tint, modifier = Modifier.padding(top = 2.dp))
                 }
             }

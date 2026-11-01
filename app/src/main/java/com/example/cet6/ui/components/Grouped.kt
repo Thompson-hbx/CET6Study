@@ -19,23 +19,23 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
+// import androidx.compose.ui.semantics.heading
+// import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.cet6.ui.theme.LocalMarks
 
-// iOS-style grouped form parts for screens whose content column is already inset from the screen edge:
-// a quiet header, white rows separated by inset hairlines, and an explanatory footer.
+// Grouped form parts for screens whose content column is already inset from the screen edge:
+// a quiet header, white sheet rows separated by inset hairlines, and an explanatory footer.
 
 /** One grouped section. Rows inside are separated with [GroupDivider]. */
 @Composable
 fun Group(header: String? = null, footer: String? = null, content: @Composable ColumnScope.() -> Unit) {
     Column(Modifier.fillMaxWidth()) {
         if (header != null) Text(header, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(start = CardPadding, end = CardPadding, top = 8.dp, bottom = 6.dp).semantics { heading() })
+            modifier = Modifier.padding(start = CardPadding, end = CardPadding, top = 8.dp, bottom = 6.dp)/* .semantics { heading() } */)
         Surface(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
             Column(content = content)
         }
@@ -58,7 +58,7 @@ private val RowPadding = Modifier.heightIn(min = 44.dp).padding(horizontal = Car
 /** A read-only line: title on the left, its value in grey on the right. */
 @Composable
 fun ValueRow(title: String, value: String, valueTone: Tone = Tone.Muted) {
-    Row(Modifier.fillMaxWidth().then(RowPadding).semantics(mergeDescendants = true) {},
+    Row(Modifier.fillMaxWidth().then(RowPadding)/* .semantics(mergeDescendants = true) {} */,
         verticalAlignment = Alignment.CenterVertically) {
         Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Text(value, style = MaterialTheme.typography.bodyLarge, color = valueTone.color(), modifier = Modifier.padding(start = 12.dp))
@@ -71,7 +71,7 @@ fun ActionRow(text: String, onClick: () -> Unit, enabled: Boolean = true, destru
     val color = when {
         !enabled -> MaterialTheme.colorScheme.onSurfaceVariant
         destructive -> LocalMarks.current.must
-        else -> MaterialTheme.colorScheme.primary
+        else -> LocalMarks.current.good
     }
     Box(Modifier.fillMaxWidth().clickable(enabled = enabled, role = Role.Button, onClick = onClick).then(RowPadding),
         contentAlignment = Alignment.CenterStart) {
@@ -84,16 +84,17 @@ fun ActionRow(text: String, onClick: () -> Unit, enabled: Boolean = true, destru
 fun ToggleRow(title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, enabled: Boolean = true) {
     Row(Modifier.fillMaxWidth()
         .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onCheckedChange)
-        .semantics { contentDescription = title }
+        /* .semantics { contentDescription = title } */
         .heightIn(min = 44.dp).padding(start = CardPadding, end = 12.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically) {
         Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f),
             color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
         Switch(checked = checked, onCheckedChange = null, enabled = enabled, colors = SwitchDefaults.colors(
-            checkedTrackColor = LocalMarks.current.good, checkedThumbColor = Color.White, checkedBorderColor = Color.Transparent,
-            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh, uncheckedThumbColor = Color.White,
+            checkedTrackColor = MaterialTheme.colorScheme.primary, checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+            checkedBorderColor = Color.Transparent,
+            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest, uncheckedThumbColor = MaterialTheme.colorScheme.outline,
             uncheckedBorderColor = Color.Transparent,
-            disabledCheckedTrackColor = LocalMarks.current.good.copy(alpha = 0.4f), disabledCheckedThumbColor = Color.White,
+            disabledCheckedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f), disabledCheckedThumbColor = Color.White,
             disabledCheckedBorderColor = Color.Transparent,
             disabledUncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.6f),
             disabledUncheckedThumbColor = Color.White, disabledUncheckedBorderColor = Color.Transparent))
@@ -136,7 +137,7 @@ fun FieldRow(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else keyboardType),
-            modifier = Modifier.weight(1f).semantics { contentDescription = accessibilityLabel },
+            modifier = Modifier.weight(1f)/* .semantics { contentDescription = accessibilityLabel } */,
             decorationBox = { field ->
                 Box {
                     if (value.isEmpty()) Text(placeholder, style = style, color = MaterialTheme.colorScheme.outline)
@@ -146,7 +147,10 @@ fun FieldRow(
     }
 }
 
-/** System colours for the small rounded icon tiles that lead settings rows. */
+/**
+ * Roles for the small tiles that lead rows. On paper the tiles stay ink-on-paper so a list reads calm; only
+ * [Red], a row that needs attention, keeps the vermilion of a correction.
+ */
 object TileColors {
     val Blue = Color(0xFF007AFF)
     val Green = Color(0xFF34C759)
@@ -157,13 +161,18 @@ object TileColors {
     val Gray = Color(0xFF8E8E93)
 }
 
-/** A white glyph on a coloured rounded square, as on iOS settings rows. Decorative: the row text names it. */
+/** An ink glyph on a paper-coloured rounded square; vermilion for [TileColors.Red]. Decorative: the row text names it. */
 @Composable
 fun IconTile(icon: ImageVector, color: Color) {
-    Box(Modifier.size(29.dp).background(color, RoundedCornerShape(7.dp)), contentAlignment = Alignment.Center) {
-        Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+    val alert = color == TileColors.Red
+    val marks = LocalMarks.current
+    Box(Modifier.size(TileSize).background(if (alert) marks.mustSoft else MaterialTheme.colorScheme.background, RoundedCornerShape(10.dp)),
+        contentAlignment = Alignment.Center) {
+        Icon(icon, contentDescription = null, tint = if (alert) marks.must else MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(19.dp))
     }
 }
 
+private val TileSize = 34.dp
+
 /** Divider start for rows that lead with an [IconTile], so the line begins under the text. */
-val TiledRowDividerStart = CardPadding + 29.dp + 12.dp
+val TiledRowDividerStart = CardPadding + TileSize + 12.dp

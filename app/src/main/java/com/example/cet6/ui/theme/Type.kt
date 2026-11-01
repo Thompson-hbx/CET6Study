@@ -8,8 +8,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.cet6.R
 
-// iOS text styles mapped onto Material roles (Large Title 34, Headline 17, Body 17, Footnote 13 ...). The system
-// sans serif stands in for San Francisco, which may not be shipped on other platforms.
+// Type scale: large title 34, section 20, body 17, footnote 13. Chinese UI uses the system sans serif (Noto Sans
+// CJK on Android); English the learner reads or writes, and the big counts, use the bundled Source Serif.
 val Typography = Typography(
     // Large Title
     headlineLarge = TextStyle(
@@ -121,6 +121,15 @@ val PassageText = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 17.sp,
     lineHeight = 28.sp
+)
+
+/** Large counts set like print: the signature numerals on 今日 and 复盘. */
+val NumeralText = TextStyle(
+    fontFamily = SourceSerif,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 34.sp,
+    lineHeight = 40.sp,
+    fontFeatureSettings = "lnum, tnum"
 )
 
 /** Chinese source text in translation tasks; a little more leading for dense characters. */

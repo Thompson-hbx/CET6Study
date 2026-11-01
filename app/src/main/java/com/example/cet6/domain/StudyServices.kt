@@ -42,6 +42,10 @@ class StudyServices(app: Application, scope: CoroutineScope) {
         practiceBusy = { conversation.state.value.pending != null || practice.state.value.working },
         flushDrafts = practice::flush)
     val gate: AppGate = AppGate(ai, backup)
+    val sync = DeviceSyncService(app, DeviceSyncRepository(db), practice, scope, startupReady) {
+        !backup.state.value.busy && !backup.state.value.restorePending && !study.state.value.saving &&
+            !exams.state.value.busy && conversation.state.value.pending == null && !practice.state.value.working
+    }
 
     init {
         scope.launch {

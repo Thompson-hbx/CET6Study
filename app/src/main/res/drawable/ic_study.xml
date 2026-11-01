@@ -1,6 +1,14 @@
+<!-- The full 朱批 app icon for in-app use; same artwork as design/brand/zhupi-icon.svg. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#1267D6" android:pathData="M24,0 H84 Q108,0 108,24 V84 Q108,108 84,108 H24 Q0,108 0,84 V24 Q0,0 24,0 Z" />
-    <path android:fillColor="#FFFFFF" android:pathData="M24,70 L24,47 C24,35 37,31 51,27 C64,24 74,20 80,13 L80,34 C80,49 66,51 52,55 C38,58 29,62 24,70 Z" />
-    <path android:fillColor="#FFFFFF" android:pathData="M34,95 L34,76 C34,64 46,61 59,59 C71,57 81,56 88,49 L88,61 C88,76 77,80 64,83 C50,86 41,88 34,95 Z" />
+    android:width="108dp" android:height="108dp" android:viewportWidth="1024" android:viewportHeight="1024">
+    <path android:fillColor="#16181D"
+        android:pathData="M228,0 H796 A228,228 0 0,1 1024,228 V796 A228,228 0 0,1 796,1024 H228 A228,228 0 0,1 0,796 V228 A228,228 0 0,1 228,0 Z" />
+    <path android:strokeColor="#F5F1E8" android:strokeWidth="80" android:strokeLineCap="round"
+        android:pathData="M612,326 C490,336 392,445 387,602" />
+    <path android:strokeColor="#F5F1E8" android:strokeWidth="80"
+        android:pathData="M387,605 A125,125 0 1,0 637,605 A125,125 0 1,0 387,605 Z" />
+    <group android:rotation="-12" android:pivotX="512" android:pivotY="530">
+        <path android:strokeColor="#E5432A" android:strokeWidth="40" android:strokeLineCap="round"
+            android:pathData="M196,572 C172,470 230,360 327,300 C400,262 460,250 512,250 C697,250 847,375 847,530 C847,685 697,810 512,810 C327,810 177,685 177,530 C172,440 225,340 311,288" />
+    </group>
 </vector>

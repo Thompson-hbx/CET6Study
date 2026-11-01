@@ -115,7 +115,7 @@ class PaperPdfActivity : ComponentActivity() {
                 bitmap?.let { rendered ->
                     key(page) {
                         Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).horizontalScroll(rememberScrollState())) {
-                            Image(rendered.asImageBitmap(), contentDescription = "原始资料第 ${page + 1} 页",
+                            Image(rendered.asImageBitmap(), contentDescription = null /* "原始资料第 ${page + 1} 页" */,
                                 modifier = Modifier.width(width * zoom).aspectRatio(rendered.width.toFloat() / rendered.height))
                         }
                     }

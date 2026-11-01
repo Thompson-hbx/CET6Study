@@ -34,10 +34,10 @@ fun WeaknessReviewCard(
     val byKind = if (kindFilter == null) all else all.filter { it.kind == kindFilter }
     val records = WeaknessReview.records(byKind, category)
     val periods = WeaknessReview.periods(records, LocalDate.parse(today), ZoneId.systemDefault())
-    ElevatedCard(
+    Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(

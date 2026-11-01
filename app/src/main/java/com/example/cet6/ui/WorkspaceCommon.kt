@@ -73,7 +73,7 @@ fun WorkspaceMenu(vm: StudyViewModel, entry: CoachPractice, extra: List<Pair<Str
     var open by remember { mutableStateOf(false) }
     var showWord by remember { mutableStateOf(false) }
     Box {
-        IconButton(onClick = { open = true }) { Icon(Icons.Outlined.MoreVert, contentDescription = "更多") }
+        IconButton(onClick = { open = true }) { Icon(Icons.Outlined.MoreVert, contentDescription = null /* "更多" */) }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(text = { Text("加入生词复习") }, onClick = { open = false; showWord = true })
             extra.forEach { (label, action) -> DropdownMenuItem(text = { Text(label) }, onClick = { open = false; action() }) }
@@ -211,5 +211,5 @@ fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, 
 /** 追问 in a review's top bar; it opens the follow-up composer in the footer. */
 @Composable
 fun AskAction(onClick: () -> Unit) {
-    IconButton(onClick = onClick) { Icon(Icons.AutoMirrored.Outlined.Chat, contentDescription = "追问", tint = MaterialTheme.colorScheme.primary) }
+    IconButton(onClick = onClick) { Icon(Icons.AutoMirrored.Outlined.Chat, contentDescription = null /* "追问" */, tint = MaterialTheme.colorScheme.primary) }
 }

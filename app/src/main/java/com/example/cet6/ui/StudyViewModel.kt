@@ -25,6 +25,11 @@ class StudyViewModel(app: Application) : AndroidViewModel(app) {
     private val studyUi by services.study.state.composeState()
     private val examUi by services.exams.state.composeState()
     private val backupUi by services.backup.state.composeState()
+    val deviceSync by services.sync.state.composeState()
+    fun configureSync(address: String, secret: String) = services.sync.configure(address, secret)
+    fun synchronizeDevices() = services.sync.synchronize()
+    fun enableDeviceSync(enabled: Boolean) = services.sync.setEnabled(enabled)
+    fun resolveSync(conflict: com.example.cet6.sync.SyncConflict, useRemote: Boolean) = services.sync.resolve(conflict, useRemote)
 
     val provider: AiProvider get() = aiConnection.provider
     val apiBaseUrl: String get() = aiConnection.apiBaseUrl

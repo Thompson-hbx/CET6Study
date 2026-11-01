@@ -98,7 +98,7 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             })
             Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
                 when (tab) {
-                    0 -> DraftPane(vm, entry, task, meta == null, submitted)
+                    0 -> DraftPane(vm, entry, task, meta == null, submitted, onPlan = { showPlan = true })
                     1 -> WritingReviewPane(vm, entry, turns, reviewTurn, scroll, onGoWrite = { tab = 0 }, onAsk = ::ask)
                     else -> ReferencePane(reference, meta?.optString("referenceWritingSource").orEmpty())
                 }
@@ -137,36 +137,108 @@ fun LoadingScreen(onBack: () -> Unit) {
 }
 
 @Composable
-private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTask, custom: Boolean, submitted: Boolean) {
+private fun DraftPane(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    task: WritingTask,
+    custom: Boolean,
+    submitted: Boolean,
+    onPlan: () -> Unit
+) {
     val state = vm.coach
-    var expanded by rememberSaveable(entry.id) { mutableStateOf(false) }
-    Column(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    var expanded by rememberSaveable(entry.id) { mutableStateOf(entry.answer.isBlank()) }
+    Column(Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         if (custom && !submitted && entry.sourcePracticeId.isBlank()) {
-            RowCard {
-                FieldRow("标题", entry.title, { v -> state.edit(CoachKind.WRITING) { it.copy(title = v.take(200)) } })
-                RowDivider()
-                CardTitle("题目与要求", Modifier.padding(start = CardPadding, end = CardPadding, top = 12.dp))
-                FieldRow(null, entry.material, { v -> state.edit(CoachKind.WRITING) { it.copy(material = v) } },
-                    placeholder = "题目与要求", minLines = 3, accessibilityLabel = "题目与要求", maxLines = 8)
+            PaperCard(
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
+                padding = PaddingValues(0.dp)
+            ) {
+                Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Tag("自拟作文题", Tone.Ink)
+                    FieldRow("标题", entry.title, { v -> state.edit(CoachKind.WRITING) { it.copy(title = v.take(200)) } },
+                        placeholder = "输入练习标题")
+                }
+                Hairline()
+                Column(Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+                    CardTitle("题目与要求", Modifier.padding(bottom = 4.dp))
+                    FieldRow(null, entry.material, { v -> state.edit(CoachKind.WRITING) { it.copy(material = v) } },
+                        placeholder = "粘贴或输入作文题目与要求", minLines = 3, accessibilityLabel = "题目与要求", maxLines = 8)
+                }
             }
         } else {
-            // The task folds to one line so the first screen belongs to the essay; the opening sentence stays in view.
-            PaperCard(padding = PaddingValues(start = CardPadding, end = 4.dp, top = 4.dp, bottom = 4.dp)) {
-                Row(Modifier.fillMaxWidth().clickable(onClickLabel = if (expanded) "收起题目" else "展开题目") { expanded = !expanded }
-                    .heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+            // Structured editorial prompt card: shows requirements, opening cue and AI outline entry without looking like a settings row.
+            PaperCard(
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
+                padding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().clickable(/* onClickLabel = if (expanded) "收起题目" else "展开题目" */ ) { expanded = !expanded }
+                        .heightIn(min = 36.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Tag("审题要求", Tone.Ink)
                     Text(taskSummary(task), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                    Icon(if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown, contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(12.dp))
+                    Text(
+                        if (expanded) "收起" else "看完整题目",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Icon(
+                        if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
-                Column(Modifier.padding(end = CardPadding - 4.dp, bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (!expanded) Note(if (task.opening != null) "点开查看完整题目和开头句" else "点开查看完整题目", Modifier.padding(top = 0.dp))
-                    else {
-                        task.opening?.let { opening -> SelectionContainer { Text(opening, style = PassageText.copy(fontSize = 16.sp, lineHeight = 25.sp)) } }
-                        Text(entry.material, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Column(Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    task.opening?.let { opening ->
+                        Surface(
+                            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp),
+                            border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                    Note("规定开头句")
+                                    SelectionContainer {
+                                        Text(opening, style = PassageText.copy(fontSize = 15.sp, lineHeight = 23.sp))
+                                    }
+                                }
+                                if (!submitted && entry.answer.isBlank()) {
+                                    FilledTonalButton(
+                                        onClick = { state.edit(CoachKind.WRITING) { it.copy(answer = opening + " ") } },
+                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                                        modifier = Modifier.heightIn(min = 34.dp)
+                                    ) { Text("插入开头句", style = MaterialTheme.typography.labelMedium) }
+                                }
+                            }
+                        }
                     }
-                    if (!submitted && entry.answer.isBlank() && task.opening != null) TextButton(
-                        onClick = { state.edit(CoachKind.WRITING) { it.copy(answer = task.opening + " ") } },
-                        contentPadding = PaddingValues(0.dp)) { Text("插入开头句") }
+                    if (expanded) {
+                        SelectionContainer {
+                            Text(
+                                entry.material,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    } else if (task.opening == null) {
+                        Text(
+                            entry.material,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }
@@ -187,8 +259,24 @@ private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTas
             }
             if (compare) ComparePanel(source.answer, entry.answer)
         }
-        WorkspaceDocument(if (submitted) "已提交的原稿" else "作文正文", entry.answer, submitted,
-            WritingCoach.words(entry.answer), task.minWords, task.maxWords, placeholder = "在这里写作…") { text ->
+        WorkspaceDocument(
+            title = if (submitted) "已提交的原稿" else "作文正文",
+            text = entry.answer,
+            readOnly = submitted,
+            words = WritingCoach.words(entry.answer),
+            minWords = task.minWords,
+            maxWords = task.maxWords,
+            placeholder = "在这里动笔写作…",
+            headerAction = if (!submitted && entry.material.isNotBlank()) {
+                {
+                    TextButton(
+                        onClick = onPlan,
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                        modifier = Modifier.heightIn(min = 28.dp)
+                    ) { Text("构思提纲", style = MaterialTheme.typography.labelMedium) }
+                }
+            } else null
+        ) { text ->
             state.edit(CoachKind.WRITING) { it.copy(answer = text) }
         }
         if (submitted) Note("这一稿已提交，可以在「批改」里查看批注；想继续改，点下方「写修改稿」。", Modifier.padding(horizontal = PageGutter))
@@ -201,18 +289,27 @@ private fun taskSummary(task: WritingTask): String = listOfNotNull(
     if (task.minWords != null && task.maxWords != null) "${task.minWords}–${task.maxWords} 词" else task.minWords?.let { "至少 $it 词" }
 ).joinToString(" · ")
 
-/** Borderless editor that reads like the page it will be printed on. */
+/** Borderless manuscript editor set in Source Serif so drafting reads like a printed page. */
 @Composable
 fun Editor(text: String, readOnly: Boolean, placeholder: String, minHeight: Int = 320, onChange: (String) -> Unit) {
-    BasicTextField(text, onChange, readOnly = readOnly, textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface, lineHeight = 28.sp),
+    BasicTextField(
+        value = text,
+        onValueChange = onChange,
+        readOnly = readOnly,
+        textStyle = PassageText.copy(color = MaterialTheme.colorScheme.onSurface, fontSize = 18.sp, lineHeight = 30.sp),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         modifier = Modifier.fillMaxWidth().heightIn(min = minHeight.dp),
         decorationBox = { inner ->
             Box {
-                if (text.isEmpty()) Text(placeholder, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                if (text.isEmpty()) Text(
+                    placeholder,
+                    style = PassageText.copy(fontSize = 18.sp, lineHeight = 30.sp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f)
+                )
                 inner()
             }
-        })
+        }
+    )
 }
 
 @Composable
@@ -255,23 +352,40 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
             }
         }
     } else {
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(10.dp))
         BandHeader(review.score, review.aspects)
         val placed = remember(entry.answer, review, decisions) { placeIssues(entry.answer, review, decisions) }
-        IssueList(placed, onOpen = { selected = it }, onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
-            { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) } })
         SectionLabel("原稿批注")
-        PaperCard(padding = PaddingValues(horizontal = 18.dp, vertical = 16.dp)) {
-            MarkedText(entry.answer, placed.filter { !it.dismissed }.mapNotNull { p -> p.range?.let { TextMark(p.issue.id, it, p.tone) } },
-                selected = selected?.let { placed.getOrNull(it)?.issue?.id }, style = PassageText,
-                onMark = { id -> selected = placed.indexOfFirst { it.issue.id == id } })
-            Row(Modifier.padding(top = 14.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        PaperCard(
+            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
+            padding = PaddingValues(0.dp)
+        ) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
                 DotStatus("必改 ${placed.count { it.issue.must && !it.accepted && !it.dismissed }}", Tone.Must)
                 DotStatus("可改 ${placed.count { !it.issue.must && !it.accepted && !it.dismissed }}", Tone.Better)
                 DotStatus("已采纳 ${placed.count { it.accepted }}", Tone.Good)
+                Spacer(Modifier.weight(1f))
+                Note("点划线处看批注")
+            }
+            Hairline()
+            Box(Modifier.padding(horizontal = 18.dp, vertical = 16.dp)) {
+                MarkedText(
+                    entry.answer,
+                    placed.filter { !it.dismissed }.mapNotNull { p -> p.range?.let { TextMark(p.issue.id, it, p.tone) } },
+                    selected = selected?.let { placed.getOrNull(it)?.issue?.id },
+                    style = PassageText,
+                    onMark = { id -> selected = placed.indexOfFirst { it.issue.id == id } }
+                )
             }
         }
-        if (!reviewing && reviewTurn != null) Note("点画线处或上面的条目，逐条决定采纳还是忽略；采纳的会带进修改稿。",
+        IssueList(placed, onOpen = { selected = it }, onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
+            { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) } })
+        if (!reviewing && reviewTurn != null) Note("点画线处或上面的卡片，逐条决定采纳还是忽略；采纳的会带进修改稿。",
             Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
         if (review.tips.isNotEmpty()) {
             SectionLabel("写作建议")
@@ -311,10 +425,41 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
 fun FocusChooser(kind: CoachKind, enabled: Boolean, connected: Boolean, onPick: (WritingFocus) -> Unit) {
     SectionLabel("选择批改方式")
     val focuses = WritingFocus.forKind(kind)
-    RowCard {
+    Column(Modifier.fillMaxWidth().padding(horizontal = CardMargin), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         focuses.forEachIndexed { i, focus ->
-            ListRow(focus.label + if (i == 0) "（推荐）" else "", subtitle = focus.summaryFor(kind), enabled = enabled) { onPick(focus) }
-            if (i < focuses.lastIndex) RowDivider()
+            Surface(
+                onClick = { onPick(focus) },
+                enabled = enabled,
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
+                border = androidx.compose.foundation.BorderStroke(
+                    if (i == 0) 1.dp else 0.5.dp,
+                    if (i == 0) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f) else MaterialTheme.colorScheme.outlineVariant
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                focus.label + if (i == 0) "（推荐）" else "",
+                                style = MaterialTheme.typography.titleSmall,
+                                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Text(
+                            focus.summaryFor(kind),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    StatusPill("开始批改", if (i == 0) Tone.Ink else Tone.Muted)
+                }
+            }
         }
     }
     if (!connected) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型；原稿已保存在本机。",
