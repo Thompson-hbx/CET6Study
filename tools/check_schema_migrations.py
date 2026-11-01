@@ -8,10 +8,13 @@ import sqlite3
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "app/schemas/com.example.cet6.data.StudyDatabase"
-source = (ROOT / "app/src/main/java/com/example/cet6/data/StudyDatabase.kt").read_text(encoding="utf-8")
+source = (ROOT / "android/core-study/src/main/java/com/example/cet6/data/StudyDatabase.kt").read_text(encoding="utf-8")
 migrations = {}
 for start, end, body in re.findall(r"val MIGRATION_(\d+)_(\d+) = (.*?)(?=\n        val MIGRATION_|\n        @Volatile)", source, re.S):
-    migrations[int(start)] = (int(end), [json.loads('"' + statement + '"') for statement in re.findall(r'db.execSQL\("((?:[^"\\]|\\.)*)"\)', body)])
+    # ktlint wraps long SQL calls and adds a trailing comma; both forms contain the same literal.
+    statements = re.findall(r'db\.execSQL\(\s*"((?:[^"\\]|\\.)*)"\s*,?\s*\)', body)
+    assert len(statements) == len(re.findall(r'db\.execSQL\s*\(', body)), f"Unsupported SQL expression in migration {start}->{end}"
+    migrations[int(start)] = (int(end), [json.loads('"' + statement + '"') for statement in statements])
 latest = max(int(path.stem) for path in SCHEMAS.glob("*.json"))
 expected = json.loads((SCHEMAS / f"{latest}.json").read_text(encoding="utf-8"))["database"]
 for version in range(1, latest):

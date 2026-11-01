@@ -46,11 +46,9 @@ android {
     androidResources {
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:CVS:thumbs.db:picasa.ini:*~:exam-packs"
     }
-    sourceSets.getByName("main").java.srcDir("../third_party/bee-fsrs/src")
     if (personalExamPack.isPresent) sourceSets.getByName("main").assets.srcDir(personalAssets)
     sourceSets.getByName("androidTest").assets.srcDir("schemas")
     sourceSets.getByName("androidTest").assets.srcDir("testdata")
-    sourceSets.getByName("test").java.srcDir("src/testShared/java")
     sourceSets.getByName("androidTest").java.srcDir("src/testShared/java")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -59,12 +57,15 @@ android {
     kotlinOptions { jvmTarget = "17" }
     packaging { resources.excludes += "/META-INF/{AL2.0,LGPL2.1}" }
 }
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
 dependencies {
+    implementation(project(":ui-navigation"))
+    implementation(project(":ui-state"))
+    implementation(project(":core-study"))
+    implementation(project(":core-ui"))
     implementation(project(":sync-core"))
     implementation(project(":design-tokens"))
+    implementation(project(":review-core"))
+    implementation(project(":diagnostics"))
     implementation(platform(libs.compose.bom))
     implementation(libs.activity.compose)
     implementation(libs.activity.ktx)
@@ -80,9 +81,9 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    // The database is generated in :core-study; device checks here still open it directly.
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
     implementation(libs.okhttp)
     implementation(libs.markwon.core)
     implementation(libs.markwon.tables)

@@ -1,0 +1,20 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>CyclomaticComplexMethod:SkillHomes.kt$@Composable fun ReadingHome( vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper) -&gt; Unit, onShared: (String) -&gt; Unit, onCustom: () -&gt; Unit, header: @Composable () -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:SkillHomes.kt$@Composable fun TaskHome( vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper) -&gt; Unit, onCustom: () -&gt; Unit, header: @Composable () -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:SkillHomes.kt$@Composable private fun SetCell(cell: MatrixCell, session: String, modifier: Modifier)</ID>
+        <ID>MagicNumber:SkillHomes.kt$4</ID>
+        <ID>MagicNumber:SkillHomes.kt$40</ID>
+        <ID>MagicNumber:SkillHomes.kt$5</ID>
+        <ID>MagicNumber:SkillHomes.kt$7</ID>
+        <ID>MatchingDeclarationName:SkillHomes.kt$TaskStatus</ID>
+        <ID>ReturnCount:SkillHomes.kt$private fun writtenStatus(history: List&lt;CoachPractice&gt;, bands: Map&lt;String, Int&gt;, itemId: String): TaskStatus?</ID>
+        <ID>TooManyFunctions:SkillHomes.kt$com.example.cet6.ui.SkillHomes.kt</ID>
+        <ID>UnusedParameter:SkillHomes.kt$session: String</ID>
+        <ID>CyclomaticComplexMethod:PracticeHeader.kt$@Composable fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper, CoachKind) -&gt; Unit, onRoute: (String) -&gt; Unit)</ID>
+        <ID>TopLevelPropertyNaming:PracticeHeader.kt$private const val WEEK_MILLIS = 7L * 24 * 60 * 60 * 1000</ID>
+        <ID>CyclomaticComplexMethod:ExamScreens.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -&gt; Unit)</ID>
+        <ID>NestedBlockDepth:ExamScreens.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -&gt; Unit)</ID>
+    </CurrentIssues>
+</SmellBaseline>

@@ -6,6 +6,9 @@
 
 ## 核心文档
 
+- [UI_MODULES.md](UI_MODULES.md)：全部 UI 功能模块、依赖边界与独立 Windows 写作原型。
+- [ENGINEERING.md](ENGINEERING.md)：统一检查、本地诊断及工程边界。
+
 - [RELEASE_ACCEPTANCE.md](RELEASE_ACCEPTANCE.md)：2026-10-28 现有版本本地验收、真实 AI 评测与未验收边界。
 
 - [TODO.md](TODO.md)：当前未解决事项及证据边界，不设强制顺序或功能范围上限。

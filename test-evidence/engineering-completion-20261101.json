@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-01",
+  "branch": "chore/engineering-completion",
+  "baseCommit": "3c4fa1b794ae4b74106964be7283850db9121887",
+  "scope": [
+    "shared review-core module",
+    "local diagnostics module and both clients",
+    "all-module CI gate",
+    "migration checker formatting compatibility"
+  ],
+  "verification": {
+    "entryPoint": "tools/verify.ps1 with existing bundled Python",
+    "result": "passed",
+    "gradleTask": "verifyEngineering",
+    "cacheNote": "Some unchanged Gradle tasks were UP-TO-DATE; changed modules and regression tests ran.",
+    "unitTestReports": {
+      "app": {
+        "tests": 176,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "desktop": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "sync-core": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "sync-server": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "design-tokens": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "review-core": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "diagnostics": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "totalUnitTests": 215,
+    "pythonToolTests": 33,
+    "schemaMigrations": "actual SQL v1-v7 to v8 in in-memory SQLite; original rows preserved",
+    "androidLint": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 10
+    },
+    "lintIssueIds": [
+      "GradleDependency",
+      "OldTargetApi"
+    ],
+    "defaultInstrumentation": "passed on emulator-5554 after module extraction",
+    "uiScenario": "passed existing offline article/question/option/submission/evidence/error-reason/background scenario",
+    "androidCrash": {
+      "androidCrashRecorded": true,
+      "versionPresent": true,
+      "messageExcluded": true,
+      "bytes": 686
+    },
+    "androidDiagnosticsUi": "Final APK cold-started; persisted synthetic crash shown; system back returned to home tabs",
+    "desktopUi": "Offscreen Compose tests passed, including diagnostics navigation",
+    "jvmCrash": "Real child JVM uncaught exception exits nonzero and produces sanitized metadata",
+    "regressionBeforeFix": "Two new desktop MarginNotesTest cases failed before parser sharing, and passed afterward",
+    "diffCheck": "passed",
+    "coreRelocation": "six parser/text files compared with pre-refactor logic; review decision body preserved",
+    "apkSha256": "c58f3ab8555855c8116c5a17f6558d385b4372f204ddcff55faca87dbdff8595",
+    "screenshots": [
+      ".tools/android-diagnostics.png",
+      "desktop/build/design-evidence/crash-diagnostics.png"
+    ]
+  },
+  "boundaries": [
+    "No remote Actions run or push",
+    "No third-party crash service or upload",
+    "No ANR/native/system-kill coverage",
+    "No physical device installation or AI requests",
+    "No dependency upgrades, database schema or backup format changes",
+    "Core extraction only; not every UI feature is a separate module"
+  ]
+}

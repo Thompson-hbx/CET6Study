@@ -1,4 +1,5 @@
 .gradle/
+.kotlin/
 .idea/
 *.iml
 local.properties
@@ -16,3 +17,9 @@ __pycache__/
 # Private runtime data for the optional personal sync service.
 /data/
 /sync-server/data/
+
+/desktop-tauri/node_modules/
+/desktop-tauri/dist/
+/desktop-tauri/.test-build/
+/desktop-tauri/src-tauri/target/
+/desktop-tauri/src-tauri/gen/

@@ -1,0 +1,11 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>ComplexCondition:WritingWorkspace.kt$tab == 1 &amp;&amp; submitted &amp;&amp; reviewTurn != null &amp;&amp; pending?.kind != TurnKind.WRITING_REVIEW</ID>
+        <ID>CyclomaticComplexMethod:WritingWorkspace.kt$@Composable private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTask, custom: Boolean, submitted: Boolean, onPlan: () -&gt; Unit)</ID>
+        <ID>CyclomaticComplexMethod:WritingWorkspace.kt$@Composable private fun WritingReviewPane( vm: StudyViewModel, entry: CoachPractice, turns: List&lt;CoachTurn&gt;, reviewTurn: CoachTurn?, scroll: ScrollState, onGoWrite: () -&gt; Unit, onAsk: (String) -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:WritingWorkspace.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun WritingWorkspace(vm: StudyViewModel, onBack: () -&gt; Unit)</ID>
+        <ID>TooManyFunctions:WritingWorkspace.kt$com.example.cet6.ui.WritingWorkspace.kt</ID>
+        <ID>UnusedParameter:WritingWorkspace.kt$scroll: ScrollState</ID>
+    </CurrentIssues>
+</SmellBaseline>

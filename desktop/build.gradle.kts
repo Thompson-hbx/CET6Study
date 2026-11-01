@@ -7,11 +7,14 @@ plugins {
 }
 kotlin { jvmToolchain(21) }
 // The serif and its OFL licence come from the phone app, so both platforms ship the same font files.
-sourceSets { main { resources.srcDir("../app/src/main/res/font") } }
+sourceSets { main { resources.srcDir("../android/core-ui/src/main/res/font") } }
 tasks.processResources { from("../app/src/main/assets/licenses/source-serif.txt") { into("licenses") } }
 dependencies {
+    implementation(project(":desktop-ui-navigation"))
     implementation(project(":sync-core"))
     implementation(project(":design-tokens"))
+    implementation(project(":review-core"))
+    implementation(project(":diagnostics"))
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
@@ -40,6 +43,7 @@ compose.desktop {
 
 // JDK app-image packaging avoids Compose 1.7's unconditional WiX requirement on Windows.
 tasks.jar {
+    manifest { attributes["Implementation-Version"] = compose.desktop.application.nativeDistributions.packageVersion }
     manifest { attributes["Class-Path"] = configurations.runtimeClasspath.get().files.joinToString(" ") { it.name } }
 }
 val portableInput = tasks.register<Sync>("preparePortable") {

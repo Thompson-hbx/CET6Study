@@ -1,0 +1,6 @@
+<baseline version="1.0">
+    <file name="src/main/java/com/example/cet6/ui/WritingWorkspace.kt">
+        <error line="204" column="55" source="standard:comment-wrapping" />
+        <error line="204" column="55" source="standard:discouraged-comment-location" />
+    </file>
+</baseline>

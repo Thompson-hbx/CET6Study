@@ -1,0 +1,18 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>MaxLineLength:BackupCard.kt$"${preview.words.size} 个词、${preview.reviews.size} 条学习日志、${preview.schedules.size} 条 FSRS 状态、${preview.plans.size} 个每日目标、${preview.reading.size} 条旧阅读、${preview.essays.size} 篇旧作文、${preview.coach.size} 条训练、${preview.turns.size} 条讲解与对话。"</ID>
+        <ID>CyclomaticComplexMethod:MeHome.kt$@Composable fun ReadingHome( vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper) -&gt; Unit, onShared: (String) -&gt; Unit, onCustom: () -&gt; Unit, header: @Composable () -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:MeHome.kt$@Composable fun TaskHome( vm: StudyViewModel, kind: CoachKind, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper) -&gt; Unit, onCustom: () -&gt; Unit, header: @Composable () -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:MeHome.kt$@Composable private fun SetCell(cell: MatrixCell, session: String, modifier: Modifier)</ID>
+        <ID>MagicNumber:MeHome.kt$4</ID>
+        <ID>MagicNumber:MeHome.kt$40</ID>
+        <ID>MagicNumber:MeHome.kt$5</ID>
+        <ID>MagicNumber:MeHome.kt$7</ID>
+        <ID>MatchingDeclarationName:MeHome.kt$TaskStatus</ID>
+        <ID>ReturnCount:MeHome.kt$private fun writtenStatus(history: List&lt;CoachPractice&gt;, bands: Map&lt;String, Int&gt;, itemId: String): TaskStatus?</ID>
+        <ID>TooManyFunctions:MeHome.kt$com.example.cet6.ui.SkillHomes.kt</ID>
+        <ID>UnusedParameter:MeHome.kt$session: String</ID>
+        <ID>CyclomaticComplexMethod:ExamManagement.kt$@Composable fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens)</ID>
+    </CurrentIssues>
+</SmellBaseline>

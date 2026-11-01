@@ -1,0 +1,9 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>MaxLineLength:LearningTrendsScreen.kt$"累计提交 $totalSubmissions 次（写译修改稿 $totalRevisions 次） · 阅读核对 $totalReadingCorrect / $totalReadingKnown 题 · 单词记住 $totalRemembered / $totalWordRatings 次"</ID>
+        <ID>CyclomaticComplexMethod:WeaknessReviewCard.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun WeaknessReviewCard(history: List&lt;CoachPractice&gt;, today: String, enabled: Boolean, standalone: Boolean = false, onReview: (CoachPractice) -&gt; Unit)</ID>
+        <ID>CyclomaticComplexMethod:ReviewHome.kt$@Composable fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper, CoachKind) -&gt; Unit, onRoute: (String) -&gt; Unit)</ID>
+        <ID>TopLevelPropertyNaming:ReviewHome.kt$private const val WEEK_MILLIS = 7L * 24 * 60 * 60 * 1000</ID>
+    </CurrentIssues>
+</SmellBaseline>

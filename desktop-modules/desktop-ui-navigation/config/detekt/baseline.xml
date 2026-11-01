@@ -1,0 +1,10 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>CyclomaticComplexMethod:DesktopWorkspace.kt$@Composable private fun ColumnScope.PracticeArea(model: DesktopModel, compact: Boolean, narrow: Boolean)</ID>
+        <ID>CyclomaticComplexMethod:DesktopWorkspace.kt$@Composable private fun Editor(model: DesktopModel, key: String, row: JSONObject, notes: List&lt;MarginNote&gt;, modifier: Modifier)</ID>
+        <ID>CyclomaticComplexMethod:DesktopWorkspace.kt$@Composable private fun FeedbackDrawer(model: DesktopModel, row: JSONObject, expanded: Boolean, compact: Boolean, onToggle: () -&gt; Unit)</ID>
+        <ID>ReturnCount:DesktopWorkspace.kt$fun questions(value: String): String</ID>
+        <ID>TooManyFunctions:DesktopWorkspace.kt$com.example.cet6.desktop.DesktopWorkspace.kt</ID>
+    </CurrentIssues>
+</SmellBaseline>

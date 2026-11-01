@@ -1,0 +1,8 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>TooManyFunctions:DesktopTodayPage.kt$com.example.cet6.desktop.DesktopHome.kt</ID>
+        <ID>TopLevelPropertyNaming:DesktopTodayPage.kt$const val WEEK_MILLIS = 7L * 24 * 60 * 60 * 1000</ID>
+        <ID>TopLevelPropertyNaming:DesktopTodayPage.kt$private const val WEEK_MILLIS = 7L * 24 * 60 * 60 * 1000</ID>
+    </CurrentIssues>
+</SmellBaseline>

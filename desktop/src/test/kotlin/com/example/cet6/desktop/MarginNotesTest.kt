@@ -12,7 +12,6 @@ class MarginNotesTest {
             """{"type":"issue","quote":"have","fix":"has","reason":"主谓一致","category":"语法"}""",
             "plain prose line",
             """{"type":"issue","quote":"very big","fix":"vast","level":"better"}""",
-            """{"type":"issue","quote":" ","fix":""}""",
         ).joinToString("\n")
         assertEquals(
             listOf(
@@ -21,6 +20,25 @@ class MarginNotesTest {
             ),
             marginNotes(text),
         )
+    }
+
+    @Test fun malformedFieldsAndDuplicateScoresDoNotBecomeMarginNotes() {
+        val issue = """{"type":"issue","quote":"have","fix":"has"}"""
+        for (tail in listOf(
+            """{"type":"issue","quote":" ","fix":""}""",
+            """{"type":"issue","quote":123,"fix":"x"}""",
+            """{"type":"issue","quote":"have","fix":"has","level":"unknown"}""",
+            """{"type":"score","band":8}
+                {"type":"score","band":11}""",
+            "{broken}",
+        )) {
+            assertEquals(emptyList<MarginNote>(), marginNotes("$issue\n$tail"))
+        }
+    }
+
+    @Test fun fencedAndPrettyPrintedReviewsUseThePhoneProtocol() {
+        val raw = "```json\n{\n  \"type\": \"issue\",\n  \"quote\": \"have\",\n  \"fix\": \"has\"\n}\n```"
+        assertEquals(listOf(MarginNote("have", "has", "", "表达", true)), marginNotes(raw))
     }
 
     @Test fun usesNewestReviewTurnAndIgnoresChat() {
