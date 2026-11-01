@@ -15,8 +15,8 @@ class MarginNotesTest {
         ).joinToString("\n")
         assertEquals(
             listOf(
-                MarginNote("have", "has", "主谓一致", "语法", must = true),
-                MarginNote("very big", "vast", "", "表达", must = false),
+                MarginNote("have", "has", "主谓一致", "语法", must = true, id = 0),
+                MarginNote("very big", "vast", "", "表达", must = false, id = 1),
             ),
             marginNotes(text),
         )
@@ -39,6 +39,19 @@ class MarginNotesTest {
     @Test fun fencedAndPrettyPrintedReviewsUseThePhoneProtocol() {
         val raw = "```json\n{\n  \"type\": \"issue\",\n  \"quote\": \"have\",\n  \"fix\": \"has\"\n}\n```"
         assertEquals(listOf(MarginNote("have", "has", "", "表达", true)), marginNotes(raw))
+    }
+
+    @Test fun savedDecisionsMarkNotesAndOnlyAcceptedLocatedFixesReachTheRevision() {
+        val review = listOf(
+            """{"type":"issue","quote":"have","fix":"has"}""",
+            """{"type":"issue","quote":"help","fix":"helps"}""",
+            """{"type":"issue","quote":"not in the text","fix":"x"}""",
+        ).joinToString("\n")
+        val notes = marginNotes(review, """{"accepted":[0,2],"dismissed":[1]}""")
+        assertEquals(listOf(NoteDecision.ACCEPTED, NoteDecision.DISMISSED, NoteDecision.ACCEPTED), notes.map { it.decision })
+        // The dismissed fix and the accepted fix whose quote is missing leave the text alone.
+        assertEquals("They has a journal that help.", revisedAnswer("They have a journal that help.", notes))
+        assertEquals(List(3) { NoteDecision.OPEN }, marginNotes(review, "").map { it.decision })
     }
 
     @Test fun usesNewestReviewTurnAndIgnoresChat() {

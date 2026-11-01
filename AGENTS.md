@@ -6,7 +6,7 @@
 
 - 模块：现有 Kotlin 工程共 29 个 Gradle 模块；`:app`、`:desktop` 是薄宿主，Android 功能位于 `android/`，Compose Desktop 功能位于 `desktop-modules/`，另有 `sync-core`、`sync-server`、`design-tokens`、`review-core`、`diagnostics`。完整边界见 `docs/UI_MODULES.md`。Kotlin 2.0.21、AGP 8.7.3、KSP 2.0.21-1.0.28、Gradle Wrapper 8.9（校验 SHA-256）；插件与依赖版本统一写在 `gradle/libs.versions.toml`。
 - compileSdk / targetSdk 35，minSdk 26；Java / Kotlin target 17，JDK 17 或 21（本机 SDK 与 JDK 在 `C:\Dev\Env`）。
-- Kotlin UI 使用 Jetpack Compose（Android BOM 2024.12.01、Material3），没有 XML 布局。导航用 Navigation Compose（`android/ui-navigation` 的 `AppRoot.kt`）；依赖注入用 Hilt（宿主 `CET6App`、`di/AppModules.kt`，`StudyServices` 按 ViewModel 作用域创建）。独立 Windows 写作原型位于 `desktop-tauri/`，使用 React + Tauri，使用独立存储，尚未接入真实 AI/同步。
+- Kotlin UI 使用 Jetpack Compose（Android BOM 2024.12.01、Material3），没有 XML 布局。导航用 Navigation Compose（`android/ui-navigation` 的 `AppRoot.kt`）；依赖注入用 Hilt（宿主 `CET6App`、`di/AppModules.kt`，`StudyServices` 按 ViewModel 作用域创建）。Windows 端只有 Compose Desktop 一个程序。
 - Room 2.7.2：数据库 `cet6_study.db`，版本以 `data/StudyDatabase.kt` 为准（目前 v8），schema 导出到 `app/schemas/`。OkHttp 4.12，Markwon 4.6。
 - 单测 JUnit 4 + org.json（让协议解析在 JVM 上跑）；仪器测试用自定义 `android.app.Instrumentation`（`LocalDataInstrumentation`），不是 AndroidJUnitRunner。
 
@@ -24,7 +24,7 @@
 
 ## 命令（PowerShell，仓库根目录）
 
-- 完整工程检查：`.\gradlew.bat verifyEngineering`（全部 29 个模块的 ktlint、detekt、单测，Android 构建、Lint 与测试包）；`.\tools\verify.ps1` 另跑模块边界、迁移与 Python 检查。详见 `docs/ENGINEERING.md`。Windows 原型检查/构建/运行：`.\tools\writing-prototype.ps1 check|build|run`，详见 `desktop-tauri/README.md`。
+- 完整工程检查：`.\gradlew.bat verifyEngineering`（全部 29 个模块的 ktlint、detekt、单测，Android 构建、Lint 与测试包）；`.\tools\verify.ps1` 另跑模块边界、迁移与 Python 检查。详见 `docs/ENGINEERING.md`。
 - 构建 + 单测 + Lint：`.\gradlew.bat assembleDebug testDebugUnitTest lintDebug`（Lint 的既有警告是依赖有新版本与 targetSdk 提示）。
 - 代码规范：`.\gradlew.bat ktlintCheck detekt`；自动格式化 `.\gradlew.bat ktlintFormat`。既有问题记在各模块 `config/ktlint/baseline.xml`、`config/detekt/baseline.xml`，新代码不得新增；规则见根目录 `.editorconfig` 与 `config/detekt/detekt.yml`。
 - 其他模块测试：`.\gradlew.bat :desktop:test :sync-core:test :sync-server:test :design-tokens:test :review-core:test :diagnostics:test`。
@@ -36,7 +36,7 @@
 - 模拟器草稿跨进程检查：安装普通调试包和测试包后执行 `.\tools\check_draft_process.ps1`；会新增原创草稿并结束所选模拟器的本项目进程，不进入默认隔离套件，详见 `docs/DRAFT_PERSISTENCE.md`。
 - 个人包（把已校对题库和原卷打进 APK）：`.\gradlew.bat --offline assembleDebug '-PpersonalExamPack=<json>' '-PpersonalExamPdfs=<dir>'`，见 `docs/EXAM_IMPORT.md`。
 - Python 工具：`python tools/prepare_exam_pack.py extract|convert ...`（用法见 `docs/EXAM_IMPORT.md`）；工具测试 `python tools/test_prepare_exam_pack.py`（其中一项需要 `pypdf`）。
-- Android CI 在 `.github/workflows/android.yml`；本地入口 `tools/verify.ps1`。CI 执行模块边界检查、`verifyEngineering`、迁移与评测工具检查；远端结果以实际 Actions 为准。React/Tauri 原型尚未加入远端构建任务。
+- Android CI 在 `.github/workflows/android.yml`；本地入口 `tools/verify.ps1`。CI 执行模块边界检查、`verifyEngineering`、迁移与评测工具检查；远端结果以实际 Actions 为准。
 
 ## 约定
 

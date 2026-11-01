@@ -163,7 +163,8 @@ class DesktopWorkspaceTest {
                 """{"type":"issue","quote":"notice patterns","fix":"spot recurring patterns","level":"better","category":"用词"}""",
             ).joinToString("\n")
             val turn = JSONObject().put("id", "t1").put("practiceId", practiceId).put("anchor", "review").put("kind", "write-review/1")
-                .put("role", "assistant").put("content", review).put("state", "done").put("model", "sample").put("createdAt", 1L)
+                // The phone leaves state empty until the learner accepts or ignores a suggestion.
+                .put("role", "assistant").put("content", review).put("state", "").put("model", "sample").put("createdAt", 1L)
             val before = store.snapshot()
             assertTrue(store.apply(before, com.example.cet6.sync.SyncDocument(before.records + ("turns:t1" to turn.toString()))))
             // A fresh model reads the synced turn the way the app does after a restart.
@@ -182,6 +183,18 @@ class DesktopWorkspaceTest {
                 assertEquals(key, synced.selected)
                 assertTrue(scene.hasText("必改 2 · 润色 1"))
                 scene.capture("writing-margin.png")
+                // Accept the first must-fix, ignore the polish note; both are saved where the phone keeps them.
+                scene.click("采纳", occurrence = 0)
+                scene.click("忽略", occurrence = 1)
+                val state = JSONObject(store.snapshot().records.getValue("turns:t1")).getString("state")
+                assertEquals(com.example.cet6.data.ReviewDecisions(setOf(0), setOf(2)), com.example.cet6.data.ReviewDecisions.decode(state))
+                assertTrue(scene.hasText("已采纳 1 条，修改一版时会写进新稿。"))
+                scene.capture("writing-margin-decided.png")
+                scene.click("修改一版")
+                val revision = JSONObject(store.snapshot().records.getValue(synced.selected!!))
+                assertEquals(practiceId, revision.getString("sourcePracticeId"))
+                assertEquals(essay.replaceFirst("have", "has"), revision.getString("answer"))
+                assertEquals(essay, JSONObject(store.snapshot().records.getValue(key)).getString("answer"))
             } finally {
                 scene.close()
                 scope.cancel()

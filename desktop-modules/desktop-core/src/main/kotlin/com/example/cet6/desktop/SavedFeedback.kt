@@ -1,16 +1,39 @@
 package com.example.cet6.desktop
 
 import com.example.cet6.data.CoachReview
+import com.example.cet6.data.ReviewDecisions
 import org.json.JSONObject
 
-/** One correction as the reviewer saved it: the quoted words, the suggested fix and why; [must] is false for polish. */
-data class MarginNote(val quote: String, val fix: String, val reason: String, val category: String, val must: Boolean)
+/** The learner's verdict on one suggestion, as saved in the review turn's state. */
+enum class NoteDecision { OPEN, ACCEPTED, DISMISSED }
 
-/** Both clients reject the same malformed reviews and retain the original text for display. */
-fun marginNotes(text: String): List<MarginNote> {
+/**
+ * One correction as the reviewer saved it: the quoted words, the suggested fix and why; [must] is false for polish.
+ * [id] is the issue number that decisions refer to, the same number the phone uses.
+ */
+data class MarginNote(
+    val quote: String,
+    val fix: String,
+    val reason: String,
+    val category: String,
+    val must: Boolean,
+    val id: Int = 0,
+    val decision: NoteDecision = NoteDecision.OPEN,
+)
+
+/** Both clients reject the same malformed reviews and retain the original text for display. [state] holds decisions. */
+fun marginNotes(text: String, state: String = ""): List<MarginNote> {
     val review = CoachReview.parse(text)
     if (!review.structured) return emptyList()
-    return review.issues.map { MarginNote(it.quote, it.fix, it.reason, it.category, it.must) }
+    val decisions = ReviewDecisions.decode(state)
+    return review.issues.map {
+        val decision = when (it.id) {
+            in decisions.accepted -> NoteDecision.ACCEPTED
+            in decisions.dismissed -> NoteDecision.DISMISSED
+            else -> NoteDecision.OPEN
+        }
+        MarginNote(it.quote, it.fix, it.reason, it.category, it.must, it.id, decision)
+    }
 }
 
 /** Display saved protocol fields without changing, accepting or inventing any correction. */

@@ -6,7 +6,10 @@ import org.json.JSONTokener
 
 enum class ReviewDecision { ACCEPT, DISMISS, RESET }
 
-/** The learner's verdict on individual suggestions; stored on the review turn, never inferred. */
+/**
+ * The learner's verdict on individual suggestions; stored as JSON in the review turn's `state`, never inferred.
+ * Shared by the phone and the Windows app so a decision made on either side reads the same on the other.
+ */
 data class ReviewDecisions(val accepted: Set<Int> = emptySet(), val dismissed: Set<Int> = emptySet()) {
     fun accept(id: Int) = copy(accepted = accepted + id, dismissed = dismissed - id)
     fun dismiss(id: Int) = copy(dismissed = dismissed + id, accepted = accepted - id)
@@ -14,9 +17,12 @@ data class ReviewDecisions(val accepted: Set<Int> = emptySet(), val dismissed: S
     fun encode(): String = JSONObject().put("accepted", JSONArray(accepted.sorted())).put("dismissed", JSONArray(dismissed.sorted())).toString()
 
     companion object {
+        /** Longest state a review turn may carry; the phone's turn limit uses the same value. */
+        const val MAX_STATE = 8_000
+
         /** A failed read must never become an empty state during a database write. */
-        internal fun decodeForUpdate(state: String, issueIds: Set<Int>): ReviewDecisions {
-            require(state.length <= CoachTurns.MAX_STATE) { "建议状态过长，原状态已保留" }
+        fun decodeForUpdate(state: String, issueIds: Set<Int>): ReviewDecisions {
+            require(state.length <= MAX_STATE) { "建议状态过长，原状态已保留" }
             if (state.isBlank()) return ReviewDecisions()
             val input = JSONTokener(state)
             require(input.nextClean() == '{') { "建议状态格式无效，原状态已保留" }

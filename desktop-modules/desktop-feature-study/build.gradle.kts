@@ -6,6 +6,7 @@ plugins {
 kotlin { jvmToolchain(21) }
 dependencies {
     api(project(":desktop-ui-common"))
+    implementation(project(":review-core"))
     api(compose.desktop.currentOs)
     api(compose.material3)
     api(compose.materialIconsExtended)

@@ -1,5 +1,7 @@
 # 当前状态与整改清单
 
+2026-11-01 Windows 合并：React + Tauri 原型已删除，其逐条采纳/忽略与修改稿功能并入 Compose Desktop；采纳状态与手机共用 `review-core` 的 `ReviewDecisions`，存在批改记录的 `state` 字段并随同步一致。下段为合并前记录。
+
 2026-11-01 全部 UI 模块化与 Windows 原型：Kotlin 工程已扩展为 29 个 Gradle 模块，Android 的写作/翻译/阅读/复盘/设置等功能和原 Compose Desktop 界面均从宿主迁出；手机继续使用 Compose，数据库 v8、应用标识、备份与同步协议保留。独立 `desktop-tauri` 提供 React + Tauri Windows EXE，支持草稿、串行本地保存、离线导入批改、逐条采纳及保留原稿的修改稿；尚未连接真实 AI 或原应用同步。最终统一检查通过：215 项 JVM、33 项 Python、全部迁移链、ktlint、detekt、Android Lint（0 错误 / 10 警告）；新增模块边界检查已接入现有 CI。原型 TypeScript、9 项前端测试、5 项 Rust 测试及优化 EXE 构建通过；真实窗口验证编辑、批注、改稿和跨进程恢复，最终发行程序启动/系统关闭通过。最终 APK 的默认隔离和离线 UI 场景通过；复跑发现的旧 UI 测试落盘等待竞态已修正，原业务断言保留。未操作实体机、真实 AI/凭证、私人资料或旧学习库，尚未提交/推送或运行远端 CI。见 [模块说明](UI_MODULES.md)、[原型使用说明](../desktop-tauri/README.md) 与 [本轮证据](../test-evidence/ui-modules-tauri-20261101.json)。
 
 2026-11-01 工程化收尾：此前版本目录、设计令牌、Navigation Compose、Hilt 与规范检查已在 `master`；本轮在 `chore/engineering-completion` 提取两端共用的 `review-core` 和独立 `diagnostics`，桌面不再宽松解析手机会拒绝的畸形批注。两端新增仅在本机保存最近一次未捕获异常元数据的诊断页，不记录异常消息或自动上传。CI 与本地回归共用 `verifyEngineering`；修复旧 SQL 迁移脚本不能识别格式化后多行调用的问题。完整本地入口通过：七模块 215 项测试、33 项 Python、7 条迁移链、ktlint、detekt、Android 构建与测试包；Lint 0 错误 / 10 项版本提示警告。模拟器默认隔离及离线 UI 场景通过，最终 APK 受控崩溃后记录落盘、冷启动查看与系统返回通过。未推送或运行远端 CI，没有实体机安装、真实 AI 请求、第三方崩溃平台、schema 或备份格式变更；此次为核心提取，未将全部 UI 功能拆成模块。见 [工程说明](ENGINEERING.md) 与 [验证证据](../test-evidence/engineering-completion-20261101.json)。

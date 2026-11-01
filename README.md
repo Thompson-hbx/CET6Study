@@ -2,7 +2,7 @@
 
 工程模块、统一检查和本地崩溃诊断见 [工程化基线](docs/ENGINEERING.md)。完整 Gradle 检查入口：`.\gradlew.bat verifyEngineering`。
 
-全部 UI 功能模块的边界见 [界面模块说明](docs/UI_MODULES.md)。独立的 [React + Tauri Windows 写作原型](desktop-tauri/README.md) 已可构建运行；Android 继续使用 Compose。
+全部 UI 功能模块的边界见 [界面模块说明](docs/UI_MODULES.md)。手机与 Windows 都使用 Compose；Windows 端可在页边逐条采纳或忽略批改，并生成带上采纳修改的修改稿。
 
 个人 Windows 桌面端和手机同步的范围、构建与服务器配置见 [设备同步](docs/DEVICE_SYNC.md)。当前桌面端支持离线草稿、提交与已有批改查看；真实公网同步需自行配置服务器和有效 HTTPS 地址。
 

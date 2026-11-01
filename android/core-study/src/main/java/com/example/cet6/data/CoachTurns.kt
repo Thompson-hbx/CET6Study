@@ -77,7 +77,7 @@ class CoachReplyTooLongException : IllegalArgumentException("AI 回复超过本�
 
 object CoachTurns {
     const val MAX_CONTENT = 60_000
-    const val MAX_STATE = 8_000
+    const val MAX_STATE = ReviewDecisions.MAX_STATE
 
     fun checkReplyLength(content: String) {
         if (content.length > MAX_CONTENT) throw CoachReplyTooLongException()

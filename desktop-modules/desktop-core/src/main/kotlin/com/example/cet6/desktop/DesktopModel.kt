@@ -1,6 +1,9 @@
 package com.example.cet6.desktop
 
 import androidx.compose.runtime.*
+import com.example.cet6.data.CoachReview
+import com.example.cet6.data.ReviewDecision
+import com.example.cet6.data.ReviewDecisions
 import com.example.cet6.sync.*
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -53,10 +56,38 @@ class DesktopModel(val store: DesktopStore, private val scope: CoroutineScope) {
         document = store.snapshot()
         status = "新草稿已保存到本机"
     }
-    fun revise(row: JSONObject) = attempt {
-        selected = store.create(row.getString("kind"), row)
+
+    /** A new draft from [row]; [answer] carries any accepted fixes. The original and its review stay unchanged. */
+    fun revise(row: JSONObject, answer: String = row.getString("answer")) = attempt {
+        selected = store.create(row.getString("kind"), JSONObject(row.toString()).put("answer", answer))
         document = store.snapshot()
-        status = "修改稿已保存，原作答仍保留"
+        status = if (answer == row.getString("answer")) "修改稿已保存，原作答仍保留" else "修改稿已带上采纳的修改，原作答仍保留"
+    }
+
+    /**
+     * Saves one accept/ignore/undo on the newest review of [practice], with the phone's validation: the review must
+     * parse, the issue must exist, and a state that cannot be read is never overwritten with an empty one.
+     */
+    fun decide(practice: JSONObject, issueId: Int, decision: ReviewDecision) = attempt {
+        val (key, _) = requireNotNull(latestReviewTurn(document, practice)) { "这份批改来自旧版本，不能逐条采纳" }
+        store.edit(key) { turn ->
+            val review = CoachReview.parse(turn.getString("content"))
+            require(review.structured) { "批改结构未通过校验，原回复已保留" }
+            require(review.issues.any { it.id == issueId }) { "批改建议不存在" }
+            val current = ReviewDecisions.decodeForUpdate(turn.optString("state"), review.issues.map { it.id }.toSet())
+            val next = when (decision) {
+                ReviewDecision.ACCEPT -> current.accept(issueId)
+                ReviewDecision.DISMISS -> current.dismiss(issueId)
+                ReviewDecision.RESET -> current.reset(issueId)
+            }
+            turn.put("state", next.encode())
+        }
+        document = store.snapshot()
+        status = when (decision) {
+            ReviewDecision.ACCEPT -> "已采纳，修改一版时会写进新稿"
+            ReviewDecision.DISMISS -> "已忽略这条建议"
+            ReviewDecision.RESET -> "已撤销，这条建议重新待定"
+        }
     }
     fun edit(key: String, field: String, value: String) = attempt {
         store.edit(key) { row ->
