@@ -1,8 +1,10 @@
 package com.example.cet6.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -23,6 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.cet6.data.*
 import com.example.cet6.domain.ExamLibraryState
 import com.example.cet6.ui.components.*
@@ -40,7 +45,7 @@ private enum class HomeTab(val key: String, val label: String) {
 /** Saved tab keys: the four tabs, or a skill key, which opens 练习 on that skill (also what older versions stored). */
 private val practiceKeys = mapOf("writing" to CoachKind.WRITING, "translation" to CoachKind.TRANSLATION, "reading" to CoachKind.READING)
 
-/** Titles of pushed screens; also shown on the back button of the screen above them. */
+/** Titles of pushed screens, keyed by their navigation route. */
 private val routeTitles = mapOf(
     "work/WRITING" to "写作", "work/TRANSLATION" to "翻译", "work/READING" to "阅读", "custom/READING" to "自己的文章",
     "me/style" to "界面风格", "me/connection" to "AI 连接", "me/review" to "错因回顾", "me/trends" to "学习趋势", "me/records" to "练习记录",
@@ -48,15 +53,16 @@ private val routeTitles = mapOf(
     "me/essays" to "旧版作文记录", "me/sync" to "设备同步",
 )
 
+/** The tab roots share one destination; every other screen is pushed on top of it. */
+private const val HOME = "home"
+
 /**
- * Today, practice, review and me; tasks open as full screens on a small back stack. Routes are plain strings
- * so the stack survives configuration changes and process death through the saved state bundle.
+ * Today, practice, review and me; tasks open as full screens through Navigation Compose, which keeps the back stack
+ * across configuration changes and process death and handles system back.
  */
 @Composable
 fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
-    var stack by rememberSaveable { mutableStateOf("") }
-    val routes = stack.split('|').filter(String::isNotBlank)
-    val top = routes.lastOrNull()
+    val navController = rememberNavController()
     var tab by rememberSaveable {
         mutableStateOf(
             HomeTab.entries.firstOrNull { it.key == vm.lastTab }
@@ -73,10 +79,10 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
     // One capture node serves all root tabs; switching content does not need a new blur state.
     val hazeState = remember { HazeState() }
     fun push(route: String) {
-        if (route != stack.split('|').lastOrNull()) stack = (stack.split('|').filter(String::isNotBlank) + route).joinToString("|")
+        navController.navigate(route) { launchSingleTop = true }
     }
     fun pop() {
-        stack = stack.split('|').filter(String::isNotBlank).dropLast(1).joinToString("|")
+        navController.popBackStack()
     }
     fun routeFor(entry: CoachPractice): String {
         val kind = CoachKind.valueOf(entry.kind)
@@ -98,7 +104,6 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
         }
         return
     }
-    BackHandler(enabled = top != null) { pop() }
     LaunchedEffect(vm.coach.importedReadingId) {
         vm.coach.importedReadingId?.let {
             vm.coach.consumeReadingImport(it)
@@ -107,92 +112,131 @@ fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens) {
     }
     LaunchedEffect(vm.coach.shareStatus) { if (vm.coach.shareStatus.isNotBlank()) snackbar.showSnackbar(vm.coach.shareStatus) }
 
-    when {
-        top == null -> Scaffold(
-            containerColor = MaterialTheme.colorScheme.background,
-            snackbarHost = { SnackbarHost(snackbar) },
-            bottomBar = {
-                val reviewsWaiting = remember(vm.coach.history) { WeaknessReview.records(vm.coach.history).isNotEmpty() }
-                HomeTabBar(tab, hazeState, reviewsWaiting) { item ->
-                    if (item == HomeTab.PRACTICE) {
-                        showPractice(practice)
-                    } else {
-                        tab = item
-                        vm.lastTab = item.key
+    // A short fade keeps pushes calm; the library default is slower than the rest of the app's motion.
+    NavHost(
+        navController,
+        startDestination = HOME,
+        enterTransition = { fadeIn(tween(220)) },
+        exitTransition = { fadeOut(tween(160)) },
+        popEnterTransition = { fadeIn(tween(220)) },
+        popExitTransition = { fadeOut(tween(160)) },
+    ) {
+        composable(HOME) {
+            Scaffold(
+                containerColor = MaterialTheme.colorScheme.background,
+                snackbarHost = { SnackbarHost(snackbar) },
+                bottomBar = {
+                    val reviewsWaiting = remember(vm.coach.history) { WeaknessReview.records(vm.coach.history).isNotEmpty() }
+                    HomeTabBar(tab, hazeState, reviewsWaiting) { item ->
+                        if (item == HomeTab.PRACTICE) {
+                            showPractice(practice)
+                        } else {
+                            tab = item
+                            vm.lastTab = item.key
+                        }
                     }
-                }
-            },
-        ) { padding ->
-            val header: @Composable () -> Unit = { PracticeHeader(practice, ::showPractice) }
-            Box(Modifier.fillMaxSize().haze(hazeState)) {
-                when (tab) {
-                    HomeTab.TODAY -> TodayHome(vm, padding, ::open, ::start, ::push)
-                    HomeTab.PRACTICE -> when (practice) {
-                        CoachKind.WRITING -> TaskHome(
-                            vm,
-                            CoachKind.WRITING,
-                            padding,
-                            ::open,
-                            { start(it, CoachKind.WRITING) },
-                            onCustom = { vm.coach.startCustom(CoachKind.WRITING, "自拟题目", "") { push("work/WRITING") } },
-                            header = header,
-                        )
-                        CoachKind.TRANSLATION -> TaskHome(
-                            vm,
-                            CoachKind.TRANSLATION,
-                            padding,
-                            ::open,
-                            { start(it, CoachKind.TRANSLATION) },
-                            onCustom = { vm.coach.startCustom(CoachKind.TRANSLATION, "自选段落", "") { push("work/TRANSLATION") } },
-                            header = header,
-                        )
-                        CoachKind.READING -> ReadingHome(
-                            vm,
-                            padding,
-                            ::open,
-                            { start(it, CoachKind.READING) },
-                            onShared = { id -> vm.examPapers.firstOrNull { it.stableId == id }?.let { start(it, CoachKind.READING) } },
-                            onCustom = { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
-                            header = header,
-                        )
+                },
+            ) { padding ->
+                val header: @Composable () -> Unit = { PracticeHeader(practice, ::showPractice) }
+                Box(Modifier.fillMaxSize().haze(hazeState)) {
+                    when (tab) {
+                        HomeTab.TODAY -> TodayHome(vm, padding, ::open, ::start, ::push)
+                        HomeTab.PRACTICE -> when (practice) {
+                            CoachKind.WRITING -> TaskHome(
+                                vm,
+                                CoachKind.WRITING,
+                                padding,
+                                ::open,
+                                { start(it, CoachKind.WRITING) },
+                                onCustom = { vm.coach.startCustom(CoachKind.WRITING, "自拟题目", "") { push("work/WRITING") } },
+                                header = header,
+                            )
+                            CoachKind.TRANSLATION -> TaskHome(
+                                vm,
+                                CoachKind.TRANSLATION,
+                                padding,
+                                ::open,
+                                { start(it, CoachKind.TRANSLATION) },
+                                onCustom = { vm.coach.startCustom(CoachKind.TRANSLATION, "自选段落", "") { push("work/TRANSLATION") } },
+                                header = header,
+                            )
+                            CoachKind.READING -> ReadingHome(
+                                vm,
+                                padding,
+                                ::open,
+                                { start(it, CoachKind.READING) },
+                                onShared = { id -> vm.examPapers.firstOrNull { it.stableId == id }?.let { start(it, CoachKind.READING) } },
+                                onCustom = { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
+                                header = header,
+                            )
+                        }
+                        HomeTab.REVIEW -> ReviewHome(vm, padding, ::push)
+                        HomeTab.ME -> MeHome(vm, padding, ::push)
                     }
-                    HomeTab.REVIEW -> ReviewHome(vm, padding, ::push)
-                    HomeTab.ME -> MeHome(vm, padding, ::push)
                 }
             }
         }
-        top == "work/WRITING" -> WritingWorkspace(vm, ::pop)
-        top == "work/TRANSLATION" -> TranslationWorkspace(vm, ::pop)
-        top == "work/READING" -> ReadingWorkspace(vm, ::pop)
-        top == "custom/READING" -> SimpleScreen(
-            title = routeTitles.getValue(top),
-            onBack = ::pop,
-            actions = { vm.coach.entries[CoachKind.READING]?.let { WorkspaceMenu(vm, it) } },
-        ) { scroll -> CoachScreen(vm, CoachKind.READING, scroll) }
-        top == "me/style" -> SimpleScreen(routeTitles.getValue(top), ::pop) { UiStyleScreen(vm.uiStyle, vm::selectUiStyle) }
-        top == "me/connection" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ConnectionRoute(vm) }
-        top == "me/review" -> SimpleScreen(routeTitles.getValue(top), ::pop) {
-            WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, standalone = true, onReview = ::open)
+        composable("work/WRITING") {
+            WritingWorkspace(vm, ::pop)
         }
-        top == "me/trends" -> SimpleScreen(routeTitles.getValue(top), ::pop) { LearningTrendsScreen(vm) }
-        top == "me/records" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ExamHistory(vm, onOpen = ::open) }
-        top == "me/backup" -> SimpleScreen(routeTitles.getValue(top), ::pop) { BackupCard(vm, standalone = true) }
-        top == "me/sync" -> SimpleScreen(routeTitles.getValue(top), ::pop) { DeviceSyncScreen(vm) }
-        top == "me/exams" -> SimpleScreen(routeTitles.getValue(top), ::pop) { ExamManagementRoute(vm) }
-        top == "me/legacy" -> SimpleScreen(routeTitles.getValue(top), ::pop) {
-            legacy.today(
-                { push("me/words") },
-                { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
-                {
-                    showPractice(CoachKind.WRITING)
-                    pop()
-                },
-                ::open,
-            )
+        composable("work/TRANSLATION") {
+            TranslationWorkspace(vm, ::pop)
         }
-        top == "me/words" -> SimpleScreen(routeTitles.getValue(top), ::pop) { legacy.words() }
-        top == "me/essays" -> SimpleScreen(routeTitles.getValue(top), ::pop) { LegacyEssays(vm) }
-        else -> LaunchedEffect(top) { pop() }
+        composable("work/READING") {
+            ReadingWorkspace(vm, ::pop)
+        }
+        composable("custom/READING") {
+            SimpleScreen(
+                title = routeTitles.getValue("custom/READING"),
+                onBack = ::pop,
+                actions = { vm.coach.entries[CoachKind.READING]?.let { WorkspaceMenu(vm, it) } },
+            ) { scroll -> CoachScreen(vm, CoachKind.READING, scroll) }
+        }
+        composable("me/style") {
+            SimpleScreen(routeTitles.getValue("me/style"), ::pop) { UiStyleScreen(vm.uiStyle, vm::selectUiStyle) }
+        }
+        composable("me/connection") {
+            SimpleScreen(routeTitles.getValue("me/connection"), ::pop) { ConnectionRoute(vm) }
+        }
+        composable("me/review") {
+            SimpleScreen(routeTitles.getValue("me/review"), ::pop) {
+                WeaknessReviewCard(vm.coach.history, vm.today, !vm.coach.working, standalone = true, onReview = ::open)
+            }
+        }
+        composable("me/trends") {
+            SimpleScreen(routeTitles.getValue("me/trends"), ::pop) { LearningTrendsScreen(vm) }
+        }
+        composable("me/records") {
+            SimpleScreen(routeTitles.getValue("me/records"), ::pop) { ExamHistory(vm, onOpen = ::open) }
+        }
+        composable("me/backup") {
+            SimpleScreen(routeTitles.getValue("me/backup"), ::pop) { BackupCard(vm, standalone = true) }
+        }
+        composable("me/sync") {
+            SimpleScreen(routeTitles.getValue("me/sync"), ::pop) { DeviceSyncScreen(vm) }
+        }
+        composable("me/exams") {
+            SimpleScreen(routeTitles.getValue("me/exams"), ::pop) { ExamManagementRoute(vm) }
+        }
+        composable("me/legacy") {
+            SimpleScreen(routeTitles.getValue("me/legacy"), ::pop) {
+                legacy.today(
+                    { push("me/words") },
+                    { vm.coach.open(CoachKind.READING) { push("custom/READING") } },
+                    {
+                        showPractice(CoachKind.WRITING)
+                        pop()
+                    },
+                    ::open,
+                )
+            }
+        }
+        composable("me/words") {
+            SimpleScreen(routeTitles.getValue("me/words"), ::pop) { legacy.words() }
+        }
+        composable("me/essays") {
+            SimpleScreen(routeTitles.getValue("me/essays"), ::pop) { LegacyEssays(vm) }
+        }
     }
 }
 
