@@ -1,11 +1,11 @@
-name: Android regression
+name: Engineering regression
 on: [push, pull_request]
 permissions:
   contents: read
 jobs:
   android:
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -19,7 +19,8 @@ jobs:
       - uses: android-actions/setup-android@v3
         with:
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
-      - run: ./gradlew.bat --console=plain --no-daemon assembleDebug testDebugUnitTest lintDebug assembleDebugAndroidTest
+      - run: python tools/check_module_boundaries.py
+      - run: ./gradlew.bat --console=plain --no-daemon verifyEngineering
       - run: python tools/check_schema_migrations.py
       - run: python -m unittest discover -s tools -p 'test_coach_evaluation*.py'
       - run: git diff --exit-code -- app/schemas

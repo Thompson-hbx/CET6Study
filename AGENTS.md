@@ -4,17 +4,17 @@
 
 ## 技术栈
 
-- 模块：`:app`（Android）、`:desktop`（Windows，Compose Desktop）、`:sync-core`（两端共用的同步协议）、`:sync-server`（个人同步服务）、`:design-tokens`（两端共用的颜色与图标路径）。Kotlin 2.0.21、AGP 8.7.3、KSP 2.0.21-1.0.28、Gradle Wrapper 8.9（校验 SHA-256）；插件与依赖版本统一写在 `gradle/libs.versions.toml`。
+- 模块：现有 Kotlin 工程共 29 个 Gradle 模块；`:app`、`:desktop` 是薄宿主，Android 功能位于 `android/`，Compose Desktop 功能位于 `desktop-modules/`，另有 `sync-core`、`sync-server`、`design-tokens`、`review-core`、`diagnostics`。完整边界见 `docs/UI_MODULES.md`。Kotlin 2.0.21、AGP 8.7.3、KSP 2.0.21-1.0.28、Gradle Wrapper 8.9（校验 SHA-256）；插件与依赖版本统一写在 `gradle/libs.versions.toml`。
 - compileSdk / targetSdk 35，minSdk 26；Java / Kotlin target 17，JDK 17 或 21（本机 SDK 与 JDK 在 `C:\Dev\Env`）。
-- UI 全部 Jetpack Compose（BOM 2024.12.01、Material3），没有 XML 布局。导航用 Navigation Compose（`ui/AppRoot.kt` 的 `NavHost`，四个标签共用 `home` 目的地）；依赖注入用 Hilt（`CET6App`、`di/AppModules.kt`，`StudyServices` 按 ViewModel 作用域创建）；MVVM + Repository。
+- Kotlin UI 使用 Jetpack Compose（Android BOM 2024.12.01、Material3），没有 XML 布局。导航用 Navigation Compose（`android/ui-navigation` 的 `AppRoot.kt`）；依赖注入用 Hilt（宿主 `CET6App`、`di/AppModules.kt`，`StudyServices` 按 ViewModel 作用域创建）。独立 Windows 写作原型位于 `desktop-tauri/`，使用 React + Tauri，使用独立存储，尚未接入真实 AI/同步。
 - Room 2.7.2：数据库 `cet6_study.db`，版本以 `data/StudyDatabase.kt` 为准（目前 v8），schema 导出到 `app/schemas/`。OkHttp 4.12，Markwon 4.6。
 - 单测 JUnit 4 + org.json（让协议解析在 JVM 上跑）；仪器测试用自定义 `android.app.Instrumentation`（`LocalDataInstrumentation`），不是 AndroidJUnitRunner。
 
 ## 目录
 
-- `app/src/main/java/com/example/cet6/`：`ai/`（Responses SSE）、`auth/`（ChatGPT OAuth、OIDC 校验、Keystore 加密会话）、`data/`（Room、仓库、试卷编解码、批改提示词与解析、备份）、`ui/`（Compose 页面、`components/`、`theme/`）。
+- `app/src/main/java/com/example/cet6/`：Android 启动、Activity 生命周期、分享入口与 Hilt 装配；业务在 `android/core-study`，共享视觉在 `android/core-ui`，共享 ViewModel 在 `android/ui-state`，功能在 `android/feature-*`，根导航在 `android/ui-navigation`。
 - `app/src/main/assets/`：`academic_words.csv`、`pronunciations.tsv`、`licenses/`；`exam-packs/` 被 Gradle 排除，不进 APK。
-- `app/src/test/`：JVM 单测（含 `dev/bee/fsrs`）；`app/src/androidTest/`：设备检查 `*InstrumentationChecks.kt`。
+- 单元测试随所属模块移动：主要在 `android/core-study/src/test/`；功能状态测试在所属 `android/feature-*`；设备检查仍在 `app/src/androidTest/`，共用检查源码在 `app/src/testShared/`。
 - `app/schemas/`：Room 生成的 schema JSON，随代码提交；`app/testdata/`：生成的 FSRS 测试数据。
 - `third_party/bee-fsrs/`：内置 FSRS 库，本地补丁写在它的 README，字节由 `SOURCE_HASHES.json` 固定。
 - `tools/`：试卷包提取 / 转换 / 下载、发音生成等 Python 脚本；`exam-sample.json` 是原创样本。
@@ -24,10 +24,11 @@
 
 ## 命令（PowerShell，仓库根目录）
 
+- 完整工程检查：`.\gradlew.bat verifyEngineering`（全部 29 个模块的 ktlint、detekt、单测，Android 构建、Lint 与测试包）；`.\tools\verify.ps1` 另跑模块边界、迁移与 Python 检查。详见 `docs/ENGINEERING.md`。Windows 原型检查/构建/运行：`.\tools\writing-prototype.ps1 check|build|run`，详见 `desktop-tauri/README.md`。
 - 构建 + 单测 + Lint：`.\gradlew.bat assembleDebug testDebugUnitTest lintDebug`（Lint 的既有警告是依赖有新版本与 targetSdk 提示）。
 - 代码规范：`.\gradlew.bat ktlintCheck detekt`；自动格式化 `.\gradlew.bat ktlintFormat`。既有问题记在各模块 `config/ktlint/baseline.xml`、`config/detekt/baseline.xml`，新代码不得新增；规则见根目录 `.editorconfig` 与 `config/detekt/detekt.yml`。
-- 其他模块测试：`.\gradlew.bat :desktop:test :sync-core:test :sync-server:test :design-tokens:test`。
-- 单个测试类：`.\gradlew.bat testDebugUnitTest --tests "com.example.cet6.ExamContentTest"`
+- 其他模块测试：`.\gradlew.bat :desktop:test :sync-core:test :sync-server:test :design-tokens:test :review-core:test :diagnostics:test`。
+- 单个测试类：`.\gradlew.bat :core-study:testDebugUnitTest --tests "com.example.cet6.ExamContentTest"`
 - 装到手机：`adb -s <serial> install -r app\build\outputs\apk\debug\app-debug.apk`
 - 仪器测试：`.\gradlew.bat assembleDebugAndroidTest`，装上 `app-debug.apk` 和 `app-debug-androidTest.apk` 后运行
   `adb -s <serial> shell am instrument --user 0 -w com.example.cet6.test/com.example.cet6.LocalDataInstrumentation`
@@ -35,7 +36,7 @@
 - 模拟器草稿跨进程检查：安装普通调试包和测试包后执行 `.\tools\check_draft_process.ps1`；会新增原创草稿并结束所选模拟器的本项目进程，不进入默认隔离套件，详见 `docs/DRAFT_PERSISTENCE.md`。
 - 个人包（把已校对题库和原卷打进 APK）：`.\gradlew.bat --offline assembleDebug '-PpersonalExamPack=<json>' '-PpersonalExamPdfs=<dir>'`，见 `docs/EXAM_IMPORT.md`。
 - Python 工具：`python tools/prepare_exam_pack.py extract|convert ...`（用法见 `docs/EXAM_IMPORT.md`）；工具测试 `python tools/test_prepare_exam_pack.py`（其中一项需要 `pypdf`）。
-- Android CI 在 `.github/workflows/android.yml`；本地回归入口 `tools/verify.ps1`。本轮改动已提交到功能分支 `feat/study-backend-integration` 并开 PR，远端运行结果以 PR 检查为准。
+- Android CI 在 `.github/workflows/android.yml`；本地入口 `tools/verify.ps1`。CI 执行模块边界检查、`verifyEngineering`、迁移与评测工具检查；远端结果以实际 Actions 为准。React/Tauri 原型尚未加入远端构建任务。
 
 ## 约定
 
@@ -48,7 +49,7 @@
 ## 注意
 
 - 手机上的 `cet6_study.db` 是真实学习记录，卸载或 `pm clear` 会清掉它；覆盖安装用 `install -r`。
-- 第三方真题只作个人备份（远端是私有仓库）：不要移动、重新编码或打进普通 APK；不要 `git add -f` 其他 `.tools/` 内容（约 1.2 GB）。`.kotlin/` 未被忽略，也不要提交。
+- 第三方真题只作个人备份（远端是私有仓库）：不要移动、重新编码或打进普通 APK；不要 `git add -f` 其他 `.tools/` 内容（约 1.2 GB）。`.kotlin/` 已忽略，属于构建缓存，不要提交。
 - 登录凭证由 `auth/SecureSessionStore.kt` 加密保存，不要输出或记录 token；AI 请求用的是用户本人的 ChatGPT 账号。
 - 当前状态与未验证项统一见 `docs/STATUS.md`；历史统计、校对记录和运行证据按其日期理解。
 

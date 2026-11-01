@@ -1,0 +1,24 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@Composable private fun AnswerCell( number: String, questionNo: String, value: String, selected: Boolean, tone: Tone?, modifier: Modifier = Modifier, spoken: String, enabled: Boolean = true, onClick: () -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@Composable private fun AnswerCircle( label: String, questionNo: String, answered: Boolean, selected: Boolean, tone: Tone, spoken: String, modifier: Modifier = Modifier, onClick: () -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@Composable private fun ExplanationView(explanation: ReadingExplanation, model: String?, onLocate: (String) -&gt; Unit)</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@Composable private fun PassagePeek( passages: List&lt;ExamPassage&gt;, passage: ExamPassage, q: ExamQuestion, quote: String?, tallPanel: Boolean, onToggleRatio: () -&gt; Unit, onOpenFull: () -&gt; Unit, onSelectPassage: (ExamPassage) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class) @Composable private fun PassagePane(vm: StudyViewModel, entry: CoachPractice, passages: List&lt;ExamPassage&gt;, turns: List&lt;CoachTurn&gt;, focus: ReaderFocus?)</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun AnswerCardPane( vm: StudyViewModel, entry: CoachPractice, passages: List&lt;ExamPassage&gt;, answers: Map&lt;Int, String&gt;, submitted: Boolean, onValidity: (String, Boolean) -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun QuestionDetail( vm: StudyViewModel, entry: CoachPractice, passage: ExamPassage, q: ExamQuestion, mine: String, submitted: Boolean, matchedSummary: String?, allMatched: Boolean, prevNo: Int?, nextNo: Int?, onSelectQuestion: (Int) -&gt; Unit, onChooseOption: (String) -&gt; Unit, turns: List&lt;CoachTurn&gt;, onAsk: (String) -&gt; Unit, onLocate: (String, String) -&gt; Unit, )</ID>
+        <ID>CyclomaticComplexMethod:ReadingWorkspace.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ReadingWorkspace(vm: StudyViewModel, onBack: () -&gt; Unit)</ID>
+        <ID>MaxLineLength:ReadingWorkspace.kt$?:</ID>
+        <ID>TooManyFunctions:ReadingWorkspace.kt$com.example.cet6.ui.ReadingWorkspace.kt</ID>
+        <ID>UnusedParameter:ReadingWorkspace.kt$spoken: String</ID>
+        <ID>CyclomaticComplexMethod:PaperAnswerScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun PaperAnswerScreen(vm: StudyViewModel, entry: CoachPractice, scroll: ScrollState)</ID>
+        <ID>MaxLineLength:PaperAnswerScreen.kt$color = if (passageAnswered == 5) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant</ID>
+        <ID>MaxLineLength:PaperAnswerScreen.kt$color = if (passageAnswered == 5) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant</ID>
+        <ID>MaxLineLength:PaperAnswerScreen.kt$invalidPassages = if (result.isFailure) (invalidPassages + p.code).toSet().joinToString("") else invalidPassages.replace(p.code, "")</ID>
+        <ID>MaxLineLength:PaperAnswerScreen.kt$val level = levels.split(';').mapNotNull { token -&gt; token.split(':').takeIf { it.size == 2 }?.let { it[0] to it[1].toIntOrNull() } }.toMap()["${q.number}"] ?: 0</ID>
+        <ID>ComplexCondition:CoachScreen.kt$panel == 1 &amp;&amp; kind == CoachKind.READING &amp;&amp; state.partial.isNotBlank() &amp;&amp; state.partialEntryId == entry.id</ID>
+        <ID>CyclomaticComplexMethod:CoachScreen.kt$@Composable @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class) fun CoachScreen(vm: StudyViewModel, kind: CoachKind, scrollState: ScrollState? = null, reviewId: String? = null)</ID>
+        <ID>CyclomaticComplexMethod:ReadingDiagnosisPanel.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun ReadingDiagnosisPanel(state: CoachState, entry: CoachPractice, passage: ExamPassage, question: ExamQuestion, networkBusy: Boolean)</ID>
+    </CurrentIssues>
+</SmellBaseline>

@@ -20,7 +20,7 @@ for line in raw.decode("utf-8").splitlines():
         word = re.sub(r"\(\d+\)$", "", fields[0])
         dictionary.setdefault(word, []).append(fields[1:])
 words = {row["word"] for row in csv.DictReader((ROOT / "app/src/main/assets/academic_words.csv").open(encoding="utf-8"))}
-source = (ROOT / "app/src/main/java/com/example/cet6/data/StudyDatabase.kt").read_text(encoding="utf-8")
+source = (ROOT / "android/core-study/src/main/java/com/example/cet6/data/StudyDatabase.kt").read_text(encoding="utf-8")
 words.update(re.findall(r'WordEntity\("([^"]+)"', source.split("val starterWords = listOf(", 1)[1]))
 phonemes = dict(AA="ɑ", AE="æ", AH="ʌ", AO="ɔ", AW="aʊ", AY="aɪ", B="b", CH="tʃ", D="d", DH="ð", EH="ɛ", ER="ɝ", EY="eɪ", F="f", G="ɡ", HH="h", IH="ɪ", IY="i", JH="dʒ", K="k", L="l", M="m", N="n", NG="ŋ", OW="oʊ", OY="ɔɪ", P="p", R="ɹ", S="s", SH="ʃ", T="t", TH="θ", UH="ʊ", UW="u", V="v", W="w", Y="j", Z="z", ZH="ʒ")
 def ipa(tokens):

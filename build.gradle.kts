@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.ksp) apply false
@@ -29,4 +30,24 @@ subprojects {
 
 tasks.wrapper {
     distributionSha256Sum = "d725d707bfabd4dfdc958c624003b3c80accc03f7037b5122c4b1d0ef15cecab"
+}
+
+// Use one entry point locally and in CI so a new module cannot silently miss the quality checks.
+tasks.register("verifyEngineering") {
+    group = "verification"
+    description = "Builds Android and runs style, static analysis and every module's unit tests."
+    dependsOn(subprojects.map { "${it.path}:ktlintCheck" })
+    dependsOn(subprojects.map { "${it.path}:detekt" })
+
+    dependsOn(":app:assembleDebug", ":app:testDebugUnitTest", ":app:lintDebug", ":app:assembleDebugAndroidTest")
+}
+
+subprojects {
+    val modulePath = path
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        rootProject.tasks.named("verifyEngineering") { dependsOn("$modulePath:test") }
+    }
+    plugins.withId("com.android.library") {
+        rootProject.tasks.named("verifyEngineering") { dependsOn("$modulePath:testDebugUnitTest") }
+    }
 }

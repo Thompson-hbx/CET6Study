@@ -19,6 +19,7 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
+import com.example.cet6.diagnostics.CrashReporter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -36,7 +37,8 @@ class DesktopWorkspaceTest {
 
     // The selected mock's original paragraph lives only in this isolated UI fixture.
     private val source = "我们不必每天制定复杂的学习计划。把困惑写下来，再用自己的话解释，往往更容易发现问题。长期坚持这种习惯，学习会变得更加主动。"
-    private val answer = "We do not need a complicated study plan every day. Writing down our questions and explaining them in our own words can help us understand what we need to learn."
+    private val answer = "We do not need a complicated study plan every day. " +
+        "Writing down our questions and explaining them in our own words can help us understand what we need to learn."
 
     @Test fun editingSubmissionRevisionAndHistoryWorkWithoutOpeningWindows() {
         val directory = temporary.newFolder()
@@ -45,8 +47,9 @@ class DesktopWorkspaceTest {
             DesktopStore(directory).use { store ->
                 val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
                 val model = DesktopModel(store, scope)
+                val diagnostics = CrashReporter(File(store.directory, "diagnostics"), "test")
                 val scene = OffscreenScene(1440, 1024) {
-                    DesktopTheme { Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) { DesktopWorkspace(model) } }
+                    DesktopTheme { Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) { DesktopWorkspace(model, diagnostics) } }
                 }
                 try {
                     scene.frame()
@@ -93,6 +96,9 @@ class DesktopWorkspaceTest {
                         footer.boundsInRoot.width > 0 && footer.boundsInRoot.height > 0 && footer.boundsInRoot.top >= 0 && footer.boundsInRoot.bottom <= 1024,
                     )
                     scene.capture("device-sync.png")
+                    scene.click("崩溃诊断")
+                    assertTrue(scene.hasText("只在本机保留最近一次未捕获异常的类型、代码位置、时间和版本。"))
+                    scene.capture("crash-diagnostics.png")
                     scene.click("生词")
                     assertTrue(scene.hasText("还没有同步的生词"))
                     scene.click("写作")
@@ -113,10 +119,11 @@ class DesktopWorkspaceTest {
         DesktopStore(temporary.newFolder()).use { store ->
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             val model = DesktopModel(store, scope)
+            val diagnostics = CrashReporter(File(store.directory, "diagnostics"), "test")
             model.section = "READING"
             model.create()
             val scene = OffscreenScene(1000, 680) {
-                DesktopTheme { Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) { DesktopWorkspace(model) } }
+                DesktopTheme { Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) { DesktopWorkspace(model, diagnostics) } }
             }
             try {
                 scene.frame()
@@ -139,6 +146,7 @@ class DesktopWorkspaceTest {
         DesktopStore(temporary.newFolder()).use { store ->
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             val model = DesktopModel(store, scope)
+            val diagnostics = CrashReporter(File(store.directory, "diagnostics"), "test")
             model.section = "WRITING"
             model.create()
             val key = model.selected!!
@@ -161,7 +169,7 @@ class DesktopWorkspaceTest {
             // A fresh model reads the synced turn the way the app does after a restart.
             val synced = DesktopModel(store, scope)
             val scene = OffscreenScene(1440, 1024) {
-                DesktopTheme { Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) { DesktopWorkspace(synced) } }
+                DesktopTheme { Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) { DesktopWorkspace(synced, diagnostics) } }
             }
             try {
                 scene.frame()

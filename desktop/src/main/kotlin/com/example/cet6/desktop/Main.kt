@@ -3,22 +3,26 @@ package com.example.cet6.desktop
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import com.example.cet6.diagnostics.CrashReporter
 import kotlinx.coroutines.cancel
 import java.awt.Dimension
 import java.io.File
 
-fun main(args: Array<String>) = application {
+fun main(args: Array<String>) {
     require(args.isEmpty() || (args.size == 1 && args[0].startsWith("--data-dir="))) { "支持的参数：--data-dir=<本机数据目录>" }
-    val directory = remember {
-        File(
-            args.singleOrNull()?.substringAfter("--data-dir=") ?: System.getProperty("xiye.dataDir")
-                ?: File(System.getenv("LOCALAPPDATA") ?: System.getProperty("user.home"), "Xiye").absolutePath,
-        )
-    }
+    val directory = File(
+        args.singleOrNull()?.substringAfter("--data-dir=") ?: System.getProperty("xiye.dataDir")
+            ?: File(System.getenv("LOCALAPPDATA") ?: System.getProperty("user.home"), "Xiye").absolutePath,
+    )
+    val diagnostics = CrashReporter(File(directory, "diagnostics"), "desktop-${DesktopStore::class.java.`package`.implementationVersion ?: "dev"}")
+    diagnostics.install()
+    desktopApplication(directory, diagnostics)
+}
+
+private fun desktopApplication(directory: File, diagnostics: CrashReporter) = application {
     val opened = remember { runCatching { DesktopStore(directory) } }
     val scope = rememberCoroutineScope()
     val model = remember { opened.getOrNull()?.let { DesktopModel(it, scope) } }
@@ -36,18 +40,6 @@ fun main(args: Array<String>) = application {
         state = rememberWindowState(width = 1440.dp, height = 960.dp),
     ) {
         LaunchedEffect(Unit) { window.minimumSize = Dimension(1000, 680) }
-        DesktopTheme {
-            Surface(Modifier.fillMaxSize(), color = DeskColors.canvas) {
-                if (model == null) {
-                    Column(Modifier.padding(40.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Text("本机学习数据暂时无法打开", style = MaterialTheme.typography.headlineSmall)
-                        Text(opened.exceptionOrNull()?.message ?: "请检查数据目录和正在运行的朱批窗口")
-                        Text("原文件已保留，请勿清空数据目录。")
-                    }
-                } else {
-                    DesktopWorkspace(model)
-                }
-            }
-        }
+        DesktopRoot(model, diagnostics, opened.exceptionOrNull()?.message)
     }
 }

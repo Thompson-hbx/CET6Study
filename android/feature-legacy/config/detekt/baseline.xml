@@ -1,0 +1,10 @@
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>CyclomaticComplexMethod:LegacyStudyScreens.kt$@Composable private fun TodayScreen(vm: StudyViewModel, onWords: () -&gt; Unit, onReading: () -&gt; Unit, onWriting: () -&gt; Unit, onReview: (CoachPractice) -&gt; Unit)</ID>
+        <ID>CyclomaticComplexMethod:LegacyStudyScreens.kt$@Composable private fun WordScreen(vm: StudyViewModel)</ID>
+        <ID>CyclomaticComplexMethod:LegacyEssays.kt$@Composable fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens)</ID>
+        <ID>CyclomaticComplexMethod:LegacyStudyScreens.kt$@Composable fun TodayScreen(vm: StudyViewModel, onWords: () -&gt; Unit, onReading: () -&gt; Unit, onWriting: () -&gt; Unit, onReview: (CoachPractice) -&gt; Unit)</ID>
+        <ID>CyclomaticComplexMethod:LegacyStudyScreens.kt$@Composable fun WordScreen(vm: StudyViewModel)</ID>
+    </CurrentIssues>
+</SmellBaseline>

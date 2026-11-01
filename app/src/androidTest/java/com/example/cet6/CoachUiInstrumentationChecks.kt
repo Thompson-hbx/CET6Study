@@ -132,6 +132,11 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         click("阅读")
         click("自选文章练习")
         awaitState("a new reading draft") { currentId() != before }
+        val newId = requireNotNull(currentId())
+        // The service publishes the new ID before its asynchronous persistence completes.
+        awaitState("new reading draft persisted") {
+            runBlocking { StudyDatabase.get(runner.targetContext).dao().coachDraft("READING")?.id == newId }
+        }
         check(runBlocking { StudyDatabase.get(runner.targetContext).dao().coachDraft("READING")?.questions?.isBlank() == true }) {
             "New exercise was not opened; stopping before editing existing work"
         }

@@ -1,0 +1,6 @@
+<baseline version="1.0">
+    <file name="src/main/java/com/example/cet6/PaperPdfActivity.kt">
+        <error line="141" column="59" source="standard:comment-wrapping" />
+        <error line="141" column="59" source="standard:discouraged-comment-location" />
+    </file>
+</baseline>
