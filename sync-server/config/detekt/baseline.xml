@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:Server.kt$fun Application.studyModule(store: StudyStore, secret: String)</ID>
+    <ID>LongMethod:Server.kt$fun Application.studyModule(store: StudyStore, secret: String)</ID>
+    <ID>MagicNumber:Server.kt$126</ID>
+    <ID>MagicNumber:Server.kt$256</ID>
+    <ID>MagicNumber:Server.kt$263</ID>
+    <ID>MagicNumber:Server.kt$32</ID>
+    <ID>MagicNumber:Server.kt$33</ID>
+    <ID>MagicNumber:Server.kt$4096</ID>
+    <ID>MagicNumber:Server.kt$65535</ID>
+    <ID>MagicNumber:Server.kt$7</ID>
+    <ID>MagicNumber:Server.kt$8192</ID>
+    <ID>MagicNumber:StudyStore.kt$StudyStore$3</ID>
+    <ID>MaxLineLength:StudyStore.kt$StudyStore$it.execute("CREATE TABLE IF NOT EXISTS history (revision INTEGER NOT NULL, record_key TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(revision,record_key))")</ID>
+    <ID>NestedBlockDepth:StudyStore.kt$StudyStore$@Synchronized fun update(serverId: String, revision: Long, changes: Map&lt;String, String&gt;): RemoteSnapshot?</ID>
+    <ID>ReturnCount:StudyStore.kt$StudyStore$@Synchronized fun update(serverId: String, revision: Long, changes: Map&lt;String, String&gt;): RemoteSnapshot?</ID>
+    <ID>TooGenericExceptionCaught:StudyStore.kt$StudyStore$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

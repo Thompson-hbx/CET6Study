@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:SyncDocument.kt$SyncDocument.Companion$fun decode(text: String): SyncDocument</ID>
+    <ID>CyclomaticComplexMethod:SyncDocument.kt$SyncDocument.Companion$private fun validateRow(type: String, row: JSONObject)</ID>
+    <ID>CyclomaticComplexMethod:SyncEngine.kt$SyncMerge$fun merge(base: SyncDocument, local: SyncDocument, remote: SyncDocument, choices: List&lt;ConflictChoice&gt; = emptyList()): MergeResult</ID>
+    <ID>LongMethod:SyncDocument.kt$SyncDocument.Companion$private fun validateRow(type: String, row: JSONObject)</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$304</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$401</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$409</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$4096</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$4096L</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$4097</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$4097L</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$413</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$HttpSyncTransport$429</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$SyncConnection.Companion$126</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$SyncConnection.Companion$256</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$SyncConnection.Companion$32</ID>
+    <ID>MagicNumber:HttpSyncTransport.kt$SyncConnection.Companion$33</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument$5</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument$8</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$10.0</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$100</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$1000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$100_000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$200</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$2000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$200_000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$20_000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$253_402_300_799_999L</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$3</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$300</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$30_000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$36_500</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$3L</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$4000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$5L</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$60_000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$8000</ID>
+    <ID>MagicNumber:SyncDocument.kt$SyncDocument.Companion$8L</ID>
+    <ID>MagicNumber:SyncEngine.kt$SyncEngine$3</ID>
+    <ID>MatchingDeclarationName:FileSyncStore.kt$FileSyncStateStore : SyncStateStore</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$fields(root, setOf("format", "version", "databaseVersion", "createdAt", "coach", "turns", "words", "reviews", "schedules", "plans", "reading", "essays"))</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$in integers</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$require(row.getString("kind") in setOf("write-review/1", "write-plan/1", "trans-review/1", "trans-hint/1", "read-explain/1", "read-para/1", "read-overview/1", "chat/1"))</ID>
+    <ID>MaxLineLength:SyncDocument.kt$SyncDocument.Companion$val integers = setOf("submittedAt", "updatedAt", "createdAt", "dueAt", "repetitions", "intervalDays", "nextDueAt", "rating", "elapsedDays", "lastReviewedAt", "phase", "step", "newGoal", "reviewGoal")</ID>
+    <ID>ReturnCount:SyncEngine.kt$SyncEngine$fun synchronize(choices: List&lt;ConflictChoice&gt; = emptyList()): SyncResult</ID>
+    <ID>ReturnCount:SyncEngineTest.kt$SyncEngineTest.Server$override fun push(expected: RemoteSnapshot, document: SyncDocument): RemoteSnapshot?</ID>
+  </CurrentIssues>
+</SmellBaseline>
