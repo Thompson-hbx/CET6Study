@@ -1,12 +1,12 @@
 # 工程化基线
 
-Gradle 依赖沿用已有版本；React/Tauri 原型的新增依赖已获用户授权，额外工具位于用户指定的 `C:\Dev`。
+Gradle 依赖沿用已有版本。
 
 ## 模块边界
 
 现有 Kotlin 工程已按全部 UI 功能拆分为 29 个模块；Android 和原有 Compose Desktop 均保留。完整目录、依赖方向及检查规则见 [界面模块说明](UI_MODULES.md)。原有数据/服务位于 `android/core-study`，共享状态位于 `android/ui-state`，通用主题/组件位于 `android/core-ui`；两端宿主只装配功能与管理平台生命周期。
 
-独立的 [React + Tauri Windows 写作原型](../desktop-tauri/README.md) 使用自己的依赖清单和锁文件。它不替换 Android/原桌面端，也未接入其真实同步或 AI。Gradle 插件与依赖版本仍在 `gradle/libs.versions.toml`。
+曾经的 React + Tauri 写作原型已并入 Compose Desktop（逐条采纳/忽略与带采纳修改的修改稿），原型工程已删除。Gradle 插件与依赖版本在 `gradle/libs.versions.toml`。
 
 `review-core` 保留两端共用的严格批改解析；数据库写入相关 `ReviewDecisions` 随原业务层迁至 `core-study`，校验与事务语义保留。数据库、备份、同步协议与 applicationId 不变。
 

@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import com.example.cet6.data.ReviewDecision
+import com.example.cet6.data.TextMarks
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.Instant
@@ -53,7 +55,12 @@ fun ColumnScope.PracticeArea(model: DesktopModel, compact: Boolean, narrow: Bool
     var feedbackOpen by remember { mutableStateOf(false) }
     val submitted = active?.second?.getLong("submittedAt")?.let { it > 0 } == true
     fun primaryAction() {
-        if (active == null) model.create() else if (submitted) model.revise(active.second) else model.submit(active.first)
+        when {
+            active == null -> model.create()
+            // A revision starts from the answer with every accepted fix applied, as on the phone.
+            submitted -> model.revise(active.second, revisedAnswer(active.second.getString("answer"), notes))
+            else -> model.submit(active.first)
+        }
     }
     Column(
         Modifier.weight(1f).onPreviewKeyEvent {
@@ -315,13 +322,19 @@ private fun Editor(model: DesktopModel, key: String, row: JSONObject, notes: Lis
                 }
             }
         }
-        if (notes.isNotEmpty()) Margin(notes, focused) { focused = it }
+        if (notes.isNotEmpty()) {
+            val located = remember(notes, row) { TextMarks.place(row.getString("answer"), notes.map { it.quote }).map { it != null } }
+            Margin(notes, located, focused, { focused = it }) { id, decision -> model.decide(row, id, decision) }
+        }
     }
 }
 
-/** The 朱批 margin: one card per saved correction, the picked one expanded with its reason. */
+/**
+ * The 朱批 margin: one card per saved correction, the picked one expanded with its reason. Each open note can be
+ * accepted or ignored; a note whose quote is not in the answer cannot be accepted, since nothing would change.
+ */
 @Composable
-private fun Margin(notes: List<MarginNote>, focused: Int, onFocus: (Int) -> Unit) {
+private fun Margin(notes: List<MarginNote>, located: List<Boolean>, focused: Int, onFocus: (Int) -> Unit, onDecide: (Int, ReviewDecision) -> Unit) {
     Column(Modifier.width(320.dp).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("朱批", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Black))
@@ -333,6 +346,12 @@ private fun Margin(notes: List<MarginNote>, focused: Int, onFocus: (Int) -> Unit
                 style = MaterialTheme.typography.bodySmall,
             )
         }
+        val accepted = notes.count { it.decision == NoteDecision.ACCEPTED }
+        Text(
+            if (accepted == 0) "逐条采纳或忽略，修改一版时会带上已采纳的修改。" else "已采纳 $accepted 条，修改一版时会写进新稿。",
+            color = if (accepted == 0) DeskColors.secondary else DeskColors.good,
+            style = MaterialTheme.typography.bodySmall,
+        )
         LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             itemsIndexed(notes) { index, note ->
                 val picked = index == focused
@@ -360,9 +379,35 @@ private fun Margin(notes: List<MarginNote>, focused: Int, onFocus: (Int) -> Unit
                                 Text(note.reason, style = MaterialTheme.typography.bodySmall, color = Color(0xFF3A3D44))
                             }
                         }
+                        NoteActions(note, located.getOrElse(index) { false }) { onDecide(note.id, it) }
                     }
                 }
             }
+        }
+    }
+}
+
+/** 采纳 / 忽略 for an open note; once decided, the verdict and 撤销 to reopen it. */
+@Composable
+private fun NoteActions(note: MarginNote, located: Boolean, onDecide: (ReviewDecision) -> Unit) {
+    when (note.decision) {
+        NoteDecision.OPEN -> if (located) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                DeskButton("采纳", primary = true) { onDecide(ReviewDecision.ACCEPT) }
+                DeskButton("忽略") { onDecide(ReviewDecision.DISMISS) }
+            }
+        } else {
+            Text("原稿里找不到这句，不能自动采纳", style = MaterialTheme.typography.bodySmall, color = DeskColors.secondary)
+        }
+        NoteDecision.ACCEPTED, NoteDecision.DISMISSED -> Row(verticalAlignment = Alignment.CenterVertically) {
+            val accepted = note.decision == NoteDecision.ACCEPTED
+            Text(
+                if (accepted) "已采纳" else "已忽略",
+                color = if (accepted) DeskColors.good else DeskColors.secondary,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.weight(1f),
+            )
+            TextButton({ onDecide(ReviewDecision.RESET) }) { Text("撤销", color = DeskColors.secondary) }
         }
     }
 }
@@ -374,10 +419,16 @@ private class MarkTransformation(private val notes: List<MarginNote>, private va
             append(text)
             notes.forEachIndexed { index, note ->
                 val at = if (note.quote.isBlank()) -1 else text.text.indexOf(note.quote)
-                if (at < 0) return@forEachIndexed
+                // Ignored suggestions leave the words unmarked; accepted ones turn indigo like the phone.
+                if (at < 0 || note.decision == NoteDecision.DISMISSED) return@forEachIndexed
+                val tone = when {
+                    note.decision == NoteDecision.ACCEPTED -> DeskColors.good
+                    note.must -> DeskColors.must
+                    else -> DeskColors.better
+                }
                 addStyle(
                     SpanStyle(
-                        color = if (note.must) DeskColors.must else DeskColors.better,
+                        color = tone,
                         textDecoration = TextDecoration.Underline,
                         background = if (index == focused) (if (note.must) DeskColors.mustSoft else DeskColors.betterSoft) else Color.Unspecified,
                     ),

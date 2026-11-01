@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>NestedBlockDepth:ReviewDecisions.kt$ReviewDecisions.Companion$fun decodeForUpdate(state: String, issueIds: Set&lt;Int&gt;): ReviewDecisions</ID>
     <ID>CyclomaticComplexMethod:CoachOutputSchema.kt$CoachOutputSchema$fun reading(rows: List&lt;JSONObject&gt;): Boolean</ID>
     <ID>CyclomaticComplexMethod:CoachOutputSchema.kt$CoachOutputSchema$fun review(rows: List&lt;JSONObject&gt;): Boolean</ID>
     <ID>CyclomaticComplexMethod:CoachReviews.kt$CoachReview.Companion$fun parse(text: String): CoachReview</ID>

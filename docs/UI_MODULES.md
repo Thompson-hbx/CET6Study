@@ -48,10 +48,8 @@ python tools/check_module_boundaries.py
 
 旧 detekt 条目按原签名及可追溯来源迁移，没有将新原型代码加入 baseline。迁移中清理了少量失效的行内注释并拆行旧测试字符串，测试内容及断言保留。
 
-## React + Tauri 原型
+## Windows 端
 
-独立工程在 `desktop-tauri/`。交付为 Windows 桌面 EXE；React 在进程管理的 WebView2 内渲染，Rust 负责受限本地文件命令。没有实现或部署浏览器产品，也没有替换原有 Compose Desktop。
-
-功能和运行说明见 [原型 README](../desktop-tauri/README.md)。Android 仍使用上表中的 Compose 功能模块，现有手机/桌面同步协议保持兼容；本原型尚未接入实际同步或 AI 服务。
+Windows 只保留 Compose Desktop。原 React + Tauri 写作原型的逐条采纳/忽略与修改稿已并入 `desktop-feature-study`；采纳状态与手机共用 `review-core` 的 `ReviewDecisions`，存在批改记录的 `state` 字段，随同步在两端一致。
 
 本轮实际运行与交付哈希见 [验证证据](../test-evidence/ui-modules-tauri-20261101.json)。
