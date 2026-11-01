@@ -9,7 +9,7 @@ import org.json.JSONObject
 enum class AiProvider(val label: String, val defaultUrl: String) {
     CHATGPT("ChatGPT", ""),
     DEEPSEEK("DeepSeek", "https://api.deepseek.com"),
-    CUSTOM("自定义兼容接口", "")
+    CUSTOM("自定义兼容接口", ""),
 }
 
 /** Deliberately not a data class: generated toString must never expose the key. */
@@ -19,10 +19,14 @@ class ApiConnection private constructor(val baseUrl: String, val apiKey: String)
     companion object {
         fun validatedBaseUrl(value: String): HttpUrl {
             val url = value.trim().toHttpUrlOrNull()
-            require(url != null && url.isHttps && url.username.isEmpty() && url.password.isEmpty() &&
-                url.query == null && url.fragment == null) { "Base URL 必须是 HTTPS 地址，且不能包含账号、查询参数或片段" }
-            require(!url.encodedPath.trimEnd('/').endsWith("/chat/completions") &&
-                !url.encodedPath.trimEnd('/').endsWith("/models")) { "请填写 Base URL，不要包含 /chat/completions 或 /models" }
+            require(
+                url != null && url.isHttps && url.username.isEmpty() && url.password.isEmpty() &&
+                    url.query == null && url.fragment == null,
+            ) { "Base URL 必须是 HTTPS 地址，且不能包含账号、查询参数或片段" }
+            require(
+                !url.encodedPath.trimEnd('/').endsWith("/chat/completions") &&
+                    !url.encodedPath.trimEnd('/').endsWith("/models"),
+            ) { "请填写 Base URL，不要包含 /chat/completions 或 /models" }
             return url.newBuilder().encodedPath(url.encodedPath.trimEnd('/') + "/").build()
         }
 
@@ -36,9 +40,12 @@ class ApiConnection private constructor(val baseUrl: String, val apiKey: String)
 internal fun chatPayload(model: String, prompt: String, reasoning: ReviewReasoning? = null): JSONObject = JSONObject().apply {
     require(model.isNotBlank()) { "请先选择或填写模型" }
     put("model", model)
-    put("messages", JSONArray()
-        .put(JSONObject().put("role", "system").put("content", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。"))
-        .put(JSONObject().put("role", "user").put("content", prompt)))
+    put(
+        "messages",
+        JSONArray()
+            .put(JSONObject().put("role", "system").put("content", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。"))
+            .put(JSONObject().put("role", "user").put("content", prompt)),
+    )
     put("stream", true)
     reasoning?.applyToChat(this)
 }

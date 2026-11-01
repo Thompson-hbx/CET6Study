@@ -25,7 +25,9 @@ class RestoreJournal(context: Context) {
         try {
             // The ZIP codec closes its stream; AtomicFile must finish the original descriptor itself.
             val header = DataOutputStream(object : FilterOutputStream(output) {
-                override fun close() { flush() }
+                override fun close() {
+                    flush()
+                }
             })
             header.writeInt(0x43365231) // C6R1
             header.writeInt((if (intent.adoptPlans) 1 else 0) or (if (intent.backup.papers != null) 2 else 0))
@@ -58,7 +60,7 @@ class RestoreJournal(context: Context) {
 class CompleteRestoreRepository(
     private val backups: BackupRepository,
     private val exams: ExamStore,
-    private val journal: RestoreJournal
+    private val journal: RestoreJournal,
 ) {
     private val lock = Mutex()
 

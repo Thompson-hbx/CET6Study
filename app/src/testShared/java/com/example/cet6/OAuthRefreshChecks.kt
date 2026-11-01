@@ -3,12 +3,12 @@ package com.example.cet6
 import com.example.cet6.auth.ChatGptAuth
 import com.example.cet6.auth.ChatGptSession
 import com.example.cet6.auth.SessionStorage
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -17,9 +17,9 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
 import java.io.IOException
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 
 /** All sessions and replies are original placeholders; interceptors never reach the network. */
 class OAuthRefreshChecks {
@@ -36,20 +36,30 @@ class OAuthRefreshChecks {
         cancelledWaitingCallerDoesNotStartAnotherRefresh()
     }
 
-    private fun saved(expired: Boolean = true) = ChatGptSession("offline-client", "offline-subject", "",
-        "offline-access-old", "offline-refresh-old", "offline-verified-id", "chatgpt.tokens.use.direct",
-        System.currentTimeMillis() + if (expired) -1000L else 3_600_000L)
+    private fun saved(expired: Boolean = true) = ChatGptSession(
+        "offline-client",
+        "offline-subject",
+        "",
+        "offline-access-old",
+        "offline-refresh-old",
+        "offline-verified-id",
+        "chatgpt.tokens.use.direct",
+        System.currentTimeMillis() + if (expired) -1000L else 3_600_000L,
+    )
 
     private class MemoryStore(var value: ChatGptSession?) : SessionStorage {
         var saves = 0
         var clears = 0
         var failSave = false
+
         @Synchronized override fun load() = value
+
         @Synchronized override fun save(session: ChatGptSession) {
             if (failSave) throw IOException("controlled local save failure")
             value = session
             saves++
         }
+
         @Synchronized override fun clear() {
             value = value?.copy(accessToken = "", refreshToken = "", idToken = "", expiresAtMillis = 0)
             clears++
@@ -60,15 +70,17 @@ class OAuthRefreshChecks {
     private fun reply() = JSONObject().put("access_token", "offline-access-new")
         .put("refresh_token", "offline-refresh-new").put("token_type", "Bearer").put("expires_in", 3600)
 
-    private fun auth(store: MemoryStore, calls: AtomicInteger = AtomicInteger(), status: Int = 200,
-        body: () -> String = { reply().toString() }): ChatGptAuth = ChatGptAuth(
-        OkHttpClient.Builder().addInterceptor { chain ->
-            calls.incrementAndGet()
-            check(chain.request().url.toString() == "https://auth.openai.com/api/accounts/oauth/token")
-            check(chain.request().method == "POST")
-            Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(status).message("offline fixture")
-                .body(body().toResponseBody("application/json".toMediaType())).build()
-        }.build(), store)
+    private fun auth(store: MemoryStore, calls: AtomicInteger = AtomicInteger(), status: Int = 200, body: () -> String = { reply().toString() }): ChatGptAuth =
+        ChatGptAuth(
+            OkHttpClient.Builder().addInterceptor { chain ->
+                calls.incrementAndGet()
+                check(chain.request().url.toString() == "https://auth.openai.com/api/accounts/oauth/token")
+                check(chain.request().method == "POST")
+                Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(status).message("offline fixture")
+                    .body(body().toResponseBody("application/json".toMediaType())).build()
+            }.build(),
+            store,
+        )
 
     suspend fun liveSessionDoesNotRefresh() {
         val original = saved(false)
@@ -125,11 +137,16 @@ class OAuthRefreshChecks {
         }
         coroutineScope {
             var continued = false
-            val request = launch(Dispatchers.Default) { client.validSession(); continued = true }
+            val request = launch(Dispatchers.Default) {
+                client.validSession()
+                continued = true
+            }
             try {
                 entered.await()
                 request.cancel()
-            } finally { release.countDown() }
+            } finally {
+                release.countDown()
+            }
             request.join()
             check(request.isCancelled && !continued) { "Cancelled caller received a refreshed session" }
         }
@@ -207,11 +224,16 @@ class OAuthRefreshChecks {
             try {
                 entered.await()
                 val queued = CompletableDeferred<Unit>()
-                val waiting = launch(Dispatchers.Default) { queued.complete(Unit); client.validSession() }
+                val waiting = launch(Dispatchers.Default) {
+                    queued.complete(Unit)
+                    client.validSession()
+                }
                 queued.await()
                 waiting.cancelAndJoin()
                 check(waiting.isCancelled)
-            } finally { release.countDown() }
+            } finally {
+                release.countDown()
+            }
             check(first.await() == store.value)
         }
         check(calls.get() == 1 && store.saves == 1)

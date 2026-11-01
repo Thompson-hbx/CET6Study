@@ -1,10 +1,10 @@
 package com.example.cet6
 
 import com.example.cet6.data.CoachFailures
-import java.io.IOException
-import java.net.SocketTimeoutException
 import org.junit.Assert.*
 import org.junit.Test
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 class CoachFailuresTest {
     @Test fun distinguishesTransportTimeoutAndHttpFailures() {

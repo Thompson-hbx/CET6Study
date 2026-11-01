@@ -21,7 +21,13 @@ class ChatCompletionsClient(http: OkHttpClient) {
             .header("Authorization", "Bearer ${connection.apiKey}").build()
         val call = http.newCall(request)
         coroutineScope {
-            val watcher = launch { try { awaitCancellation() } finally { call.cancel() } }
+            val watcher = launch {
+                try {
+                    awaitCancellation()
+                } finally {
+                    call.cancel()
+                }
+            }
             try {
                 call.execute().use { response ->
                     check(response.isSuccessful) { apiFailure(response.code) }
@@ -34,43 +40,53 @@ class ChatCompletionsClient(http: OkHttpClient) {
                         }
                     }.distinctBy { it.slug }
                 }
-            } finally { watcher.cancel() }
+            } finally {
+                watcher.cancel()
+            }
         }
     }
 
-    suspend fun stream(connection: ApiConnection, model: String, prompt: String,
-        onDelta: suspend (String) -> Unit): String = stream(connection, model, prompt, null, onDelta)
+    suspend fun stream(connection: ApiConnection, model: String, prompt: String, onDelta: suspend (String) -> Unit): String =
+        stream(connection, model, prompt, null, onDelta)
 
-    suspend fun stream(connection: ApiConnection, model: String, prompt: String,
-        reasoning: ReviewReasoning?, onDelta: suspend (String) -> Unit): String = withContext(Dispatchers.IO) {
-        val request = Request.Builder().url(connection.endpoint("chat").newBuilder().addPathSegment("completions").build())
-            .header("Authorization", "Bearer ${connection.apiKey}")
-            .header("Accept", "text/event-stream")
-            .post(chatPayload(model, prompt, reasoning).toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
-        val call = http.newCall(request)
-        coroutineScope {
-            val watcher = launch { try { awaitCancellation() } finally { call.cancel() } }
-            try {
-                call.execute().use { response ->
-                    if (reasoning != null && response.code in setOf(400, 422)) throw DeepReviewRejectedException()
-                    check(response.isSuccessful) { apiFailure(response.code) }
-                    val body = response.body ?: error("响应流为空")
-                    check(body.contentType()?.let { it.type == "text" && it.subtype == "event-stream" } == true) {
-                        "服务端未返回 SSE 流，请检查 Base URL 和接口兼容性"
+    suspend fun stream(connection: ApiConnection, model: String, prompt: String, reasoning: ReviewReasoning?, onDelta: suspend (String) -> Unit): String =
+        withContext(Dispatchers.IO) {
+            val request = Request.Builder().url(connection.endpoint("chat").newBuilder().addPathSegment("completions").build())
+                .header("Authorization", "Bearer ${connection.apiKey}")
+                .header("Accept", "text/event-stream")
+                .post(chatPayload(model, prompt, reasoning).toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+            val call = http.newCall(request)
+            coroutineScope {
+                val watcher = launch {
+                    try {
+                        awaitCancellation()
+                    } finally {
+                        call.cancel()
                     }
-                    val parser = ChatCompletionStream()
-                    val records = SseReader(body.charStream().buffered())
-                    while (!parser.complete) {
-                        val record = records.next() ?: break
-                        val delta = parser.accept(record.data)
-                        if (delta.isNotEmpty()) onDelta(delta)
-                    }
-                    parser.result()
                 }
-            } finally { watcher.cancel() }
+                try {
+                    call.execute().use { response ->
+                        if (reasoning != null && response.code in setOf(400, 422)) throw DeepReviewRejectedException()
+                        check(response.isSuccessful) { apiFailure(response.code) }
+                        val body = response.body ?: error("响应流为空")
+                        check(body.contentType()?.let { it.type == "text" && it.subtype == "event-stream" } == true) {
+                            "服务端未返回 SSE 流，请检查 Base URL 和接口兼容性"
+                        }
+                        val parser = ChatCompletionStream()
+                        val records = SseReader(body.charStream().buffered())
+                        while (!parser.complete) {
+                            val record = records.next() ?: break
+                            val delta = parser.accept(record.data)
+                            if (delta.isNotEmpty()) onDelta(delta)
+                        }
+                        parser.result()
+                    }
+                } finally {
+                    watcher.cancel()
+                }
+            }
         }
-    }
 }
 
 private fun apiFailure(code: Int): String = "API 请求失败：HTTP $code，" + when (code) {

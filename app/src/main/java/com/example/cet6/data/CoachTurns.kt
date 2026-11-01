@@ -23,7 +23,7 @@ data class CoachTurn(
     /** Small mutable JSON owned by the UI, such as accepted or dismissed suggestions. */
     val state: String = "",
     val model: String = "",
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
 ) {
     val fromUser get() = role == USER
 
@@ -44,18 +44,28 @@ object TurnKind {
     const val READING_PARAGRAPH = "read-para/1"
     const val READING_OVERVIEW = "read-overview/1"
     const val CHAT = "chat/1"
-    val all = setOf(WRITING_REVIEW, WRITING_PLAN, TRANSLATION_REVIEW, TRANSLATION_HINT,
-        READING_EXPLAIN, READING_PARAGRAPH, READING_OVERVIEW, CHAT)
+    val all = setOf(
+        WRITING_REVIEW,
+        WRITING_PLAN,
+        TRANSLATION_REVIEW,
+        TRANSLATION_HINT,
+        READING_EXPLAIN,
+        READING_PARAGRAPH,
+        READING_OVERVIEW,
+        CHAT,
+    )
 }
 
 object Anchor {
     const val REVIEW = "review"
     const val PLAN = "plan"
     fun question(number: Int) = "q:$number"
+
     /** A reading practice can hold two passages, so paragraphs carry their passage: 2/3 → para:203. */
     fun paragraph(passage: Int, index: Int) = "para:${passage * 100 + index}"
     fun overview(passage: Int) = "over:$passage"
     fun sentence(index: Int) = "sent:$index"
+
     /** (passage, paragraph) of a paragraph anchor. */
     fun paragraphOf(anchor: String): Pair<Int, Int>? =
         anchor.takeIf { it.startsWith("para:") }?.removePrefix("para:")?.toIntOrNull()?.let { it / 100 to it % 100 }
@@ -77,8 +87,10 @@ object CoachTurns {
         require(turn.id.length in 1..100 && turn.practiceId.length in 1..100) { "对话标识无效" }
         require(Anchor.valid(turn.anchor) && turn.kind in TurnKind.all) { "对话类型无效" }
         require(turn.role == CoachTurn.USER || turn.role == CoachTurn.ASSISTANT) { "对话角色无效" }
-        require(turn.content.isNotBlank() && turn.content.length <= MAX_CONTENT && turn.state.length <= MAX_STATE &&
-            turn.model.length <= 200) { "对话内容为空或过长" }
+        require(
+            turn.content.isNotBlank() && turn.content.length <= MAX_CONTENT && turn.state.length <= MAX_STATE &&
+                turn.model.length <= 200,
+        ) { "对话内容为空或过长" }
     }
 
     /** Turns of one anchor, oldest first, as stored. */
@@ -95,7 +107,8 @@ object CoachTurns {
         var used = 0
         for (line in lines.asReversed()) {
             if (used + line.length > budget) break
-            kept.addFirst(line); used += line.length
+            kept.addFirst(line)
+            used += line.length
         }
         return kept.joinToString("\n\n")
     }

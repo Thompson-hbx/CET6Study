@@ -29,17 +29,20 @@ fun MarkdownFeedback(text: String) {
     val clipboard = LocalClipboardManager.current
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         OutlinedButton(
             onClick = { raw = !raw },
-            shape = MaterialTheme.shapes.small
+            shape = MaterialTheme.shapes.small,
         ) {
             Text(if (raw) "排版" else "原始文本")
         }
         OutlinedButton(
-            onClick = { clipboard.setText(AnnotatedString(text)); copied = true },
-            shape = MaterialTheme.shapes.small
+            onClick = {
+                clipboard.setText(AnnotatedString(text))
+                copied = true
+            },
+            shape = MaterialTheme.shapes.small,
         ) {
             Text(if (copied) "已复制" else "复制全文")
         }
@@ -48,18 +51,23 @@ fun MarkdownFeedback(text: String) {
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Box(Modifier.padding(14.dp)) {
-            if (raw) SelectionContainer { Text(text, style = MaterialTheme.typography.bodyMedium) }
-            else AndroidView(factory = { ctx -> TextView(ctx).apply {
-                setTextIsSelectable(true)
-                setLineSpacing(0f, 1.35f)
-            } }, modifier = Modifier.fillMaxWidth(), update = { view ->
-                view.setTextColor(color)
-                view.textSize = size
-                renderer.setParsedMarkdown(view, rendered)
-            })
+            if (raw) {
+                SelectionContainer { Text(text, style = MaterialTheme.typography.bodyMedium) }
+            } else {
+                AndroidView(factory = { ctx ->
+                    TextView(ctx).apply {
+                        setTextIsSelectable(true)
+                        setLineSpacing(0f, 1.35f)
+                    }
+                }, modifier = Modifier.fillMaxWidth(), update = { view ->
+                    view.setTextColor(color)
+                    view.textSize = size
+                    renderer.setParsedMarkdown(view, rendered)
+                })
+            }
         }
     }
 }

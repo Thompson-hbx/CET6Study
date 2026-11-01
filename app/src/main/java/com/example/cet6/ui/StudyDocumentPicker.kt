@@ -12,6 +12,7 @@ class StudyDocumentPicker : ActivityResultContracts.OpenDocument() {
         val intent = super.createIntent(context, input).addCategory(Intent.CATEGORY_OPENABLE)
         for (packageName in listOf("com.android.documentsui", "com.google.android.documentsui")) {
             val component = ComponentName(packageName, "com.android.documentsui.picker.PickActivity")
+
             @Suppress("DEPRECATION")
             val activity = runCatching { context.packageManager.getActivityInfo(component, 0) }.getOrNull() ?: continue
             val system = activity.applicationInfo.flags and (ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0

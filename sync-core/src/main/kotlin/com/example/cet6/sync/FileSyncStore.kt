@@ -30,5 +30,7 @@ fun atomicWrite(file: File, text: String) {
             output.fd.sync()
         }
         Files.move(temporary.toPath(), file.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
-    } finally { temporary.delete() }
+    } finally {
+        temporary.delete()
+    }
 }

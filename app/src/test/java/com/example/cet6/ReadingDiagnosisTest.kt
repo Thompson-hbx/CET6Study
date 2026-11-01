@@ -5,11 +5,26 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ReadingDiagnosisTest {
-    private val passage = ExamPassage("1", "Quiet hours", "Students feared losing group time.\n\nThe library kept rooms for collaboration.",
-        listOf(ExamQuestion(46, "What did students fear?", listOf(
-            ExamOption("A", "Higher book prices."), ExamOption("B", "Less time to collaborate."),
-            ExamOption("C", "Longer opening hours."), ExamOption("D", "Fewer books.")),
-            "B", "Original answer key", "Students feared losing group time.")))
+    private val passage = ExamPassage(
+        "1",
+        "Quiet hours",
+        "Students feared losing group time.\n\nThe library kept rooms for collaboration.",
+        listOf(
+            ExamQuestion(
+                46,
+                "What did students fear?",
+                listOf(
+                    ExamOption("A", "Higher book prices."),
+                    ExamOption("B", "Less time to collaborate."),
+                    ExamOption("C", "Longer opening hours."),
+                    ExamOption("D", "Fewer books."),
+                ),
+                "B",
+                "Original answer key",
+                "Students feared losing group time.",
+            ),
+        ),
+    )
 
     @Test fun diagnosisSeesActualWrongChoiceAndNumberedPassage() {
         val prompt = ReadingDiagnosis.prompt(passage, "46. A", 46)
@@ -47,8 +62,13 @@ class ReadingDiagnosisTest {
     @Test fun originalParagraphLookupDoesNotInventOrBlurEvidence() {
         val paragraphs = ReadingDiagnosis.paragraphs("First.\r\n\r\nSecond paragraph has quiet rooms.")
         assertEquals(2, paragraphs.size)
-        assertEquals(listOf("Second paragraph has quiet rooms."), ReadingEvidence.suggestions(paragraphs.joinToString("\n\n"),
-            "证据：“Second paragraph has quiet rooms.” 虚构：“Second paragraph has more books.”"))
+        assertEquals(
+            listOf("Second paragraph has quiet rooms."),
+            ReadingEvidence.suggestions(
+                paragraphs.joinToString("\n\n"),
+                "证据：“Second paragraph has quiet rooms.” 虚构：“Second paragraph has more books.”",
+            ),
+        )
         assertEquals(2, ReadingEvidence.quotations("证据：“Second paragraph has quiet rooms.” 虚构：“Second paragraph has more books.”").size)
     }
 }

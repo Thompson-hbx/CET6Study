@@ -21,8 +21,11 @@ fun WordContentLicenses() {
                     context.assets.open("licenses/$name").bufferedReader().use { it.readText() }
                 }
         }
-        AlertDialog(onDismissRequest = { open = false }, title = { Text("来源与许可") },
+        AlertDialog(
+            onDismissRequest = { open = false },
+            title = { Text("来源与许可") },
             text = { Text(text, Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) },
-            confirmButton = { TextButton(onClick = { open = false }) { Text("关闭") } })
+            confirmButton = { TextButton(onClick = { open = false }) { Text("关闭") } },
+        )
     }
 }

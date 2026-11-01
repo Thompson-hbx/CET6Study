@@ -3,8 +3,8 @@ package com.example.cet6
 import android.content.Context
 import androidx.room.Room
 import com.example.cet6.data.*
-import com.example.cet6.sync.*
 import com.example.cet6.domain.PracticeService
+import com.example.cet6.sync.*
 import kotlinx.coroutines.*
 import org.json.JSONObject
 
@@ -12,8 +12,14 @@ class DeviceSyncChecks(private val context: Context) {
     suspend fun verify() {
         val db = Room.inMemoryDatabaseBuilder(context, StudyDatabase::class.java).build()
         try {
-            val original = CoachPractice(id = "sync-original", kind = "WRITING", title = "Original sync sample",
-                material = "Write about learning.", answer = "Written on phone.", updatedAt = 100)
+            val original = CoachPractice(
+                id = "sync-original",
+                kind = "WRITING",
+                title = "Original sync sample",
+                material = "Write about learning.",
+                answer = "Written on phone.",
+                updatedAt = 100,
+            )
             db.dao().saveCoach(original)
             db.dao().addReadingAttempt(ReadingAttempt(questionId = "original", answer = "B", correct = true))
             val repository = DeviceSyncRepository(db)
@@ -36,8 +42,15 @@ class DeviceSyncChecks(private val context: Context) {
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
             try {
                 val practice = withContext(Dispatchers.Main.immediate) {
-                    PracticeService(CoachRepository(db), scope, canRequest = { false }, model = { "" },
-                        startupReady = null, reviewRequest = null, request = { _, _ -> error("No network in sync checks") })
+                    PracticeService(
+                        CoachRepository(db),
+                        scope,
+                        canRequest = { false },
+                        model = { "" },
+                        startupReady = null,
+                        reviewRequest = null,
+                        request = { _, _ -> error("No network in sync checks") },
+                    )
                 }
                 withContext(Dispatchers.Main.immediate) { check(practice.flush()) }
                 val baseline = repository.snapshot()
@@ -53,7 +66,11 @@ class DeviceSyncChecks(private val context: Context) {
                 check(db.dao().coachById(original.id)?.answer == "Remote draft visible in editor. Next edit.") {
                     "An old in-memory draft overwrote the synchronized draft"
                 }
-            } finally { scope.cancel() }
-        } finally { db.close() }
+            } finally {
+                scope.cancel()
+            }
+        } finally {
+            db.close()
+        }
     }
 }

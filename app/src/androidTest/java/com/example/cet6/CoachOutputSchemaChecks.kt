@@ -19,8 +19,14 @@ class CoachOutputSchemaChecks(private val context: Context) {
                     check(it.raw == raw && (expected || it.issues.isEmpty())) { "Review raw/action guard failed" }
                     it.structured
                 }
-                "reading" -> ReadingExplanation.parse(raw).let { check(it.raw == raw); it.structured }
-                "overview" -> PassageOverview.parse(raw, case.getInt("paragraphCount")).let { check(it.raw == raw); it.structured }
+                "reading" -> ReadingExplanation.parse(raw).let {
+                    check(it.raw == raw)
+                    it.structured
+                }
+                "overview" -> PassageOverview.parse(raw, case.getInt("paragraphCount")).let {
+                    check(it.raw == raw)
+                    it.structured
+                }
                 else -> error("Unknown protocol fixture kind")
             }
             check(actual == expected) { "Protocol case ${case.getString("id")}: expected $expected, got $actual" }

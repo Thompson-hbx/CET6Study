@@ -23,8 +23,10 @@ class CoachRepository(private val db: StudyDatabase) {
         require(reply.role == CoachTurn.ASSISTANT) { "回复角色无效" }
         question?.let {
             CoachTurns.validate(it)
-            require(it.role == CoachTurn.USER && it.kind == TurnKind.CHAT && it.id != reply.id &&
-                it.practiceId == reply.practiceId && it.anchor == reply.anchor) { "问答关联无效" }
+            require(
+                it.role == CoachTurn.USER && it.kind == TurnKind.CHAT && it.id != reply.id &&
+                    it.practiceId == reply.practiceId && it.anchor == reply.anchor,
+            ) { "问答关联无效" }
         }
         db.withTransaction {
             require(db.dao().coachById(reply.practiceId) != null) { "对应练习不存在，问答未保存" }
@@ -35,8 +37,10 @@ class CoachRepository(private val db: StudyDatabase) {
     /** Apply one intent to the current database state; callers may hold an old UI snapshot. */
     suspend fun updateDecision(turnId: String, issueId: Int, decision: ReviewDecision) = db.withTransaction {
         val turn = requireNotNull(db.dao().turnById(turnId)) { "批改记录不存在" }
-        require(turn.role == CoachTurn.ASSISTANT &&
-            turn.kind in setOf(TurnKind.WRITING_REVIEW, TurnKind.TRANSLATION_REVIEW)) { "不是可批改的记录" }
+        require(
+            turn.role == CoachTurn.ASSISTANT &&
+                turn.kind in setOf(TurnKind.WRITING_REVIEW, TurnKind.TRANSLATION_REVIEW),
+        ) { "不是可批改的记录" }
         val review = CoachReview.parse(turn.content)
         require(review.structured) { "批改结构未通过校验，原回复已保留" }
         require(review.issues.any { it.id == issueId }) { "批改建议不存在" }

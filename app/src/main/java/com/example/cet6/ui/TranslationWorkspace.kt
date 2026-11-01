@@ -32,7 +32,10 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val hazeState = remember { HazeState() }
     val talk = vm.talk
     val entry = state.entries[CoachKind.TRANSLATION]
-    if (entry == null) { LoadingScreen(onBack); return }
+    if (entry == null) {
+        LoadingScreen(onBack)
+        return
+    }
     val turns = rememberTurns(vm, entry.id)
     val meta = remember(entry.questions) { ExamCodec.metadata(entry) }
     val submitted = entry.submittedAt > 0
@@ -69,85 +72,137 @@ fun TranslationWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             WorkspaceTopBar(
                 title = "翻译",
                 context = entry.title.removeSuffix(" · 翻译").ifBlank { "自选段落" },
-                detail = listOfNotNull(versions.indexOfFirst { it.id == entry.id }.takeIf { versions.size > 1 }?.let { "第 ${it + 1} 稿" },
-                    if (submitted) "已提交" else "草稿").joinToString(" · "),
+                detail = listOfNotNull(
+                    versions.indexOfFirst { it.id == entry.id }.takeIf { versions.size > 1 }?.let { "第 ${it + 1} 稿" },
+                    if (submitted) "已提交" else "草稿",
+                ).joinToString(" · "),
                 compact = typing,
                 onBack = onBack,
                 actions = {
                     if (tab == 1 && submitted && reviewTurn != null && pending?.kind != TurnKind.TRANSLATION_REVIEW) AskAction { asking = true }
-                    WorkspaceMenu(vm, entry, listOfNotNull(if (reference.isNotBlank()) "参考译文" to { tab = 2 } else null,
-                        if (versions.size > 1) "各稿" to { showVersions = true } else null))
-                })
+                    WorkspaceMenu(
+                        vm,
+                        entry,
+                        listOfNotNull(
+                            if (reference.isNotBlank()) "参考译文" to { tab = 2 } else null,
+                            if (versions.size > 1) "各稿" to { showVersions = true } else null,
+                        ),
+                    )
+                },
+            )
         },
         bottomBar = {
             when {
                 tab == 0 && !typing -> BottomBar(hazeState = hazeState) {
                     if (!submitted) ExamClock(entry.id)
                     Note(saveLabel(state.messages[CoachKind.TRANSLATION]), Modifier.weight(1f))
-                    if (!submitted) Button(onClick = { confirmSubmit = true }, enabled = words > 0 && !state.working,
-                        modifier = Modifier.height(48.dp)) { Text("提交") }
-                    else Button(onClick = { state.revise(entry, entry.answer) }, enabled = !state.working,
-                        modifier = Modifier.height(48.dp)) { Text("写修改稿") }
+                    if (!submitted) {
+                        Button(
+                            onClick = { confirmSubmit = true },
+                            enabled = words > 0 && !state.working,
+                            modifier = Modifier.height(48.dp),
+                        ) { Text("提交") }
+                    } else {
+                        Button(
+                            onClick = { state.revise(entry, entry.answer) },
+                            enabled = !state.working,
+                            modifier = Modifier.height(48.dp),
+                        ) { Text("写修改稿") }
+                    }
                 }
                 tab == 1 && submitted && pending?.kind != TurnKind.TRANSLATION_REVIEW && (reviewTurn != null || pending != null) ->
                     ReviewFooter(vm, entry, "问问这段译文…", placedReview(entry.answer, reviewTurn), asking, { asking = it }, hazeState, onAsk = ::ask)
             }
-        }
+        },
     ) { padding ->
-        Column(Modifier.padding(top = padding.calculateTopPadding()).haze(hazeState).then(if (typing) Modifier.consumeWindowInsets(padding).imePadding() else Modifier).fillMaxSize()) {
+        Column(
+            Modifier.padding(
+                top = padding.calculateTopPadding(),
+            ).haze(hazeState).then(if (typing) Modifier.consumeWindowInsets(padding).imePadding() else Modifier).fillMaxSize(),
+        ) {
             if (!typing) {
                 DeskSteps("翻译", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
                     state.revise(entry, placedReview(entry.answer, reviewTurn)?.let { applyAccepted(entry.answer, it) } ?: entry.answer)
                 })
             }
             // While translating, the Chinese stays on screen above the editor instead of scrolling away with it.
-            if (split) BoxWithConstraints(Modifier.fillMaxSize()) {
-                val sourceMax = maxHeight * if (typing) 0.6f else 0.42f
-                Column(Modifier.fillMaxSize()) {
-                    SourcePane(sentences, turns, sourceOpen, { sourceOpen = !sourceOpen }, sourceMax) { sentenceSheet = it }
-                    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
-                        TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = false) { sentenceSheet = it }
+            if (split) {
+                BoxWithConstraints(Modifier.fillMaxSize()) {
+                    val sourceMax = maxHeight * if (typing) 0.6f else 0.42f
+                    Column(Modifier.fillMaxSize()) {
+                        SourcePane(sentences, turns, sourceOpen, { sourceOpen = !sourceOpen }, sourceMax) { sentenceSheet = it }
+                        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
+                            TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = false) { sentenceSheet = it }
+                        }
                     }
                 }
-            } else Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
-                when (tab) {
-                    0 -> TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = true) { sentenceSheet = it }
-                    1 -> TranslationReviewPane(vm, entry, sentences, turns, reviewTurn, scroll, onGoWrite = { tab = 0 }, onAsk = ::ask)
-                    else -> TranslationReference(sentences, reference, meta?.optString("referenceSource").orEmpty())
+            } else {
+                Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(bottom = padding.calculateBottomPadding() + 32.dp)) {
+                    when (tab) {
+                        0 -> TranslateDraftPane(vm, entry, sentences, turns, meta == null, submitted, includeSource = true) { sentenceSheet = it }
+                        1 -> TranslationReviewPane(vm, entry, sentences, turns, reviewTurn, scroll, onGoWrite = { tab = 0 }, onAsk = ::ask)
+                        else -> TranslationReference(sentences, reference, meta?.optString("referenceSource").orEmpty())
+                    }
                 }
             }
         }
     }
     sentenceSheet?.let { index -> SentenceSheet(vm, entry, sentences, index, turns) { sentenceSheet = null } }
-    if (showVersions) VersionSheet(versions, entry.id, bands, onOpen = { showVersions = false; state.open(CoachKind.TRANSLATION, it) }) { showVersions = false }
-    if (confirmSubmit) SubmitDialog(words, null, onConfirm = {
-        confirmSubmit = false
-        state.submit(CoachKind.TRANSLATION, false)
-        tab = 1
-    }) { confirmSubmit = false }
+    if (showVersions) {
+        VersionSheet(versions, entry.id, bands, onOpen = {
+            showVersions = false
+            state.open(CoachKind.TRANSLATION, it)
+        }) { showVersions = false }
+    }
+    if (confirmSubmit) {
+        SubmitDialog(words, null, onConfirm = {
+            confirmSubmit = false
+            state.submit(CoachKind.TRANSLATION, false)
+            tab = 1
+        }) { confirmSubmit = false }
+    }
 }
 
 @Composable
-private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentences: List<String>, turns: List<CoachTurn>,
-    custom: Boolean, submitted: Boolean, includeSource: Boolean, onSentence: (Int) -> Unit) {
+private fun TranslateDraftPane(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    sentences: List<String>,
+    turns: List<CoachTurn>,
+    custom: Boolean,
+    submitted: Boolean,
+    includeSource: Boolean,
+    onSentence: (Int) -> Unit,
+) {
     val state = vm.coach
     Column(Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         if (custom && !submitted && entry.sourcePracticeId.isBlank()) {
             PaperCard(
                 color = MaterialTheme.colorScheme.surfaceContainerLowest,
                 border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-                padding = PaddingValues(0.dp)
+                padding = PaddingValues(0.dp),
             ) {
                 Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Tag("自选翻译段落", Tone.Ink)
-                    FieldRow("标题", entry.title, { v -> state.edit(CoachKind.TRANSLATION) { it.copy(title = v.take(200)) } },
-                        placeholder = "输入练习标题")
+                    FieldRow(
+                        "标题",
+                        entry.title,
+                        { v -> state.edit(CoachKind.TRANSLATION) { it.copy(title = v.take(200)) } },
+                        placeholder = "输入练习标题",
+                    )
                 }
                 Hairline()
                 Column(Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
                     CardTitle("要翻译的中文", Modifier.padding(bottom = 4.dp))
-                    FieldRow(null, entry.material, { v -> state.edit(CoachKind.TRANSLATION) { it.copy(material = v) } },
-                        placeholder = "粘贴或输入要翻译的中文段落", minLines = 3, accessibilityLabel = "要翻译的中文", maxLines = 10)
+                    FieldRow(
+                        null,
+                        entry.material,
+                        { v -> state.edit(CoachKind.TRANSLATION) { it.copy(material = v) } },
+                        placeholder = "粘贴或输入要翻译的中文段落",
+                        minLines = 3,
+                        accessibilityLabel = "要翻译的中文",
+                        maxLines = 10,
+                    )
                 }
             }
         }
@@ -180,19 +235,31 @@ private fun TranslateDraftPane(vm: StudyViewModel, entry: CoachPractice, sentenc
             placeholder = "在这里动笔写英文译文…",
             headerAction = if (sentences.isNotEmpty()) {
                 { Note("共 ${sentences.size} 句原文") }
-            } else null
+            } else {
+                null
+            },
         ) { text ->
             state.edit(CoachKind.TRANSLATION) { it.copy(answer = text) }
         }
-        if (submitted) Note("这一稿已提交，可以在「批改」里逐句对照；想继续改，点下方「写修改稿」。",
-            Modifier.padding(horizontal = PageGutter))
+        if (submitted) {
+            Note(
+                "这一稿已提交，可以在「批改」里逐句对照；想继续改，点下方「写修改稿」。",
+                Modifier.padding(horizontal = PageGutter),
+            )
+        }
     }
 }
 
 /** The Chinese source pinned above the editor: supports 1-sentence focus mode (default) and full-paragraph expansion. */
 @Composable
-private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Boolean, onToggle: () -> Unit,
-    maxHeight: androidx.compose.ui.unit.Dp, onSentence: (Int) -> Unit) {
+private fun SourcePane(
+    sentences: List<String>,
+    turns: List<CoachTurn>,
+    open: Boolean,
+    onToggle: () -> Unit,
+    maxHeight: androidx.compose.ui.unit.Dp,
+    onSentence: (Int) -> Unit,
+) {
     var activeIdx by rememberSaveable(sentences.size) { mutableIntStateOf(0) }
     var showAll by rememberSaveable { mutableStateOf(false) }
     val safeIdx = activeIdx.coerceIn(0, (sentences.size - 1).coerceAtLeast(0))
@@ -200,20 +267,20 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 4.dp).heightIn(max = maxHeight)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = CardMargin, vertical = 4.dp).heightIn(max = maxHeight),
     ) {
         Column(Modifier.fillMaxWidth()) {
             Row(
                 Modifier.fillMaxWidth().padding(start = 12.dp, end = 6.dp, top = 4.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Tag("原文对照", Tone.Ink)
                 if (open && !showAll && sentences.size > 1) {
                     Row(
                         Modifier.weight(1f),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         sentences.indices.forEach { i ->
                             val selected = i == safeIdx
@@ -226,13 +293,13 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
                                     helped -> MaterialTheme.colorScheme.primaryContainer
                                     else -> MaterialTheme.colorScheme.surfaceContainerHigh
                                 },
-                                modifier = Modifier.size(width = 26.dp, height = 24.dp)
+                                modifier = Modifier.size(width = 26.dp, height = 24.dp),
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Text(
                                         "${i + 1}",
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+                                        color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                                     )
                                 }
                             }
@@ -245,13 +312,13 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
                     TextButton(
                         onClick = { showAll = !showAll },
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                        modifier = Modifier.heightIn(min = 30.dp)
+                        modifier = Modifier.heightIn(min = 30.dp),
                     ) { Text(if (showAll) "逐句聚焦" else "整段总览", style = MaterialTheme.typography.labelMedium) }
                 }
                 TextButton(
                     onClick = onToggle,
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                    modifier = Modifier.heightIn(min = 30.dp)
+                    modifier = Modifier.heightIn(min = 30.dp),
                 ) { Text(if (open) "收起" else "展开原文", style = MaterialTheme.typography.labelMedium) }
             }
             if (open) {
@@ -259,7 +326,7 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
                 if (showAll) {
                     Column(
                         Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 12.dp, vertical = 10.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         sentences.forEachIndexed { i, sentence ->
                             val helped = turns.any { it.anchor == Anchor.sentence(i + 1) }
@@ -271,7 +338,7 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
                     val helped = turns.any { it.anchor == Anchor.sentence(safeIdx + 1) }
                     Column(
                         Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 10.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         SelectionContainer {
                             Text(currentSentence, style = SourceText)
@@ -279,12 +346,12 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
                         Row(
                             Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             FilledTonalButton(
                                 onClick = { onSentence(safeIdx + 1) },
                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                                modifier = Modifier.heightIn(min = 32.dp)
+                                modifier = Modifier.heightIn(min = 32.dp),
                             ) {
                                 Text(if (helped) "已看词汇与句式提示" else "看本句词汇与句式提示", style = MaterialTheme.typography.labelMedium)
                             }
@@ -293,14 +360,14 @@ private fun SourcePane(sentences: List<String>, turns: List<CoachTurn>, open: Bo
                                 TextButton(
                                     onClick = { activeIdx = safeIdx - 1 },
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                                    modifier = Modifier.heightIn(min = 30.dp)
+                                    modifier = Modifier.heightIn(min = 30.dp),
                                 ) { Text("‹ 上一句", style = MaterialTheme.typography.labelMedium) }
                             }
                             if (safeIdx < sentences.lastIndex) {
                                 TextButton(
                                     onClick = { activeIdx = safeIdx + 1 },
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                                    modifier = Modifier.heightIn(min = 30.dp)
+                                    modifier = Modifier.heightIn(min = 30.dp),
                                 ) { Text("下一句 ›", style = MaterialTheme.typography.labelMedium) }
                             }
                         }
@@ -317,7 +384,7 @@ private fun SourceCardList(sentences: List<String>, turns: List<CoachTurn>, onSe
         Row(
             Modifier.padding(horizontal = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Tag("中文原文", Tone.Ink)
             Note("共 ${sentences.size} 句 · 点一句看难词和句式提示")
@@ -336,27 +403,27 @@ private fun SourceSentence(number: Int, text: String, helped: Boolean, onClick: 
         shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
         border = androidx.compose.foundation.BorderStroke(
             0.5.dp,
-            if (helped) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f) else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)
+            if (helped) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f) else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f),
         ),
         modifier = Modifier.fillMaxWidth()
             .clickable(/* onClickLabel = "看这一句的提示", */ onClick = onClick)
-            .then(if (helped) Modifier/* .semantics { stateDescription = "已问过" } */ else Modifier)
+            .then(if (helped) Modifier/* .semantics { stateDescription = "已问过" } */ else Modifier),
     ) {
         Row(
             Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.Top,
         ) {
             Surface(
                 color = if (helped) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = CircleShape,
-                modifier = Modifier.padding(top = 4.dp).size(24.dp)
+                modifier = Modifier.padding(top = 4.dp).size(24.dp),
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
                         "$number",
                         style = MaterialTheme.typography.labelMedium,
-                        color = if (helped) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (helped) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -367,8 +434,16 @@ private fun SourceSentence(number: Int, text: String, helped: Boolean, onClick: 
 }
 
 @Composable
-private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sentences: List<String>, turns: List<CoachTurn>,
-    reviewTurn: CoachTurn?, scroll: ScrollState, onGoWrite: () -> Unit, onAsk: (String) -> Unit) {
+private fun TranslationReviewPane(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    sentences: List<String>,
+    turns: List<CoachTurn>,
+    reviewTurn: CoachTurn?,
+    scroll: ScrollState,
+    onGoWrite: () -> Unit,
+    onAsk: (String) -> Unit,
+) {
     val talk = vm.talk
     if (entry.submittedAt == 0L) {
         EmptyNote("提交这一稿后就可以批改。批改会按中文原文逐句对照你的译文。", "回到翻译", onGoWrite)
@@ -393,8 +468,13 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
         SkillErrorNote(vm, entry, CoachKind.TRANSLATION)
         return
     }
-    if (reviewing) WorkingLine("正在逐句对照 · ${review.segments.size} / ${sentences.size} 句", talk::stop,
-        Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
+    if (reviewing) {
+        WorkingLine(
+            "正在逐句对照 · ${review.segments.size} / ${sentences.size} 句",
+            talk::stop,
+            Modifier.padding(horizontal = PageGutter, vertical = 8.dp),
+        )
+    }
     if (!review.structured && !reviewing) {
         Spacer(Modifier.height(16.dp))
         PaperCard {
@@ -409,9 +489,11 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
         BandHeader(review.score, review.aspects)
         if (review.segments.isNotEmpty()) {
             val counts = review.segments.groupingBy { it.verdict }.eachCount()
-            Note(listOf("good" to "准确", "minor" to "基本准确", "error" to "有误", "missing" to "漏译")
-                .mapNotNull { (key, label) -> counts[key]?.let { "$label $it 句" } }.joinToString(" · "),
-                Modifier.padding(start = PageGutter, end = PageGutter, top = 10.dp))
+            Note(
+                listOf("good" to "准确", "minor" to "基本准确", "error" to "有误", "missing" to "漏译")
+                    .mapNotNull { (key, label) -> counts[key]?.let { "$label $it 句" } }.joinToString(" · "),
+                Modifier.padding(start = PageGutter, end = PageGutter, top = 10.dp),
+            )
         }
         val placed = remember(entry.answer, review, decisions) { placeIssues(entry.answer, review, decisions) }
         SectionLabel("逐句对照")
@@ -424,7 +506,7 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
                     segment = segment,
                     issues = placed.withIndex().filter { it.value.issue.segment == i + 1 && !it.value.dismissed },
                     selectedId = selected?.let { placed.getOrNull(it)?.issue?.id },
-                    onIssue = { selected = it }
+                    onIssue = { selected = it },
                 )
             }
         }
@@ -433,8 +515,13 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
             SectionLabel("其他修改")
             Column(Modifier.fillMaxWidth().padding(horizontal = CardMargin), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 loose.forEach { (i, p) ->
-                    IssueRow(p, i + 1, onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
-                        { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) } }) { selected = i }
+                    IssueRow(
+                        p,
+                        i + 1,
+                        onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
+                            { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) }
+                        },
+                    ) { selected = i }
                 }
             }
         }
@@ -449,7 +536,11 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
                             Row(Modifier/* .semantics(mergeDescendants = true) {} */, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Text(term.zh, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.width(zhWidth))
                                 Column(Modifier.weight(1f)) {
-                                    Text(term.en, style = PassageText.copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize), color = MaterialTheme.colorScheme.primary)
+                                    Text(
+                                        term.en,
+                                        style = PassageText.copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize),
+                                        color = MaterialTheme.colorScheme.primary,
+                                    )
                                     if (term.note.isNotBlank()) Note(term.note)
                                 }
                             }
@@ -466,16 +557,25 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
                 }
             }
         }
-        if (!reviewing && reviewTurn != null) Row(Modifier.padding(start = PageGutter, end = 8.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            Provenance(reviewTurn.model, Modifier.weight(1f))
-            TextButton(onClick = { chooseAgain = true }, enabled = !talk.busy) { Text("换一种方式批改") }
+        if (!reviewing && reviewTurn != null) {
+            Row(Modifier.padding(start = PageGutter, end = 8.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Provenance(reviewTurn.model, Modifier.weight(1f))
+                TextButton(onClick = { chooseAgain = true }, enabled = !talk.busy) { Text("换一种方式批改") }
+            }
         }
-        if (selected != null && reviewTurn != null) IssueSheet(placed, selected!!, onIndex = { selected = it.coerceIn(0, placed.lastIndex) },
-            onDismissSheet = { selected = null },
-            onAccept = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.ACCEPT) },
-            onReject = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.DISMISS) },
-            onReset = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.RESET) },
-            onAsk = { issue -> selected = null; onAsk(CoachChat.aboutIssue(issue)) }, askBusy = talk.busy)
+        if (selected != null && reviewTurn != null) {
+            IssueSheet(
+                placed, selected!!, onIndex = { selected = it.coerceIn(0, placed.lastIndex) },
+                onDismissSheet = { selected = null },
+                onAccept = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.ACCEPT) },
+                onReject = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.DISMISS) },
+                onReset = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.RESET) },
+                onAsk = { issue ->
+                    selected = null
+                    onAsk(CoachChat.aboutIssue(issue))
+                }, askBusy = talk.busy,
+            )
+        }
     }
     if (!reviewing) {
         // Follow-up failures show above the composer in the bottom bar, not down here out of sight.
@@ -488,8 +588,14 @@ private fun TranslationReviewPane(vm: StudyViewModel, entry: CoachPractice, sent
 
 /** One source sentence with the learner's matching words, a verdict and, on request, a suggested version. */
 @Composable
-private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?, issues: List<IndexedValue<PlacedIssue>>,
-    selectedId: Int?, onIssue: (Int) -> Unit) {
+private fun SegmentBlock(
+    number: Int,
+    sentence: String,
+    segment: ReviewSegment?,
+    issues: List<IndexedValue<PlacedIssue>>,
+    selectedId: Int?,
+    onIssue: (Int) -> Unit,
+) {
     var showSuggestion by rememberSaveable(number, segment?.suggestion) { mutableStateOf(false) }
     val verdictTone = when (segment?.verdict) {
         "good" -> Tone.Good
@@ -501,37 +607,45 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainerLowest,
         shape = MaterialTheme.shapes.large,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Row(Modifier.fillMaxWidth()) {
             Column(
                 Modifier.weight(1f).padding(horizontal = 16.dp, vertical = 14.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    if (segment != null && verdictTone != Tone.Muted) MarkBadge(number, verdictTone, Modifier.padding(top = 3.dp))
-                    else Surface(
-                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                        shape = CircleShape,
-                        modifier = Modifier.padding(top = 3.dp).size(24.dp)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text("$number", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    if (segment != null && verdictTone != Tone.Muted) {
+                        MarkBadge(number, verdictTone, Modifier.padding(top = 3.dp))
+                    } else {
+                        Surface(
+                            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            shape = CircleShape,
+                            modifier = Modifier.padding(top = 3.dp).size(24.dp),
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Text("$number", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
                         }
                     }
                     Text(
                         sentence,
                         style = SourceText.copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize),
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     if (segment != null) {
                         DotStatus(
-                            when (segment.verdict) { "good" -> "准确"; "minor" -> "基本准确"; "missing" -> "漏译"; else -> "有误" },
-                            verdictTone
+                            when (segment.verdict) {
+                                "good" -> "准确"
+                                "minor" -> "基本准确"
+                                "missing" -> "漏译"
+                                else -> "有误"
+                            },
+                            verdictTone,
                         )
                     }
                 }
@@ -542,7 +656,7 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
                 Surface(
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Box(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
                         if (segment.mine.isNotBlank()) {
@@ -552,7 +666,7 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
                                 issues.mapIndexedNotNull { i, item -> ranges[i]?.let { TextMark(item.value.issue.id, it, item.value.tone) } },
                                 selected = selectedId,
                                 style = PassageText,
-                                onMark = { id -> issues.firstOrNull { it.value.issue.id == id }?.let { onIssue(it.index) } }
+                                onMark = { id -> issues.firstOrNull { it.value.issue.id == id }?.let { onIssue(it.index) } },
                             )
                         } else {
                             Text("（没有译出）", style = PassageText, color = Tone.Must.color())
@@ -567,7 +681,7 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
                         "· ${p.issue.quote.ifBlank { "（漏译）" }} → ${p.issue.fix}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.clickable { onIssue(i) }
+                        modifier = Modifier.clickable { onIssue(i) },
                     )
                 }
                 if (segment.suggestion.isNotBlank() && !segment.ok) {
@@ -578,14 +692,14 @@ private fun SegmentBlock(number: Int, sentence: String, segment: ReviewSegment?,
                         Surface(
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             SelectionContainer {
                                 Text(
                                     segment.suggestion,
                                     style = PassageText,
                                     color = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                                 )
                             }
                         }
@@ -621,8 +735,11 @@ private fun SentenceSheet(vm: StudyViewModel, entry: CoachPractice, sentences: L
     val pending = talk.pendingFor(entry.id, anchor)
     val kinds = setOf(TurnKind.CHAT, TurnKind.TRANSLATION_HINT)
     fun ask(question: String) = talk.send(entry, anchor, TurnKind.CHAT, question) { CoachChat.prompt(entry, anchor, thread, question) }
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
         Column(Modifier.fillMaxWidth().padding(horizontal = PageGutter).padding(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             CardTitle("第 $index 句")
             Text(sentences.getOrNull(index - 1).orEmpty(), style = SourceText)
@@ -635,8 +752,16 @@ private fun SentenceSheet(vm: StudyViewModel, entry: CoachPractice, sentences: L
                 if (thread.isEmpty() && pending == null) Note("提示只讲难词和句子骨架，不会直接给出整句译文。")
                 if (!vm.aiReady || vm.chosenModel.isBlank()) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型。")
             }
-            AskBar("关于这一句，想问什么…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask, onStop = talk::stop, draftKey = entry.id + anchor,
-                failure = talk.failureFor(entry.id, anchor), onDismissFailure = talk::dismissFailure)
+            AskBar(
+                "关于这一句，想问什么…",
+                busy = talk.busy,
+                enabled = !talk.busy,
+                onSend = ::ask,
+                onStop = talk::stop,
+                draftKey = entry.id + anchor,
+                failure = talk.failureFor(entry.id, anchor),
+                onDismissFailure = talk::dismissFailure,
+            )
         }
     }
 }

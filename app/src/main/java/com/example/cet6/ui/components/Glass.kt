@@ -30,12 +30,15 @@ fun GlassSurface(state: HazeState, shape: Shape, modifier: Modifier = Modifier, 
             tint = HazeTint(surface.copy(alpha = 0.72f)),
             blurRadius = 28.dp,
             noiseFactor = 0.04f,
-            fallbackTint = HazeTint(surface)
+            fallbackTint = HazeTint(surface),
         )
     }
-    Box(modifier.shadow(10.dp, shape, clip = false).clip(shape).hazeChild(state, style) {
-        // Downsample only the blurred backdrop; foreground text and icons keep their native resolution.
-        inputScale = HazeInputScale.Fixed(0.66f)
-    }
-        .border(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f), shape), content = content)
+    Box(
+        modifier.shadow(10.dp, shape, clip = false).clip(shape).hazeChild(state, style) {
+            // Downsample only the blurred backdrop; foreground text and icons keep their native resolution.
+            inputScale = HazeInputScale.Fixed(0.66f)
+        }
+            .border(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f), shape),
+        content = content,
+    )
 }

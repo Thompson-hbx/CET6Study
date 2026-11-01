@@ -26,8 +26,13 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
                     val reviews = row.getJSONArray("reviews")
                     for (i in 0 until reviews.length()) arrays.getValue("reviews").put(reviews.getJSONObject(i))
                 }
-                else -> arrays.getValue(type).put(if (type in setOf("reading", "essays"))
-                    row.put("id", arrays.getValue(type).length() + 1) else row)
+                else -> arrays.getValue(type).put(
+                    if (type in setOf("reading", "essays")) {
+                        row.put("id", arrays.getValue(type).length() + 1)
+                    } else {
+                        row
+                    },
+                )
             }
         }
         arrays.forEach { (name, rows) -> root.put(name, rows) }
@@ -45,7 +50,7 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
             "essays" to "topic content feedback createdAt",
             "words" to "word meaning example dueAt repetitions intervalDays source",
             "reviews" to "id word remembered wasNew studiedOn createdAt nextDueAt rating algorithm stability difficulty elapsedDays",
-            "schedules" to "word stability difficulty lastReviewedAt phase step algorithm"
+            "schedules" to "word stability difficulty lastReviewedAt phase step algorithm",
         ).mapValues { it.value.split(' ').toSet() }
 
         fun decode(text: String): SyncDocument {
@@ -78,12 +83,16 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
                     }
                     if (!row.isNull("schedule")) {
                         val schedule = row.getJSONObject("schedule")
-                        require((0 until reviews.length()).any { i -> reviews.getJSONObject(i).let { review ->
-                            review.get("createdAt") == schedule.get("lastReviewedAt") && review.get("algorithm") == schedule.get("algorithm") &&
-                                (review.get("stability") as Number).toDouble() == (schedule.get("stability") as Number).toDouble() &&
-                                (review.get("difficulty") as Number).toDouble() == (schedule.get("difficulty") as Number).toDouble() &&
-                                integer(review, "nextDueAt") == integer(row.getJSONObject("word"), "dueAt")
-                        } }) { "单词进度、日志与复习状态不一致" }
+                        require(
+                            (0 until reviews.length()).any { i ->
+                                reviews.getJSONObject(i).let { review ->
+                                    review.get("createdAt") == schedule.get("lastReviewedAt") && review.get("algorithm") == schedule.get("algorithm") &&
+                                        (review.get("stability") as Number).toDouble() == (schedule.get("stability") as Number).toDouble() &&
+                                        (review.get("difficulty") as Number).toDouble() == (schedule.get("difficulty") as Number).toDouble() &&
+                                        integer(review, "nextDueAt") == integer(row.getJSONObject("word"), "dueAt")
+                                }
+                            },
+                        ) { "单词进度、日志与复习状态不一致" }
                     }
                 } else {
                     require(type in setOf("coach", "turns", "plans", "reading", "essays")) { "未知同步类型" }
@@ -102,7 +111,10 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
         fun fromBackup(text: String): SyncDocument {
             require(text.toByteArray().size <= MAX_BYTES)
             val root = JSONObject(text)
-            fields(root, setOf("format", "version", "databaseVersion", "createdAt", "coach", "turns", "words", "reviews", "schedules", "plans", "reading", "essays"))
+            fields(
+                root,
+                setOf("format", "version", "databaseVersion", "createdAt", "coach", "turns", "words", "reviews", "schedules", "plans", "reading", "essays"),
+            )
             require(root.get("format") == "CET6StudyBackup" && integer(root, "version") == 5L && integer(root, "databaseVersion") == 8L)
             val records = sortedMapOf<String, String>()
             fun rows(name: String): List<JSONObject> = root.getJSONArray(name).let { a -> (0 until a.length()).map(a::getJSONObject) }
@@ -136,24 +148,38 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
 
         private fun validateRow(type: String, row: JSONObject) {
             fields(row, schemas.getValue(type))
-            val integers = setOf("submittedAt", "updatedAt", "createdAt", "dueAt", "repetitions", "intervalDays", "nextDueAt", "rating", "elapsedDays", "lastReviewedAt", "phase", "step", "newGoal", "reviewGoal")
+            val integers =
+                setOf("submittedAt", "updatedAt", "createdAt", "dueAt", "repetitions", "intervalDays", "nextDueAt", "rating", "elapsedDays", "lastReviewedAt", "phase", "step", "newGoal", "reviewGoal")
             val booleans = setOf("correct", "remembered", "wasNew")
             val numbers = setOf("stability", "difficulty")
             row.keys().forEach { field ->
                 when (field) {
-                    in integers -> require(integer(row, field) in 0..if (field in setOf("repetitions", "intervalDays", "rating", "elapsedDays", "phase", "step", "newGoal", "reviewGoal"))
-                        Int.MAX_VALUE.toLong() else 253_402_300_799_999L) { "记录数值无效" }
+                    in integers -> require(
+                        integer(row, field) in 0..if (field in setOf("repetitions", "intervalDays", "rating", "elapsedDays", "phase", "step", "newGoal", "reviewGoal")) {
+                            Int.MAX_VALUE.toLong()
+                        } else {
+                            253_402_300_799_999L
+                        },
+                    ) { "记录数值无效" }
                     in booleans -> require(row.get(field) is Boolean) { "记录布尔值无效" }
                     in numbers -> require(row.get(field) is Number && (row.get(field) as Number).toDouble().isFinite())
-                    else -> require(row.get(field) is String && row.getString(field).length <= when (field) {
-                        "feedback" -> 200_000; "content" -> 100_000; "material" -> 60_000; "answer" -> 30_000
-                        "questions", "savedSentences", "state" -> 20_000; else -> 4000
-                    }) { "记录文本无效或过长" }
+                    else -> require(
+                        row.get(field) is String && row.getString(field).length <= when (field) {
+                            "feedback" -> 200_000
+                            "content" -> 100_000
+                            "material" -> 60_000
+                            "answer" -> 30_000
+                            "questions", "savedSentences", "state" -> 20_000
+                            else -> 4000
+                        },
+                    ) { "记录文本无效或过长" }
                 }
             }
             if (type == "coach") {
-                require(row.getString("id").length in 1..100 && row.getString("sourcePracticeId").length <= 100 &&
-                    row.getString("sourcePracticeId") != row.getString("id"))
+                require(
+                    row.getString("id").length in 1..100 && row.getString("sourcePracticeId").length <= 100 &&
+                        row.getString("sourcePracticeId") != row.getString("id"),
+                )
                 require(row.getString("title").length <= 1000 && row.getString("model").length <= 200)
                 require(row.getString("kind") in setOf("READING", "WRITING", "TRANSLATION"))
                 require(integer(row, "submittedAt") <= integer(row, "updatedAt"))
@@ -161,9 +187,13 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
             if (type == "turns") {
                 require(row.getString("id").length in 1..100 && row.getString("practiceId").length in 1..100)
                 require(row.getString("role") in setOf("user", "assistant"))
-                require(row.getString("content").isNotBlank() && row.getString("content").length <= 60_000 &&
-                    row.getString("state").length <= 8000 && row.getString("model").length <= 200)
-                require(row.getString("kind") in setOf("write-review/1", "write-plan/1", "trans-review/1", "trans-hint/1", "read-explain/1", "read-para/1", "read-overview/1", "chat/1"))
+                require(
+                    row.getString("content").isNotBlank() && row.getString("content").length <= 60_000 &&
+                        row.getString("state").length <= 8000 && row.getString("model").length <= 200,
+                )
+                require(
+                    row.getString("kind") in setOf("write-review/1", "write-plan/1", "trans-review/1", "trans-hint/1", "read-explain/1", "read-para/1", "read-overview/1", "chat/1"),
+                )
                 val anchor = row.getString("anchor")
                 require(anchor in setOf("review", "plan") || anchor.matches(Regex("(?:q|para|over|sent):[0-9]{1,4}"))) { "对话锚点无效" }
             }
@@ -181,9 +211,12 @@ data class SyncDocument(val records: Map<String, String> = emptyMap()) {
             if (type == "reviews") {
                 require(row.getString("id").length in 1..100 && integer(row, "nextDueAt") > integer(row, "createdAt"))
                 require(LocalDate.parse(row.getString("studiedOn")).toString() == row.getString("studiedOn"))
-                if (row.getString("algorithm") == "legacy") require(integer(row, "rating") == 0L &&
-                    row.getDouble("stability") == 0.0 && row.getDouble("difficulty") == 0.0)
-                else {
+                if (row.getString("algorithm") == "legacy") {
+                    require(
+                        integer(row, "rating") == 0L &&
+                            row.getDouble("stability") == 0.0 && row.getDouble("difficulty") == 0.0,
+                    )
+                } else {
                     require(row.getString("algorithm") == FSRS_ALGORITHM) { "复习算法不兼容" }
                     require(integer(row, "rating") in 1..3 && row.getBoolean("remembered") == (integer(row, "rating") == 3L))
                     require(row.getDouble("stability") > 0 && row.getDouble("difficulty") in 1.0..10.0)

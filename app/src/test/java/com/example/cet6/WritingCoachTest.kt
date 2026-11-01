@@ -5,8 +5,11 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class WritingCoachTest {
-    private fun entry(kind: CoachKind) = CoachPractice(kind = kind.name,
-        material = "原创测试要求：讨论图书馆。", answer = "Libraries helps students.")
+    private fun entry(kind: CoachKind) = CoachPractice(
+        kind = kind.name,
+        material = "原创测试要求：讨论图书馆。",
+        answer = "Libraries helps students.",
+    )
 
     @Test fun specialtyCannotBeAppliedToOtherKind() {
         assertTrue(runCatching { CoachPrompts.build(entry(CoachKind.TRANSLATION), WritingFocus.STRUCTURE) }.isFailure)

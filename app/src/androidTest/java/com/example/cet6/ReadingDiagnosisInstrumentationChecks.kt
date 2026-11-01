@@ -17,13 +17,33 @@ class ReadingDiagnosisInstrumentationChecks(private val context: Context) {
         val scope = CoroutineScope(job + Dispatchers.Main)
         var diagnosisId = ""
         try {
-            val paper = ExamPaper("sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original diagnosis test",
+            val paper = ExamPaper(
+                "sample-cet6-2026-06-13-1", "2026-06-13", "1", sourceName = "Original diagnosis test",
                 sourceUrl = "local:test", licenseStatus = "original", reviewed = true, sample = true,
-                passages = (1..2).map { code -> ExamPassage("$code", "Original", if (code == 1) "Students need quiet rooms." else "UNRELATED SECOND PASSAGE.",
-                    (if (code == 1) 46..50 else 51..55).map { n -> ExamQuestion(n, "What is needed?",
-                        "ABCD".map { ExamOption("$it", "Option $it") }, "A", "Original test key", if (code == 1) "quiet rooms" else "SECOND PASSAGE") }) })
-            val original = ExamCodec.practice(paper, CoachKind.READING).copy(answer = "46. B\n47. C", submittedAt = 100,
-                feedback = "## 第 46 题 · 第 1 层提示\n\nOld local hint.", errorReason = "User confirmed note")
+                passages = (1..2).map { code ->
+                    ExamPassage(
+                        "$code",
+                        "Original",
+                        if (code == 1) "Students need quiet rooms." else "UNRELATED SECOND PASSAGE.",
+                        (if (code == 1) 46..50 else 51..55).map { n ->
+                            ExamQuestion(
+                                n,
+                                "What is needed?",
+                                "ABCD".map { ExamOption("$it", "Option $it") },
+                                "A",
+                                "Original test key",
+                                if (code == 1) "quiet rooms" else "SECOND PASSAGE",
+                            )
+                        },
+                    )
+                },
+            )
+            val original = ExamCodec.practice(paper, CoachKind.READING).copy(
+                answer = "46. B\n47. C",
+                submittedAt = 100,
+                feedback = "## 第 46 题 · 第 1 层提示\n\nOld local hint.",
+                errorReason = "User confirmed note",
+            )
             diagnosisId = original.id
             db.dao().saveCoach(original)
             var fail = false
@@ -70,12 +90,17 @@ class ReadingDiagnosisInstrumentationChecks(private val context: Context) {
             waitFor { !state.working }
             check(prompts.size == 3 && db.dao().coachById(original.id) == second)
             check(state.messages.getValue(CoachKind.READING).contains("连接 ChatGPT"))
-        } finally { job.cancelAndJoin(); db.close() }
+        } finally {
+            job.cancelAndJoin()
+            db.close()
+        }
         val reopened = Room.databaseBuilder(context, StudyDatabase::class.java, file.absolutePath).build()
         try {
             val restored = reopened.dao().coachById(diagnosisId)!!
             check(ReadingDiagnosis.saved(restored.feedback, 46).isNotBlank() && ReadingDiagnosis.saved(restored.feedback, 47).isNotBlank())
             check(restored.answer == "46. B\n47. C" && restored.errorReason == "User confirmed note")
-        } finally { reopened.close() }
+        } finally {
+            reopened.close()
+        }
     }
 }

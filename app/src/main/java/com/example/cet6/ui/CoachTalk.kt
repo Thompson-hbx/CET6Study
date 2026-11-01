@@ -9,11 +9,22 @@ import kotlinx.coroutines.flow.Flow
 
 /** Compose view of [ConversationService] for screens that read ViewModel properties. */
 class CoachTalk internal constructor(val service: ConversationService) {
-    constructor(repository: CoachRepository, scope: CoroutineScope, canRequest: () -> Boolean, model: () -> String,
-        reviewRequest: AiRequest?, request: AiRequest) :
+    constructor(
+        repository: CoachRepository,
+        scope: CoroutineScope,
+        canRequest: () -> Boolean,
+        model: () -> String,
+        reviewRequest: AiRequest?,
+        request: AiRequest,
+    ) :
         this(ConversationService(repository, scope, canRequest, model, reviewRequest, request))
-    constructor(repository: CoachRepository, scope: CoroutineScope, canRequest: () -> Boolean, model: () -> String,
-        request: AiRequest) : this(repository, scope, canRequest, model, null, request)
+    constructor(
+        repository: CoachRepository,
+        scope: CoroutineScope,
+        canRequest: () -> Boolean,
+        model: () -> String,
+        request: AiRequest,
+    ) : this(repository, scope, canRequest, model, null, request)
 
     private val ui by service.state.composeState()
     val pending: ConversationService.Pending? get() = ui.pending
@@ -22,6 +33,7 @@ class CoachTalk internal constructor(val service: ConversationService) {
 
     fun turns(practiceId: String): Flow<List<CoachTurn>> = service.turns(practiceId)
     fun pendingFor(practiceId: String, anchor: String) = pending?.takeIf { it.practiceId == practiceId && it.anchor == anchor }
+
     /** [chat] selects follow-up failures (shown by the composer) or other requests (shown where they were started). */
     fun failureFor(practiceId: String, anchor: String, chat: Boolean? = null) =
         failure?.takeIf { it.practiceId == practiceId && it.anchor == anchor && (chat == null || it.chat == chat) }

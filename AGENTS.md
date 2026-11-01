@@ -4,9 +4,9 @@
 
 ## 技术栈
 
-- 单模块 `:app`。Kotlin 2.0.21、AGP 8.7.3、KSP 2.0.21-1.0.28、Gradle Wrapper 8.9（校验 SHA-256）；没有 version catalog，版本直接写在 `build.gradle.kts`。
+- 模块：`:app`（Android）、`:desktop`（Windows，Compose Desktop）、`:sync-core`（两端共用的同步协议）、`:sync-server`（个人同步服务）、`:design-tokens`（两端共用的颜色与图标路径）。Kotlin 2.0.21、AGP 8.7.3、KSP 2.0.21-1.0.28、Gradle Wrapper 8.9（校验 SHA-256）；插件与依赖版本统一写在 `gradle/libs.versions.toml`。
 - compileSdk / targetSdk 35，minSdk 26；Java / Kotlin target 17，JDK 17 或 21（本机 SDK 与 JDK 在 `C:\Dev\Env`）。
-- UI 全部 Jetpack Compose（BOM 2024.12.01、Material3），没有 XML 布局。导航由 `ui/AppRoot.kt` 手写，不用 Navigation 库，也没有 DI 框架；MVVM + Repository。
+- UI 全部 Jetpack Compose（BOM 2024.12.01、Material3），没有 XML 布局。导航用 Navigation Compose（`ui/AppRoot.kt` 的 `NavHost`，四个标签共用 `home` 目的地）；依赖注入用 Hilt（`CET6App`、`di/AppModules.kt`，`StudyServices` 按 ViewModel 作用域创建）；MVVM + Repository。
 - Room 2.7.2：数据库 `cet6_study.db`，版本以 `data/StudyDatabase.kt` 为准（目前 v8），schema 导出到 `app/schemas/`。OkHttp 4.12，Markwon 4.6。
 - 单测 JUnit 4 + org.json（让协议解析在 JVM 上跑）；仪器测试用自定义 `android.app.Instrumentation`（`LocalDataInstrumentation`），不是 AndroidJUnitRunner。
 
@@ -24,7 +24,9 @@
 
 ## 命令（PowerShell，仓库根目录）
 
-- 构建 + 单测 + Lint：`.\gradlew.bat assembleDebug testDebugUnitTest lintDebug`（Lint 目前有 6 个既有警告）。
+- 构建 + 单测 + Lint：`.\gradlew.bat assembleDebug testDebugUnitTest lintDebug`（Lint 的既有警告是依赖有新版本与 targetSdk 提示）。
+- 代码规范：`.\gradlew.bat ktlintCheck detekt`；自动格式化 `.\gradlew.bat ktlintFormat`。既有问题记在各模块 `config/ktlint/baseline.xml`、`config/detekt/baseline.xml`，新代码不得新增；规则见根目录 `.editorconfig` 与 `config/detekt/detekt.yml`。
+- 其他模块测试：`.\gradlew.bat :desktop:test :sync-core:test :sync-server:test :design-tokens:test`。
 - 单个测试类：`.\gradlew.bat testDebugUnitTest --tests "com.example.cet6.ExamContentTest"`
 - 装到手机：`adb -s <serial> install -r app\build\outputs\apk\debug\app-debug.apk`
 - 仪器测试：`.\gradlew.bat assembleDebugAndroidTest`，装上 `app-debug.apk` 和 `app-debug-androidTest.apk` 后运行
@@ -38,7 +40,7 @@
 ## 约定
 
 - 包结构 `com.example.cet6.{ai,auth,data,ui}`，文件按功能命名；单测 `*Test.kt`，设备检查 `*InstrumentationChecks.kt`。
-- Kotlin 官方代码风格（`kotlin.code.style=official`），没有 ktlint / detekt。注释和 KDoc 用英文；界面文字直接写在 Compose `Text(...)` 里，用中文，没有 `strings.xml`；文档用中文。
+- Kotlin 官方代码风格（`kotlin.code.style=official`），由 ktlint（`.editorconfig`）与 detekt 检查。注释和 KDoc 用英文；界面文字直接写在 Compose `Text(...)` 里，用中文，没有 `strings.xml`；文档用中文。
 - Room 迁移只做加法（新增表、列、索引），不删除或重建旧表；改实体时升级版本、补迁移，并提交新生成的 schema JSON。完整备份为分段 ZIP v1，学习字段沿用 JSON v5，仍能导入旧 JSON v1—v5；见 `docs/BACKUP.md`。
 - 提交信息用英文 Conventional Commits，例如 `feat(reading): ...`。
 - 文本 UTF-8；`third_party/bee-fsrs/src/` 强制 LF；私人资料在 `.gitattributes` 中标为 `-text`，不要改动它们的字节。

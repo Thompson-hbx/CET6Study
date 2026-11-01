@@ -36,7 +36,7 @@ data class AiState(
     val reviewFormat: ReasoningFormat = ReasoningFormat.OPENAI,
     val busy: Boolean = false,
     val status: String = "选择 AI 服务，连接后可发送测试请求。",
-    val result: String = ""
+    val result: String = "",
 ) {
     val aiReady: Boolean get() = if (provider == AiProvider.CHATGPT) hasPlan else hasApiKey
 }
@@ -49,7 +49,7 @@ class AiGateway(
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(180, TimeUnit.SECONDS)
         .build(),
-    private val saveEssay: suspend (Pair<String, String>, String) -> Unit
+    private val saveEssay: suspend (Pair<String, String>, String) -> Unit,
 ) {
     private val auth = ChatGptAuth(http, SecureSessionStore(context))
     private val ai = ResponsesClient(http, auth)
@@ -60,26 +60,30 @@ class AiGateway(
 
     val state: ServiceState<AiState>
     private val current get() = state.value
-    private fun set(transform: AiState.() -> AiState) { state.update(transform) }
+    private fun set(transform: AiState.() -> AiState) {
+        state.update(transform)
+    }
 
     init {
         val provider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.CHATGPT
         val session = auth.session()
-        state = ServiceState(AiState(provider = provider, apiBaseUrl = provider.defaultUrl,
-            sessionEmail = session?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty(),
-            hasPlan = session?.canUsePlan == true))
+        state = ServiceState(
+            AiState(
+                provider = provider, apiBaseUrl = provider.defaultUrl,
+                sessionEmail = session?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty(),
+                hasPlan = session?.canUsePlan == true,
+            ),
+        )
         restoreApiConnection()
         set { copy(chosenModel = prefs.getString(modelPreference(), "").orEmpty()) }
         restoreReviewSettings()
         if (current.aiReady) refreshModels()
     }
 
-    private fun modelPreference(): String =
-        if (current.provider == AiProvider.CHATGPT) "model" else "model_${current.provider.name}"
+    private fun modelPreference(): String = if (current.provider == AiProvider.CHATGPT) "model" else "model_${current.provider.name}"
 
     // Destination and model are part of the key so one provider's settings cannot leak into another's.
-    private fun reviewPreference(): String =
-        "deep_review_${current.provider.name}_${current.apiBaseUrl}_${current.chosenModel}"
+    private fun reviewPreference(): String = "deep_review_${current.provider.name}_${current.apiBaseUrl}_${current.chosenModel}"
 
     private fun setConnection(connection: ApiConnection?) {
         apiConnection = connection
@@ -118,13 +122,18 @@ class AiGateway(
         if (current.reviewEffort !in value.efforts) selectReviewEffort(ReasoningEffort.HIGH)
     }
 
-    private suspend fun streamAi(prompt: String, deepReview: Boolean = false,
-        onDelta: suspend (String) -> Unit): String {
+    private suspend fun streamAi(prompt: String, deepReview: Boolean = false, onDelta: suspend (String) -> Unit): String {
         val settings = current
-        val reasoning = if (deepReview && settings.deepReviewEnabled)
-            ReviewReasoning(settings.reviewEffort, settings.reviewFormat) else null
-        return if (settings.provider == AiProvider.CHATGPT) ai.stream(settings.chosenModel, prompt, reasoning, onDelta)
-        else compatibleAi.stream(apiConnection ?: error("请先保存 API 配置"), settings.chosenModel, prompt, reasoning, onDelta)
+        val reasoning = if (deepReview && settings.deepReviewEnabled) {
+            ReviewReasoning(settings.reviewEffort, settings.reviewFormat)
+        } else {
+            null
+        }
+        return if (settings.provider == AiProvider.CHATGPT) {
+            ai.stream(settings.chosenModel, prompt, reasoning, onDelta)
+        } else {
+            compatibleAi.stream(apiConnection ?: error("请先保存 API 配置"), settings.chosenModel, prompt, reasoning, onDelta)
+        }
     }
 
     /** Streams one coaching request; [onDelta] runs on the main thread. */
@@ -132,7 +141,10 @@ class AiGateway(
         set { copy(busy = true) }
         try {
             return streamAi(prompt, deepReview) { delta -> withContext(Dispatchers.Main) { onDelta(delta) } }
-        } finally { syncSessionState(); set { copy(busy = false) } }
+        } finally {
+            syncSessionState()
+            set { copy(busy = false) }
+        }
     }
 
     fun selectModel(slug: String) {
@@ -145,8 +157,11 @@ class AiGateway(
     private fun restoreApiConnection() {
         setConnection(null)
         if (current.provider == AiProvider.CHATGPT) return
-        try { setConnection(apiStore.load(current.provider)) }
-        catch (_: Exception) { set { copy(status = "API 配置无法解密，请重新填写并保存；原配置尚未覆盖。") } }
+        try {
+            setConnection(apiStore.load(current.provider))
+        } catch (_: Exception) {
+            set { copy(status = "API 配置无法解密，请重新填写并保存；原配置尚未覆盖。") }
+        }
     }
 
     fun selectProvider(value: AiProvider) {
@@ -165,14 +180,22 @@ class AiGateway(
         return try {
             val url = if (provider == AiProvider.DEEPSEEK) provider.defaultUrl else baseUrl
             // A changed destination always requires a newly entered key.
-            val savedKey = if (key.isBlank() && ApiConnection.validatedBaseUrl(url).toString() == apiConnection?.baseUrl)
-                apiConnection?.apiKey.orEmpty() else key
+            val savedKey = if (key.isBlank() && ApiConnection.validatedBaseUrl(url).toString() == apiConnection?.baseUrl) {
+                apiConnection?.apiKey.orEmpty()
+            } else {
+                key
+            }
             val connection = ApiConnection.create(url, savedKey)
             apiStore.save(provider, connection)
             setConnection(connection)
             restoreReviewSettings()
-            set { copy(models = emptyList(), result = "",
-                status = "API 配置已加密保存；请刷新模型或填写模型名称，再发送测试请求。") }
+            set {
+                copy(
+                    models = emptyList(),
+                    result = "",
+                    status = "API 配置已加密保存；请刷新模型或填写模型名称，再发送测试请求。",
+                )
+            }
             true
         } catch (_: IllegalArgumentException) {
             set { copy(status = "配置无效：请填写 HTTPS Base URL（不含账号、参数或接口路径）和有效 API Key；更换地址时需重新填写 Key。") }
@@ -193,7 +216,9 @@ class AiGateway(
             restoreReviewSettings()
             prefs.edit().remove(modelPreference()).apply()
             set { copy(result = "", status = "已清除本机 ${provider.label} 配置；如需撤销 Key，请到服务商控制台操作。") }
-        } catch (_: Exception) { set { copy(status = "清除 API 配置失败，请重试。") } }
+        } catch (_: Exception) {
+            set { copy(status = "清除 API 配置失败，请重试。") }
+        }
     }
 
     fun signIn() {
@@ -203,15 +228,27 @@ class AiGateway(
             try {
                 val session = auth.signIn { uri: Uri ->
                     context.startActivity(
-                        Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    )
                 }
-                set { copy(sessionEmail = session.email.ifBlank { "已验证 ChatGPT 身份" }, hasPlan = session.canUsePlan,
-                    status = if (session.canUsePlan) "OAuth 登录成功，已授予套餐调用权限。" else
-                        "登录成功，但没有授予套餐额度权限，请重新授权。") }
-            } catch (e: CancellationException) { throw e
+                set {
+                    copy(
+                        sessionEmail = session.email.ifBlank { "已验证 ChatGPT 身份" },
+                        hasPlan = session.canUsePlan,
+                        status = if (session.canUsePlan) {
+                            "OAuth 登录成功，已授予套餐调用权限。"
+                        } else {
+                            "登录成功，但没有授予套餐额度权限，请重新授权。"
+                        },
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 set { copy(status = "登录失败：${e.message ?: "未知错误"}") }
-            } finally { set { copy(busy = false) } }
+            } finally {
+                set { copy(busy = false) }
+            }
             if (current.hasPlan) refreshModels()
         }
     }
@@ -222,10 +259,20 @@ class AiGateway(
             set { copy(busy = true, status = "正在尝试撤销会话并清除本机凭证……") }
             try {
                 val revoked = auth.signOut()
-                set { copy(result = "", status = if (revoked) "已撤销远端会话并清除本机令牌。" else
-                    "已清除本机令牌；未确认远端撤销，请到 ChatGPT 设置检查。") }
-            } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { set { copy(status = "退出未完全成功，请重试并检查 ChatGPT 设置。") }
+                set {
+                    copy(
+                        result = "",
+                        status = if (revoked) {
+                            "已撤销远端会话并清除本机令牌。"
+                        } else {
+                            "已清除本机令牌；未确认远端撤销，请到 ChatGPT 设置检查。"
+                        },
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                set { copy(status = "退出未完全成功，请重试并检查 ChatGPT 设置。") }
             } finally {
                 syncSessionState()
                 set { copy(busy = false) }
@@ -236,8 +283,10 @@ class AiGateway(
     private fun syncSessionState() {
         val session = auth.session()
         set {
-            val synced = copy(sessionEmail = session?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty(),
-                hasPlan = session?.canUsePlan == true)
+            val synced = copy(
+                sessionEmail = session?.email?.ifBlank { "已验证 ChatGPT 身份" }.orEmpty(),
+                hasPlan = session?.canUsePlan == true,
+            )
             if (synced.aiReady) synced else synced.copy(models = emptyList(), chosenModel = "")
         }
     }
@@ -248,21 +297,42 @@ class AiGateway(
             set { copy(busy = true) }
             try {
                 val provider = current.provider
-                val models = if (provider == AiProvider.CHATGPT) ai.models()
-                    else compatibleAi.models(apiConnection ?: error("请先保存 API 配置"))
+                val models = if (provider == AiProvider.CHATGPT) {
+                    ai.models()
+                } else {
+                    compatibleAi.models(apiConnection ?: error("请先保存 API 配置"))
+                }
                 val remembered = prefs.getString(modelPreference(), null)
                 set {
                     val keep = provider != AiProvider.CHATGPT && chosenModel.isNotBlank() || models.any { it.slug == chosenModel }
-                    copy(models = models, chosenModel = if (keep) chosenModel else
-                        (models.firstOrNull { it.slug == remembered } ?: models.firstOrNull())?.slug.orEmpty())
+                    copy(
+                        models = models,
+                        chosenModel = if (keep) {
+                            chosenModel
+                        } else {
+                            (models.firstOrNull { it.slug == remembered } ?: models.firstOrNull())?.slug.orEmpty()
+                        },
+                    )
                 }
                 prefs.edit().putString(modelPreference(), current.chosenModel).apply()
                 restoreReviewSettings()
-                set { copy(status = if (models.isEmpty()) "没有获取到可用模型；请检查权限，或为兼容接口手动填写模型名称。"
-                    else "已获取 ${models.size} 个当前账号可见模型。") }
-            } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { set { copy(status = "获取模型失败，请检查网络、权限与接口配置；兼容接口也可手动填写模型名称。") } }
-            finally { syncSessionState(); set { copy(busy = false) } }
+                set {
+                    copy(
+                        status = if (models.isEmpty()) {
+                            "没有获取到可用模型；请检查权限，或为兼容接口手动填写模型名称。"
+                        } else {
+                            "已获取 ${models.size} 个当前账号可见模型。"
+                        },
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                set { copy(status = "获取模型失败，请检查网络、权限与接口配置；兼容接口也可手动填写模型名称。") }
+            } finally {
+                syncSessionState()
+                set { copy(busy = false) }
+            }
         }
     }
 
@@ -280,10 +350,14 @@ class AiGateway(
                 }
                 set { copy(status = "API 测试成功：已收到完整回复。") }
                 if (saveEssay != null) this@AiGateway.saveEssay(saveEssay, completed)
-            } catch (e: CancellationException) { throw e
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 set { copy(status = "调用失败：${e.message ?: "未知错误"}（已收到的文本不视为完成）") }
-            } finally { syncSessionState(); set { copy(busy = false) } }
+            } finally {
+                syncSessionState()
+                set { copy(busy = false) }
+            }
         }
     }
 }

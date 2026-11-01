@@ -2,9 +2,9 @@
 
 package com.example.cet6.desktop
 
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asComposeCanvas
 import androidx.compose.ui.platform.PlatformContext
@@ -88,13 +88,19 @@ class DesktopWorkspaceTest {
                     scene.click("设备同步")
                     assertTrue(scene.hasText("连接你的个人服务器"))
                     val footer = scene.nodes().single { it.config.getOrNull(SemanticsProperties.Text)?.any { text -> text.text == model.status } == true }
-                    assertTrue("Sync status is not visible: ${footer.boundsInRoot}", footer.boundsInRoot.width > 0 && footer.boundsInRoot.height > 0 && footer.boundsInRoot.top >= 0 && footer.boundsInRoot.bottom <= 1024)
+                    assertTrue(
+                        "Sync status is not visible: ${footer.boundsInRoot}",
+                        footer.boundsInRoot.width > 0 && footer.boundsInRoot.height > 0 && footer.boundsInRoot.top >= 0 && footer.boundsInRoot.bottom <= 1024,
+                    )
                     scene.capture("device-sync.png")
                     scene.click("生词")
                     assertTrue(scene.hasText("还没有同步的生词"))
                     scene.click("写作")
                     assertTrue(scene.hasText("从一份写作草稿开始"))
-                } finally { scene.close(); scope.cancel() }
+                } finally {
+                    scene.close()
+                    scope.cancel()
+                }
             }
             DesktopStore(directory).use { store ->
                 assertEquals(2, store.snapshot().records.size)
@@ -122,7 +128,10 @@ class DesktopWorkspaceTest {
                 val submit = scene.nodes().single { it.config.getOrNull(SemanticsProperties.Text)?.any { t -> t.text == "提交作答" } == true }
                 assertTrue(submit.boundsInRoot.left >= 0 && submit.boundsInRoot.right <= 1000)
                 assertTrue(submit.boundsInRoot.top >= 0 && submit.boundsInRoot.bottom <= 680)
-            } finally { scene.close(); scope.cancel() }
+            } finally {
+                scene.close()
+                scope.cancel()
+            }
         }
     }
 
@@ -143,7 +152,7 @@ class DesktopWorkspaceTest {
             val review = listOf(
                 """{"type":"issue","quote":"have","fix":"has","reason":"everyone 作主语时谓语用单数。","category":"主谓一致"}""",
                 """{"type":"issue","quote":"help","fix":"helps","reason":"a journal 为单数主语。","category":"主谓一致"}""",
-                """{"type":"issue","quote":"notice patterns","fix":"spot recurring patterns","level":"better","category":"用词"}"""
+                """{"type":"issue","quote":"notice patterns","fix":"spot recurring patterns","level":"better","category":"用词"}""",
             ).joinToString("\n")
             val turn = JSONObject().put("id", "t1").put("practiceId", practiceId).put("anchor", "review").put("kind", "write-review/1")
                 .put("role", "assistant").put("content", review).put("state", "done").put("model", "sample").put("createdAt", 1L)
@@ -165,13 +174,22 @@ class DesktopWorkspaceTest {
                 assertEquals(key, synced.selected)
                 assertTrue(scene.hasText("必改 2 · 润色 1"))
                 scene.capture("writing-margin.png")
-            } finally { scene.close(); scope.cancel() }
+            } finally {
+                scene.close()
+                scope.cancel()
+            }
         }
     }
 
     private fun onEdt(action: () -> Unit) {
         var failure: Throwable? = null
-        SwingUtilities.invokeAndWait { try { action() } catch (error: Throwable) { failure = error } }
+        SwingUtilities.invokeAndWait {
+            try {
+                action()
+            } catch (error: Throwable) {
+                failure = error
+            }
+        }
         failure?.let { throw it }
     }
 
@@ -220,19 +238,33 @@ class DesktopWorkspaceTest {
                 override val containerSize = IntSize(width, height)
             }
             override val semanticsOwnerListener = object : PlatformContext.SemanticsOwnerListener {
-                override fun onSemanticsOwnerAppended(semanticsOwner: SemanticsOwner) { owners += semanticsOwner }
-                override fun onSemanticsOwnerRemoved(semanticsOwner: SemanticsOwner) { owners -= semanticsOwner }
+                override fun onSemanticsOwnerAppended(semanticsOwner: SemanticsOwner) {
+                    owners += semanticsOwner
+                }
+                override fun onSemanticsOwnerRemoved(semanticsOwner: SemanticsOwner) {
+                    owners -= semanticsOwner
+                }
                 override fun onSemanticsChange(semanticsOwner: SemanticsOwner) = Unit
                 override fun onLayoutChange(semanticsOwner: SemanticsOwner, semanticsNodeId: Int) = Unit
             }
         }
-        private val scene = CanvasLayersComposeScene(density = Density(1f), size = IntSize(width, height),
-            composeSceneContext = object : ComposeSceneContext { override val platformContext = platform })
-        init { scene.setContent(content) }
+        private val scene = CanvasLayersComposeScene(
+            density = Density(1f),
+            size = IntSize(width, height),
+            composeSceneContext = object : ComposeSceneContext {
+                override val platformContext = platform
+            },
+        )
+        init {
+            scene.setContent(content)
+        }
         fun render(nanos: Long): org.jetbrains.skia.Image {
             scene.render(surface.canvas.asComposeCanvas(), nanos)
             return surface.makeImageSnapshot()
         }
-        override fun close() { scene.close(); surface.close() }
+        override fun close() {
+            scene.close()
+            surface.close()
+        }
     }
 }

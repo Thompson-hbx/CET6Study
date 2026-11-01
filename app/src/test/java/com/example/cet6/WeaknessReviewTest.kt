@@ -1,16 +1,18 @@
 package com.example.cet6
 
 import com.example.cet6.data.*
-import java.time.LocalDate
-import java.time.ZoneId
 import org.junit.Assert.*
 import org.junit.Test
+import java.time.LocalDate
+import java.time.ZoneId
 
 class WeaknessReviewTest {
     private val zone = ZoneId.of("Asia/Shanghai")
     private val today = LocalDate.of(2026, 10, 18)
-    private fun note(day: LocalDate, reason: String = "语法") = CoachPractice(errorReason = reason,
-        submittedAt = day.atStartOfDay(zone).toInstant().toEpochMilli())
+    private fun note(day: LocalDate, reason: String = "语法") = CoachPractice(
+        errorReason = reason,
+        submittedAt = day.atStartOfDay(zone).toInstant().toEpochMilli(),
+    )
 
     @Test fun classifiesExplicitNotesWithoutInferringFromFeedback() {
         val entry = note(today, "语法：主谓一致；表达: 搭配；语法")
@@ -39,8 +41,10 @@ class WeaknessReviewTest {
         val records = listOf(0L, 6L, 7L, 13L, 14L, -1L).map { note(today.minusDays(it)) }
         assertEquals(WeaknessReview.PeriodCounts(2, 2), WeaknessReview.periods(records, today, zone))
         val immediatelyBeforeMidnight = note(today).copy(submittedAt = today.atStartOfDay(zone).toInstant().toEpochMilli() - 1)
-        assertEquals(WeaknessReview.PeriodCounts(0, 1),
-            WeaknessReview.periods(listOf(immediatelyBeforeMidnight), today.plusDays(6), zone))
+        assertEquals(
+            WeaknessReview.PeriodCounts(0, 1),
+            WeaknessReview.periods(listOf(immediatelyBeforeMidnight), today.plusDays(6), zone),
+        )
     }
 
     @Test fun editsToOldNotesDoNotPretendToBeRecentSubmissions() {

@@ -15,7 +15,7 @@ class BackupUiStateTest {
         study: StudyPlanState = StudyPlanState(),
         practice: PracticeState = PracticeState(),
         conversation: ConversationService.State = ConversationService.State(),
-        exams: ExamLibraryState = ExamLibraryState()
+        exams: ExamLibraryState = ExamLibraryState(),
     ) = BackupUiState.from(backup, study, practice, conversation, exams)
 
     @Test fun idleAllowsEveryAction() {
@@ -28,7 +28,7 @@ class BackupUiStateTest {
     @Test fun runningAiBlocksExportAndMergeButNotPreview() {
         listOf(
             state(practice = PracticeState(working = true)),
-            state(conversation = ConversationService.State(pending = ConversationService.Pending("p", "a", "chat", "q")))
+            state(conversation = ConversationService.State(pending = ConversationService.Pending("p", "a", "chat", "q"))),
         ).forEach {
             assertFalse(it.canExport)
             assertFalse(it.canMerge)

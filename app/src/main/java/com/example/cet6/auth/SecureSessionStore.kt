@@ -13,21 +13,36 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 data class ChatGptSession(
-    val clientId: String, val subject: String, val email: String,
-    val accessToken: String, val refreshToken: String, val idToken: String,
-    val scopes: String, val expiresAtMillis: Long
+    val clientId: String,
+    val subject: String,
+    val email: String,
+    val accessToken: String,
+    val refreshToken: String,
+    val idToken: String,
+    val scopes: String,
+    val expiresAtMillis: Long,
 ) {
     val canUsePlan: Boolean get() = scopes.split(' ').contains("chatgpt.tokens.use.direct")
     fun toJson() = JSONObject().apply {
-        put("clientId", clientId); put("subject", subject); put("email", email)
-        put("accessToken", accessToken); put("refreshToken", refreshToken)
-        put("idToken", idToken); put("scopes", scopes); put("expiresAtMillis", expiresAtMillis)
+        put("clientId", clientId)
+        put("subject", subject)
+        put("email", email)
+        put("accessToken", accessToken)
+        put("refreshToken", refreshToken)
+        put("idToken", idToken)
+        put("scopes", scopes)
+        put("expiresAtMillis", expiresAtMillis)
     }
     companion object {
         fun fromJson(j: JSONObject) = ChatGptSession(
-            j.getString("clientId"), j.getString("subject"), j.optString("email"),
-            j.getString("accessToken"), j.optString("refreshToken"),
-            j.getString("idToken"), j.optString("scopes"), j.getLong("expiresAtMillis")
+            j.getString("clientId"),
+            j.getString("subject"),
+            j.optString("email"),
+            j.getString("accessToken"),
+            j.optString("refreshToken"),
+            j.getString("idToken"),
+            j.optString("scopes"),
+            j.getLong("expiresAtMillis"),
         )
     }
 }
@@ -49,11 +64,15 @@ class SecureSessionStore(context: Context) {
         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
         (store.getKey(alias, null) as? SecretKey)?.let { return it }
         val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
-        generator.init(KeyGenParameterSpec.Builder(alias,
-            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
-            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            .setKeySize(256).build())
+        generator.init(
+            KeyGenParameterSpec.Builder(
+                alias,
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
+            )
+                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setKeySize(256).build(),
+        )
         return generator.generateKey()
     }
 
@@ -88,8 +107,14 @@ class SecureSessionStore(context: Context) {
         if (saved == null) {
             check(prefs.edit().remove("single_account").commit())
         } else {
-            save(saved.copy(accessToken = "", refreshToken = "", idToken = "",
-                expiresAtMillis = 0L))
+            save(
+                saved.copy(
+                    accessToken = "",
+                    refreshToken = "",
+                    idToken = "",
+                    expiresAtMillis = 0L,
+                ),
+            )
         }
     }
 }

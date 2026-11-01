@@ -17,7 +17,7 @@ data class BackupState(
     /** A restore journal exists on disk: the last restore has not finished merging. */
     val restorePending: Boolean = false,
     /** A restore is merging right now; screens show only progress meanwhile. */
-    val recoveryRunning: Boolean = false
+    val recoveryRunning: Boolean = false,
 )
 
 /**
@@ -33,12 +33,16 @@ class BackupService(
     private val exams: ExamLibrary,
     private val scope: CoroutineScope,
     private val practiceBusy: () -> Boolean,
-    private val flushDrafts: suspend () -> Boolean
+    private val flushDrafts: suspend () -> Boolean,
 ) {
     val state = ServiceState(journal.hasPending().let { BackupState(restorePending = it, recoveryRunning = it) })
     private val current get() = state.value
-    private fun setStatus(text: String) { state.update { it.copy(status = text) } }
-    private fun clearPreview() { state.update { it.copy(preview = null, paperPreview = null) } }
+    private fun setStatus(text: String) {
+        state.update { it.copy(status = text) }
+    }
+    private fun clearPreview() {
+        state.update { it.copy(preview = null, paperPreview = null) }
+    }
 
     fun export(uri: Uri) {
         if (current.busy || exams.state.value.busy || practiceBusy()) return
@@ -58,11 +62,19 @@ class BackupService(
                         CompleteBackupCodec.write(CompleteBackup(snapshot, papers), output)
                     } ?: error("无法写入所选位置")
                 }
-                setStatus("备份已导出：${snapshot.words.size} 词、${snapshot.reviews.size} 条学习日志、${snapshot.reading.size} 条旧阅读、${snapshot.essays.size} 篇旧作文、${snapshot.coach.size} 条训练、${snapshot.turns.size} 条对话、${papers.size} 套题库。未包含登录凭证或原卷 PDF。")
-            } catch (e: CancellationException) { throw e
-            } catch (e: IllegalArgumentException) { setStatus("未导出：${e.message}")
-            } catch (_: Exception) { setStatus("备份写入失败，请换位置重试；所选位置可能留下不完整文件。本机学习数据未改变。")
-            } finally { state.update { it.copy(busy = false) }; exams.setBusy(false) }
+                setStatus(
+                    "备份已导出：${snapshot.words.size} 词、${snapshot.reviews.size} 条学习日志、${snapshot.reading.size} 条旧阅读、${snapshot.essays.size} 篇旧作文、${snapshot.coach.size} 条训练、${snapshot.turns.size} 条对话、${papers.size} 套题库。未包含登录凭证或原卷 PDF。",
+                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: IllegalArgumentException) {
+                setStatus("未导出：${e.message}")
+            } catch (_: Exception) {
+                setStatus("备份写入失败，请换位置重试；所选位置可能留下不完整文件。本机学习数据未改变。")
+            } finally {
+                state.update { it.copy(busy = false) }
+                exams.setBusy(false)
+            }
         }
     }
 
@@ -79,17 +91,35 @@ class BackupService(
                     context.contentResolver.openInputStream(uri)?.use(CompleteBackupCodec::read)
                         ?: error("无法读取所选文件")
                 }
-                state.update { it.copy(preview = incoming.study, paperPreview = incoming.papers,
-                    status = if (incoming.papers == null) "旧版学习 JSON 校验通过；未包含个人题库，请另行导入题库。"
-                        else "完整性校验通过：学习记录与个人题库均可恢复，请核对预览。") }
-            } catch (e: CancellationException) { throw e
-            } catch (e: IllegalArgumentException) { setStatus("未恢复：${e.message}")
-            } catch (_: Exception) { setStatus("备份读取或格式校验失败，未修改本机数据。")
-            } finally { state.update { it.copy(busy = false) } }
+                state.update {
+                    it.copy(
+                        preview = incoming.study,
+                        paperPreview = incoming.papers,
+                        status = if (incoming.papers == null) {
+                            "旧版学习 JSON 校验通过；未包含个人题库，请另行导入题库。"
+                        } else {
+                            "完整性校验通过：学习记录与个人题库均可恢复，请核对预览。"
+                        },
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: IllegalArgumentException) {
+                setStatus("未恢复：${e.message}")
+            } catch (_: Exception) {
+                setStatus("备份读取或格式校验失败，未修改本机数据。")
+            } finally {
+                state.update { it.copy(busy = false) }
+            }
         }
     }
 
-    fun cancelRestore() { if (!current.busy) { clearPreview(); setStatus("已关闭恢复预览。") } }
+    fun cancelRestore() {
+        if (!current.busy) {
+            clearPreview()
+            setStatus("已关闭恢复预览。")
+        }
+    }
 
     private fun othersBusy() = current.busy || study.state.value.saving || exams.state.value.busy || practiceBusy()
 
@@ -119,8 +149,13 @@ class BackupService(
     internal suspend fun resumeAtStartup() = performRestore(null, false, flushFirst = false)
 
     private suspend fun performRestore(incoming: CompleteBackup?, adoptPlans: Boolean, flushFirst: Boolean = true) {
-        state.update { it.copy(busy = true, recoveryRunning = true,
-            status = if (incoming == null) "正在继续上次恢复……" else "正在合并恢复学习记录与题库……") }
+        state.update {
+            it.copy(
+                busy = true,
+                recoveryRunning = true,
+                status = if (incoming == null) "正在继续上次恢复……" else "正在合并恢复学习记录与题库……",
+            )
+        }
         exams.setBusy(true)
         study.setSaving(true)
         var restoredStores = false
@@ -134,14 +169,21 @@ class BackupService(
             clearPreview()
             study.reloadPlan()
             setStatus("恢复完成。${restored?.summary?.message().orEmpty()}已有词义、来源和学习历史均保留。")
-        } catch (e: CancellationException) { throw e
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             if (journal.hasPending()) clearPreview()
-            setStatus(if (restoredStores) "数据恢复已完成，页面刷新失败，请重新打开应用。"
-            else if (journal.hasPending())
-                "恢复尚未完成，本机已保留恢复任务；部分内容可能已写入。可继续读取离线记录，在此重试或重启后继续；冲突不会覆盖本机记录。"
-            else if (e is IllegalArgumentException) "未恢复：${e.message}"
-            else "恢复未能完成，请保留原备份后重试；未创建新的恢复任务。")
+            setStatus(
+                if (restoredStores) {
+                    "数据恢复已完成，页面刷新失败，请重新打开应用。"
+                } else if (journal.hasPending()) {
+                    "恢复尚未完成，本机已保留恢复任务；部分内容可能已写入。可继续读取离线记录，在此重试或重启后继续；冲突不会覆盖本机记录。"
+                } else if (e is IllegalArgumentException) {
+                    "未恢复：${e.message}"
+                } else {
+                    "恢复未能完成，请保留原备份后重试；未创建新的恢复任务。"
+                },
+            )
         } finally {
             state.update { it.copy(restorePending = journal.hasPending(), recoveryRunning = false, busy = false) }
             exams.setBusy(false)

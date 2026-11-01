@@ -28,7 +28,10 @@ class AiInteractionChecks(private val context: Context) {
                     "fail" -> throw IOException("controlled failure")
                     "limit" -> "x".repeat(CoachTurns.MAX_CONTENT)
                     "oversized" -> "x".repeat(CoachTurns.MAX_CONTENT + 1)
-                    "stream-oversized" -> { delta("x".repeat(CoachTurns.MAX_CONTENT + 1)); "unreachable" }
+                    "stream-oversized" -> {
+                        delta("x".repeat(CoachTurns.MAX_CONTENT + 1))
+                        "unreachable"
+                    }
                     else -> "Complete reply"
                 }
             }
@@ -54,10 +57,12 @@ class AiInteractionChecks(private val context: Context) {
             check(talk.failure?.stopped == false && talk.failure?.question == "Retry question")
             check(db.dao().allTurns().toSet() == saved.toSet()) { "Failure changed complete replies" }
             check(calls == 3)
-            db.openHelper.writableDatabase.execSQL("""
+            db.openHelper.writableDatabase.execSQL(
+                """
                 CREATE TEMP TRIGGER fail_assistant BEFORE INSERT ON coach_turns
                 WHEN NEW.role = 'assistant' BEGIN SELECT RAISE(ABORT, 'controlled insert failure'); END
-            """.trimIndent())
+                """.trimIndent(),
+            )
             mode = "success"
             talk.send(practice, Anchor.REVIEW, TurnKind.CHAT, "Rollback question") { "prompt" }
             withTimeout(5000) { while (talk.busy) yield() }
@@ -81,14 +86,24 @@ class AiInteractionChecks(private val context: Context) {
             withTimeout(5000) { while (talk.busy) yield() }
             check(talk.failure == null)
             check(db.dao().allTurns().single { it.content.length == CoachTurns.MAX_CONTENT }.content == "x".repeat(CoachTurns.MAX_CONTENT))
-            val review = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
-                role = CoachTurn.ASSISTANT, content = (0..39).joinToString("\n") {
+            val review = CoachTurn(
+                practiceId = practice.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT,
+                content = (0..39).joinToString("\n") {
                     """{"type":"issue","quote":"sample $it","fix":"fixed $it","reason":"test","level":"must"}"""
-                })
+                },
+            )
             repository.saveTurn(review)
             // Every click deliberately retains the same old turn; no intervening recomposition.
-            val clicks = (0..39).map { id -> talk.updateDecision(review, id,
-                if (id % 2 == 0) ReviewDecision.ACCEPT else ReviewDecision.DISMISS) }
+            val clicks = (0..39).map { id ->
+                talk.updateDecision(
+                    review,
+                    id,
+                    if (id % 2 == 0) ReviewDecision.ACCEPT else ReviewDecision.DISMISS,
+                )
+            }
             clicks.joinAll()
             talk.updateDecision(review, 0, ReviewDecision.DISMISS).join()
             talk.updateDecision(review, 1, ReviewDecision.RESET).join()
@@ -97,9 +112,14 @@ class AiInteractionChecks(private val context: Context) {
             check(decisions.accepted == (2..38 step 2).toSet())
             check(decisions.dismissed == (3..39 step 2).toSet() + 0)
             check(storedReview.copy(state = "") == review) { "Decision update rewrote review content" }
-            val invalidReview = CoachTurn(practiceId = practice.id, anchor = Anchor.REVIEW, kind = TurnKind.WRITING_REVIEW,
-                role = CoachTurn.ASSISTANT, content = review.content + "\n" + """{"type":"score","band":"11"}""",
-                state = ReviewDecisions().dismiss(0).encode())
+            val invalidReview = CoachTurn(
+                practiceId = practice.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.WRITING_REVIEW,
+                role = CoachTurn.ASSISTANT,
+                content = review.content + "\n" + """{"type":"score","band":"11"}""",
+                state = ReviewDecisions().dismiss(0).encode(),
+            )
             repository.saveTurn(invalidReview)
             check(runCatching { repository.updateDecision(invalidReview.id, 1, ReviewDecision.ACCEPT) }.isFailure) {
                 "Malformed mixed review accepted a decision"
@@ -108,12 +128,21 @@ class AiInteractionChecks(private val context: Context) {
             var deepCalls = 0
             var defaultCalls = 0
             var rejectDeep = false
-            val routed = CoachTalk(repository, scope, { true }, { "offline-depth-model" },
+            val routed = CoachTalk(
+                repository,
+                scope,
+                { true },
+                { "offline-depth-model" },
                 reviewRequest = { _, _ ->
                     deepCalls++
                     if (rejectDeep) throw com.example.cet6.ai.DeepReviewRejectedException()
                     "Complete deep review"
-                }, request = { _, _ -> defaultCalls++; "Complete default response" })
+                },
+                request = { _, _ ->
+                    defaultCalls++
+                    "Complete default response"
+                },
+            )
             for (kind in TurnKind.all) {
                 routed.send(practice, Anchor.REVIEW, kind) { "Original route fixture" }
                 withTimeout(5000) { while (routed.busy) yield() }

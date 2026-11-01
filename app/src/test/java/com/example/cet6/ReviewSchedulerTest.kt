@@ -1,9 +1,9 @@
 package com.example.cet6
 
 import com.example.cet6.data.WordEntity
-import com.example.cet6.data.WordScheduler
 import com.example.cet6.data.WordRating
 import com.example.cet6.data.WordSchedule
+import com.example.cet6.data.WordScheduler
 import dev.bee.fsrs.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -12,6 +12,7 @@ import java.io.File
 
 class ReviewSchedulerTest {
     private val card = WordEntity("allocate", "分配", "They allocate funds.")
+
     @Test fun firstGoodLearnsInTenMinutesWithFsrsMemory() {
         val actual = WordScheduler.next(card, null, WordRating.GOOD, 100_000L)
         assertEquals(700_000L, actual.card.dueAt)
@@ -19,6 +20,7 @@ class ReviewSchedulerTest {
         assertEquals(WordScheduler.LEARNING, actual.state.phase)
         assertEquals(1, actual.state.step)
     }
+
     @Test fun legacyCardKeepsContentAndAgainRelearnsInOneMinute() {
         val old = card.copy(dueAt = 100L, intervalDays = 14, repetitions = 4)
         val actual = WordScheduler.next(old, null, WordRating.AGAIN, 100_000L)
@@ -27,11 +29,13 @@ class ReviewSchedulerTest {
         assertEquals(old.meaning, actual.card.meaning)
         assertEquals(WordScheduler.RELEARNING, actual.state.phase)
     }
+
     @Test fun rejectsClockReversalAndUnknownAlgorithm() {
         val first = WordScheduler.next(card, null, WordRating.GOOD, 100_000L)
         assertTrue(runCatching { WordScheduler.next(first.card, first.state, WordRating.GOOD, 0L) }.isFailure)
         assertTrue(runCatching { WordScheduler.next(first.card, first.state.copy(algorithm = "other"), WordRating.GOOD, 700_000L) }.isFailure)
     }
+
     @Test fun sevenDayDeterministicSequenceSurvivesStateCopies() {
         val start = 1_800_000_000_000L
         var current = card
@@ -50,6 +54,7 @@ class ReviewSchedulerTest {
         assertTrue(count >= 3)
         assertEquals(WordScheduler.REVIEW, memory!!.phase)
     }
+
     @Test fun learningAndRelearningMatchThirtyOfficialPythonTransitions() {
         @Suppress("UNCHECKED_CAST")
         val root = Json.parse(File("testdata/fsrs-policy-reference.json").readText()) as Map<String, Any?>

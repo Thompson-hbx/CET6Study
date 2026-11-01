@@ -33,7 +33,10 @@ object JsonLines {
             }
             when (c) {
                 '"' -> if (depth > 0) inString = true
-                '{' -> { if (depth == 0) start = i; depth++ }
+                '{' -> {
+                    if (depth == 0) start = i
+                    depth++
+                }
                 '}' -> if (depth > 0) {
                     depth--
                     if (depth == 0 && start >= 0) {

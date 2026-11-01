@@ -1,7 +1,7 @@
 package com.example.cet6.desktop
 
-import com.example.cet6.sync.SyncDocument
 import com.example.cet6.sync.SyncConnection
+import com.example.cet6.sync.SyncDocument
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
@@ -10,6 +10,7 @@ import org.junit.rules.TemporaryFolder
 
 class DesktopStoreTest {
     @get:Rule val temporary = TemporaryFolder()
+
     @Test fun draftsPersistAndStaleSyncCannotOverwriteNewTyping() {
         val directory = temporary.newFolder()
         var key = ""
@@ -28,6 +29,7 @@ class DesktopStoreTest {
             assertEquals(2, store.snapshot().records.size)
         }
     }
+
     @Test fun pairingIsProtectedByWindowsUserEncryption() {
         val directory = temporary.newFolder()
         val fixture = "test-only-pairing-material-for-dpapi-roundtrip"

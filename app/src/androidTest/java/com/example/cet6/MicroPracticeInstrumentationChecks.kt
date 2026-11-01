@@ -19,16 +19,28 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
         val job = SupervisorJob()
         val scope = CoroutineScope(job + Dispatchers.Main)
         try {
-            val source = CoachPractice(title = "原创旧题", material = "Libraries need both books and quiet rooms.",
-                questions = "1. What is needed?", answer = "1. A", feedback = "根据原文分析 both 的范围。",
-                errorReason = "选项陷阱：忽略 both 的范围", submittedAt = 100, updatedAt = 200)
+            val source = CoachPractice(
+                title = "原创旧题",
+                material = "Libraries need both books and quiet rooms.",
+                questions = "1. What is needed?",
+                answer = "1. A",
+                feedback = "根据原文分析 both 的范围。",
+                errorReason = "选项陷阱：忽略 both 的范围",
+                submittedAt = 100,
+                updatedAt = 200,
+            )
             db.dao().saveCoach(source)
             var mode = 0
             var calls = 0
             var online = true
-            val response = JSONObject().put("title", "范围限定微练习").put("material",
-                "A campus garden supports both research and relaxation. Students use it for experiments and quiet breaks.")
-                .put("questions", "1. What does the garden support?\nA. Research only.\nB. Relaxation only.\nC. Both research and relaxation.\nD. Neither activity.").toString()
+            val response = JSONObject().put("title", "范围限定微练习").put(
+                "material",
+                "A campus garden supports both research and relaxation. Students use it for experiments and quiet breaks.",
+            )
+                .put(
+                    "questions",
+                    "1. What does the garden support?\nA. Research only.\nB. Relaxation only.\nC. Both research and relaxation.\nD. Neither activity.",
+                ).toString()
             val state = CoachState(CoachRepository(db), scope, { online }, { "fake-model" }) { prompt, _ ->
                 calls++
                 check(prompt.contains(source.errorReason) && prompt.contains("只返回一个JSON对象"))
@@ -67,9 +79,13 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             check(ReadingQuestions.parse(generated.questions).single().choices.size == 4)
             check(db.dao().coachById(source.id) == source)
             check(MicroPractice.parse("```json\n$response\n```", source).material == generated.material)
-            val invalid = listOf(response + " trailing text", JSONObject(response).put("answer", "C").toString(),
+            val invalid = listOf(
+                response + " trailing text",
+                JSONObject(response).put("answer", "C").toString(),
                 JSONObject(response).put("questions", "1. Q\nA. Only one option").toString(),
-                JSONObject(response).put("material", "参考答案：C").toString(), JSONObject(response).put("material", 123).toString())
+                JSONObject(response).put("material", "参考答案：C").toString(),
+                JSONObject(response).put("material", 123).toString(),
+            )
             invalid.forEach { check(runCatching { MicroPractice.parse(it, source) }.isFailure) }
             for (kind in listOf(CoachKind.WRITING, CoachKind.TRANSLATION)) {
                 val writingSource = source.copy(kind = kind.name)
@@ -82,9 +98,14 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             val snapshot = BackupRepository(db).snapshot()
             check(BackupCodec.decode(BackupCodec.encode(snapshot)) == snapshot)
             val v3 = JSONObject(BackupCodec.encode(snapshot)).apply {
-                put("version", 3); put("databaseVersion", 6); remove("turns")
+                put("version", 3)
+                put("databaseVersion", 6)
+                remove("turns")
                 val rows = getJSONArray("coach")
-                for (i in 0 until rows.length()) rows.getJSONObject(i).apply { remove("sourcePracticeId"); remove("practiceGoal") }
+                for (i in 0 until rows.length()) rows.getJSONObject(i).apply {
+                    remove("sourcePracticeId")
+                    remove("practiceGoal")
+                }
             }
             check(BackupCodec.decode(v3.toString()).coach.all { it.sourcePracticeId.isBlank() && it.practiceGoal.isBlank() })
             job.cancelAndJoin()
@@ -93,7 +114,10 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             check(db.dao().coachById(source.id) == source)
             check(db.dao().coachById(generated.id) == generated)
             check(BackupRepository(db).snapshot().copy(createdAt = 0) == snapshot.copy(createdAt = 0))
-        } finally { job.cancelAndJoin(); db.close() }
+        } finally {
+            job.cancelAndJoin()
+            db.close()
+        }
     }
 
     /** Exercise the unchanged screen-facing interfaces with fake requests and real Room writes. */
@@ -102,9 +126,15 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
         val scope = CoroutineScope(job + Dispatchers.Main)
         try {
             val repository = CoachRepository(db)
-            val original = CoachPractice(id = "skill-source-${kind.name}", kind = kind.name,
-                title = "原创后端联调样本", material = "原练习：说明图书馆的作用。", answer = "Libraries helps students.",
-                errorReason = "语法", submittedAt = 100)
+            val original = CoachPractice(
+                id = "skill-source-${kind.name}",
+                kind = kind.name,
+                title = "原创后端联调样本",
+                material = "原练习：说明图书馆的作用。",
+                answer = "Libraries helps students.",
+                errorReason = "语法",
+                submittedAt = 100,
+            )
             repository.save(original)
             var response = JSONObject().put("title", "重复原题").put("material", original.material).put("questions", "").toString()
             val confirmedGoal = "表达：连接原因与结果"
@@ -127,9 +157,14 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             check(db.dao().coachById(original.id)?.let { it.answer == original.answer && it.errorReason == confirmedGoal } == true)
             check(state.messages.getValue(kind).contains("微练习未生成"))
 
-            response = JSONObject().put("title", "原创专项练习").put("material",
-                if (kind == CoachKind.WRITING) "用3–5句英文说明校园步道如何帮助学生休息。" else
-                    "图书馆扩大了学生使用学习资源的机会。因此，学生可以更好地完成研究。")
+            response = JSONObject().put("title", "原创专项练习").put(
+                "material",
+                if (kind == CoachKind.WRITING) {
+                    "用3–5句英文说明校园步道如何帮助学生休息。"
+                } else {
+                    "图书馆扩大了学生使用学习资源的机会。因此，学生可以更好地完成研究。"
+                },
+            )
                 .put("questions", "").toString()
             state.generate(kind)
             await { !state.working }
@@ -147,8 +182,11 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
                 "{\"type\":\"tip\",\"text\":\"原创离线联调回复\"}"
             }
             talk.send(submitted, Anchor.REVIEW, reviewKind) {
-                if (kind == CoachKind.WRITING) WritingCoach.reviewPrompt(submitted, WritingFocus.COMPLETE)
-                else TranslationCoach.reviewPrompt(submitted, WritingFocus.COMPLETE)
+                if (kind == CoachKind.WRITING) {
+                    WritingCoach.reviewPrompt(submitted, WritingFocus.COMPLETE)
+                } else {
+                    TranslationCoach.reviewPrompt(submitted, WritingFocus.COMPLETE)
+                }
             }
             await { !talk.busy }
             check(talk.failure == null && db.dao().allTurns().any { it.practiceId == submitted.id && it.kind == reviewKind })
@@ -170,6 +208,8 @@ class MicroPracticeInstrumentationChecks(private val context: Context) {
             check(study.importWords(listOf(candidate.copy(meaning = "不可覆盖旧释义"))) == 0)
             check(db.dao().word(word) == reviewed && db.dao().schedule(word) == schedule)
             check(reviewed?.example == quote && reviewed.source.contains(submitted.id))
-        } finally { job.cancelAndJoin() }
+        } finally {
+            job.cancelAndJoin()
+        }
     }
 }

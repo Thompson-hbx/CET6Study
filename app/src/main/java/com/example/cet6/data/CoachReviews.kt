@@ -6,8 +6,15 @@ import org.json.JSONTokener
 
 data class ReviewScore(val band: Int, val summary: String)
 data class ReviewAspect(val name: String, val level: String, val note: String)
-data class ReviewIssue(val id: Int, val quote: String, val fix: String, val reason: String,
-    val category: String, val must: Boolean, val segment: Int?)
+data class ReviewIssue(
+    val id: Int,
+    val quote: String,
+    val fix: String,
+    val reason: String,
+    val category: String,
+    val must: Boolean,
+    val segment: Int?,
+)
 data class ReviewSegment(val index: Int, val mine: String, val verdict: String, val note: String, val suggestion: String) {
     val ok get() = verdict == "good"
 }
@@ -18,9 +25,14 @@ data class ReviewTerm(val zh: String, val en: String, val note: String)
  * protocol, [structured] is false and the screen falls back to the raw text instead of guessing.
  */
 data class CoachReview(
-    val score: ReviewScore?, val aspects: List<ReviewAspect>, val issues: List<ReviewIssue>,
-    val segments: List<ReviewSegment>, val terms: List<ReviewTerm>, val tips: List<String>,
-    val rewrite: String, val raw: String
+    val score: ReviewScore?,
+    val aspects: List<ReviewAspect>,
+    val issues: List<ReviewIssue>,
+    val segments: List<ReviewSegment>,
+    val terms: List<ReviewTerm>,
+    val tips: List<String>,
+    val rewrite: String,
+    val raw: String,
 ) {
     val structured get() = !JsonLines.hasMalformedObjects(raw) &&
         segments.map { it.index }.distinct().size == segments.size &&
@@ -55,21 +67,35 @@ data class CoachReview(
                     "aspect" -> if (o.text("name").isNotBlank()) aspects += ReviewAspect(o.text("name"), o.text("level"), o.text("note"))
                     "issue" -> {
                         val quote = o.text("quote")
-                        if (quote.isNotBlank() || o.text("fix").isNotBlank()) issues += ReviewIssue(issues.size, quote, o.text("fix"),
-                            o.text("reason"), o.text("category").ifBlank { "表达" }, o.optString("level") != "better",
-                            o.optInt("index", 0).takeIf { it > 0 })
+                        if (quote.isNotBlank() || o.text("fix").isNotBlank()) {
+                            issues += ReviewIssue(
+                                issues.size, quote, o.text("fix"),
+                                o.text("reason"), o.text("category").ifBlank { "表达" }, o.optString("level") != "better",
+                                o.optInt("index", 0).takeIf { it > 0 },
+                            )
+                        }
                     }
                     "segment" -> o.optInt("index", 0).takeIf { it > 0 }?.let { index ->
-                        segments += ReviewSegment(index, o.text("mine"), o.text("verdict").ifBlank { "minor" },
-                            o.text("note"), o.text("suggestion"))
+                        segments += ReviewSegment(
+                            index, o.text("mine"), o.text("verdict").ifBlank { "minor" },
+                            o.text("note"), o.text("suggestion"),
+                        )
                     }
                     "term" -> if (o.text("zh").isNotBlank() && o.text("en").isNotBlank()) terms += ReviewTerm(o.text("zh"), o.text("en"), o.text("note"))
                     "tip" -> o.text("text").takeIf(String::isNotBlank)?.let(tips::add)
                     "rewrite" -> rewrite = o.text("text")
                 }
             }
-            return CoachReview(score, aspects, issues, segments.sortedBy { it.index },
-                terms, tips, rewrite, text)
+            return CoachReview(
+                score,
+                aspects,
+                issues,
+                segments.sortedBy { it.index },
+                terms,
+                tips,
+                rewrite,
+                text,
+            )
         }
     }
 }
@@ -135,8 +161,14 @@ data class ExplainOption(val label: String, val correct: Boolean, val note: Stri
 
 /** One reading question explained step by step; same fallback rule as [CoachReview]. */
 data class ReadingExplanation(
-    val locate: ExplainLocate?, val paraphrases: List<ExplainParaphrase>, val options: List<ExplainOption>,
-    val misread: String, val checkQuestion: String, val checkAnswer: String, val summary: String, val raw: String
+    val locate: ExplainLocate?,
+    val paraphrases: List<ExplainParaphrase>,
+    val options: List<ExplainOption>,
+    val misread: String,
+    val checkQuestion: String,
+    val checkAnswer: String,
+    val summary: String,
+    val raw: String,
 ) {
     val structured get() = !JsonLines.hasMalformedObjects(raw) &&
         options.map { it.label }.distinct().size == options.size &&
@@ -148,7 +180,10 @@ data class ReadingExplanation(
             var locate: ExplainLocate? = null
             val paraphrases = mutableListOf<ExplainParaphrase>()
             val options = mutableListOf<ExplainOption>()
-            var misread = ""; var question = ""; var answer = ""; var summary = ""
+            var misread = ""
+            var question = ""
+            var answer = ""
+            var summary = ""
             val rows = JsonLines.typed(text, types)
             if (JsonLines.hasMalformedObjects(text) || !CoachOutputSchema.reading(rows)) {
                 return ReadingExplanation(null, emptyList(), emptyList(), "", "", "", "", text)
@@ -161,12 +196,23 @@ data class ReadingExplanation(
                         options += ExplainOption(it, o.optString("verdict") == "correct", o.text("note"))
                     }
                     "misread" -> misread = o.text("text")
-                    "check" -> { question = o.text("question"); answer = o.text("answer") }
+                    "check" -> {
+                        question = o.text("question")
+                        answer = o.text("answer")
+                    }
                     "summary" -> summary = o.text("text")
                 }
             }
-            return ReadingExplanation(locate, paraphrases, options.sortedBy { it.label },
-                misread, question, answer, summary, text)
+            return ReadingExplanation(
+                locate,
+                paraphrases,
+                options.sortedBy { it.label },
+                misread,
+                question,
+                answer,
+                summary,
+                text,
+            )
         }
     }
 }
@@ -181,7 +227,8 @@ data class PassageOverview(val main: String, val paragraphs: List<ParagraphGist>
 
     companion object {
         fun parse(text: String, paragraphCount: Int): PassageOverview {
-            var main = ""; var structure = ""
+            var main = ""
+            var structure = ""
             val gists = mutableListOf<ParagraphGist>()
             val rows = JsonLines.typed(text, setOf("main", "para", "structure"))
             if (JsonLines.hasMalformedObjects(text) || !CoachOutputSchema.overview(rows, paragraphCount)) {

@@ -8,8 +8,13 @@ import kotlinx.coroutines.CoroutineScope
 
 /** Compose view of [PracticeService] for screens that read ViewModel properties. */
 class CoachState internal constructor(val service: PracticeService) {
-    constructor(repository: CoachRepository, scope: CoroutineScope, canRequest: () -> Boolean, model: () -> String,
-        request: AiRequest) : this(PracticeService(repository, scope, canRequest, model, null, null, request))
+    constructor(
+        repository: CoachRepository,
+        scope: CoroutineScope,
+        canRequest: () -> Boolean,
+        model: () -> String,
+        request: AiRequest,
+    ) : this(PracticeService(repository, scope, canRequest, model, null, null, request))
 
     private val ui by service.state.composeState()
     val entries: Map<CoachKind, CoachPractice> get() = ui.entries

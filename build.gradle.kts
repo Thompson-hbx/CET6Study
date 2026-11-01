@@ -1,10 +1,30 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.0.21" apply false
-    id("org.jetbrains.compose") version "1.7.3" apply false
-    id("com.android.application") version "8.7.3" apply false
-    id("org.jetbrains.kotlin.android") version "2.0.21" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21" apply false
-    id("com.google.devtools.ksp") version "2.0.21-1.0.28" apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.compose.multiplatform) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.detekt) apply false
+}
+
+// Style (ktlint) and static analysis (detekt) for every module. Findings that predate these checks live in
+// each module's baseline file, so new code is held to the rules without rewriting the whole codebase at once.
+subprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+    extensions.configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+        baseline.set(file("config/ktlint/baseline.xml"))
+        filter { exclude { it.file.path.contains("generated") || it.file.path.contains("third_party") } }
+    }
+    extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
+        buildUponDefaultConfig = true
+        config.setFrom(rootProject.file("config/detekt/detekt.yml"))
+        baseline = file("config/detekt/baseline.xml")
+        source.setFrom("src/main/java", "src/main/kotlin", "src/test/java", "src/test/kotlin")
+    }
 }
 
 tasks.wrapper {

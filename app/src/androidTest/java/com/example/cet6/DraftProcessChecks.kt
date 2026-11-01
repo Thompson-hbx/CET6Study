@@ -1,11 +1,11 @@
 package com.example.cet6
 
-import android.app.Instrumentation
 import android.app.ActivityManager
 import android.app.ApplicationExitInfo
-import android.os.Build
+import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.PowerManager
 import android.os.Process
 import android.os.SystemClock
@@ -27,8 +27,12 @@ import java.util.UUID
 /** Emulator-only process-death probes using labelled original drafts and the real Activity. */
 class DraftProcessChecks(private val runner: Instrumentation, private val mode: String, private val runId: String) {
     private val context = runner.targetContext
-    private val marker = AtomicFile(File(context.filesDir,
-        if (mode == "low-memory") "draft-process-$mode-$runId.json" else "draft-process-$mode.json"))
+    private val marker = AtomicFile(
+        File(
+            context.filesDir,
+            if (mode == "low-memory") "draft-process-$mode-$runId.json" else "draft-process-$mode.json",
+        ),
+    )
     private val power = context.getSystemService(Context.POWER_SERVICE) as PowerManager
     private val db get() = StudyDatabase.get(context)
 
@@ -50,8 +54,15 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
     private fun read() = JSONObject(marker.openRead().bufferedReader().use { it.readText() })
     private fun write(value: JSONObject) {
         val stream = marker.startWrite()
-        try { stream.write(value.toString().toByteArray(Charsets.UTF_8)); marker.finishWrite(stream) }
-        catch (failure: Exception) { marker.failWrite(stream); throw failure }
+        try {
+            stream.write(value.toString().toByteArray(Charsets.UTF_8))
+            marker.finishWrite(stream)
+        } catch (
+            failure: Exception,
+        ) {
+            marker.failWrite(stream)
+            throw failure
+        }
     }
 
     private fun activity(): MainActivity {
@@ -59,7 +70,9 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
         try {
             context.startActivity(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             return monitor.waitForActivityWithTimeout(10_000) as? MainActivity ?: error("Draft fixture Activity did not start")
-        } finally { runner.removeMonitor(monitor) }
+        } finally {
+            runner.removeMonitor(monitor)
+        }
     }
 
     private suspend fun ready(vm: StudyViewModel) = withTimeout(15_000) {
@@ -77,8 +90,13 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
         ready(vm)
         val items = JSONArray()
         for (kind in CoachKind.entries) {
-            withContext(Dispatchers.Main) { vm.coach.startCustom(kind, "Original draft process $mode $kind $runId",
-                "Original process recovery material for $kind.") }
+            withContext(Dispatchers.Main) {
+                vm.coach.startCustom(
+                    kind,
+                    "Original draft process $mode $kind $runId",
+                    "Original process recovery material for $kind.",
+                )
+            }
             ready(vm)
             val baseline = "Committed original baseline $kind.\n原创基线。"
             withContext(Dispatchers.Main) { check(vm.coach.edit(kind) { it.copy(answer = baseline) }) }
@@ -87,9 +105,11 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
             }
             val entry = withContext(Dispatchers.Main) { vm.coach.entries.getValue(kind) }
             check(db.dao().coachById(entry.id)?.answer == baseline)
-            items.put(JSONObject().put("kind", kind.name).put("id", entry.id).put("title", entry.title)
-                .put("material", entry.material).put("baseline", baseline)
-                .put("latest", "Latest original draft $kind revision 20.\n最后一行与符号 📚 must survive."))
+            items.put(
+                JSONObject().put("kind", kind.name).put("id", entry.id).put("title", entry.title)
+                    .put("material", entry.material).put("baseline", baseline)
+                    .put("latest", "Latest original draft $kind revision 20.\n最后一行与符号 📚 must survive."),
+            )
         }
         val state = JSONObject().put("runId", runId).put("mode", mode).put("pid", Process.myPid())
             .put("before", before).put("bankHash", bank).put("items", items).put("phase", "prepared")
@@ -99,28 +119,46 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
         try {
             if (mode == "pending") {
                 val entered = CompletableDeferred<Unit>()
-                blocker = blockerScope.launch { db.withTransaction { entered.complete(Unit); awaitCancellation() } }
+                blocker = blockerScope.launch {
+                    db.withTransaction {
+                        entered.complete(Unit)
+                        awaitCancellation()
+                    }
+                }
                 withTimeout(10_000) { entered.await() }
             }
             withContext(Dispatchers.Main) {
                 for (revision in 1..20) for (i in 0 until items.length()) {
                     val item = items.getJSONObject(i)
                     val kind = CoachKind.valueOf(item.getString("kind"))
-                    check(vm.coach.edit(kind) { it.copy(answer = if (revision == 20) item.getString("latest")
-                        else "Original transient draft $kind revision $revision.") })
+                    check(
+                        vm.coach.edit(kind) {
+                            it.copy(
+                                answer = if (revision == 20) {
+                                    item.getString("latest")
+                                } else {
+                                    "Original transient draft $kind revision $revision."
+                                },
+                            )
+                        },
+                    )
                 }
             }
             state.put("phase", "edited").put("editedElapsed", SystemClock.elapsedRealtime())
             write(state)
-            if (mode == "background" || mode == "screen-off") withTimeout(20_000) {
-                while (withContext(Dispatchers.Main) { activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) } ||
-                    (mode == "screen-off" && power.isInteractive)) delay(20)
+            if (mode == "background" || mode == "screen-off") {
+                withTimeout(20_000) {
+                    while (withContext(Dispatchers.Main) { activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) } ||
+                        (mode == "screen-off" && power.isInteractive)
+                        ) delay(20)
+                }
             }
             if (mode != "pending") {
                 withTimeout(10_000) {
                     while (withContext(Dispatchers.Main) {
-                        vm.coach.working || CoachKind.entries.any { vm.coach.messages[it] != "已保存到本机" }
-                    }) delay(10)
+                            vm.coach.working || CoachKind.entries.any { vm.coach.messages[it] != "已保存到本机" }
+                        }
+                        ) delay(10)
                 }
                 for (i in 0 until items.length()) {
                     val item = items.getJSONObject(i)
@@ -140,7 +178,10 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
             runner.sendStatus(1, android.os.Bundle().apply { putString("stream", "READY: original $mode drafts; waiting for external process termination.\n") })
             if (mode == "low-memory") return "PREPARED: acknowledged original drafts; instrumentation must finish before normal cached-app pressure.\n"
             awaitCancellation()
-        } finally { blocker?.cancelAndJoin(); blockerScope.cancel() }
+        } finally {
+            blocker?.cancelAndJoin()
+            blockerScope.cancel()
+        }
     }
 
     suspend fun verify(expectedKilledPid: Int = 0): String = verifyProcess(expectedKilledPid, dataOnly = false)
@@ -162,9 +203,12 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
                 it.pid == expectedKilledPid && it.processName == context.packageName && it.timestamp >= state.getLong("readyWall")
             } ?: error("Prepared normal app process has no matching exit report")
             check(exit.reason == ApplicationExitInfo.REASON_LOW_MEMORY) { "Exit reason ${exit.reason} is not low-memory reclamation" }
-            state.put("lowMemoryExit", JSONObject().put("pid", exit.pid).put("reason", exit.reason)
-                .put("status", exit.status).put("importance", exit.importance).put("timestamp", exit.timestamp)
-                .put("pssKb", exit.pss).put("rssKb", exit.rss))
+            state.put(
+                "lowMemoryExit",
+                JSONObject().put("pid", exit.pid).put("reason", exit.reason)
+                    .put("status", exit.status).put("importance", exit.importance).put("timestamp", exit.timestamp)
+                    .put("pssKb", exit.pss).put("rssKb", exit.rss),
+            )
         }
         val before = state.getJSONObject("before")
         for (id in before.keys()) check(db.dao().coachById(id)?.let(::rowHash) == before.getString(id)) { "Existing practice changed" }
@@ -175,11 +219,14 @@ class DraftProcessChecks(private val runner: Instrumentation, private val mode: 
         for (i in 0 until items.length()) {
             val item = items.getJSONObject(i)
             val row = requireNotNull(db.dao().coachById(item.getString("id"))) { "Original fixture baseline missing" }
-            check(row.title == item.getString("title") && row.material == item.getString("material") &&
-                row.feedback.isBlank() && row.submittedAt == 0L)
+            check(
+                row.title == item.getString("title") && row.material == item.getString("material") &&
+                    row.feedback.isBlank() && row.submittedAt == 0L,
+            )
             val latest = row.answer == item.getString("latest")
-            if (state.getBoolean("acknowledged")) check(latest) { "Acknowledged draft did not survive process death" }
-            else {
+            if (state.getBoolean("acknowledged")) {
+                check(latest) { "Acknowledged draft did not survive process death" }
+            } else {
                 check(latest || row.answer == item.getString("baseline")) { "Pending draft became partial/corrupt" }
                 if (!latest) pendingLost++
             }

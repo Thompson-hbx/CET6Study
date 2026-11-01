@@ -29,19 +29,33 @@ fun ConnectionScreen(state: AiState, effects: Flow<ConnectionEffect>, onIntent: 
     Group(header = "服务", footer = "选择服务与模型，用于批改、讲解和追问。") {
         AiProvider.entries.forEachIndexed { i, provider ->
             if (i > 0) GroupDivider()
-            CheckRow(provider.label, state.provider == provider, { onIntent(ConnectionIntent.SelectProvider(provider)) },
-                enabled = !state.busy)
+            CheckRow(
+                provider.label,
+                state.provider == provider,
+                { onIntent(ConnectionIntent.SelectProvider(provider)) },
+                enabled = !state.busy,
+            )
         }
     }
     if (state.provider == AiProvider.CHATGPT) ChatGptAccount(state, onIntent) else ApiConnectionSettings(state, effects, onIntent)
     if (state.provider == AiProvider.CHATGPT || state.models.isNotEmpty()) ModelPicker(state, onIntent)
     DeepReviewSettings(state, onIntent)
     Group(header = "测试请求") {
-        FieldRow(null, message, { message = it }, placeholder = "测试消息", enabled = !state.busy, minLines = 3,
-            accessibilityLabel = "测试消息")
+        FieldRow(
+            null,
+            message,
+            { message = it },
+            placeholder = "测试消息",
+            enabled = !state.busy,
+            minLines = 3,
+            accessibilityLabel = "测试消息",
+        )
         GroupDivider()
-        ActionRow("发送一条测试请求", { onIntent(ConnectionIntent.SendTest(message)) },
-            enabled = state.aiReady && state.chosenModel.isNotBlank() && message.isNotBlank() && !state.busy)
+        ActionRow(
+            "发送一条测试请求",
+            { onIntent(ConnectionIntent.SendTest(message)) },
+            enabled = state.aiReady && state.chosenModel.isNotBlank() && message.isNotBlank() && !state.busy,
+        )
     }
     Group(header = "状态") {
         Column(Modifier.fillMaxWidth().padding(CardPadding), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -54,8 +68,11 @@ fun ConnectionScreen(state: AiState, effects: Flow<ConnectionEffect>, onIntent: 
         }
     }
     GroupFooter(
-        if (state.provider == AiProvider.CHATGPT) "授权过程由系统浏览器完成。此应用不收集密码、不使用 ChatGPT Cookie。"
-        else "请求会把当前练习相关内容发送给所选服务，按服务商 API 规则计费。API Key 不包含在学习备份中。"
+        if (state.provider == AiProvider.CHATGPT) {
+            "授权过程由系统浏览器完成。此应用不收集密码、不使用 ChatGPT Cookie。"
+        } else {
+            "请求会把当前练习相关内容发送给所选服务，按服务商 API 规则计费。API Key 不包含在学习备份中。"
+        },
     )
 }
 
@@ -83,13 +100,17 @@ private fun ModelPicker(state: AiState, onIntent: (ConnectionIntent) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     Group(header = "模型") {
         Box {
-            ListRow("推理模型",
+            ListRow(
+                "推理模型",
                 trailing = state.models.find { it.slug == state.chosenModel }?.displayName ?: state.chosenModel.ifBlank { "请先获取模型" },
-                enabled = state.models.isNotEmpty() && !state.busy, onClick = { expanded = true })
+                enabled = state.models.isNotEmpty() && !state.busy,
+                onClick = { expanded = true },
+            )
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 state.models.forEach { model ->
                     DropdownMenuItem(text = { Text(model.displayName) }, onClick = {
-                        onIntent(ConnectionIntent.SelectModel(model.slug)); expanded = false
+                        onIntent(ConnectionIntent.SelectModel(model.slug))
+                        expanded = false
                     })
                 }
             }

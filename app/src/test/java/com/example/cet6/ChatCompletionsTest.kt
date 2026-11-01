@@ -21,28 +21,39 @@ class ChatCompletionsTest {
     private val text = """{"choices":[{"index":0,"delta":{"content":"解释"},"finish_reason":null}]}"""
     private val stop = """{"choices":[{"index":0,"delta":{},"finish_reason":"stop"}]}"""
 
-    private fun client(code: Int = 200, type: String = "text/event-stream", body: String,
-        inspect: (Request) -> Unit = {}): ChatCompletionsClient = ChatCompletionsClient(
-        OkHttpClient.Builder().addInterceptor { chain ->
-            inspect(chain.request())
-            Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(code).message("fixture")
-                .body(body.toResponseBody(type.toMediaType())).build()
-        }.build())
+    private fun client(code: Int = 200, type: String = "text/event-stream", body: String, inspect: (Request) -> Unit = {}): ChatCompletionsClient =
+        ChatCompletionsClient(
+            OkHttpClient.Builder().addInterceptor { chain ->
+                inspect(chain.request())
+                Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(code).message("fixture")
+                    .body(body.toResponseBody(type.toMediaType())).build()
+            }.build(),
+        )
 
     private fun stream(vararg records: String) = records.joinToString("") { "data: $it\n\n" }
 
     @Test fun baseUrlsKeepVersionPrefixAndNormalizeSlash() {
         assertEquals("https://provider.example/v1/models", connection.endpoint("models").toString())
-        assertEquals("https://provider.example/v1/chat/completions",
-            connection.endpoint("chat").newBuilder().addPathSegment("completions").build().toString())
-        assertEquals("https://api.deepseek.com/models",
-            ApiConnection.create("https://api.deepseek.com/", "test-placeholder").endpoint("models").toString())
+        assertEquals(
+            "https://provider.example/v1/chat/completions",
+            connection.endpoint("chat").newBuilder().addPathSegment("completions").build().toString(),
+        )
+        assertEquals(
+            "https://api.deepseek.com/models",
+            ApiConnection.create("https://api.deepseek.com/", "test-placeholder").endpoint("models").toString(),
+        )
     }
 
     @Test fun unsafeOrIncorrectBaseUrlsAreRejected() {
-        listOf("http://provider.example", "https://user:pass@provider.example", "https://provider.example/?key=value",
-            "https://provider.example/#fragment", "https://provider.example/v1/chat/completions/",
-            "https://provider.example/models", "invalid").forEach { value ->
+        listOf(
+            "http://provider.example",
+            "https://user:pass@provider.example",
+            "https://provider.example/?key=value",
+            "https://provider.example/#fragment",
+            "https://provider.example/v1/chat/completions/",
+            "https://provider.example/models",
+            "invalid",
+        ).forEach { value ->
             assertThrows(IllegalArgumentException::class.java) { ApiConnection.create(value, "test-placeholder") }
         }
     }
@@ -113,16 +124,20 @@ class ChatCompletionsTest {
 
     @Test fun redirectsAreRejectedWithoutForwardingCredentials() = runBlocking {
         var calls = 0
-        val client = ChatCompletionsClient(OkHttpClient.Builder().addInterceptor { chain ->
-            calls++
-            Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(307).message("redirect")
-                .header("Location", "https://another.example/chat/completions")
-                .body("".toResponseBody()).build()
-        }.build())
+        val client = ChatCompletionsClient(
+            OkHttpClient.Builder().addInterceptor { chain ->
+                calls++
+                Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(307).message("redirect")
+                    .header("Location", "https://another.example/chat/completions")
+                    .body("".toResponseBody()).build()
+            }.build(),
+        )
         try {
             client.stream(connection, "example-model", "原稿") {}
             fail("Redirect must fail")
-        } catch (e: IllegalStateException) { assertTrue(e.message.orEmpty().contains("HTTP 307")) }
+        } catch (e: IllegalStateException) {
+            assertTrue(e.message.orEmpty().contains("HTTP 307"))
+        }
         assertEquals(1, calls)
     }
 
@@ -157,7 +172,9 @@ class ChatCompletionsTest {
         try {
             client(body = stream(text, stop)).stream(connection, "example-model", "原稿") {}
             fail("EOF must not count as success")
-        } catch (e: IllegalStateException) { assertTrue(e.message.orEmpty().contains("[DONE]")) }
+        } catch (e: IllegalStateException) {
+            assertTrue(e.message.orEmpty().contains("[DONE]"))
+        }
     }
 
     @Test fun httpErrorsAndUnexpectedContentTypeDoNotExposeResponseBody() = runBlocking {
@@ -173,6 +190,8 @@ class ChatCompletionsTest {
         try {
             client(type = "text/html", body = "private-marker").stream(connection, "example-model", "原稿") {}
             fail("HTML must not count as SSE")
-        } catch (e: IllegalStateException) { assertFalse(e.message.orEmpty().contains("private-marker")) }
+        } catch (e: IllegalStateException) {
+            assertFalse(e.message.orEmpty().contains("private-marker"))
+        }
     }
 }

@@ -34,7 +34,10 @@ object SyncMerge {
                 l == b -> r
                 r == b -> l
                 choice != null -> if (choice.useRemote) r else l
-                else -> { conflicts += SyncConflict(key, l, r); l }
+                else -> {
+                    conflicts += SyncConflict(key, l, r)
+                    l
+                }
             }
             if (key.startsWith("vocabulary:") && l != null && r != null) {
                 val events = sortedMapOf<String, String>()
@@ -49,7 +52,9 @@ object SyncMerge {
                     }
                 }
                 canonical(JSONObject(selected).put("reviews", org.json.JSONArray(events.values.map(::JSONObject))))
-            } else selected
+            } else {
+                selected
+            }
         }
         return MergeResult(SyncDocument(merged.toSortedMap()), conflicts)
     }
@@ -57,12 +62,14 @@ object SyncMerge {
 
 interface SyncTransport {
     fun fetch(known: RemoteSnapshot?): RemoteSnapshot
+
     /** Returns null when another device changed the revision. */
     fun push(expected: RemoteSnapshot, document: SyncDocument): RemoteSnapshot?
 }
 
 interface SyncLocalStore {
     fun snapshot(): SyncDocument
+
     /** Must compare and write under the same local transaction/lock. */
     fun apply(expected: SyncDocument, updated: SyncDocument): Boolean
 }
@@ -70,6 +77,7 @@ interface SyncLocalStore {
 interface SyncStateStore {
     fun load(): RemoteSnapshot?
     fun save(snapshot: RemoteSnapshot)
+
     /** Durable copies must exist before the user can choose between conflicting versions. */
     fun archive(local: SyncDocument, remote: RemoteSnapshot)
 }

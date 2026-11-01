@@ -8,12 +8,22 @@ import kotlinx.coroutines.*
 import java.io.File
 import java.util.UUID
 
-data class DeviceSyncState(val address: String = "", val enabled: Boolean = false, val busy: Boolean = false,
-    val status: String = "尚未配置设备同步", val conflicts: List<SyncConflict> = emptyList())
+data class DeviceSyncState(
+    val address: String = "",
+    val enabled: Boolean = false,
+    val busy: Boolean = false,
+    val status: String = "尚未配置设备同步",
+    val conflicts: List<SyncConflict> = emptyList(),
+)
 
-class DeviceSyncService(private val context: Context, private val repository: DeviceSyncRepository,
-    private val practice: PracticeService, private val scope: CoroutineScope, startupReady: Deferred<Unit>,
-    private val canApply: () -> Boolean) {
+class DeviceSyncService(
+    private val context: Context,
+    private val repository: DeviceSyncRepository,
+    private val practice: PracticeService,
+    private val scope: CoroutineScope,
+    startupReady: Deferred<Unit>,
+    private val canApply: () -> Boolean,
+) {
     private val secure = SecureSyncStore(context)
     private val prefs = context.getSharedPreferences("device_sync", Context.MODE_PRIVATE)
     private var connection: SyncConnection? = null
@@ -23,9 +33,16 @@ class DeviceSyncService(private val context: Context, private val repository: De
     init {
         try {
             connection = secure.load()
-            state.update { it.copy(address = connection?.baseUrl.orEmpty(), enabled = prefs.getBoolean("enabled", false),
-                status = if (connection == null) "尚未配置设备同步" else "已配置；联网后可同步") }
-        } catch (_: Exception) { state.update { it.copy(status = "同步配置读取失败，请重新保存服务器地址与配对密钥") } }
+            state.update {
+                it.copy(
+                    address = connection?.baseUrl.orEmpty(),
+                    enabled = prefs.getBoolean("enabled", false),
+                    status = if (connection == null) "尚未配置设备同步" else "已配置；联网后可同步",
+                )
+            }
+        } catch (_: Exception) {
+            state.update { it.copy(status = "同步配置读取失败，请重新保存服务器地址与配对密钥") }
+        }
         scope.launch {
             startupReady.await()
             while (isActive) {
@@ -46,8 +63,13 @@ class DeviceSyncService(private val context: Context, private val repository: De
             state.update { it.copy(address = next.baseUrl, enabled = true, conflicts = emptyList(), status = "连接已加密保存；正在同步") }
             synchronize()
             true
-        } catch (e: IllegalArgumentException) { state.update { it.copy(status = e.message.orEmpty()) }; false
-        } catch (_: Exception) { state.update { it.copy(status = "同步配置保存失败，请重试") }; false }
+        } catch (e: IllegalArgumentException) {
+            state.update { it.copy(status = e.message.orEmpty()) }
+            false
+        } catch (_: Exception) {
+            state.update { it.copy(status = "同步配置保存失败，请重试") }
+            false
+        }
     }
 
     fun setEnabled(enabled: Boolean) {
@@ -79,16 +101,25 @@ class DeviceSyncService(private val context: Context, private val repository: De
                     }
                 }
                 val result = withContext(Dispatchers.IO) {
-                    SyncEngine(store, FileSyncStateStore(File(context.noBackupFilesDir, "sync/${digest(selected.baseUrl)}/$generation")),
-                        HttpSyncTransport(selected)).synchronize(decisions)
+                    SyncEngine(
+                        store,
+                        FileSyncStateStore(File(context.noBackupFilesDir, "sync/${digest(selected.baseUrl)}/$generation")),
+                        HttpSyncTransport(selected),
+                    ).synchronize(decisions)
                 }
                 state.update { it.copy(status = result.message, conflicts = result.conflicts) }
                 if (result.conflicts.isEmpty()) choices.clear()
-            } catch (e: CancellationException) { throw e
-            } catch (e: IllegalArgumentException) { state.update { it.copy(status = "同步未完成：${e.message}。本机记录已保留。") }
-            } catch (e: IllegalStateException) { state.update { it.copy(status = "同步未完成：${e.message}。本机记录已保留。") }
-            } catch (_: Exception) { state.update { it.copy(status = "同步未完成，请检查网络与服务器；本机记录已保留，稍后会重试。") }
-            } finally { state.update { it.copy(busy = false) } }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: IllegalArgumentException) {
+                state.update { it.copy(status = "同步未完成：${e.message}。本机记录已保留。") }
+            } catch (e: IllegalStateException) {
+                state.update { it.copy(status = "同步未完成：${e.message}。本机记录已保留。") }
+            } catch (_: Exception) {
+                state.update { it.copy(status = "同步未完成，请检查网络与服务器；本机记录已保留，稍后会重试。") }
+            } finally {
+                state.update { it.copy(busy = false) }
+            }
         }
     }
 }

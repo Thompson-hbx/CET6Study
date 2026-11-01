@@ -2,8 +2,8 @@ package com.example.cet6.auth
 
 import android.net.Uri
 import android.util.Base64
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runInterruptible
@@ -32,6 +32,7 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
     private val tokenEndpoint = "https://auth.openai.com/api/accounts/oauth/token"
     private val scopes = "openid profile email offline_access resource.invoke chatgpt.tokens.use.direct"
     private val random = SecureRandom()
+
     // Retain an issued registration across a failed first exchange, within this process.
     private var pendingClientId: String? = null
 
@@ -51,8 +52,10 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
                             .getString("revocation_endpoint")
                     }
                     val endpointUri = java.net.URI(endpoint)
-                    check(endpointUri.scheme == "https" && endpointUri.host == "auth.openai.com" &&
-                        endpointUri.userInfo == null && endpointUri.port in listOf(-1, 443))
+                    check(
+                        endpointUri.scheme == "https" && endpointUri.host == "auth.openai.com" &&
+                            endpointUri.userInfo == null && endpointUri.port in listOf(-1, 443),
+                    )
                     val body = FormBody.Builder().add("token", saved.refreshToken)
                         .add("token_type_hint", "refresh_token").add("client_id", saved.clientId).build()
                     for (attempt in 0..1) {
@@ -66,10 +69,13 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
                         if (attempt == 0) delay(500)
                     }
                 }
-            } catch (e: CancellationException) { throw e
+            } catch (e: CancellationException) {
+                throw e
             } catch (_: Exception) {
                 // Discovery/transport/validation failure cannot confirm remote revocation.
-            } finally { store.clear() }
+            } finally {
+                store.clear()
+            }
             revoked
         }
     }
@@ -80,8 +86,10 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
             val state = secureRandom()
             val nonce = secureRandom()
             val verifier = secureRandom(64)
-            val challenge = encode(MessageDigest.getInstance("SHA-256")
-                .digest(verifier.toByteArray(Charsets.US_ASCII)))
+            val challenge = encode(
+                MessageDigest.getInstance("SHA-256")
+                    .digest(verifier.toByteArray(Charsets.US_ASCII)),
+            )
             // Listener exists before the system browser is opened.
             ServerSocket(0, 1, InetAddress.getByName("127.0.0.1")).use { listener ->
                 listener.soTimeout = 180_000
@@ -99,8 +107,9 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
                     .appendQueryParameter("nonce", nonce)
                     .appendQueryParameter("code_challenge_method", "S256")
                     .appendQueryParameter("code_challenge", challenge)
-                if (newRegistration) url.appendQueryParameter("agent_name_hint", "CET6 Study")
-                else if (existing != null) {
+                if (newRegistration) {
+                    url.appendQueryParameter("agent_name_hint", "CET6 Study")
+                } else if (existing != null) {
                     if (!existing.canUsePlan) url.appendQueryParameter("prompt", "consent")
                     if (existing.idToken.isNotBlank()) url.appendQueryParameter("id_token_hint", existing.idToken)
                     if (existing.email.isNotBlank()) url.appendQueryParameter("login_hint", existing.email)
@@ -135,16 +144,20 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
                     .add("resource", resource).build()
                 val tokens = postToken(body)
                 val identity = OidcVerifier(http).verify(tokens.getString("id_token"), issuedId, nonce)
-                if (existing != null) require(existing.subject == identity.subject) {
-                    "登录的是另一个 ChatGPT 账号，未覆盖已有凭证"
+                if (existing != null) {
+                    require(existing.subject == identity.subject) {
+                        "登录的是另一个 ChatGPT 账号，未覆盖已有凭证"
+                    }
                 }
                 val session = ChatGptSession(
-                    clientId = issuedId, subject = identity.subject, email = identity.email,
+                    clientId = issuedId,
+                    subject = identity.subject,
+                    email = identity.email,
                     accessToken = tokens.getString("access_token"),
                     refreshToken = tokens.optString("refresh_token", ""),
                     idToken = tokens.getString("id_token"),
                     scopes = tokens.optString("scope", ""),
-                    expiresAtMillis = System.currentTimeMillis() + tokens.getLong("expires_in") * 1000
+                    expiresAtMillis = System.currentTimeMillis() + tokens.getLong("expires_in") * 1000,
                 )
                 store.save(session)
                 pendingClientId = null
@@ -165,7 +178,9 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
         // Once rotation starts, caller cancellation must not discard its replacement credentials.
         // The existing HTTP call timeout still bounds the operation; the caller remains cancelled.
         withContext(NonCancellable + Dispatchers.IO) {
-            val tokens = try { postToken(body) } catch (e: OAuthTokenException) {
+            val tokens = try {
+                postToken(body)
+            } catch (e: OAuthTokenException) {
                 if (isTerminalRefreshError(e.code)) store.clear()
                 throw e
             }
@@ -175,7 +190,7 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
                 // Retain the previously verified identity; refresh does not verify a new ID token.
                 idToken = saved.idToken,
                 scopes = tokens.optString("scope", saved.scopes),
-                expiresAtMillis = System.currentTimeMillis() + tokens.getLong("expires_in") * 1000
+                expiresAtMillis = System.currentTimeMillis() + tokens.getLong("expires_in") * 1000,
             )
             store.save(updated)
             updated
@@ -187,7 +202,11 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
         return http.newCall(request).execute().use { response ->
             val text = response.body?.string() ?: error("Token 响应为空")
             if (!response.isSuccessful) {
-                val error = try { JSONObject(text).opt("error") } catch (_: Exception) { null }
+                val error = try {
+                    JSONObject(text).opt("error")
+                } catch (_: Exception) {
+                    null
+                }
                 val rawCode = when (error) {
                     is String -> error
                     is JSONObject -> error.optString("code")
@@ -202,7 +221,9 @@ class ChatGptAuth internal constructor(http: OkHttpClient, private val store: Se
 
     private fun secureRandom(n: Int = 32): String = ByteArray(n).also { random.nextBytes(it) }.let(::encode)
     private fun encode(bytes: ByteArray) = Base64.encodeToString(
-        bytes, Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING)
+        bytes,
+        Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING,
+    )
 }
 
 private class OAuthTokenException(val code: String, status: Int) :

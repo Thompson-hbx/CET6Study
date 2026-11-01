@@ -7,21 +7,21 @@ import android.content.SharedPreferences
 import android.os.Looper
 import androidx.room.Room
 import com.example.cet6.ai.AiProvider
+import com.example.cet6.ai.DeepReviewRejectedException
 import com.example.cet6.ai.ReasoningEffort
 import com.example.cet6.ai.ReasoningFormat
-import com.example.cet6.ai.DeepReviewRejectedException
-import org.json.JSONObject
-import okio.Buffer
 import com.example.cet6.data.EssayEntity
 import com.example.cet6.data.StudyDatabase
 import com.example.cet6.ui.AiConnectionState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Response
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
+import org.json.JSONObject
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
@@ -54,10 +54,17 @@ class AiConnectionStateChecks(private val context: Context) {
                 lastPayload.set(JSONObject(buffer.readUtf8()))
             }
             val code = if (!models) mode.get().toIntOrNull() ?: 200 else 200
-            val body = if (models) """{"data":[{"id":"listed-model"},{"id":"second-model"}]}""" else if (code == 429) "{}" else {
+            val body = if (models) {
+                """{"data":[{"id":"listed-model"},{"id":"second-model"}]}"""
+            } else if (code == 429) {
+                "{}"
+            } else {
                 "data: {\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Original reply.\"}}]}\n\n" +
-                    if (mode.get() == "partial") "" else
+                    if (mode.get() == "partial") {
+                        ""
+                    } else {
                         "data: {\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}\n\ndata: [DONE]\n\n"
+                    }
             }
             val type = if (models || code != 200) "application/json" else "text/event-stream"
             Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(code).message("offline fixture")
@@ -186,7 +193,6 @@ class AiConnectionStateChecks(private val context: Context) {
             deep.selectProvider(AiProvider.CHATGPT)
             check(!deep.deepReviewEnabled && deep.reviewFormat == ReasoningFormat.OPENAI)
             check(db.dao().essays().first() == listOf(saved)) { "Depth configuration changed learner history" }
-
         } finally {
             scope.coroutineContext[Job]!!.cancelAndJoin()
             db.close()

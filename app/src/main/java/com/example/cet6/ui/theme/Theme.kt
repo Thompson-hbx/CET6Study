@@ -30,7 +30,7 @@ private val LightColorScheme = lightColorScheme(
     surfaceBright = LightSurfaceLowest, surfaceDim = LightSurfaceHighest,
     surfaceContainerLowest = LightSurfaceLowest, surfaceContainerLow = LightSurfaceLow,
     surfaceContainer = LightSurfaceMid, surfaceContainerHigh = LightSurfaceHigh,
-    surfaceContainerHighest = LightSurfaceHighest
+    surfaceContainerHighest = LightSurfaceHighest,
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -53,16 +53,19 @@ private val DarkColorScheme = darkColorScheme(
     surfaceBright = DarkSurfaceHighest, surfaceDim = DarkSurfaceLowest,
     surfaceContainerLowest = DarkSurfaceLowest, surfaceContainerLow = DarkSurfaceLow,
     surfaceContainer = DarkSurfaceMid, surfaceContainerHigh = DarkSurfaceHigh,
-    surfaceContainerHighest = DarkSurfaceHighest
+    surfaceContainerHighest = DarkSurfaceHighest,
 )
 
 /** Correction tones shared by every review: must-fix, optional polish and sound work, plus the brand fill. */
 @Immutable
 data class MarkColors(
-    val must: Color, val mustSoft: Color,
-    val better: Color, val betterSoft: Color,
-    val good: Color, val goodSoft: Color,
-    val brand: Color
+    val must: Color,
+    val mustSoft: Color,
+    val better: Color,
+    val betterSoft: Color,
+    val good: Color,
+    val goodSoft: Color,
+    val brand: Color,
 )
 
 private val LightMarks = MarkColors(LightMarkMust, LightMarkMustSoft, LightMarkBetter, LightMarkBetterSoft, LightMarkGood, LightMarkGoodSoft, LightBrand)
@@ -72,11 +75,7 @@ val LocalMarks = staticCompositionLocalOf { LightMarks }
 val LocalUiStyle = staticCompositionLocalOf { UiStyle.ZHUPI }
 
 @Composable
-fun CET6Theme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    style: UiStyle = UiStyle.ZHUPI,
-    content: @Composable () -> Unit
-) {
+fun CET6Theme(darkTheme: Boolean = isSystemInDarkTheme(), style: UiStyle = UiStyle.ZHUPI, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalUiStyle provides style) {
         when (style) {
             UiStyle.ZHUPI -> ZhupiTheme(darkTheme, content)
@@ -91,7 +90,7 @@ private fun ZhupiTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
             typography = Typography,
             shapes = Shapes,
-            content = content
+            content = content,
         )
     }
 }

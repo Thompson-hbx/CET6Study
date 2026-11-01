@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cet6.data.*
 import com.example.cet6.ui.components.*
+import com.example.cet6.ui.theme.PassageText
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
-import com.example.cet6.ui.theme.PassageText
 import kotlinx.coroutines.launch
 
 /** Writing desk: task, editor and the reviews of each submitted draft. */
@@ -34,7 +34,10 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
     val hazeState = remember { HazeState() }
     val talk = vm.talk
     val entry = state.entries[CoachKind.WRITING]
-    if (entry == null) { LoadingScreen(onBack); return }
+    if (entry == null) {
+        LoadingScreen(onBack)
+        return
+    }
     val turns = rememberTurns(vm, entry.id)
     val meta = remember(entry.questions) { ExamCodec.metadata(entry) }
     val task = remember(entry.material) { WritingTask.of(entry.material) }
@@ -66,31 +69,49 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
             WorkspaceTopBar(
                 title = "写作",
                 context = entry.title.removeSuffix(" · 作文").ifBlank { "自拟题目" },
-                detail = listOfNotNull(versions.indexOfFirst { it.id == entry.id }.takeIf { versions.size > 1 }?.let { "第 ${it + 1} 稿" },
-                    if (submitted) "已提交" else "草稿").joinToString(" · "),
+                detail = listOfNotNull(
+                    versions.indexOfFirst { it.id == entry.id }.takeIf { versions.size > 1 }?.let { "第 ${it + 1} 稿" },
+                    if (submitted) "已提交" else "草稿",
+                ).joinToString(" · "),
                 compact = WindowInsets.isImeVisible,
                 onBack = onBack,
                 actions = {
                     if (tab == 1 && submitted && reviewTurn != null && pending?.kind != TurnKind.WRITING_REVIEW) AskAction { asking = true }
-                    WorkspaceMenu(vm, entry, listOfNotNull("构思提纲" to { showPlan = true },
-                        if (reference.isNotBlank()) "参考范文" to { tab = 2 } else null,
-                        if (versions.size > 1) "各稿" to { showVersions = true } else null))
-                })
+                    WorkspaceMenu(
+                        vm,
+                        entry,
+                        listOfNotNull(
+                            "构思提纲" to { showPlan = true },
+                            if (reference.isNotBlank()) "参考范文" to { tab = 2 } else null,
+                            if (versions.size > 1) "各稿" to { showVersions = true } else null,
+                        ),
+                    )
+                },
+            )
         },
         bottomBar = {
             when {
                 tab == 0 -> BottomBar(hazeState = hazeState) {
                     if (!submitted) ExamClock(entry.id)
                     Note(saveLabel(state.messages[CoachKind.WRITING]), Modifier.weight(1f))
-                    if (!submitted) Button(onClick = { confirmSubmit = true }, enabled = words > 0 && !state.working,
-                        modifier = Modifier.height(48.dp)) { Text("提交") }
-                    else Button(onClick = { state.revise(entry, entry.answer) }, enabled = !state.working,
-                        modifier = Modifier.height(48.dp)) { Text("写修改稿") }
+                    if (!submitted) {
+                        Button(
+                            onClick = { confirmSubmit = true },
+                            enabled = words > 0 && !state.working,
+                            modifier = Modifier.height(48.dp),
+                        ) { Text("提交") }
+                    } else {
+                        Button(
+                            onClick = { state.revise(entry, entry.answer) },
+                            enabled = !state.working,
+                            modifier = Modifier.height(48.dp),
+                        ) { Text("写修改稿") }
+                    }
                 }
                 tab == 1 && submitted && pending?.kind != TurnKind.WRITING_REVIEW && (reviewTurn != null || pending != null) ->
                     ReviewFooter(vm, entry, "问问这篇作文…", placedReview(entry.answer, reviewTurn), asking, { asking = it }, hazeState, onAsk = ::ask)
             }
-        }
+        },
     ) { padding ->
         Column(Modifier.padding(top = padding.calculateTopPadding()).haze(hazeState).fillMaxSize()) {
             DeskSteps("写作", tab, submitted, state.working, onTab = { tab = it }, onRevise = {
@@ -106,12 +127,19 @@ fun WritingWorkspace(vm: StudyViewModel, onBack: () -> Unit) {
         }
     }
     if (showPlan) PlanSheet(vm, entry, turns) { showPlan = false }
-    if (showVersions) VersionSheet(versions, entry.id, bands, onOpen = { showVersions = false; state.open(CoachKind.WRITING, it) }) { showVersions = false }
-    if (confirmSubmit) SubmitDialog(words, task.minWords, onConfirm = {
-        confirmSubmit = false
-        state.submit(CoachKind.WRITING, false)
-        tab = 1
-    }) { confirmSubmit = false }
+    if (showVersions) {
+        VersionSheet(versions, entry.id, bands, onOpen = {
+            showVersions = false
+            state.open(CoachKind.WRITING, it)
+        }) { showVersions = false }
+    }
+    if (confirmSubmit) {
+        SubmitDialog(words, task.minWords, onConfirm = {
+            confirmSubmit = false
+            state.submit(CoachKind.WRITING, false)
+            tab = 1
+        }) { confirmSubmit = false }
+    }
 }
 
 /** Band of each practice's newest review; follow-up replies on the same anchor are not reviews. */
@@ -137,14 +165,7 @@ fun LoadingScreen(onBack: () -> Unit) {
 }
 
 @Composable
-private fun DraftPane(
-    vm: StudyViewModel,
-    entry: CoachPractice,
-    task: WritingTask,
-    custom: Boolean,
-    submitted: Boolean,
-    onPlan: () -> Unit
-) {
+private fun DraftPane(vm: StudyViewModel, entry: CoachPractice, task: WritingTask, custom: Boolean, submitted: Boolean, onPlan: () -> Unit) {
     val state = vm.coach
     var expanded by rememberSaveable(entry.id) { mutableStateOf(entry.answer.isBlank()) }
     Column(Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -152,18 +173,29 @@ private fun DraftPane(
             PaperCard(
                 color = MaterialTheme.colorScheme.surfaceContainerLowest,
                 border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-                padding = PaddingValues(0.dp)
+                padding = PaddingValues(0.dp),
             ) {
                 Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Tag("自拟作文题", Tone.Ink)
-                    FieldRow("标题", entry.title, { v -> state.edit(CoachKind.WRITING) { it.copy(title = v.take(200)) } },
-                        placeholder = "输入练习标题")
+                    FieldRow(
+                        "标题",
+                        entry.title,
+                        { v -> state.edit(CoachKind.WRITING) { it.copy(title = v.take(200)) } },
+                        placeholder = "输入练习标题",
+                    )
                 }
                 Hairline()
                 Column(Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
                     CardTitle("题目与要求", Modifier.padding(bottom = 4.dp))
-                    FieldRow(null, entry.material, { v -> state.edit(CoachKind.WRITING) { it.copy(material = v) } },
-                        placeholder = "粘贴或输入作文题目与要求", minLines = 3, accessibilityLabel = "题目与要求", maxLines = 8)
+                    FieldRow(
+                        null,
+                        entry.material,
+                        { v -> state.edit(CoachKind.WRITING) { it.copy(material = v) } },
+                        placeholder = "粘贴或输入作文题目与要求",
+                        minLines = 3,
+                        accessibilityLabel = "题目与要求",
+                        maxLines = 8,
+                    )
                 }
             }
         } else {
@@ -171,26 +203,26 @@ private fun DraftPane(
             PaperCard(
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
-                padding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+                padding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             ) {
                 Row(
-                    Modifier.fillMaxWidth().clickable(/* onClickLabel = if (expanded) "收起题目" else "展开题目" */ ) { expanded = !expanded }
+                    Modifier.fillMaxWidth().clickable(/* onClickLabel = if (expanded) "收起题目" else "展开题目" */) { expanded = !expanded }
                         .heightIn(min = 36.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Tag("审题要求", Tone.Ink)
                     Text(taskSummary(task), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                     Text(
                         if (expanded) "收起" else "看完整题目",
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Icon(
                         if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                 }
                 Column(Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -199,12 +231,12 @@ private fun DraftPane(
                             color = MaterialTheme.colorScheme.surfaceContainerLowest,
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp),
                             border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             Row(
                                 Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
                             ) {
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Note("规定开头句")
@@ -216,7 +248,7 @@ private fun DraftPane(
                                     FilledTonalButton(
                                         onClick = { state.edit(CoachKind.WRITING) { it.copy(answer = opening + " ") } },
                                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                                        modifier = Modifier.heightIn(min = 34.dp)
+                                        modifier = Modifier.heightIn(min = 34.dp),
                                     ) { Text("插入开头句", style = MaterialTheme.typography.labelMedium) }
                                 }
                             }
@@ -227,7 +259,7 @@ private fun DraftPane(
                             Text(
                                 entry.material,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     } else if (task.opening == null) {
@@ -236,7 +268,7 @@ private fun DraftPane(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -272,10 +304,12 @@ private fun DraftPane(
                     TextButton(
                         onClick = onPlan,
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                        modifier = Modifier.heightIn(min = 28.dp)
+                        modifier = Modifier.heightIn(min = 28.dp),
                     ) { Text("构思提纲", style = MaterialTheme.typography.labelMedium) }
                 }
-            } else null
+            } else {
+                null
+            },
         ) { text ->
             state.edit(CoachKind.WRITING) { it.copy(answer = text) }
         }
@@ -286,7 +320,7 @@ private fun DraftPane(
 /** One line naming what the task asks, e.g. 以给定句开头 · 150–200 词. */
 private fun taskSummary(task: WritingTask): String = listOfNotNull(
     if (task.opening != null) "以给定句开头" else "题目与要求",
-    if (task.minWords != null && task.maxWords != null) "${task.minWords}–${task.maxWords} 词" else task.minWords?.let { "至少 $it 词" }
+    if (task.minWords != null && task.maxWords != null) "${task.minWords}–${task.maxWords} 词" else task.minWords?.let { "至少 $it 词" },
 ).joinToString(" · ")
 
 /** Borderless manuscript editor set in Source Serif so drafting reads like a printed page. */
@@ -301,20 +335,29 @@ fun Editor(text: String, readOnly: Boolean, placeholder: String, minHeight: Int 
         modifier = Modifier.fillMaxWidth().heightIn(min = minHeight.dp),
         decorationBox = { inner ->
             Box {
-                if (text.isEmpty()) Text(
-                    placeholder,
-                    style = PassageText.copy(fontSize = 18.sp, lineHeight = 30.sp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f)
-                )
+                if (text.isEmpty()) {
+                    Text(
+                        placeholder,
+                        style = PassageText.copy(fontSize = 18.sp, lineHeight = 30.sp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
+                    )
+                }
                 inner()
             }
-        }
+        },
     )
 }
 
 @Composable
-private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: List<CoachTurn>, reviewTurn: CoachTurn?,
-    scroll: ScrollState, onGoWrite: () -> Unit, onAsk: (String) -> Unit) {
+private fun WritingReviewPane(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    turns: List<CoachTurn>,
+    reviewTurn: CoachTurn?,
+    scroll: ScrollState,
+    onGoWrite: () -> Unit,
+    onAsk: (String) -> Unit,
+) {
     val talk = vm.talk
     if (entry.submittedAt == 0L) {
         EmptyNote("提交这一稿后就可以批改。批改针对提交时的原稿，之后的修改会另存为修改稿。", "回到写作", onGoWrite)
@@ -340,8 +383,13 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
         SkillErrorNote(vm, entry, CoachKind.WRITING)
         return
     }
-    if (reviewing) WorkingLine("正在批改 · 已标出 ${review.issues.size} 处", talk::stop,
-        Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
+    if (reviewing) {
+        WorkingLine(
+            "正在批改 · 已标出 ${review.issues.size} 处",
+            talk::stop,
+            Modifier.padding(horizontal = PageGutter, vertical = 8.dp),
+        )
+    }
     if (!review.structured && !reviewing) {
         Spacer(Modifier.height(16.dp))
         PaperCard {
@@ -359,12 +407,12 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
         PaperCard(
             color = MaterialTheme.colorScheme.surfaceContainerLowest,
             border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-            padding = PaddingValues(0.dp)
+            padding = PaddingValues(0.dp),
         ) {
             Row(
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(14.dp)
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
             ) {
                 DotStatus("必改 ${placed.count { it.issue.must && !it.accepted && !it.dismissed }}", Tone.Must)
                 DotStatus("可改 ${placed.count { !it.issue.must && !it.accepted && !it.dismissed }}", Tone.Better)
@@ -379,14 +427,23 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
                     placed.filter { !it.dismissed }.mapNotNull { p -> p.range?.let { TextMark(p.issue.id, it, p.tone) } },
                     selected = selected?.let { placed.getOrNull(it)?.issue?.id },
                     style = PassageText,
-                    onMark = { id -> selected = placed.indexOfFirst { it.issue.id == id } }
+                    onMark = { id -> selected = placed.indexOfFirst { it.issue.id == id } },
                 )
             }
         }
-        IssueList(placed, onOpen = { selected = it }, onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
-            { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) } })
-        if (!reviewing && reviewTurn != null) Note("点画线处或上面的卡片，逐条决定采纳还是忽略；采纳的会带进修改稿。",
-            Modifier.padding(horizontal = PageGutter, vertical = 8.dp))
+        IssueList(
+            placed,
+            onOpen = { selected = it },
+            onDecide = reviewTurn?.takeIf { !reviewing }?.let { turn ->
+                { issue: ReviewIssue, decision: ReviewDecision -> talk.updateDecision(turn, issue.id, decision) }
+            },
+        )
+        if (!reviewing && reviewTurn != null) {
+            Note(
+                "点画线处或上面的卡片，逐条决定采纳还是忽略；采纳的会带进修改稿。",
+                Modifier.padding(horizontal = PageGutter, vertical = 8.dp),
+            )
+        }
         if (review.tips.isNotEmpty()) {
             SectionLabel("写作建议")
             PaperCard {
@@ -401,16 +458,25 @@ private fun WritingReviewPane(vm: StudyViewModel, entry: CoachPractice, turns: L
                 if (showDiff) DiffText(entry.answer, review.rewrite) else SelectionContainer { Text(review.rewrite, style = PassageText) }
             }
         }
-        if (!reviewing && reviewTurn != null) Row(Modifier.padding(start = PageGutter, end = 8.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            Provenance(reviewTurn.model, Modifier.weight(1f))
-            TextButton(onClick = { chooseAgain = true }, enabled = !talk.busy) { Text("换一种方式批改") }
+        if (!reviewing && reviewTurn != null) {
+            Row(Modifier.padding(start = PageGutter, end = 8.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Provenance(reviewTurn.model, Modifier.weight(1f))
+                TextButton(onClick = { chooseAgain = true }, enabled = !talk.busy) { Text("换一种方式批改") }
+            }
         }
-        if (selected != null && reviewTurn != null) IssueSheet(placed, selected!!, onIndex = { selected = it.coerceIn(0, placed.lastIndex) },
-            onDismissSheet = { selected = null },
-            onAccept = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.ACCEPT) },
-            onReject = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.DISMISS) },
-            onReset = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.RESET) },
-            onAsk = { issue -> selected = null; onAsk(CoachChat.aboutIssue(issue)) }, askBusy = talk.busy)
+        if (selected != null && reviewTurn != null) {
+            IssueSheet(
+                placed, selected!!, onIndex = { selected = it.coerceIn(0, placed.lastIndex) },
+                onDismissSheet = { selected = null },
+                onAccept = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.ACCEPT) },
+                onReject = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.DISMISS) },
+                onReset = { talk.updateDecision(reviewTurn, it.id, ReviewDecision.RESET) },
+                onAsk = { issue ->
+                    selected = null
+                    onAsk(CoachChat.aboutIssue(issue))
+                }, askBusy = talk.busy,
+            )
+        }
     }
     if (!reviewing) {
         // Follow-up failures show above the composer in the bottom bar, not down here out of sight.
@@ -434,27 +500,27 @@ fun FocusChooser(kind: CoachKind, enabled: Boolean, connected: Boolean, onPick: 
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
                 border = androidx.compose.foundation.BorderStroke(
                     if (i == 0) 1.dp else 0.5.dp,
-                    if (i == 0) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f) else MaterialTheme.colorScheme.outlineVariant
+                    if (i == 0) MaterialTheme.colorScheme.primary.copy(alpha = 0.45f) else MaterialTheme.colorScheme.outlineVariant,
                 ),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Row(
                     Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
                                 focus.label + if (i == 0) "（推荐）" else "",
                                 style = MaterialTheme.typography.titleSmall,
-                                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
+                                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                         Text(
                             focus.summaryFor(kind),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     StatusPill("开始批改", if (i == 0) Tone.Ink else Tone.Muted)
@@ -462,8 +528,12 @@ fun FocusChooser(kind: CoachKind, enabled: Boolean, connected: Boolean, onPick: 
             }
         }
     }
-    if (!connected) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型；原稿已保存在本机。",
-        Modifier.padding(horizontal = PageGutter, vertical = 12.dp))
+    if (!connected) {
+        Note(
+            "需要先在「我的 → AI 连接」配置 AI 服务并选择模型；原稿已保存在本机。",
+            Modifier.padding(horizontal = PageGutter, vertical = 12.dp),
+        )
+    }
 }
 
 @Composable
@@ -504,8 +574,11 @@ private fun PlanSheet(vm: StudyViewModel, entry: CoachPractice, turns: List<Coac
     fun ask(question: String) = talk.send(entry, Anchor.PLAN, TurnKind.CHAT, question) {
         CoachChat.prompt(entry, Anchor.PLAN, thread, question)
     }
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
         Column(Modifier.fillMaxWidth().padding(horizontal = PageGutter).padding(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("构思提纲", style = MaterialTheme.typography.titleMedium)
             Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -516,12 +589,19 @@ private fun PlanSheet(vm: StudyViewModel, entry: CoachPractice, turns: List<Coac
                         WorkingLine("正在审题…", talk::stop)
                         if (pending.text.isNotBlank()) MarkdownBody(pending.text)
                     }
-                    plan != null -> { MarkdownBody(plan.content); Provenance(plan.model) }
+                    plan != null -> {
+                        MarkdownBody(plan.content)
+                        Provenance(plan.model)
+                    }
                     else -> {
-                        Text("先弄清题目要什么、选哪个角度、三段怎么展开，再自己动笔。这里不会替你写作文。",
-                            style = MaterialTheme.typography.bodyLarge)
-                        Button(onClick = { talk.send(entry, Anchor.PLAN, TurnKind.WRITING_PLAN) { WritingCoach.planPrompt(entry) } },
-                            enabled = !talk.busy && entry.material.isNotBlank()) { Text("帮我审题") }
+                        Text(
+                            "先弄清题目要什么、选哪个角度、三段怎么展开，再自己动笔。这里不会替你写作文。",
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                        Button(
+                            onClick = { talk.send(entry, Anchor.PLAN, TurnKind.WRITING_PLAN) { WritingCoach.planPrompt(entry) } },
+                            enabled = !talk.busy && entry.material.isNotBlank(),
+                        ) { Text("帮我审题") }
                         if (!vm.aiReady || vm.chosenModel.isBlank()) Note("需要先在「我的 → AI 连接」配置 AI 服务并选择模型。")
                     }
                 }
@@ -530,9 +610,18 @@ private fun PlanSheet(vm: StudyViewModel, entry: CoachPractice, turns: List<Coac
                     ThreadView(thread, pending, talk::stop)
                 }
             }
-            if (plan != null) AskBar("说说你的想法，或问一个问题…", busy = talk.busy, enabled = !talk.busy, onSend = ::ask,
-                onStop = talk::stop, draftKey = entry.id + "/plan",
-                failure = talk.failureFor(entry.id, Anchor.PLAN), onDismissFailure = talk::dismissFailure)
+            if (plan != null) {
+                AskBar(
+                    "说说你的想法，或问一个问题…",
+                    busy = talk.busy,
+                    enabled = !talk.busy,
+                    onSend = ::ask,
+                    onStop = talk::stop,
+                    draftKey = entry.id + "/plan",
+                    failure = talk.failureFor(entry.id, Anchor.PLAN),
+                    onDismissFailure = talk::dismissFailure,
+                )
+            }
         }
     }
 }

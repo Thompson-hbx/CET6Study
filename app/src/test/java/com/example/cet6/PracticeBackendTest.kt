@@ -7,16 +7,25 @@ import org.junit.Test
 
 class PracticeBackendTest {
     private val goal = "衔接：说明原因与结果的联系"
-    private fun source(kind: CoachKind) = CoachPractice(kind = kind.name,
-        material = "用3–5句英文说明图书馆如何帮助学生。", questions = "", answer = "Libraries helps students.",
-        errorReason = goal, submittedAt = 100, updatedAt = 200)
+    private fun source(kind: CoachKind) = CoachPractice(
+        kind = kind.name,
+        material = "用3–5句英文说明图书馆如何帮助学生。",
+        questions = "",
+        answer = "Libraries helps students.",
+        errorReason = goal,
+        submittedAt = 100,
+        updatedAt = 200,
+    )
     private fun targeted(kind: CoachKind) = source(kind).copy(sourcePracticeId = "original-task", practiceGoal = goal)
 
     @Test fun generatedTaskCannotReuseItsSourceMaterial() {
         for (kind in CoachKind.entries) {
             val original = source(kind)
-            val questions = if (kind == CoachKind.READING)
-                "1. What is needed?\nA. Books.\nB. Rooms.\nC. Staff.\nD. Time." else ""
+            val questions = if (kind == CoachKind.READING) {
+                "1. What is needed?\nA. Books.\nB. Rooms.\nC. Staff.\nD. Time."
+            } else {
+                ""
+            }
             val response = JSONObject().put("title", "重复材料").put("material", original.material)
                 .put("questions", questions).toString()
             assertTrue("Repeated material accepted for $kind", runCatching { MicroPractice.parse(response, original) }.isFailure)

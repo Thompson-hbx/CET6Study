@@ -57,14 +57,18 @@ fun Application.studyModule(store: StudyStore, secret: String) {
             val snapshot = store.snapshot()
             val etag = "\"${snapshot.serverId}:${snapshot.revision}\""
             call.response.header(HttpHeaders.ETag, etag)
-            if (call.request.header(HttpHeaders.IfNoneMatch) == etag) call.respond(HttpStatusCode.NotModified)
-            else call.respondText(snapshot.json().toString(), ContentType.Application.Json)
+            if (call.request.header(HttpHeaders.IfNoneMatch) == etag) {
+                call.respond(HttpStatusCode.NotModified)
+            } else {
+                call.respondText(snapshot.json().toString(), ContentType.Application.Json)
+            }
         }
         put("/v1/study") {
             val limit = SyncDocument.MAX_BYTES + 4096
             val declared = call.request.header(HttpHeaders.ContentLength)?.toLongOrNull()
             if (declared != null && declared > limit) {
-                call.respond(HttpStatusCode.PayloadTooLarge); return@put
+                call.respond(HttpStatusCode.PayloadTooLarge)
+                return@put
             }
             val input = call.receiveChannel()
             val output = ByteArrayOutputStream()
@@ -72,7 +76,10 @@ fun Application.studyModule(store: StudyStore, secret: String) {
             while (true) {
                 val count = input.readAvailable(buffer)
                 if (count < 0) break
-                if (output.size() + count > limit) { call.respond(HttpStatusCode.PayloadTooLarge); return@put }
+                if (output.size() + count > limit) {
+                    call.respond(HttpStatusCode.PayloadTooLarge)
+                    return@put
+                }
                 output.write(buffer, 0, count)
             }
             val text = Charsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
@@ -83,10 +90,16 @@ fun Application.studyModule(store: StudyStore, secret: String) {
             val revision = integer(json, "revision").also { require(it >= 0) }
             val changes = json.getJSONObject("changes")
             require(changes.length() <= SyncDocument.MAX_RECORDS)
-            val result = store.update(json.getString("serverId"), revision,
-                changes.keys().asSequence().associateWith { canonical(changes.getJSONObject(it)) })
-            if (result == null) call.respond(HttpStatusCode.Conflict, "服务器已有新版本")
-            else call.respondText(JSONObject().put("serverId", result.serverId).put("revision", result.revision).toString(), ContentType.Application.Json)
+            val result = store.update(
+                json.getString("serverId"),
+                revision,
+                changes.keys().asSequence().associateWith { canonical(changes.getJSONObject(it)) },
+            )
+            if (result == null) {
+                call.respond(HttpStatusCode.Conflict, "服务器已有新版本")
+            } else {
+                call.respondText(JSONObject().put("serverId", result.serverId).put("revision", result.revision).toString(), ContentType.Application.Json)
+            }
         }
     }
 }

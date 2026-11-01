@@ -16,9 +16,12 @@ class ReviewDecisionStateTest {
 
     @Test fun invalidStateCannotTurnIntoAnEmptyWriteSnapshot() {
         cases().filter { !it.getBoolean("valid") }.forEach { case ->
-            assertTrue(case.getString("id"), runCatching {
-                ReviewDecisions.decodeForUpdate(case.getString("state"), setOf(0, 1))
-            }.isFailure)
+            assertTrue(
+                case.getString("id"),
+                runCatching {
+                    ReviewDecisions.decodeForUpdate(case.getString("state"), setOf(0, 1))
+                }.isFailure,
+            )
         }
     }
 
@@ -28,8 +31,11 @@ class ReviewDecisionStateTest {
                 val values = case.getJSONArray(key)
                 return (0 until values.length()).map { values.getInt(it) }.toSet()
             }
-            assertEquals(case.getString("id"), ReviewDecisions(ids("accepted"), ids("dismissed")),
-                ReviewDecisions.decodeForUpdate(case.getString("state"), setOf(0, 1)))
+            assertEquals(
+                case.getString("id"),
+                ReviewDecisions(ids("accepted"), ids("dismissed")),
+                ReviewDecisions.decodeForUpdate(case.getString("state"), setOf(0, 1)),
+            )
         }
     }
 }

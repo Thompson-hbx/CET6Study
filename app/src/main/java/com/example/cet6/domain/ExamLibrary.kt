@@ -17,33 +17,49 @@ data class ExamLibraryState(
     val status: String = "",
     val busy: Boolean = false,
     /** False until the local bank was read; exports and restores refuse to overwrite an unread bank. */
-    val loaded: Boolean = false
+    val loaded: Boolean = false,
 )
 
 /** The personal exam bank: loading, import preview and export. */
 class ExamLibrary(
     private val context: Context,
     private val store: ExamStore,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) {
     val state = ServiceState(ExamLibraryState())
     private val current get() = state.value
-    internal fun setStatus(text: String) { state.update { it.copy(status = text) } }
-    internal fun setBusy(value: Boolean) { state.update { it.copy(busy = value) } }
-    internal fun restored(papers: List<ExamPaper>) { state.update { it.copy(papers = papers, loaded = true) } }
+    internal fun setStatus(text: String) {
+        state.update { it.copy(status = text) }
+    }
+    internal fun setBusy(value: Boolean) {
+        state.update { it.copy(busy = value) }
+    }
+    internal fun restored(papers: List<ExamPaper>) {
+        state.update { it.copy(papers = papers, loaded = true) }
+    }
 
     /** Reads the bank once at startup; after a restore the bundled content must not be merged in again. */
     internal suspend fun load(restorePending: Boolean) {
         try {
             val papers = withContext(Dispatchers.IO) { if (restorePending) store.load() else store.loadWithBundledContent() }
             state.update { it.copy(papers = papers, loaded = true) }
-        } catch (e: CancellationException) { throw e
-        } catch (_: Exception) { setStatus("本地题库读取失败，已保留原文件；请先导出或联系维护者，不要覆盖导入。") }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            setStatus("本地题库读取失败，已保留原文件；请先导出或联系维护者，不要覆盖导入。")
+        }
     }
 
     private fun tryStart(): Boolean {
         var started = false
-        state.update { if (it.busy || !it.loaded) it else { started = true; it.copy(busy = true) } }
+        state.update {
+            if (it.busy || !it.loaded) {
+                it
+            } else {
+                started = true
+                it.copy(busy = true)
+            }
+        }
         return started
     }
 
@@ -70,10 +86,15 @@ class ExamLibrary(
                     ExamCodec.decode(text).also { store.merge(current.papers, it) }
                 }
                 state.update { it.copy(preview = preview, status = "预览 ${preview.size} 套；尚未写入。各专项按资料完整与校对情况开放。") }
-            } catch (e: CancellationException) { throw e
-            } catch (e: IllegalArgumentException) { setStatus("未导入：${e.message}")
-            } catch (_: Exception) { setStatus("文件无法解析，请选择 UTF-8 CET6ExamPack v1 JSON；PDF / Word 请先使用本地转换工具。")
-            } finally { setBusy(false) }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: IllegalArgumentException) {
+                setStatus("未导入：${e.message}")
+            } catch (_: Exception) {
+                setStatus("文件无法解析，请选择 UTF-8 CET6ExamPack v1 JSON；PDF / Word 请先使用本地转换工具。")
+            } finally {
+                setBusy(false)
+            }
         }
     }
 
@@ -83,11 +104,20 @@ class ExamLibrary(
         scope.launch {
             try {
                 val merged = withContext(Dispatchers.IO) { store.merge(current.papers, incoming).also(store::save) }
-                state.update { it.copy(papers = merged, preview = emptyList(),
-                    status = "已保存 ${incoming.size} 套个人内容；重复导入不增加套卷，既有作答保留。") }
-            } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { setStatus("保存未完成，原题库保留，请重试。")
-            } finally { setBusy(false) }
+                state.update {
+                    it.copy(
+                        papers = merged,
+                        preview = emptyList(),
+                        status = "已保存 ${incoming.size} 套个人内容；重复导入不增加套卷，既有作答保留。",
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                setStatus("保存未完成，原题库保留，请重试。")
+            } finally {
+                setBusy(false)
+            }
         }
     }
 
@@ -101,9 +131,13 @@ class ExamLibrary(
                     } ?: error("无法写入")
                 }
                 setStatus("个人题库已导出；作答历史请另用学习数据备份。")
-            } catch (e: CancellationException) { throw e
-            } catch (_: Exception) { setStatus("题库导出失败，目标可能留下不完整文件，请重试。")
-            } finally { setBusy(false) }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                setStatus("题库导出失败，目标可能留下不完整文件，请重试。")
+            } finally {
+                setBusy(false)
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ object WeaknessReview {
 
     fun categoriesOf(entry: CoachPractice): Set<String> {
         if (entry.errorReason.isBlank()) return emptySet()
-        val parts = entry.errorReason.split(Regex("[；;，,\n]+" )).map(String::trim)
+        val parts = entry.errorReason.split(Regex("[；;，,\n]+")).map(String::trim)
         val matched = categories.dropLast(1).filter { category ->
             parts.any { it == category || it.startsWith("$category：") || it.startsWith("$category:") }
         }.toSet()
@@ -23,8 +23,10 @@ object WeaknessReview {
     }
 
     fun records(history: List<CoachPractice>, category: String? = null): List<CoachPractice> = history
-        .filter { it.submittedAt > 0 && it.errorReason.isNotBlank() &&
-            (category == null || category in categoriesOf(it)) }
+        .filter {
+            it.submittedAt > 0 && it.errorReason.isNotBlank() &&
+                (category == null || category in categoriesOf(it))
+        }
         .sortedByDescending { it.submittedAt }
 
     data class PeriodCounts(val recent: Int, val previous: Int)
@@ -34,7 +36,7 @@ object WeaknessReview {
             .map { Instant.ofEpochMilli(it.submittedAt).atZone(zone).toLocalDate() }
         return PeriodCounts(
             dates.count { it >= today.minusDays(6) && it <= today },
-            dates.count { it >= today.minusDays(13) && it < today.minusDays(6) }
+            dates.count { it >= today.minusDays(13) && it < today.minusDays(6) },
         )
     }
 }

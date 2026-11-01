@@ -23,7 +23,7 @@ fun WorkspaceTopBar(
     onBack: () -> Unit,
     detail: String? = null,
     compact: Boolean = false,
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     val cleanContext = Regex("(\\d{4})\\s*年\\s*(\\d{1,2})\\s*月").replace(
         context
@@ -31,7 +31,7 @@ fun WorkspaceTopBar(
             .removeSuffix(" · 阅读")
             .removeSuffix(" · 作文")
             .removeSuffix(" · 写作")
-            .removeSuffix(" · 翻译")
+            .removeSuffix(" · 翻译"),
     ) { m -> "${m.groupValues[1]}.${m.groupValues[2].padStart(2, '0')}" }
         .replace("第 ", "第")
         .replace(" 套", "套")
@@ -40,12 +40,12 @@ fun WorkspaceTopBar(
         Column(Modifier.fillMaxWidth().statusBarsPadding()) {
             Row(
                 Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(start = 6.dp, end = 6.dp, top = 4.dp, bottom = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 BackButton(onBack)
                 Column(
                     Modifier.weight(1f).padding(horizontal = 6.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         cleanContext,
@@ -53,7 +53,7 @@ fun WorkspaceTopBar(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                         // modifier = Modifier.semantics { heading() }
                     )
                     Text(
@@ -61,11 +61,15 @@ fun WorkspaceTopBar(
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
-                Row(Modifier.widthIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End, content = actions)
+                Row(
+                    Modifier.widthIn(min = 44.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    content = actions,
+                )
             }
         }
     }
@@ -86,7 +90,7 @@ fun WorkspaceDocument(
     minHeight: Int = 280,
     placeholder: String,
     headerAction: (@Composable () -> Unit)? = null,
-    onChange: (String) -> Unit
+    onChange: (String) -> Unit,
 ) {
     val paragraphs = if (text.isBlank()) 0 else text.trim().split(Regex("\\n\\s*\\n|\\n")).count { it.isNotBlank() }
     val targetFraction = when {
@@ -103,22 +107,22 @@ fun WorkspaceDocument(
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainerLowest,
         shape = MaterialTheme.shapes.large,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = CardMargin)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = CardMargin),
     ) {
         Column {
             Column(
                 Modifier.fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 6.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     Text(
                         title,
                         style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                         // modifier = Modifier.semantics { heading() }
                     )
                     if (paragraphs > 0) {
@@ -134,7 +138,7 @@ fun WorkspaceDocument(
                         modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(50)),
                         color = if (progressTone == Tone.Ink) MaterialTheme.colorScheme.primary else progressTone.color(),
                         trackColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                        drawStopIndicator = {}
+                        drawStopIndicator = {},
                     )
                 }
             }

@@ -2,11 +2,11 @@ package com.example.cet6
 
 import android.app.Instrumentation
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
-import android.graphics.Rect
 import android.os.ParcelFileDescriptor
+import android.os.SystemClock
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.lifecycle.ViewModelProvider
 import com.example.cet6.data.CoachKind
@@ -24,6 +24,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         return null
     }
     private val homeTabs = setOf("今日", "练习", "复盘", "我的")
+
     // The skill switch inside 练习 is a segmented button: Compose reports its choice as checked, not selected.
     private val skillSegments = setOf("写作", "翻译", "阅读")
     private fun actionTarget(node: AccessibilityNodeInfo, allowSelected: Boolean): AccessibilityNodeInfo? {
@@ -31,8 +32,7 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         while (target != null && !target.isClickable && !(allowSelected && (target.isSelected || target.isChecked))) target = target.parent
         return target
     }
-    private fun node(text: String, forClick: Boolean = false,
-        root: AccessibilityNodeInfo? = automation.rootInActiveWindow) = find(root) {
+    private fun node(text: String, forClick: Boolean = false, root: AccessibilityNodeInfo? = automation.rootInActiveWindow) = find(root) {
         it.text?.toString() == text && (!forClick || actionTarget(it, text in homeTabs || text in skillSegments) != null)
     }
     private fun awaitState(label: String, condition: () -> Boolean) {
@@ -56,10 +56,12 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         check(output.isBlank()) { "Scroll input failed: $output" }
         automation.waitForIdle(200, 2000)
     }
-    private fun top() { repeat(12) {
-        if (node("阅读练习") != null) return
-        scroll(false)
-    } }
+    private fun top() {
+        repeat(12) {
+            if (node("阅读练习") != null) return
+            scroll(false)
+        }
+    }
     private fun seek(text: String, forClick: Boolean = false): AccessibilityNodeInfo {
         repeat(24) {
             // Keep lookup and scrolling on one tree; a tab change can replace the viewport between reads.
@@ -76,9 +78,14 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
                 val bounds = Rect().also { target.getBoundsInScreen(it) }
                 val clip = Rect().also { viewport?.getBoundsInScreen(it) }
                 if (text in homeTabs || text in skillSegments || clip.isEmpty ||
-                    (bounds.top >= clip.top + 6 && bounds.bottom <= clip.bottom - 6)) return target
+                    (bounds.top >= clip.top + 6 && bounds.bottom <= clip.bottom - 6)
+                ) {
+                    return target
+                }
                 scroll(bounds.top >= clip.top, viewport)
-            } else scroll(true, viewport)
+            } else {
+                scroll(true, viewport)
+            }
         }
         error("UI element not found: $text")
     }
@@ -135,9 +142,11 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         enter("粘贴英文阅读文章", sentence)
         enter("新题目（含选项；可附参考答案）", "1. What do libraries need?\nA. Quiet rooms.\nB. Noise.")
         click("添加题目")
-        awaitState("saved question") { runBlocking {
-            StudyDatabase.get(runner.targetContext).dao().allCoach().any { it.title == title && it.questions.isNotBlank() }
-        } }
+        awaitState("saved question") {
+            runBlocking {
+                StudyDatabase.get(runner.targetContext).dao().allCoach().any { it.title == title && it.questions.isNotBlank() }
+            }
+        }
         val added = runBlocking { StudyDatabase.get(runner.targetContext).dao().allCoach().single { it.title == title } }
         check(com.example.cet6.data.ReadingQuestions.parse(added.questions).isNotEmpty()) { "Question not added or not selectable: ${added.questions}" }
         click("A. Quiet rooms.")
@@ -157,11 +166,13 @@ class CoachUiInstrumentationChecks(private val runner: Instrumentation) {
         // Keep the immediate-background regression without assuming a particular write delay.
         click("逻辑推断")
         runner.targetContext.startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        awaitState("background evidence and reason persisted") { runBlocking {
-            StudyDatabase.get(runner.targetContext).dao().coachById(added.id)?.let {
-                it.savedSentences == sentence && it.errorReason.contains("逻辑推断")
-            } == true
-        } }
+        awaitState("background evidence and reason persisted") {
+            runBlocking {
+                StudyDatabase.get(runner.targetContext).dao().coachById(added.id)?.let {
+                    it.savedSentences == sentence && it.errorReason.contains("逻辑推断")
+                } == true
+            }
+        }
         val saved = runBlocking { StudyDatabase.get(runner.targetContext).dao().allCoach().single { it.title == title } }
         check(saved.answer == "1. A" && saved.submittedAt > 0 && saved.feedback.isBlank())
         check(saved.savedSentences == sentence && saved.errorReason.contains("逻辑推断"))

@@ -18,8 +18,10 @@ object CoachFailures {
                 message in setOf("请先登录 ChatGPT", "请重新登录 ChatGPT", "授权已过期，请重新登录") ->
                 "登录授权或 API Key 需要检查，请到「连接」页重新连接所选 AI 服务后重试。"
             http == 402 -> "API 余额不足，请到服务商平台检查余额；反复重试通常无法解决。"
-            code in setOf("insufficient_quota", "credit_balance_exhausted", "usage_limit_exceeded",
-                "organization_usage_limit_exceeded", "organization_spend_limit_exceeded", "project_spend_limit_exceeded") ->
+            code in setOf(
+                "insufficient_quota", "credit_balance_exhausted", "usage_limit_exceeded",
+                "organization_usage_limit_exceeded", "organization_spend_limit_exceeded", "project_spend_limit_exceeded",
+            ) ->
                 "服务返回用量或额度限制，请查看账号用量及具体限制；反复重试通常无法解决。"
             http == 429 || code in setOf("rate_limit_exceeded", "slow_down") ->
                 "服务限制了本次请求，请稍后手动重试；若持续出现，请检查账号用量。"

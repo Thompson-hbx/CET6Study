@@ -9,26 +9,43 @@ class ReadingLocationTest {
     private val source = "Intro.\n\nLibraries offer quiet rooms."
     private val question = ExamQuestion(46, "What is offered?", emptyList())
     private val passage = ExamPassage("1", "Original test", source, listOf(question))
-    private val entry = CoachPractice(id = "reading", kind = CoachKind.READING.name, material = source,
-        questions = JSONObject().put("format", "CET6ExamAttempt").put("passage", ExamCodec.passageJson(passage)).toString(), updatedAt = 1000)
-    private fun turn(quote: String = "Libraries offer quiet rooms.") = CoachTurn(id = "explain", practiceId = entry.id,
-        anchor = Anchor.question(46), kind = TurnKind.READING_EXPLAIN, role = CoachTurn.ASSISTANT,
+    private val entry = CoachPractice(
+        id = "reading",
+        kind = CoachKind.READING.name,
+        material = source,
+        questions = JSONObject().put("format", "CET6ExamAttempt").put("passage", ExamCodec.passageJson(passage)).toString(),
+        updatedAt = 1000,
+    )
+    private fun turn(quote: String = "Libraries offer quiet rooms.") = CoachTurn(
+        id = "explain",
+        practiceId = entry.id,
+        anchor = Anchor.question(46),
+        kind = TurnKind.READING_EXPLAIN,
+        role = CoachTurn.ASSISTANT,
         content = JSONObject().put("type", "locate").put("paragraph", 999).put("quote", quote).put("note", "test").toString(),
-        createdAt = 1000)
+        createdAt = 1000,
+    )
 
     @Test fun extractsExactQuoteWithoutTrustingTheAiParagraph() {
         val quote = ReadingLocation.extract(entry, turn())
         assertEquals("Libraries offer quiet rooms.", quote)
         assertEquals(2, PassageLayout.paragraphOf(source, quote))
     }
+
     @Test fun rejectsFuzzyInventedWrongQuestionAndIncompleteReplies() {
-        listOf(turn("Libraries offer more quiet rooms."), turn("Libraries offer  quiet rooms."),
-            turn().copy(anchor = "q:47"), turn().copy(practiceId = "other"),
-            turn().copy(role = CoachTurn.USER), turn().copy(kind = TurnKind.CHAT),
-            turn().copy(content = turn().content + "\n{bad json")).forEach {
+        listOf(
+            turn("Libraries offer more quiet rooms."),
+            turn("Libraries offer  quiet rooms."),
+            turn().copy(anchor = "q:47"),
+            turn().copy(practiceId = "other"),
+            turn().copy(role = CoachTurn.USER),
+            turn().copy(kind = TurnKind.CHAT),
+            turn().copy(content = turn().content + "\n{bad json"),
+        ).forEach {
             assertEquals("", ReadingLocation.extract(entry, it))
         }
     }
+
     @Test fun exactMatchingWithoutEvidenceSourceDoesNotImplyReview() {
         val q = question.copy(evidence = "Libraries offer quiet rooms.")
         assertNull(q.verifiedEvidence(passage))

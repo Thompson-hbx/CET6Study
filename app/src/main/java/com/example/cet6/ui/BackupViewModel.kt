@@ -24,11 +24,16 @@ data class BackupUiState(
     val canExport: Boolean,
     val canPreview: Boolean,
     /** Resuming or confirming a restore writes learning data, so nothing else may be saving or requesting. */
-    val canMerge: Boolean
+    val canMerge: Boolean,
 ) {
     companion object {
-        fun from(backup: BackupState, study: StudyPlanState, practice: PracticeState,
-            conversation: ConversationService.State, exams: ExamLibraryState): BackupUiState {
+        fun from(
+            backup: BackupState,
+            study: StudyPlanState,
+            practice: PracticeState,
+            conversation: ConversationService.State,
+            exams: ExamLibraryState,
+        ): BackupUiState {
             val coachIdle = !practice.working && conversation.pending == null
             return BackupUiState(
                 backup = backup,
@@ -38,7 +43,7 @@ data class BackupUiState(
                 paperCount = exams.papers.size,
                 canExport = !backup.busy && !exams.busy && coachIdle,
                 canPreview = !backup.busy && !backup.restorePending,
-                canMerge = !backup.busy && !study.saving && !exams.busy && coachIdle
+                canMerge = !backup.busy && !study.saving && !exams.busy && coachIdle,
             )
         }
     }
@@ -54,11 +59,22 @@ sealed interface BackupIntent {
 
 /** Backup export and restore. [services] belong to the activity's [StudyViewModel] in the same ViewModelStore. */
 class BackupViewModel(private val services: StudyServices) : ViewModel() {
-    private fun current() = BackupUiState.from(services.backup.state.value, services.study.state.value,
-        services.practice.state.value, services.conversation.state.value, services.exams.state.value)
+    private fun current() = BackupUiState.from(
+        services.backup.state.value,
+        services.study.state.value,
+        services.practice.state.value,
+        services.conversation.state.value,
+        services.exams.state.value,
+    )
 
-    val state: StateFlow<BackupUiState> = combine(services.backup.state.flow, services.study.state.flow,
-        services.practice.state.flow, services.conversation.state.flow, services.exams.state.flow, BackupUiState::from)
+    val state: StateFlow<BackupUiState> = combine(
+        services.backup.state.flow,
+        services.study.state.flow,
+        services.practice.state.flow,
+        services.conversation.state.flow,
+        services.exams.state.flow,
+        BackupUiState::from,
+    )
         .stateIn(viewModelScope, SharingStarted.Eagerly, current())
 
     fun onIntent(intent: BackupIntent) {

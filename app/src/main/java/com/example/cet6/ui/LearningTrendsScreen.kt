@@ -6,7 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.cet6.data.LearningTrends
 import com.example.cet6.ui.components.*
 import java.time.LocalDate
@@ -27,7 +26,7 @@ fun LearningTrendsScreen(vm: StudyViewModel) {
         Text(
             "累计提交 $totalSubmissions 次（写译修改稿 $totalRevisions 次） · 阅读核对 $totalReadingCorrect / $totalReadingKnown 题 · 单词记住 $totalRemembered / $totalWordRatings 次",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
         )
         Note("最近 8 周，按本机日期统计。阅读只计有来源参考键的题目，包含重练，未答计入分母；不同周的题目难度可能不同。")
     }
@@ -35,13 +34,17 @@ fun LearningTrendsScreen(vm: StudyViewModel) {
     reversed.forEachIndexed { index, week ->
         val active = week.submissions > 0 || week.readingKnown > 0 || week.wordRatings > 0
         SectionCard(
-            containerColor = if (active) MaterialTheme.colorScheme.surfaceContainerLowest else MaterialTheme.colorScheme.surface.copy(alpha = 0.65f)
+            containerColor = if (active) MaterialTheme.colorScheme.surfaceContainerLowest else MaterialTheme.colorScheme.surface.copy(alpha = 0.65f),
         ) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text("${week.start} 起", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-                if (index == 0) Tag("本周", Tone.Ink)
-                else if (active) Tag("有记录", Tone.Good)
-                else Note("无记录")
+                if (index == 0) {
+                    Tag("本周", Tone.Ink)
+                } else if (active) {
+                    Tag("有记录", Tone.Good)
+                } else {
+                    Note("无记录")
+                }
             }
             Text("提交 ${week.submissions} 次 · 其中写译修改稿 ${week.revisions} 次")
             Text("阅读与参考一致：${week.readingCorrect} / ${week.readingKnown} 题")

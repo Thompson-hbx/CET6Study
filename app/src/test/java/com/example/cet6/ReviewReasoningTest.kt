@@ -63,8 +63,10 @@ class ReviewReasoningTest {
     }
 
     @Test fun onlyFullReviewsAndReadingEvidenceAnalysisUseDeepReview() {
-        assertEquals(setOf(TurnKind.WRITING_REVIEW, TurnKind.TRANSLATION_REVIEW, TurnKind.READING_EXPLAIN),
-            TurnKind.all.filter(::isDeepReviewKind).toSet())
+        assertEquals(
+            setOf(TurnKind.WRITING_REVIEW, TurnKind.TRANSLATION_REVIEW, TurnKind.READING_EXPLAIN),
+            TurnKind.all.filter(::isDeepReviewKind).toSet(),
+        )
         assertFalse(isDeepReviewKind("unknown"))
     }
 
@@ -77,14 +79,21 @@ class ReviewReasoningTest {
             val payload = JSONObject(buffer.readUtf8())
             assertEquals("max", payload.getString("reasoning_effort"))
             assertEquals("enabled", payload.getJSONObject("thinking").getString("type"))
-            response(chain.request(), 200, "text/event-stream",
+            response(
+                chain.request(),
+                200,
+                "text/event-stream",
                 "data: {\"choices\":[{\"index\":0,\"delta\":{\"reasoning_content\":\"private-reasoning\"}}]}\n\n" +
-                "data: {\"choices\":[{\"index\":0,\"delta\":{\"content\":\"review\"},\"finish_reason\":\"stop\"}]}\n\ndata: [DONE]\n\n")
+                    "data: {\"choices\":[{\"index\":0,\"delta\":{\"content\":\"review\"},\"finish_reason\":\"stop\"}]}\n\ndata: [DONE]\n\n",
+            )
         }.build()
         val chunks = StringBuilder()
         val result = ChatCompletionsClient(http).stream(
-            ApiConnection.create("https://fixture.invalid/v1", "fixture-placeholder"), "fixture", "draft",
-            ReviewReasoning(ReasoningEffort.MAX, ReasoningFormat.DEEPSEEK)) { chunks.append(it) }
+            ApiConnection.create("https://fixture.invalid/v1", "fixture-placeholder"),
+            "fixture",
+            "draft",
+            ReviewReasoning(ReasoningEffort.MAX, ReasoningFormat.DEEPSEEK),
+        ) { chunks.append(it) }
         assertEquals("review", result)
         assertEquals("review", chunks.toString())
         assertEquals(1, calls)
@@ -99,8 +108,11 @@ class ReviewReasoningTest {
             }.build()
             val failure = runCatching {
                 ChatCompletionsClient(http).stream(
-                    ApiConnection.create("https://fixture.invalid/v1", "fixture-placeholder"), "fixture", "draft",
-                    ReviewReasoning(ReasoningEffort.MAX)) { fail("Rejected request emitted text") }
+                    ApiConnection.create("https://fixture.invalid/v1", "fixture-placeholder"),
+                    "fixture",
+                    "draft",
+                    ReviewReasoning(ReasoningEffort.MAX),
+                ) { fail("Rejected request emitted text") }
             }.exceptionOrNull()
             assertTrue(failure is DeepReviewRejectedException)
             val message = CoachFailures.describe(failure as Exception)
@@ -113,8 +125,15 @@ class ReviewReasoningTest {
 
     @Test fun rejectedResponsesDepthIsNotAcceptedAsAnAnswer() = runBlocking {
         val failure = runCatching {
-            readResponsesStream(response(Request.Builder().url("https://fixture.invalid").build(), 400,
-                "application/json", "private-marker"), deepReview = true) { fail("No answer expected") }
+            readResponsesStream(
+                response(
+                    Request.Builder().url("https://fixture.invalid").build(),
+                    400,
+                    "application/json",
+                    "private-marker",
+                ),
+                deepReview = true,
+            ) { fail("No answer expected") }
         }.exceptionOrNull()
         assertTrue(failure is DeepReviewRejectedException)
         assertFalse(failure!!.message.orEmpty().contains("private-marker"))

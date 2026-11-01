@@ -9,8 +9,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -38,96 +38,111 @@ class ResponsesClient(private val http: OkHttpClient, private val auth: ChatGptA
         }
     }
 
-    suspend fun stream(model: String, prompt: String, onDelta: suspend (String) -> Unit): String =
-        stream(model, prompt, null, onDelta)
+    suspend fun stream(model: String, prompt: String, onDelta: suspend (String) -> Unit): String = stream(model, prompt, null, onDelta)
 
     /** Streams text chunks, and only accepts success after response.completed. */
-    suspend fun stream(model: String, prompt: String, reasoning: ReviewReasoning?, onDelta: suspend (String) -> Unit): String =
-        withContext(Dispatchers.IO) {
-            val session = auth.validSession()
-            check(session.canUsePlan) { "账号没有授权 chatgpt.tokens.use.direct" }
-            val payload = responsesPayload(model, prompt, reasoning)
-            val request = Request.Builder().url("https://api.openai.com/v1/responses")
-                .header("Authorization", "Bearer ${session.accessToken}")
-                .header("Accept", "text/event-stream")
-                .post(payload.toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
-                .build()
-            val call = http.newCall(request)
-            // A blocking read cannot observe coroutine cancellation, so cancelling the caller closes the socket.
-            coroutineScope {
-                val watcher = launch { try { awaitCancellation() } finally { call.cancel() } }
-                try { readResponsesStream(call.execute(), deepReview = reasoning != null, onDelta = onDelta) } finally { watcher.cancel() }
+    suspend fun stream(model: String, prompt: String, reasoning: ReviewReasoning?, onDelta: suspend (String) -> Unit): String = withContext(Dispatchers.IO) {
+        val session = auth.validSession()
+        check(session.canUsePlan) { "账号没有授权 chatgpt.tokens.use.direct" }
+        val payload = responsesPayload(model, prompt, reasoning)
+        val request = Request.Builder().url("https://api.openai.com/v1/responses")
+            .header("Authorization", "Bearer ${session.accessToken}")
+            .header("Accept", "text/event-stream")
+            .post(payload.toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .build()
+        val call = http.newCall(request)
+        // A blocking read cannot observe coroutine cancellation, so cancelling the caller closes the socket.
+        coroutineScope {
+            val watcher = launch {
+                try {
+                    awaitCancellation()
+                } finally {
+                    call.cancel()
+                }
+            }
+            try {
+                readResponsesStream(call.execute(), deepReview = reasoning != null, onDelta = onDelta)
+            } finally {
+                watcher.cancel()
             }
         }
-
+    }
 }
 
-internal fun responsesPayload(model: String, prompt: String, reasoning: ReviewReasoning? = null): JSONObject =
-    JSONObject().apply {
-        require(model.isNotBlank()) { "请先选择模型" }
-        require(reasoning == null || reasoning.format == ReasoningFormat.OPENAI) { "Responses 需要 OpenAI 请求格式" }
-        put("model", model)
-        put("instructions", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。")
-        put("input", JSONArray().put(JSONObject().put("role", "user").put("content", prompt)))
-        put("store", false)
-        put("stream", true)
-        reasoning?.let { put("reasoning", JSONObject().put("effort", it.effort.wire)) }
-    }
+internal fun responsesPayload(model: String, prompt: String, reasoning: ReviewReasoning? = null): JSONObject = JSONObject().apply {
+    require(model.isNotBlank()) { "请先选择模型" }
+    require(reasoning == null || reasoning.format == ReasoningFormat.OPENAI) { "Responses 需要 OpenAI 请求格式" }
+    put("model", model)
+    put("instructions", "你是严谨的大学英语六级备考教练。解释必须准确，区分原文证据与推测；不伪造评分标准。输出中文解释并保留必要英文术语。")
+    put("input", JSONArray().put(JSONObject().put("role", "user").put("content", prompt)))
+    put("store", false)
+    put("stream", true)
+    reasoning?.let { put("reasoning", JSONObject().put("effort", it.effort.wire)) }
+}
 
 /** Pure response parsing can be checked offline without opening an OAuth session. */
-internal suspend fun readResponsesStream(started: Response, deepReview: Boolean = false, onDelta: suspend (String) -> Unit): String =
-    started.use { response ->
-        if (deepReview && response.code in setOf(400, 422)) throw DeepReviewRejectedException()
-        check(response.isSuccessful) { failureMessage("AI", response) }
-        val contentType = response.body?.contentType()
-        val headerMissing = response.header("Content-Type") == null
-        check(headerMissing || contentType?.let { it.type == "text" && it.subtype == "event-stream" } == true) {
-            unexpectedStreamMessage(response)
-        }
-        val startGuard = ResponsesStreamStart(headerMissing)
-        var complete = false
-        var errorEvent: String? = null
-        val out = StringBuilder()
-        val reader = response.body?.charStream()?.buffered() ?: error("响应流为空")
-        val records = SseReader(reader)
-        while (!complete && errorEvent == null) {
-            val record = records.next() ?: break
-            if (record.data == "[DONE]") break
-            val json = try { JSONObject(record.data) } catch (_: Exception) {
-                error("响应包含无效 SSE JSON")
-            }
-            check(!json.has("type") || json.opt("type") is String) { "AI 事件类型格式无效" }
-            val type = if (json.has("type")) json.opt("type") as String else record.event
-            startGuard.accept(type, json.optJSONObject("response")?.optString("object"))
-            when (type) {
-                "response.output_text.delta", "response.refusal.delta" -> {
-                    val delta = json.opt("delta") as? String ?: error("AI 文本增量格式无效")
-                    out.append(delta)
-                    onDelta(delta)
-                }
-                "response.completed" -> complete = true
-                "response.failed", "response.incomplete", "error" -> {
-                    val terminal = json.optJSONObject("response")
-                    val detail = terminal?.optJSONObject("error")?.optString("code")
-                        ?: terminal?.optJSONObject("incomplete_details")?.optString("reason")
-                        ?: json.optJSONObject("error")?.optString("code")
-                        ?: json.optString("code", "stream_error")
-                    errorEvent = "AI 响应未完成：$detail"
-                }
-            }
-        }
-        check(errorEvent == null) { errorEvent ?: "AI 请求失败" }
-        check(complete) { "网络流提前中断，没有收到 response.completed" }
-        out.toString()
+internal suspend fun readResponsesStream(started: Response, deepReview: Boolean = false, onDelta: suspend (String) -> Unit): String = started.use { response ->
+    if (deepReview && response.code in setOf(400, 422)) throw DeepReviewRejectedException()
+    check(response.isSuccessful) { failureMessage("AI", response) }
+    val contentType = response.body?.contentType()
+    val headerMissing = response.header("Content-Type") == null
+    check(headerMissing || contentType?.let { it.type == "text" && it.subtype == "event-stream" } == true) {
+        unexpectedStreamMessage(response)
     }
+    val startGuard = ResponsesStreamStart(headerMissing)
+    var complete = false
+    var errorEvent: String? = null
+    val out = StringBuilder()
+    val reader = response.body?.charStream()?.buffered() ?: error("响应流为空")
+    val records = SseReader(reader)
+    while (!complete && errorEvent == null) {
+        val record = records.next() ?: break
+        if (record.data == "[DONE]") break
+        val json = try {
+            JSONObject(record.data)
+        } catch (_: Exception) {
+            error("响应包含无效 SSE JSON")
+        }
+        check(!json.has("type") || json.opt("type") is String) { "AI 事件类型格式无效" }
+        val type = if (json.has("type")) json.opt("type") as String else record.event
+        startGuard.accept(type, json.optJSONObject("response")?.optString("object"))
+        when (type) {
+            "response.output_text.delta", "response.refusal.delta" -> {
+                val delta = json.opt("delta") as? String ?: error("AI 文本增量格式无效")
+                out.append(delta)
+                onDelta(delta)
+            }
+            "response.completed" -> complete = true
+            "response.failed", "response.incomplete", "error" -> {
+                val terminal = json.optJSONObject("response")
+                val detail = terminal?.optJSONObject("error")?.optString("code")
+                    ?: terminal?.optJSONObject("incomplete_details")?.optString("reason")
+                    ?: json.optJSONObject("error")?.optString("code")
+                    ?: json.optString("code", "stream_error")
+                errorEvent = "AI 响应未完成：$detail"
+            }
+        }
+    }
+    check(errorEvent == null) { errorEvent ?: "AI 请求失败" }
+    check(complete) { "网络流提前中断，没有收到 response.completed" }
+    out.toString()
+}
 
 /** Inspect only protocol metadata; never display arbitrary response text or credentials. */
 private fun unexpectedStreamMessage(response: Response): String {
     val preview = response.peekBody(4096).string()
-    val json = try { JSONObject(preview) } catch (_: Exception) { null }
+    val json = try {
+        JSONObject(preview)
+    } catch (_: Exception) {
+        null
+    }
     val firstData = preview.lineSequence().firstOrNull { it.startsWith("data:") }
         ?.removePrefix("data:")?.trimStart()
-    val event = try { firstData?.let { JSONObject(it) } } catch (_: Exception) { null }
+    val event = try {
+        firstData?.let { JSONObject(it) }
+    } catch (_: Exception) {
+        null
+    }
     fun safe(value: String?): String = value?.takeIf {
         it.matches(Regex("[a-zA-Z0-9_.:/-]{1,160}"))
     }.orEmpty()
@@ -148,7 +163,11 @@ private fun unexpectedStreamMessage(response: Response): String {
 
 /** Preserve useful diagnostics without echoing arbitrary server text or credentials. */
 private fun failureMessage(operation: String, response: Response): String {
-    val json = try { JSONObject(response.peekBody(32_768).string()) } catch (_: Exception) { null }
+    val json = try {
+        JSONObject(response.peekBody(32_768).string())
+    } catch (_: Exception) {
+        null
+    }
     val error = json?.optJSONObject("error")
     fun safe(value: String?): String = value?.takeIf { it.matches(Regex("[a-zA-Z0-9_.:/-]{1,160}")) }.orEmpty()
     val code = safe(error?.optString("code"))

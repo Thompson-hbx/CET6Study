@@ -1,7 +1,7 @@
 package com.example.cet6.data
 
-import androidx.room.Entity
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.UUID
 
@@ -22,20 +22,28 @@ data class CoachPractice(
     val updatedAt: Long = System.currentTimeMillis(),
     @ColumnInfo(defaultValue = "''") val savedSentences: String = "",
     @ColumnInfo(defaultValue = "''") val sourcePracticeId: String = "",
-    @ColumnInfo(defaultValue = "''") val practiceGoal: String = ""
+    @ColumnInfo(defaultValue = "''") val practiceGoal: String = "",
 ) {
-    fun retryCopy() = CoachPractice(kind = kind, title = title, material = material, questions = questions,
+    fun retryCopy() = CoachPractice(
+        kind = kind,
+        title = title,
+        material = material,
+        questions = questions,
         answer = if (kind == CoachKind.READING.name) "" else answer,
-        sourcePracticeId = id, practiceGoal = practiceGoal)
+        sourcePracticeId = id,
+        practiceGoal = practiceGoal,
+    )
 }
 
 object CoachPrompts {
     fun validate(entry: CoachPractice) {
         require(entry.kind in CoachKind.entries.map { it.name }) { "训练类型无效" }
-        require(entry.title.length <= 1000 && entry.material.length <= 60_000 &&
-            entry.questions.length <= 20_000 && entry.answer.length <= 30_000 &&
-            entry.errorReason.length <= 4000 && entry.feedback.length <= 200_000 && entry.savedSentences.length <= 20_000 &&
-            entry.sourcePracticeId.length <= 100 && entry.practiceGoal.length <= 4000) { "内容过长，请拆成较短练习" }
+        require(
+            entry.title.length <= 1000 && entry.material.length <= 60_000 &&
+                entry.questions.length <= 20_000 && entry.answer.length <= 30_000 &&
+                entry.errorReason.length <= 4000 && entry.feedback.length <= 200_000 && entry.savedSentences.length <= 20_000 &&
+                entry.sourcePracticeId.length <= 100 && entry.practiceGoal.length <= 4000,
+        ) { "内容过长，请拆成较短练习" }
         require(entry.sourcePracticeId != entry.id) { "练习不能引用自身作为来源" }
     }
 

@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -53,7 +52,10 @@ private data class NotedPractice(val key: String, val row: JSONObject, val notes
 private fun noted(document: SyncDocument) = practices(document).filter { it.second.getLong("submittedAt") > 0 }
     .map { (key, row) -> NotedPractice(key, row, reviewNotes(document, row)) }.filter { it.notes.isNotEmpty() }
 
-private fun open(model: DesktopModel, key: String, row: JSONObject) { model.section = row.getString("kind"); model.selected = key }
+private fun open(model: DesktopModel, key: String, row: JSONObject) {
+    model.section = row.getString("kind")
+    model.selected = key
+}
 
 /** 今日: the week's submissions on an ink sheet, the latest correction, drafts to continue and recurring problems. */
 @Composable
@@ -63,8 +65,10 @@ internal fun ColumnScope.TodayPage(model: DesktopModel) {
     val since = System.currentTimeMillis() - WEEK_MILLIS
     val week = all.filter { it.second.getLong("submittedAt") >= since }.map { it.second.getString("kind") }
     val drafts = all.filter { it.second.getLong("submittedAt") == 0L }.take(4)
-    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 44.dp, vertical = 36.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)) {
+    Column(
+        Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 44.dp, vertical = 36.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp),
+    ) {
         PageTitle("今日", LocalDate.now().format(DateTimeFormatter.ofPattern("M月d日 · EEEE", Locale.CHINA)))
         Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             Surface(Modifier.weight(2f).fillMaxHeight(), color = DeskColors.ink, shape = RoundedCornerShape(24.dp)) {
@@ -74,12 +78,20 @@ internal fun ColumnScope.TodayPage(model: DesktopModel) {
                         Row(verticalAlignment = Alignment.Bottom) {
                             // The ring stretches with the number, so two or three digits stay circled.
                             Box(contentAlignment = Alignment.Center) {
-                                Image(painterResource("brand/ring.svg"), null, Modifier.matchParentSize(), contentScale = ContentScale.FillBounds)
-                                Text("${week.size}", style = Numerals.copy(fontSize = 72.sp, lineHeight = 80.sp), color = Color(0xFFF5F1E8),
-                                    modifier = Modifier.padding(horizontal = 34.dp, vertical = 16.dp))
+                                Image(DeskIcons.ring(DeskColors.brand), null, Modifier.matchParentSize(), contentScale = ContentScale.FillBounds)
+                                Text(
+                                    "${week.size}",
+                                    style = Numerals.copy(fontSize = 72.sp, lineHeight = 80.sp),
+                                    color = Color(0xFFF5F1E8),
+                                    modifier = Modifier.padding(horizontal = 34.dp, vertical = 16.dp),
+                                )
                             }
-                            Text("次", color = Color(0xFFF5F1E8), style = MaterialTheme.typography.titleSmall,
-                                modifier = Modifier.padding(start = 4.dp, bottom = 22.dp))
+                            Text(
+                                "次",
+                                color = Color(0xFFF5F1E8),
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier.padding(start = 4.dp, bottom = 22.dp),
+                            )
                         }
                     }
                     listOf("篇作文" to "WRITING", "篇翻译" to "TRANSLATION", "次阅读核对" to "READING").forEach { (label, kind) ->
@@ -93,15 +105,25 @@ internal fun ColumnScope.TodayPage(model: DesktopModel) {
             Sheet(Modifier.weight(1f).fillMaxHeight()) {
                 Text("最近一条朱批", style = MaterialTheme.typography.titleSmall)
                 val latest = reviewed.firstOrNull()
-                if (latest == null) Text("提交后在手机完成批改，朱批会出现在这里。", color = DeskColors.secondary)
-                else {
+                if (latest == null) {
+                    Text("提交后在手机完成批改，朱批会出现在这里。", color = DeskColors.secondary)
+                } else {
                     NoteLine(latest.notes.first(), MaterialTheme.typography.bodyLarge.copy(fontFamily = SerifFamily, fontSize = 18.sp))
-                    Text("${latest.notes.first().category} · ${latest.row.getString("title").ifBlank { "未命名练习" }}",
-                        color = DeskColors.secondary, style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(
+                        "${latest.notes.first().category} · ${latest.row.getString("title").ifBlank { "未命名练习" }}",
+                        color = DeskColors.secondary,
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     Spacer(Modifier.weight(1f))
-                    Text("去订正 →", color = DeskColors.good, style = MaterialTheme.typography.labelLarge,
+                    Text(
+                        "去订正 →",
+                        color = DeskColors.good,
+                        style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable(role = Role.Button) { open(model, latest.key, latest.row) }
-                            .padding(vertical = 4.dp))
+                            .padding(vertical = 4.dp),
+                    )
                 }
             }
         }
@@ -112,14 +134,24 @@ internal fun ColumnScope.TodayPage(model: DesktopModel) {
                     if (drafts.isEmpty()) Text("没有未完成的草稿。从左侧选一项开始。", color = DeskColors.secondary, modifier = Modifier.padding(20.dp))
                     drafts.forEachIndexed { index, (key, row) ->
                         if (index > 0) HorizontalDivider(Modifier.padding(start = 78.dp), color = DeskColors.line)
-                        Row(Modifier.fillMaxWidth().clickable(role = Role.Button) { open(model, key, row) }.padding(horizontal = 20.dp, vertical = 14.dp),
-                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Row(
+                            Modifier.fillMaxWidth().clickable(role = Role.Button) { open(model, key, row) }.padding(horizontal = 20.dp, vertical = 14.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
                             KindGlyph(row.getString("kind"))
                             Column(Modifier.weight(1f)) {
-                                Text(row.getString("title").ifBlank { "未命名练习" }, style = MaterialTheme.typography.bodyLarge, maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis)
-                                Text("${sectionName(row.getString("kind"))}草稿 · ${words(row.getString("answer"))} 词",
-                                    color = DeskColors.secondary, style = MaterialTheme.typography.bodySmall)
+                                Text(
+                                    row.getString("title").ifBlank { "未命名练习" },
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                                Text(
+                                    "${sectionName(row.getString("kind"))}草稿 · ${words(row.getString("answer"))} 词",
+                                    color = DeskColors.secondary,
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
                             }
                             Text("继续", color = DeskColors.ink, style = MaterialTheme.typography.labelLarge)
                         }
@@ -140,8 +172,10 @@ internal fun ColumnScope.ReviewPage(model: DesktopModel) {
     val all = remember(model.document) { practices(model.document) }
     val reviewed = remember(model.document) { noted(model.document) }
     val notes = reviewed.flatMap { it.notes }
-    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 44.dp, vertical = 36.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)) {
+    Column(
+        Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 44.dp, vertical = 36.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp),
+    ) {
         PageTitle("复盘", "批改后的朱批汇总在这里，点开回到原稿对照修改。")
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             Count("必改", notes.count { it.must }, DeskColors.must, Modifier.weight(1f))
@@ -150,14 +184,20 @@ internal fun ColumnScope.ReviewPage(model: DesktopModel) {
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             Column(Modifier.weight(2f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                if (reviewed.isEmpty()) Sheet(Modifier.fillMaxWidth()) {
-                    Text("还没有朱批", style = MaterialTheme.typography.titleSmall)
-                    Text("提交作答并在手机完成批改后，内容会同步到这里。", color = DeskColors.secondary)
+                if (reviewed.isEmpty()) {
+                    Sheet(Modifier.fillMaxWidth()) {
+                        Text("还没有朱批", style = MaterialTheme.typography.titleSmall)
+                        Text("提交作答并在手机完成批改后，内容会同步到这里。", color = DeskColors.secondary)
+                    }
                 }
                 reviewed.forEach { practice ->
                     Sheet(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).clickable(role = Role.Button) { open(model, practice.key, practice.row) }) {
-                        Text("${sectionName(practice.row.getString("kind"))} · ${practice.row.getString("title").ifBlank { "未命名练习" }}",
-                            style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(
+                            "${sectionName(practice.row.getString("kind"))} · ${practice.row.getString("title").ifBlank { "未命名练习" }}",
+                            style = MaterialTheme.typography.titleSmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                         practice.notes.forEachIndexed { index, note ->
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                 NoteBadge(index + 1, note.must)
@@ -205,14 +245,19 @@ private fun Count(label: String, value: Int, color: Color, modifier: Modifier) {
 @Composable
 private fun CategoryBars(notes: List<MarginNote>) {
     val counts = notes.groupingBy { it.category }.eachCount().entries.sortedByDescending { it.value }.take(5)
-    if (counts.isEmpty()) { Text("批改记录多起来后，这里会显示反复出现的问题。", color = DeskColors.secondary); return }
+    if (counts.isEmpty()) {
+        Text("批改记录多起来后，这里会显示反复出现的问题。", color = DeskColors.secondary)
+        return
+    }
     val top = counts.first().value.toFloat()
     counts.forEachIndexed { index, (category, count) ->
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(category, style = MaterialTheme.typography.bodySmall, modifier = Modifier.width(72.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
             Box(Modifier.weight(1f).height(8.dp).background(DeskColors.chip, RoundedCornerShape(4.dp))) {
-                Box(Modifier.fillMaxWidth(count / top).fillMaxHeight()
-                    .background(if (index == 0) DeskColors.brand else DeskColors.ink, RoundedCornerShape(4.dp)))
+                Box(
+                    Modifier.fillMaxWidth(count / top).fillMaxHeight()
+                        .background(if (index == 0) DeskColors.brand else DeskColors.ink, RoundedCornerShape(4.dp)),
+                )
             }
             Text("$count", style = Numerals.copy(fontSize = 16.sp, lineHeight = 20.sp), modifier = Modifier.widthIn(min = 20.dp))
         }
@@ -223,36 +268,62 @@ private fun CategoryBars(notes: List<MarginNote>) {
 @Composable
 internal fun NoteLine(note: MarginNote, style: TextStyle) {
     val tone = if (note.must) DeskColors.must else DeskColors.better
-    Text(buildAnnotatedString {
-        if (note.quote.isNotBlank()) {
-            withStyle(SpanStyle(color = DeskColors.secondary, textDecoration = TextDecoration.LineThrough)) { append(note.quote) }
-            append("  ")
-        }
-        withStyle(SpanStyle(color = tone, fontWeight = FontWeight.SemiBold)) { append(note.fix.ifBlank { "删去" }) }
-    }, style = style)
+    Text(
+        buildAnnotatedString {
+            if (note.quote.isNotBlank()) {
+                withStyle(SpanStyle(color = DeskColors.secondary, textDecoration = TextDecoration.LineThrough)) { append(note.quote) }
+                append("  ")
+            }
+            withStyle(SpanStyle(color = tone, fontWeight = FontWeight.SemiBold)) { append(note.fix.ifBlank { "删去" }) }
+        },
+        style = style,
+    )
 }
 
 /** Numbered marker matching the underline: solid for must-fix, outlined for polish. */
 @Composable
 internal fun NoteBadge(number: Int, must: Boolean) {
     val shape = RoundedCornerShape(50)
-    Box(Modifier.size(22.dp).then(if (must) Modifier.background(DeskColors.brand, shape)
-        else Modifier.background(DeskColors.sheet, shape).border(1.5.dp, DeskColors.better, shape)),
-        contentAlignment = Alignment.Center) {
-        Text("$number", color = if (must) Color.White else DeskColors.better, style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold)
+    Box(
+        Modifier.size(22.dp).then(
+            if (must) {
+                Modifier.background(DeskColors.brand, shape)
+            } else {
+                Modifier.background(DeskColors.sheet, shape).border(1.5.dp, DeskColors.better, shape)
+            },
+        ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            "$number",
+            color = if (must) Color.White else DeskColors.better,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+        )
     }
 }
 
 @Composable
 private fun KindGlyph(kind: String) {
     Box(Modifier.size(44.dp).background(DeskColors.canvas, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
-        Text(when (kind) { "TRANSLATION" -> "译"; "READING" -> "读"; else -> "写" },
-            style = TextStyle(fontFamily = SerifFamily, fontWeight = FontWeight.SemiBold, fontSize = 19.sp), color = DeskColors.ink)
+        Text(
+            when (kind) {
+                "TRANSLATION" -> "译"
+                "READING" -> "读"
+                else -> "写"
+            },
+            style = TextStyle(fontFamily = SerifFamily, fontWeight = FontWeight.SemiBold, fontSize = 19.sp),
+            color = DeskColors.ink,
+        )
     }
 }
 
-internal val Numerals = TextStyle(fontFamily = SerifFamily, fontWeight = FontWeight.SemiBold, fontSize = 32.sp, lineHeight = 38.sp,
-    color = DeskColors.ink)
+internal val Numerals = TextStyle(
+    fontFamily = SerifFamily,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 32.sp,
+    lineHeight = 38.sp,
+    color = DeskColors.ink,
+)
 
 private fun words(text: String) = Regex("[A-Za-z]+(?:['’-][A-Za-z]+)*").findAll(text).count()

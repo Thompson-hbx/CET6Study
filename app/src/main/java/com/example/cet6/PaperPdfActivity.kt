@@ -59,8 +59,12 @@ class PaperPdfActivity : ComponentActivity() {
                         assets.open("personal-papers/$name").use { input -> target.outputStream().use { output -> input.copyTo(output) } }
                     }
                 }
-            } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { error = true; loading = false }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                error = true
+                loading = false
+            }
         }
         LaunchedEffect(file, page) {
             val source = file ?: return@LaunchedEffect
@@ -73,8 +77,11 @@ class PaperPdfActivity : ComponentActivity() {
                         PdfRenderer(fd).use { renderer ->
                             renderer.openPage(page.coerceIn(0, renderer.pageCount - 1)).use { pdfPage ->
                                 val scale = minOf(1600f / pdfPage.width, 2400f / pdfPage.height)
-                                val result = Bitmap.createBitmap((pdfPage.width * scale).toInt().coerceAtLeast(1),
-                                    (pdfPage.height * scale).toInt().coerceAtLeast(1), Bitmap.Config.ARGB_8888)
+                                val result = Bitmap.createBitmap(
+                                    (pdfPage.width * scale).toInt().coerceAtLeast(1),
+                                    (pdfPage.height * scale).toInt().coerceAtLeast(1),
+                                    Bitmap.Config.ARGB_8888,
+                                )
                                 result.eraseColor(Color.WHITE)
                                 pdfPage.render(result, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                                 result to renderer.pageCount
@@ -84,20 +91,34 @@ class PaperPdfActivity : ComponentActivity() {
                 }
                 bitmap = rendered.first
                 pages = rendered.second
-            } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { error = true }
-            finally { loading = false }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                error = true
+            } finally {
+                loading = false
+            }
         }
         Scaffold(
-            topBar = { TopAppBar(title = { Text(if (name.endsWith("_ans.pdf")) "参考资料" else "试卷原文") },
-                navigationIcon = { TextButton(onClick = { finish() }) { Text("返回") } }) },
+            topBar = {
+                TopAppBar(
+                    title = { Text(if (name.endsWith("_ans.pdf")) "参考资料" else "试卷原文") },
+                    navigationIcon = { TextButton(onClick = { finish() }) { Text("返回") } },
+                )
+            },
             bottomBar = {
                 Surface(tonalElevation = 2.dp) {
                     Column(Modifier.navigationBarsPadding().padding(horizontal = 12.dp)) {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            TextButton(onClick = { page--; zoom = 1f }, enabled = !loading && page > 0) { Text("上一页") }
+                            TextButton(onClick = {
+                                page--
+                                zoom = 1f
+                            }, enabled = !loading && page > 0) { Text("上一页") }
                             Text("${page + 1} / ${pages.takeIf { it > 0 } ?: "—"}", Modifier.padding(16.dp))
-                            TextButton(onClick = { page++; zoom = 1f }, enabled = !loading && page + 1 < pages) { Text("下一页") }
+                            TextButton(onClick = {
+                                page++
+                                zoom = 1f
+                            }, enabled = !loading && page + 1 < pages) { Text("下一页") }
                         }
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             TextButton(onClick = { zoom = (zoom - .5f).coerceAtLeast(1f) }, enabled = zoom > 1f) { Text("缩小") }
@@ -106,7 +127,7 @@ class PaperPdfActivity : ComponentActivity() {
                         }
                     }
                 }
-            }
+            },
         ) { inset ->
             BoxWithConstraints(Modifier.fillMaxSize().padding(inset)) {
                 val width = maxWidth
@@ -115,8 +136,11 @@ class PaperPdfActivity : ComponentActivity() {
                 bitmap?.let { rendered ->
                     key(page) {
                         Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).horizontalScroll(rememberScrollState())) {
-                            Image(rendered.asImageBitmap(), contentDescription = null /* "原始资料第 ${page + 1} 页" */,
-                                modifier = Modifier.width(width * zoom).aspectRatio(rendered.width.toFloat() / rendered.height))
+                            Image(
+                                rendered.asImageBitmap(),
+                                contentDescription = null /* "原始资料第 ${page + 1} 页" */,
+                                modifier = Modifier.width(width * zoom).aspectRatio(rendered.width.toFloat() / rendered.height),
+                            )
                         }
                     }
                 }

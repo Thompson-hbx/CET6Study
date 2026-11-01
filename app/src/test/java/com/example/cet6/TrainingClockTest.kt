@@ -12,6 +12,7 @@ class TrainingClockTest {
         assertEquals(10_000L, restored.elapsedMillis(1, 10_100, 5))
         assertFalse(restored.estimated(10_100, 5))
     }
+
     @Test fun rebootUsesAnExplicitEstimateAndNeverReportsNegativeElapsedTime() {
         val clock = TrainingClock(1_000_000, 100, 5)
         assertTrue(clock.estimated(50, 6))

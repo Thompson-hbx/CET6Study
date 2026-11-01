@@ -15,7 +15,8 @@ class CoachProtocolTest {
     }
 
     @Test fun reviewParsesEveryLineTypeAndMapsRawScoresToBands() {
-        val review = CoachReview.parse("""
+        val review = CoachReview.parse(
+            """
             {"type":"score","band":10,"summary":"切题，少量错误"}
             {"type":"aspect","name":"语言","level":"一般","note":"时态不稳"}
             {"type":"issue","quote":"Libraries helps","fix":"Libraries help","reason":"主谓一致","category":"语法","level":"must"}
@@ -25,7 +26,8 @@ class CoachProtocolTest {
             {"type":"tip","text":"多用具体例子"}
             {"type":"rewrite","text":"Libraries help students."}
             {"type":"unknown","text":"ignored"}
-        """.trimIndent())
+            """.trimIndent(),
+        )
         assertTrue(review.structured)
         assertEquals(11, review.score!!.band)
         assertEquals(listOf(true, false), review.issues.map { it.must })
@@ -34,7 +36,9 @@ class CoachProtocolTest {
         assertEquals("the Silk Road", review.terms.single().en)
         assertEquals(listOf("多用具体例子"), review.tips)
         assertEquals("Libraries help students.", review.rewrite)
-        assertEquals(14, CoachReview.band(13)); assertEquals(0, CoachReview.band(0)); assertNull(CoachReview.band(99))
+        assertEquals(14, CoachReview.band(13))
+        assertEquals(0, CoachReview.band(0))
+        assertNull(CoachReview.band(99))
         assertFalse(CoachReview.parse("## 普通 Markdown 批改\n- 第一处").structured)
     }
 
@@ -88,8 +92,14 @@ class CoachProtocolTest {
     @Test fun passageLayoutReflowsPrintedLinesButKeepsParagraphs() {
         val printed = "It is clear that people know \nwhat to do.  \nThere are three factors. First, they \nmust see it.  \n\nBeyond that, everyone \nshould act."
         val paragraphs = PassageLayout.paragraphs(printed)
-        assertEquals(listOf("It is clear that people know what to do.", "There are three factors. First, they must see it.",
-            "Beyond that, everyone should act."), paragraphs)
+        assertEquals(
+            listOf(
+                "It is clear that people know what to do.",
+                "There are three factors. First, they must see it.",
+                "Beyond that, everyone should act.",
+            ),
+            paragraphs,
+        )
         assertEquals(2, PassageLayout.paragraphOf(printed, "First, they must see it."))
         assertEquals(listOf("First.", "Second paragraph."), PassageLayout.paragraphs("First.\r\n\r\nSecond paragraph."))
         assertNull(PassageLayout.paragraphOf(printed, "Invented sentence that is absent."))
@@ -97,28 +107,40 @@ class CoachProtocolTest {
 
     @Test fun chineseSourceIsJoinedAcrossPrintedBreaksAndSplitIntoSentences() {
         val source = "竹子在中国分布广泛，品种丰富。竹子实用性强，用\n于生产。 他说：“好。”洋山港(Yangshan\nPort)很大！最后一句没有句号"
-        assertEquals("竹子在中国分布广泛，品种丰富。竹子实用性强，用于生产。他说：“好。”洋山港(Yangshan Port)很大！最后一句没有句号",
-            TranslationCoach.normalized(source))
-        assertEquals(listOf("竹子在中国分布广泛，品种丰富。", "竹子实用性强，用于生产。", "他说：“好。”", "洋山港(Yangshan Port)很大！", "最后一句没有句号"),
-            TranslationCoach.sentences(source))
+        assertEquals(
+            "竹子在中国分布广泛，品种丰富。竹子实用性强，用于生产。他说：“好。”洋山港(Yangshan Port)很大！最后一句没有句号",
+            TranslationCoach.normalized(source),
+        )
+        assertEquals(
+            listOf("竹子在中国分布广泛，品种丰富。", "竹子实用性强，用于生产。", "他说：“好。”", "洋山港(Yangshan Port)很大！", "最后一句没有句号"),
+            TranslationCoach.sentences(source),
+        )
     }
 
     @Test fun writingTaskReadsOpeningSentenceAndLimitsOnlyFromTheTaskText() {
-        val quoted = WritingTask.of("Directions: write an essay that begins with the sentence “There is a growing awareness of digital skills. ” " +
-            "You should write at least 150 words but no more than 200 words.")
+        val quoted = WritingTask.of(
+            "Directions: write an essay that begins with the sentence “There is a growing awareness of digital skills. ” " +
+                "You should write at least 150 words but no more than 200 words.",
+        )
         assertEquals("There is a growing awareness of digital skills.", quoted.opening)
-        assertEquals(150, quoted.minWords); assertEquals(200, quoted.maxWords)
-        val above = WritingTask.of("People are now increasingly aware of the danger of appearance anxiety.\n\nDirections: write an essay that " +
-            "begins with the sentence above. You should write at least 150 words but no more than 200 words (not including the sentence given).")
+        assertEquals(150, quoted.minWords)
+        assertEquals(200, quoted.maxWords)
+        val above = WritingTask.of(
+            "People are now increasingly aware of the danger of appearance anxiety.\n\nDirections: write an essay that " +
+                "begins with the sentence above. You should write at least 150 words but no more than 200 words (not including the sentence given).",
+        )
         assertEquals("People are now increasingly aware of the danger of appearance anxiety.", above.opening)
         assertTrue(above.excludesOpening)
         assertEquals(WritingTask(null, null, null, false), WritingTask.of("自拟题目：谈谈图书馆"))
         assertEquals("Young people’s choices matter.", WritingTask.of("begins with the sentence “Young people’s choices matter.\" You can…").opening)
     }
 
-    private val essay = CoachPractice(kind = CoachKind.WRITING.name, title = "原创样本",
+    private val essay = CoachPractice(
+        kind = CoachKind.WRITING.name,
+        title = "原创样本",
         material = "Directions: begins with the sentence “Libraries matter.” at least 150 words but no more than 200 words.",
-        answer = "Libraries matter. Libraries helps students.")
+        answer = "Libraries matter. Libraries helps students.",
+    )
 
     @Test fun writingReviewPromptCarriesFactsAndRefusesMismatchedFocus() {
         val prompt = WritingCoach.reviewPrompt(essay, WritingFocus.COMPLETE)
@@ -140,24 +162,37 @@ class CoachProtocolTest {
     }
 
     @Test fun readingPromptsUseTheSameParagraphNumbersAsTheReader() {
-        val passage = ExamPassage("1", "", "First line wraps \nhere.  \nSecond paragraph.",
-            listOf(ExamQuestion(46, "What wraps?", listOf("A", "B", "C", "D").map { ExamOption(it, "option $it") }, "A", "key p.1")))
+        val passage = ExamPassage(
+            "1",
+            "",
+            "First line wraps \nhere.  \nSecond paragraph.",
+            listOf(ExamQuestion(46, "What wraps?", listOf("A", "B", "C", "D").map { ExamOption(it, "option $it") }, "A", "key p.1")),
+        )
         val prompt = ReadingCoach.explainPrompt(passage, "46. B", 46)
         assertTrue(prompt.contains("[1] First line wraps here.") && prompt.contains("[2] Second paragraph."))
         assertTrue(prompt.contains("学生选了 B，参考答案是 A"))
         assertTrue(ReadingCoach.paragraphPrompt(passage, 2, ParagraphHelp.SENTENCE).contains("[2] Second paragraph."))
         assertTrue(ReadingCoach.overviewPrompt(passage).contains("共 2 行"))
-        val explained = ReadingExplanation.parse("""{"type":"locate","paragraph":1,"quote":"here.","note":"n"}
+        val explained = ReadingExplanation.parse(
+            """{"type":"locate","paragraph":1,"quote":"here.","note":"n"}
             {"type":"option","label":"b","verdict":"wrong","note":"偷换概念"}
-            {"type":"check","question":"q","answer":"a"}""")
+            {"type":"check","question":"q","answer":"a"}""",
+        )
         assertEquals(1, explained.locate!!.paragraph)
         assertEquals("B", explained.options.single().label)
         assertEquals("a", explained.checkAnswer)
     }
 
     @Test fun chatPromptKeepsRecentTurnsWithinBudgetAndValidatesTurns() {
-        val turns = (1..40).map { CoachTurn(practiceId = essay.id, anchor = Anchor.REVIEW, kind = TurnKind.CHAT,
-            role = if (it % 2 == 0) CoachTurn.ASSISTANT else CoachTurn.USER, content = "第 $it 条" + "很长".repeat(200)) }
+        val turns = (1..40).map {
+            CoachTurn(
+                practiceId = essay.id,
+                anchor = Anchor.REVIEW,
+                kind = TurnKind.CHAT,
+                role = if (it % 2 == 0) CoachTurn.ASSISTANT else CoachTurn.USER,
+                content = "第 $it 条" + "很长".repeat(200),
+            )
+        }
         val transcript = CoachTurns.transcript(turns, budget = 2000)
         assertTrue(transcript.contains("第 40 条") && !transcript.contains("第 1 条很"))
         val prompt = CoachChat.prompt(essay, Anchor.REVIEW, turns, "开头怎么改？")
@@ -165,13 +200,17 @@ class CoachProtocolTest {
         assertTrue(runCatching { CoachChat.prompt(essay, "bogus", turns, "q") }.isFailure)
         assertTrue(Anchor.valid(Anchor.question(46)) && Anchor.valid(Anchor.sentence(3)) && !Anchor.valid("q:"))
         assertTrue(runCatching { CoachTurns.validate(turns.first().copy(kind = "other")) }.isFailure)
-        assertEquals(listOf("为什么不能选 C？", "定位句再讲细一点", "这题属于哪种出题套路？", "出一道类似的题"),
-            CoachChat.suggestions(CoachKind.READING, Anchor.question(47), "C"))
+        assertEquals(
+            listOf("为什么不能选 C？", "定位句再讲细一点", "这题属于哪种出题套路？", "出一道类似的题"),
+            CoachChat.suggestions(CoachKind.READING, Anchor.question(47), "C"),
+        )
     }
 
     @Test fun acceptedFixesApplyOnlyWhereTheyWereLocated() {
-        val review = CoachReview.parse("""{"type":"issue","quote":"helps","fix":"help","reason":"r","category":"语法","level":"must"}
-            {"type":"issue","quote":"nowhere","fix":"x","reason":"r","category":"用词","level":"better"}""")
+        val review = CoachReview.parse(
+            """{"type":"issue","quote":"helps","fix":"help","reason":"r","category":"语法","level":"must"}
+            {"type":"issue","quote":"nowhere","fix":"x","reason":"r","category":"用词","level":"better"}""",
+        )
         val text = "Libraries helps students."
         val placed = com.example.cet6.ui.placeIssues(text, review, ReviewDecisions().accept(0).accept(1))
         assertNull(placed[1].range)

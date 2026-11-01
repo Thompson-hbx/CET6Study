@@ -21,7 +21,8 @@ class ResponsesStreamStartTest {
         }
     }
 
-    @Test(expected = IllegalStateException::class) fun rejectsCreatedWithoutResponseObject() {
+    @Test(expected = IllegalStateException::class)
+    fun rejectsCreatedWithoutResponseObject() {
         ResponsesStreamStart(headerMissing = true).accept("response.created", null)
     }
 

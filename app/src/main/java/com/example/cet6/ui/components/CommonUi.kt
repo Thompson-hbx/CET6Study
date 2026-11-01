@@ -30,7 +30,7 @@ fun InteractiveStepPill(
     isPassed: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Surface(
         onClick = onClick,
@@ -43,52 +43,55 @@ fun InteractiveStepPill(
             isPassed -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f)
             else -> MaterialTheme.colorScheme.surface
         },
-        border = BorderStroke(if (isCurrent) 1.5.dp else 1.dp, when {
-            isCurrent -> MaterialTheme.colorScheme.primary
-            isPassed -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
-            else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
-        })
+        border = BorderStroke(
+            if (isCurrent) 1.5.dp else 1.dp,
+            when {
+                isCurrent -> MaterialTheme.colorScheme.primary
+                isPassed -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
+                else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+            },
+        ),
     ) {
         Row(
             Modifier.padding(horizontal = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
         ) {
-            Text(stepNumber, style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Bold, fontFeatureSettings = "tnum"))
+            Text(
+                stepNumber,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontFeatureSettings = "tnum",
+                ),
+            )
             Text(stepLabel, style = MaterialTheme.typography.labelSmall, maxLines = 1)
         }
     }
 }
 
 @Composable
-fun PageHeader(
-    title: String,
-    modifier: Modifier = Modifier,
-    subtitle: String? = null,
-    badge: String? = null
-) {
+fun PageHeader(title: String, modifier: Modifier = Modifier, subtitle: String? = null, badge: String? = null) {
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
             if (badge != null) {
                 Surface(
                     shape = RoundedCornerShape(6.dp),
                     color = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ) {
                     Text(
                         text = badge,
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                     )
                 }
             }
@@ -97,19 +100,14 @@ fun PageHeader(
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
 }
 
 @Composable
-fun StatusBadge(
-    text: String,
-    modifier: Modifier = Modifier,
-    isSuccess: Boolean = false,
-    isWarning: Boolean = false
-) {
+fun StatusBadge(text: String, modifier: Modifier = Modifier, isSuccess: Boolean = false, isWarning: Boolean = false) {
     val (bgColor, textColor) = when {
         isSuccess -> MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.onSecondaryContainer
         isWarning -> MaterialTheme.colorScheme.tertiaryContainer to MaterialTheme.colorScheme.onTertiaryContainer
@@ -121,19 +119,19 @@ fun StatusBadge(
             .background(bgColor)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Box(
             modifier = Modifier
                 .size(6.dp)
                 .clip(CircleShape)
-                .background(textColor)
+                .background(textColor),
         )
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
             color = textColor,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
         )
     }
 }
@@ -143,17 +141,17 @@ fun StatusBadge(
 fun SectionCard(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        color = containerColor
+        color = containerColor,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            content = content
+            content = content,
         )
     }
 }
@@ -184,15 +182,19 @@ fun WorkflowSteps(steps: List<WorkflowStep>, current: Int?, modifier: Modifier =
                     // .semantics { stateDescription = when { selected -> "当前"; step.done -> "已完成"; !step.enabled -> "暂不可用"; else -> "" } }
                     .heightIn(min = 40.dp).padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 when {
                     selected -> Box(Modifier.size(8.dp).background(LocalMarks.current.brand, CircleShape))
                     step.done -> Icon(Icons.Outlined.Check, contentDescription = null, tint = tint, modifier = Modifier.size(15.dp))
                     else -> Box(Modifier.size(8.dp).border(1.5.dp, tint, CircleShape))
                 }
-                Text(step.label, style = MaterialTheme.typography.labelLarge, color = tint,
-                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium)
+                Text(
+                    step.label,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = tint,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                )
             }
         }
     }

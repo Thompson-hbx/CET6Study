@@ -22,8 +22,11 @@ object ReadingDiagnosis {
         val ordinal = questions.indexOf(q) + 1
         val selected = ReadingQuestions.selected(answer, "$number").orEmpty()
         val selectedText = q.options.firstOrNull { it.label == selected }?.text.orEmpty()
-        val reference = if (q.referenceAnswer.isNotBlank() && q.answerSource.isNotBlank())
-            "${q.referenceAnswer}；来源：${q.answerSource}" else "暂无有来源的参考答案；结论只能标为 AI 推断"
+        val reference = if (q.referenceAnswer.isNotBlank() && q.answerSource.isNotBlank()) {
+            "${q.referenceAnswer}；来源：${q.answerSource}"
+        } else {
+            "暂无有来源的参考答案；结论只能标为 AI 推断"
+        }
         val evidence = q.verifiedEvidence(passage)?.let { "$it；来源：${q.evidenceSource}" }
             ?: "未提供经过原文匹配的证据；请自行从原文核实，不能补造引用"
         return """
@@ -44,9 +47,9 @@ object ReadingDiagnosis {
             ${paragraphs(passage.content).mapIndexed { index, text -> "第 ${index + 1} 段：\n$text" }.joinToString("\n\n")}
             ---本篇题目与我的作答---
             ${questions.mapIndexed { index, item ->
-                "第 ${index + 1} 题：${item.stem}\n" + item.options.joinToString("\n") { "${it.label}. ${it.text}" } +
-                    "\n我的选项：${ReadingQuestions.selected(answer, "${item.number}").orEmpty().ifBlank { "未作答" }}"
-            }.joinToString("\n\n")}
+            "第 ${index + 1} 题：${item.stem}\n" + item.options.joinToString("\n") { "${it.label}. ${it.text}" } +
+                "\n我的选项：${ReadingQuestions.selected(answer, "${item.number}").orEmpty().ifBlank { "未作答" }}"
+        }.joinToString("\n\n")}
             ---本次聚焦---
             篇章 ${passage.code} · 第 $ordinal 题：${q.stem}
             我的选项：${selected.ifBlank { "未作答" }}${if (selectedText.isBlank()) "" else ". $selectedText"}

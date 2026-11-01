@@ -41,7 +41,9 @@ fun paperOf(vm: StudyViewModel, entry: CoachPractice): ExamPaper? {
 /** Every saved attempt at the same task, oldest first; drafts come after submitted versions. */
 fun versionsOf(history: List<CoachPractice>, entry: CoachPractice): List<CoachPractice> {
     val item = ExamCodec.itemId(entry)
-    val related = if (item != null) history.filter { ExamCodec.itemId(it) == item } else {
+    val related = if (item != null) {
+        history.filter { ExamCodec.itemId(it) == item }
+    } else {
         val byId = history.associateBy { it.id }
         val chain = mutableSetOf(entry.id)
         var cursor: CoachPractice? = entry
@@ -75,8 +77,16 @@ fun WorkspaceMenu(vm: StudyViewModel, entry: CoachPractice, extra: List<Pair<Str
     Box {
         IconButton(onClick = { open = true }) { Icon(Icons.Outlined.MoreVert, contentDescription = null /* "更多" */) }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            DropdownMenuItem(text = { Text("加入生词复习") }, onClick = { open = false; showWord = true })
-            extra.forEach { (label, action) -> DropdownMenuItem(text = { Text(label) }, onClick = { open = false; action() }) }
+            DropdownMenuItem(text = { Text("加入生词复习") }, onClick = {
+                open = false
+                showWord = true
+            })
+            extra.forEach { (label, action) ->
+                DropdownMenuItem(text = { Text(label) }, onClick = {
+                    open = false
+                    action()
+                })
+            }
             documents.forEach { name ->
                 DropdownMenuItem(text = { Text(if (name.endsWith("_ans.pdf")) "参考答案 PDF" else "原卷 PDF") }, onClick = {
                     open = false
@@ -102,10 +112,13 @@ fun VersionSheet(versions: List<CoachPractice>, currentId: String, bands: Map<St
                     bands[version.id] != null -> "${bands[version.id]} 分档"
                     else -> "已提交"
                 }
-                ListRow("第 ${i + 1} 稿" + if (version.id == currentId) " · 当前" else "",
+                ListRow(
+                    "第 ${i + 1} 稿" + if (version.id == currentId) " · 当前" else "",
                     subtitle = "$words 词 · ${shortTime(if (version.submittedAt > 0) version.submittedAt else version.updatedAt)}",
-                    trailing = status, trailingTone = if (bands[version.id] != null) Tone.Ink else Tone.Muted,
-                    enabled = version.id != currentId) { onOpen(version) }
+                    trailing = status,
+                    trailingTone = if (bands[version.id] != null) Tone.Ink else Tone.Muted,
+                    enabled = version.id != currentId,
+                ) { onOpen(version) }
             }
         }
     }
@@ -113,7 +126,8 @@ fun VersionSheet(versions: List<CoachPractice>, currentId: String, bands: Map<St
 
 @Composable
 fun SubmitDialog(words: Int, minWords: Int?, onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(onDismissRequest = onDismiss,
+    AlertDialog(
+        onDismissRequest = onDismiss,
         title = { Text("提交这一稿？") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -122,7 +136,8 @@ fun SubmitDialog(words: Int, minWords: Int?, onConfirm: () -> Unit, onDismiss: (
             }
         },
         confirmButton = { TextButton(onClick = onConfirm) { Text("提交") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("再改改") } })
+        dismissButton = { TextButton(onClick = onDismiss) { Text("再改改") } },
+    )
 }
 
 /** Count with a target, e.g. "126 词 · 目标 150–200"; colour only signals being outside the range. */
@@ -152,18 +167,38 @@ fun SkillErrorNote(vm: StudyViewModel, entry: CoachPractice, kind: CoachKind) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 WeaknessReview.choices(kind).forEach { reason ->
-                    SuggestionChip(onClick = { state.edit(kind) {
-                        it.copy(errorReason = if (it.errorReason.split('；').contains(reason)) it.errorReason
-                            else listOf(it.errorReason, reason).filter(String::isNotBlank).joinToString("；"))
-                    } }, label = { Text(reason) }, enabled = !state.working, border = null,
-                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer))
+                    SuggestionChip(
+                        onClick = {
+                            state.edit(kind) {
+                                it.copy(
+                                    errorReason = if (it.errorReason.split('；').contains(reason)) {
+                                        it.errorReason
+                                    } else {
+                                        listOf(it.errorReason, reason).filter(String::isNotBlank).joinToString("；")
+                                    },
+                                )
+                            }
+                        },
+                        label = { Text(reason) },
+                        enabled = !state.working,
+                        border = null,
+                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    )
                 }
             }
             Hairline()
-            FieldRow(null, entry.errorReason, { value -> state.edit(kind) { it.copy(errorReason = value) } },
-                placeholder = "我的错因与改进笔记", enabled = !state.working, minLines = 3)
-            if (entry.errorReason.isNotBlank()) TextButton(onClick = { state.generate(kind) }, enabled = !state.working && !vm.busy) {
-                Text("按错因出一道练习")
+            FieldRow(
+                null,
+                entry.errorReason,
+                { value -> state.edit(kind) { it.copy(errorReason = value) } },
+                placeholder = "我的错因与改进笔记",
+                enabled = !state.working,
+                minLines = 3,
+            )
+            if (entry.errorReason.isNotBlank()) {
+                TextButton(onClick = { state.generate(kind) }, enabled = !state.working && !vm.busy) {
+                    Text("按错因出一道练习")
+                }
             }
             state.messages[kind]?.takeIf { it.isNotBlank() && it != "已保存到本机" && it != "正在保存……" }?.let { Note(it) }
         }
@@ -173,11 +208,14 @@ fun SkillErrorNote(vm: StudyViewModel, entry: CoachPractice, kind: CoachKind) {
 /** 作答 → 批改 → 修改 for writing and translation; 修改 starts a revision of the submitted draft. */
 @Composable
 fun DeskSteps(writeLabel: String, tab: Int, submitted: Boolean, working: Boolean, onTab: (Int) -> Unit, onRevise: () -> Unit) {
-    WorkflowSteps(listOf(
-        WorkflowStep(writeLabel, done = submitted) { onTab(0) },
-        WorkflowStep("批改", enabled = submitted) { onTab(1) },
-        WorkflowStep("修改", enabled = submitted && !working, onClick = onRevise)
-    ), current = tab.takeIf { it <= 1 })
+    WorkflowSteps(
+        listOf(
+            WorkflowStep(writeLabel, done = submitted) { onTab(0) },
+            WorkflowStep("批改", enabled = submitted) { onTab(1) },
+            WorkflowStep("修改", enabled = submitted && !working, onClick = onRevise),
+        ),
+        current = tab.takeIf { it <= 1 },
+    )
 }
 
 /** The newest structured review placed on [answer] with the learner's decisions; null while there is none. */
@@ -191,20 +229,46 @@ fun placedReview(answer: String, reviewTurn: CoachTurn?): List<PlacedIssue>? {
  * questions open the composer here from the top bar's 追问, instead of holding the bottom of the screen.
  */
 @Composable
-fun ReviewFooter(vm: StudyViewModel, entry: CoachPractice, placeholder: String, placed: List<PlacedIssue>?, asking: Boolean,
-    onAsking: (Boolean) -> Unit, hazeState: HazeState, onAsk: (String) -> Unit) {
+fun ReviewFooter(
+    vm: StudyViewModel,
+    entry: CoachPractice,
+    placeholder: String,
+    placed: List<PlacedIssue>?,
+    asking: Boolean,
+    onAsking: (Boolean) -> Unit,
+    hazeState: HazeState,
+    onAsk: (String) -> Unit,
+) {
     val talk = vm.talk
     val failure = talk.failureFor(entry.id, Anchor.REVIEW, chat = true)
-    if (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT) BottomBar(hazeState = hazeState) {
-        AskBar(placeholder, busy = talk.busy, enabled = !talk.busy, onSend = onAsk, onStop = talk::stop,
-            modifier = Modifier.weight(1f), draftKey = entry.id, failure = failure, onDismissFailure = talk::dismissFailure)
-        if (!talk.busy) TextButton(onClick = { onAsking(false); failure?.let { talk.dismissFailure() } }) { Text("收起") }
-    } else BottomBar(hazeState = hazeState) {
-        val accepted = placed?.count { it.accepted && it.range != null } ?: 0
-        Text(if (placed.isNullOrEmpty()) saveLabel(vm.coach.messages[CoachKind.valueOf(entry.kind)]) else "已采纳 $accepted / ${placed.size} 条",
-            style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
-        Button(onClick = { vm.coach.revise(entry, placed?.let { applyAccepted(entry.answer, it) } ?: entry.answer) },
-            enabled = !vm.coach.working, modifier = Modifier.height(48.dp)) { Text("写修改稿") }
+    if (asking || failure != null || talk.pendingFor(entry.id, Anchor.REVIEW)?.kind == TurnKind.CHAT) {
+        BottomBar(hazeState = hazeState) {
+            AskBar(
+                placeholder, busy = talk.busy, enabled = !talk.busy, onSend = onAsk, onStop = talk::stop,
+                modifier = Modifier.weight(1f), draftKey = entry.id, failure = failure, onDismissFailure = talk::dismissFailure,
+            )
+            if (!talk.busy) {
+                TextButton(onClick = {
+                    onAsking(false)
+                    failure?.let { talk.dismissFailure() }
+                }) { Text("收起") }
+            }
+        }
+    } else {
+        BottomBar(hazeState = hazeState) {
+            val accepted = placed?.count { it.accepted && it.range != null } ?: 0
+            Text(
+                if (placed.isNullOrEmpty()) saveLabel(vm.coach.messages[CoachKind.valueOf(entry.kind)]) else "已采纳 $accepted / ${placed.size} 条",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
+            )
+            Button(
+                onClick = { vm.coach.revise(entry, placed?.let { applyAccepted(entry.answer, it) } ?: entry.answer) },
+                enabled = !vm.coach.working,
+                modifier = Modifier.height(48.dp),
+            ) { Text("写修改稿") }
+        }
     }
 }
 
