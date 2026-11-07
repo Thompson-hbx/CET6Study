@@ -71,7 +71,7 @@ public static partial class SelfCheck
 
     public static IReadOnlyList<CheckLine> Translation(string task, string text)
     {
-        var source = ChineseSentence().Matches(task).Count(m => m.Value.Trim().Length > 0);
+        var source = SourceText.Sentences(task).Count;
         var translated = EnglishSentence().Matches(text).Count(m => Words(m.Value) > 0);
         var lines = new List<CheckLine>();
         if (source == 0)
@@ -102,9 +102,6 @@ public static partial class SelfCheck
 
     [GeneratedRegex(@"begins?\s+with\s+the\s+(?:following\s+)?sentence[:：]?\s*[“""](?<s>[^”""]{4,300})[”""]", RegexOptions.IgnoreCase)]
     private static partial Regex Opening();
-
-    [GeneratedRegex(@"[^。！？!?]+[。！？!?]?")]
-    private static partial Regex ChineseSentence();
 
     [GeneratedRegex(@"[^.!?]+[.!?]?")]
     private static partial Regex EnglishSentence();

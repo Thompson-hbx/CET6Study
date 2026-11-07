@@ -8,7 +8,7 @@ namespace Zhupi.Core;
 /// </summary>
 public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 3;
+    public const int SchemaVersion = 4;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -102,6 +102,20 @@ public sealed partial class Notebook : IDisposable
                 asked_at INTEGER NOT NULL
             );
             CREATE INDEX talks_review ON talks (review_id, asked_at);
+            """, tx);
+        // Hints are tied to the sentence text, so editing the source later does not show a hint for a different sentence.
+        if (version < 4) Exec(db, """
+            CREATE TABLE hints (
+                id TEXT PRIMARY KEY NOT NULL,
+                piece_id TEXT NOT NULL REFERENCES pieces (id),
+                sentence INTEGER NOT NULL CHECK (sentence > 0),
+                sentence_text TEXT NOT NULL,
+                kind TEXT NOT NULL CHECK (kind IN ('words', 'frame')),
+                text TEXT NOT NULL,
+                teacher TEXT NOT NULL,
+                given_at INTEGER NOT NULL
+            );
+            CREATE INDEX hints_piece ON hints (piece_id, sentence, given_at);
             """, tx);
         Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();
