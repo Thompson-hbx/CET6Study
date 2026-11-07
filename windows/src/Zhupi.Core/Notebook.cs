@@ -6,9 +6,9 @@ namespace Zhupi.Core;
 /// The learner's notebook, one SQLite file. Each kind has its own page numbering, like separate exercise books.
 /// Schema changes only ever add tables or columns.
 /// </summary>
-public sealed class Notebook : IDisposable
+public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 1;
+    public const int SchemaVersion = 2;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -51,7 +51,7 @@ public sealed class Notebook : IDisposable
         if (version > SchemaVersion) throw new NotebookException("这个本子由更新版本的朱批写过，请升级后再打开。");
         if (version == SchemaVersion) return;
         using var tx = db.BeginTransaction();
-        Exec(db, """
+        if (version < 1) Exec(db, """
             CREATE TABLE pieces (
                 id TEXT PRIMARY KEY NOT NULL,
                 kind TEXT NOT NULL CHECK (kind IN ('essay', 'translation')),
@@ -66,8 +66,32 @@ public sealed class Notebook : IDisposable
                 origin TEXT NOT NULL CHECK (origin IN ('local', 'imported'))
             );
             CREATE UNIQUE INDEX pieces_kind_number ON pieces (kind, number);
-            PRAGMA user_version = 1;
             """, tx);
+        if (version < 2) Exec(db, """
+            CREATE TABLE reviews (
+                id TEXT PRIMARY KEY NOT NULL,
+                piece_id TEXT NOT NULL REFERENCES pieces (id),
+                created_at INTEGER NOT NULL,
+                teacher TEXT NOT NULL,
+                band INTEGER NOT NULL,
+                verdict TEXT NOT NULL,
+                dimensions TEXT NOT NULL
+            );
+            CREATE INDEX reviews_piece ON reviews (piece_id, created_at);
+            CREATE TABLE marks (
+                review_id TEXT NOT NULL REFERENCES reviews (id),
+                number INTEGER NOT NULL,
+                quote TEXT NOT NULL,
+                fix TEXT NOT NULL,
+                why TEXT NOT NULL,
+                severity TEXT NOT NULL CHECK (severity IN ('must', 'maybe')),
+                kind TEXT NOT NULL,
+                start INTEGER,
+                decision TEXT NOT NULL CHECK (decision IN ('open', 'taken', 'left')),
+                PRIMARY KEY (review_id, number)
+            );
+            """, tx);
+        Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();
     }
 
