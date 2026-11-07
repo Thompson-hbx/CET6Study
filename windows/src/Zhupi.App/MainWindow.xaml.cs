@@ -42,6 +42,16 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog(this) == true) Model.ImportOld(dialog.FileName);
     }
 
+    private void ChoosePack(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = "选择真题内容包（CET6ExamPack JSON）",
+            Filter = "内容包|*.json|所有文件|*.*",
+        };
+        if (dialog.ShowDialog(this) == true) Model.Papers.Import(dialog.FileName);
+    }
+
     // The key only travels from the password box into DPAPI storage; the box is emptied right after.
     private void SaveTeacher(object sender, RoutedEventArgs e)
     {

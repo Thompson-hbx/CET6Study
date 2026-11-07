@@ -11,6 +11,7 @@ public enum Book
 {
     Essays,
     Translations,
+    Papers,
     Words,
     Review,
     Settings,
@@ -31,6 +32,7 @@ public sealed partial class MainViewModel : ObservableObject
         Teacher = new TeacherViewModel(teacher);
         Words = new WordsViewModel(notebook, TimeProvider.System, text => Message = text);
         LookBack = new LookBackViewModel(notebook);
+        Papers = new PapersViewModel(notebook, text => Message = text, OpenFromPaper);
         DataFile = dataFile;
         Message = "";
         CountText = "";
@@ -47,10 +49,12 @@ public sealed partial class MainViewModel : ObservableObject
 
     public LookBackViewModel LookBack { get; }
 
+    public PapersViewModel Papers { get; }
+
     public ObservableCollection<TocLine> Contents { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsWritingBook), nameof(IsSettings), nameof(IsWords), nameof(IsLookBack), nameof(BookName), nameof(Kind))]
+    [NotifyPropertyChangedFor(nameof(IsWritingBook), nameof(IsSettings), nameof(IsPapers), nameof(IsWords), nameof(IsLookBack), nameof(BookName), nameof(Kind))]
     public partial Book Tab { get; set; }
 
     [ObservableProperty]
@@ -72,6 +76,8 @@ public sealed partial class MainViewModel : ObservableObject
     public bool IsWritingBook => Tab is Book.Essays or Book.Translations;
 
     public bool IsSettings => Tab == Book.Settings;
+
+    public bool IsPapers => Tab == Book.Papers;
 
     public bool IsWords => Tab == Book.Words;
 
@@ -116,11 +122,25 @@ public sealed partial class MainViewModel : ObservableObject
 
     public void SaveOpenPage() => Page?.Save();
 
+    /// <summary>Turns to the essay or translation book at the page started from a paper.</summary>
+    private void OpenFromPaper(Piece piece)
+    {
+        Tab = piece.Kind == PieceKind.Essay ? Book.Essays : Book.Translations;
+        Search = "";
+        if (piece.Id != Page?.Id)
+        {
+            Page?.Save();
+            Show(piece);
+        }
+        Message = $"翻到了「{piece.Title}」";
+    }
+
     partial void OnTabChanged(Book value)
     {
         Page?.Save();
         if (Tab == Book.Words) Words.Refresh();
         if (Tab == Book.Review) LookBack.Refresh();
+        if (Tab == Book.Papers) Papers.Refresh();
         if (!IsWritingBook) return;
         Search = "";
         if (Page is null || Page.IsEssay != (Kind == PieceKind.Essay)) OpenLatest();

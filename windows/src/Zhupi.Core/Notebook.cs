@@ -8,7 +8,7 @@ namespace Zhupi.Core;
 /// </summary>
 public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 5;
+    public const int SchemaVersion = 6;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -139,6 +139,33 @@ public sealed partial class Notebook : IDisposable
             );
             CREATE INDEX word_reviews_time ON word_reviews (reviewed_at);
             """, tx);
+        // Papers come from content packs. The link table keeps pages free of paper columns, so pages
+        // written by hand and pages started from a paper stay the same kind of row.
+        if (version < 6) Exec(db, """
+            CREATE TABLE papers (
+                id TEXT PRIMARY KEY NOT NULL,
+                exam_date TEXT NOT NULL,
+                set_code INTEGER NOT NULL,
+                revision INTEGER NOT NULL CHECK (revision > 0),
+                source_name TEXT NOT NULL,
+                source_url TEXT NOT NULL,
+                license TEXT NOT NULL CHECK (license IN ('personal-use', 'redistributable', 'original')),
+                reviewed INTEGER NOT NULL CHECK (reviewed IN (0, 1)),
+                writing_prompt TEXT NOT NULL,
+                writing_instructions TEXT NOT NULL,
+                chinese_text TEXT NOT NULL,
+                reference_translation TEXT NOT NULL,
+                reference_translation_source TEXT NOT NULL,
+                reference_essay TEXT NOT NULL,
+                reference_essay_source TEXT NOT NULL,
+                imported_at INTEGER NOT NULL
+            );
+            CREATE TABLE paper_pages (
+                piece_id TEXT PRIMARY KEY NOT NULL REFERENCES pieces (id),
+                paper_id TEXT NOT NULL REFERENCES papers (id)
+            );
+            CREATE INDEX paper_pages_paper ON paper_pages (paper_id);
+            """, tx);
         Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();
     }
@@ -199,16 +226,22 @@ public sealed partial class Notebook : IDisposable
     {
         var page = Get(id);
         if (!page.IsHandedIn) throw new NotebookException("草稿可以直接改，交了之后才需要重写一稿。");
-        return Insert(page.Kind, page.Title, page.Task, text ?? page.Text, revises: page.Id);
+        // A rewrite answers the same paper, so it keeps the link to it.
+        using var tx = _db.BeginTransaction();
+        var rewrite = Insert(page.Kind, page.Title, page.Task, text ?? page.Text, revises: page.Id, tx);
+        Exec(_db, "INSERT INTO paper_pages (piece_id, paper_id) SELECT $new, paper_id FROM paper_pages WHERE piece_id = $old;",
+            tx, ("$new", rewrite.Id), ("$old", page.Id));
+        tx.Commit();
+        return rewrite;
     }
 
-    private Piece Insert(PieceKind kind, string title, string task, string text, string? revises)
+    private Piece Insert(PieceKind kind, string title, string task, string text, string? revises, SqliteTransaction? tx = null)
     {
         var now = Now();
-        var number = Convert.ToInt32(Scalar(_db, "SELECT COALESCE(MAX(number), 0) + 1 FROM pieces WHERE kind = $kind;", null,
+        var number = Convert.ToInt32(Scalar(_db, "SELECT COALESCE(MAX(number), 0) + 1 FROM pieces WHERE kind = $kind;", tx,
             ("$kind", Stored(kind))));
         var page = new Piece(Guid.NewGuid().ToString("N"), kind, number, title, task, text, revises, now, now, null, false);
-        InsertRow(page, null);
+        InsertRow(page, tx);
         return page;
     }
 

@@ -251,6 +251,7 @@ public sealed partial class PageViewModel : ObservableObject
         _loading = false;
         SaveNote = page.IsHandedIn ? $"交于 {page.HandedInAt!.Value.ToLocalTime():M月d日 HH:mm}" : $"已记在本子上 {page.UpdatedAt.ToLocalTime():HH:mm}";
         RefreshChecks();
+        LoadReference(page);
         IsEditingSource = false;
         RefreshSentences();
         ShowReview(page.IsHandedIn ? _book.LatestReview(page.Id) : null);
