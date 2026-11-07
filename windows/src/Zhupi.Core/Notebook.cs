@@ -8,7 +8,7 @@ namespace Zhupi.Core;
 /// </summary>
 public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 4;
+    public const int SchemaVersion = 5;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -116,6 +116,28 @@ public sealed partial class Notebook : IDisposable
                 given_at INTEGER NOT NULL
             );
             CREATE INDEX hints_piece ON hints (piece_id, sentence, given_at);
+            """, tx);
+        if (version < 5) Exec(db, """
+            CREATE TABLE words (
+                id TEXT PRIMARY KEY NOT NULL,
+                front TEXT NOT NULL,
+                back TEXT NOT NULL,
+                note TEXT NOT NULL,
+                source_piece_id TEXT REFERENCES pieces (id),
+                box INTEGER NOT NULL CHECK (box BETWEEN 1 AND 6),
+                due_at INTEGER NOT NULL,
+                created_at INTEGER NOT NULL,
+                reviews INTEGER NOT NULL DEFAULT 0
+            );
+            CREATE UNIQUE INDEX words_front_back ON words (front, back);
+            CREATE INDEX words_due ON words (due_at);
+            CREATE TABLE word_reviews (
+                word_id TEXT NOT NULL REFERENCES words (id),
+                reviewed_at INTEGER NOT NULL,
+                recall TEXT NOT NULL CHECK (recall IN ('forgot', 'fuzzy', 'remembered')),
+                box_after INTEGER NOT NULL
+            );
+            CREATE INDEX word_reviews_time ON word_reviews (reviewed_at);
             """, tx);
         Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();
