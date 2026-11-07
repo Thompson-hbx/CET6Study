@@ -174,7 +174,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                                              Background="{StaticResource Paper}">
+                                              Background="{StaticResource Paper}"
+                                              Visibility="{Binding IsSingleSheet, Converter={StaticResource Shown}}">
                                     <Border Margin="40,0,0,0" BorderBrush="{StaticResource MarginLine}" BorderThickness="2,0,0,0" Padding="40,20,24,30">
                                         <StackPanel>
                                             <!-- Task slip clipped to the page -->
@@ -231,6 +232,94 @@
                                         </StackPanel>
                                     </Border>
                                 </ScrollViewer>
+
+                                <!-- Translation draft: numbered source slip on the left, ruled translation on the right -->
+                                <Grid Background="{StaticResource Paper}" Visibility="{Binding IsTranslationDraft, Converter={StaticResource Shown}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="6*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Background="{StaticResource PaperLeft}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0" Padding="22,18">
+                                        <DockPanel>
+                                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                                                <Button DockPanel.Dock="Right" Style="{StaticResource Plain}" FontSize="12" Padding="4,2" Foreground="#2D4F7C"
+                                                        Command="{Binding ToggleSourceEditingCommand}">
+                                                    <Button.Content>
+                                                        <TextBlock>
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text" Value="改原文" />
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsEditingSource}" Value="True">
+                                                                            <Setter Property="Text" Value="改好了" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </Button.Content>
+                                                </Button>
+                                                <TextBlock Text="中文原文" FontWeight="Bold" />
+                                                <TextBlock Text="  点一句，右边便利贴给提示" FontSize="12" Foreground="{StaticResource Muted}" VerticalAlignment="Bottom" />
+                                            </DockPanel>
+                                            <Grid>
+                                                <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="14,12"
+                                                        Visibility="{Binding IsEditingSource, Converter={StaticResource Shown}}">
+                                                    <TextBox Style="{StaticResource Writing}" Tag="把要翻译的中文段落贴在这里，贴好后点「改好了」…"
+                                                             FontFamily="{StaticResource Serif}" FontSize="16" VerticalScrollBarVisibility="Auto" MaxLength="20000"
+                                                             Text="{Binding Task, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="中文原文" />
+                                                </Border>
+                                                <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="10,8"
+                                                        Visibility="{Binding ShowSentences, Converter={StaticResource Shown}}">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Direction="270" Opacity="0.10" Color="#3C280A" />
+                                                    </Border.Effect>
+                                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                        <ItemsControl ItemsSource="{Binding Sentences}" AutomationProperties.Name="原文句子">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate DataType="{x:Type vm:SourceSentence}">
+                                                                    <Button Style="{StaticResource Plain}" HorizontalContentAlignment="Left" Padding="0" Margin="0,0,0,2"
+                                                                            Command="{Binding DataContext.SelectSentenceCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                            CommandParameter="{Binding}" AutomationProperties.Name="{Binding Text}">
+                                                                        <Border x:Name="Highlight" Padding="6,6" CornerRadius="3">
+                                                                            <DockPanel>
+                                                                                <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource HandLatin}"
+                                                                                           FontSize="16" Foreground="{StaticResource Muted}" Width="24" />
+                                                                                <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Serif}" FontSize="16"
+                                                                                           TextWrapping="Wrap" LineHeight="28" />
+                                                                            </DockPanel>
+                                                                        </Border>
+                                                                    </Button>
+                                                                    <DataTemplate.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                                            <Setter TargetName="Highlight" Property="Background" Value="#F7E58A" />
+                                                                        </DataTrigger>
+                                                                    </DataTemplate.Triggers>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </ScrollViewer>
+                                                </Border>
+                                            </Grid>
+                                        </DockPanel>
+                                    </Border>
+
+                                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <Border Margin="28,0,0,0" BorderBrush="{StaticResource MarginLine}" BorderThickness="2,0,0,0" Padding="28,18,22,24">
+                                            <StackPanel>
+                                                <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Serif}"
+                                                         FontSize="24" FontWeight="SemiBold" Margin="0,0,0,6" MaxLength="200"
+                                                         Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="标题" />
+                                                <TextBlock Text="{Binding TranslatedCount}" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,0,0,8" />
+                                                <TextBox Style="{StaticResource Writing}" Tag="{Binding TextHint}" Background="{StaticResource RuledPaper}"
+                                                         FontFamily="{StaticResource Serif}" FontSize="20" MinHeight="480" MaxLength="30000"
+                                                         TextBlock.LineHeight="40" TextBlock.LineStackingStrategy="BlockLineHeight"
+                                                         Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="译文" />
+                                            </StackPanel>
+                                        </Border>
+                                    </ScrollViewer>
+                                </Grid>
 
                                 <!-- Pencil self-checks in the margin -->
                                 <Grid Grid.Column="1" Background="{StaticResource Paper}">
@@ -382,6 +471,42 @@
                                         <TextBlock DockPanel.Dock="Top" Text="{Binding CheckHeading}" FontFamily="{StaticResource Hand}" FontSize="22"
                                                    Foreground="{StaticResource Pencil}" Margin="0,0,0,14"
                                                    Visibility="{Binding NotAsking, Converter={StaticResource Shown}}" />
+                                        <!-- Hint note for the selected source sentence -->
+                                        <Border DockPanel.Dock="Top" Background="#DCEBEE" Padding="14,12" Margin="0,0,0,16"
+                                                Visibility="{Binding IsTranslationDraft, Converter={StaticResource Shown}}">
+                                            <Border.RenderTransform>
+                                                <RotateTransform Angle="0.8" />
+                                            </Border.RenderTransform>
+                                            <Border.Effect>
+                                                <DropShadowEffect BlurRadius="6" ShadowDepth="3" Direction="270" Opacity="0.15" Color="#3C280A" />
+                                            </Border.Effect>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding SelectedHeading}" FontWeight="Bold" Foreground="#23383C" />
+                                                <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Serif}" FontSize="13" Foreground="#23383C"
+                                                           TextWrapping="Wrap" Margin="0,6,0,0" />
+                                                <UniformGrid Columns="2" Margin="0,10,0,0">
+                                                    <Button Style="{StaticResource InkButton}" Background="#23383C" Content="难词怎么译" Padding="0,6" Margin="0,0,4,0"
+                                                            FontSize="12" Command="{Binding AskWordsCommand}" />
+                                                    <Button Style="{StaticResource LineButton}" BorderBrush="#23383C" Foreground="#23383C" Content="句子怎么搭"
+                                                            Padding="0,5" Margin="4,0,0,0" FontSize="12" Command="{Binding AskFrameCommand}" />
+                                                </UniformGrid>
+                                                <DockPanel Margin="0,8,0,0" Visibility="{Binding IsHinting, Converter={StaticResource Shown}}">
+                                                    <Button DockPanel.Dock="Right" Style="{StaticResource Plain}" Content="叫停" FontSize="12" Padding="4,0"
+                                                            Command="{Binding StopHintCommand}" />
+                                                    <TextBlock Text="老师在想…" FontFamily="{StaticResource Hand}" FontSize="17" Foreground="#2D4F7C" />
+                                                </DockPanel>
+                                                <ItemsControl ItemsSource="{Binding SentenceHints}" Margin="0,8,0,0">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="{x:Type teacher:SentenceHint}">
+                                                            <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Hand}" FontSize="16" Foreground="#2D4F7C"
+                                                                       TextWrapping="Wrap" LineHeight="23" Margin="0,4,0,4" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <TextBlock Text="提示只给词和句子骨架，不给整句。每次提示花一次额度。" FontSize="11" Foreground="#4A5F63"
+                                                           TextWrapping="Wrap" Margin="0,6,0,0" />
+                                            </StackPanel>
+                                        </Border>
                                         <TextBlock DockPanel.Dock="Bottom" Text="{Binding CheckFootnote}" FontSize="12" Foreground="{StaticResource Muted}"
                                                    TextWrapping="Wrap" LineHeight="20" Visibility="{Binding NotAsking, Converter={StaticResource Shown}}" />
                                         <ItemsControl ItemsSource="{Binding Checks}" Visibility="{Binding ShowChecks, Converter={StaticResource Shown}}">

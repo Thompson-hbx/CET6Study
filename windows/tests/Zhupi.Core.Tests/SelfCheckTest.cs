@@ -54,6 +54,10 @@ public sealed class SelfCheckTest
     }
 
     [Fact]
+    public void EnglishSentencesNeedAWord() =>
+        Assert.Equal(2, SelfCheck.EnglishSentences("It matters. Whenever it comes, people go home... "));
+
+    [Fact]
     public void TranslationComparesSentenceCounts()
     {
         const string source = "春节是中国最重要的传统节日。每到春节，人们都会回家。除夕夜全家团聚！";

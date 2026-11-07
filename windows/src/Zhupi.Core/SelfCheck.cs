@@ -72,7 +72,7 @@ public static partial class SelfCheck
     public static IReadOnlyList<CheckLine> Translation(string task, string text)
     {
         var source = SourceText.Sentences(task).Count;
-        var translated = EnglishSentence().Matches(text).Count(m => Words(m.Value) > 0);
+        var translated = EnglishSentences(text);
         var lines = new List<CheckLine>();
         if (source == 0)
         {
@@ -85,6 +85,9 @@ public static partial class SelfCheck
         lines.Add(new CheckLine("数字、年份和专有名词逐个对一遍", CheckState.Info));
         return lines;
     }
+
+    /// <summary>English sentences that contain at least one word, split at . ! and ?.</summary>
+    public static int EnglishSentences(string text) => EnglishSentence().Matches(text).Count(m => Words(m.Value) > 0);
 
     public static int Paragraphs(string text) =>
         text.Split('\n').Count(line => Words(line) > 0);
