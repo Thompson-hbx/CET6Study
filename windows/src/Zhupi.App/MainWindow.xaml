@@ -4,6 +4,7 @@
         xmlns:vm="clr-namespace:Zhupi.App.ViewModels"
         xmlns:core="clr-namespace:Zhupi.Core;assembly=Zhupi.Core"
         xmlns:local="clr-namespace:Zhupi.App"
+        xmlns:teacher="clr-namespace:Zhupi.Core.Teacher;assembly=Zhupi.Core"
         Title="朱批" Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         WindowStartupLocation="CenterScreen" Background="{StaticResource Desk}"
         FontFamily="{StaticResource Sans}" FontSize="14" Foreground="{StaticResource Ink}"
@@ -235,8 +236,10 @@
                                 <Grid Grid.Column="1" Background="{StaticResource Paper}">
                                     <Rectangle Width="1" HorizontalAlignment="Left" Stroke="#C9BFA9" StrokeDashArray="4 4" />
                                     <!-- Teacher's notes once a review exists -->
-                                    <DockPanel Margin="18,24,18,18" Visibility="{Binding HasReview, Converter={StaticResource Shown}}">
+                                    <DockPanel Margin="18,24,18,18" Visibility="{Binding ShowMarks, Converter={StaticResource Shown}}">
                                         <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                                            <Button Style="{StaticResource LineButton}" Content="问老师（整篇）" HorizontalAlignment="Left"
+                                                    Margin="0,0,0,10" Command="{Binding OpenPageThreadCommand}" />
                                             <TextBlock Text="{Binding Verdict}" FontFamily="{StaticResource Hand}" FontSize="19" Foreground="{StaticResource RedPen}"
                                                        TextWrapping="Wrap" LineHeight="27" />
                                             <TextBlock Text="{Binding DimensionsText}" FontSize="12" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap"
@@ -266,11 +269,13 @@
                                                                     <Run Text=" → " Foreground="{StaticResource Muted}" />
                                                                     <Run Text="{Binding Fix, Mode=OneWay}" Foreground="#2F5A2A" />
                                                                 </TextBlock>
-                                                                <UniformGrid Columns="2" Margin="0,10,0,0">
-                                                                    <Button x:Name="TakeButton" Style="{StaticResource LineButton}" Content="✓ 采纳" Margin="0,0,4,0"
+                                                                <UniformGrid Columns="3" Margin="0,10,0,0">
+                                                                    <Button x:Name="TakeButton" Style="{StaticResource LineButton}" Content="✓ 采纳" Margin="0,0,3,0"
                                                                             Padding="0,5" Command="{Binding TakeCommand}" />
-                                                                    <Button x:Name="LeaveButton" Style="{StaticResource LineButton}" Content="不改" Margin="4,0,0,0"
+                                                                    <Button x:Name="LeaveButton" Style="{StaticResource LineButton}" Content="不改" Margin="3,0,3,0"
                                                                             Padding="0,5" Command="{Binding LeaveCommand}" />
+                                                                    <Button Style="{StaticResource LineButton}" Content="问老师" Margin="3,0,0,0" Padding="0,5"
+                                                                            Foreground="#2D4F7C" Command="{Binding AskCommand}" />
                                                                 </UniformGrid>
                                                             </StackPanel>
                                                         </Border>
@@ -296,6 +301,72 @@
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                        </ScrollViewer>
+                                    </DockPanel>
+
+                                    <!-- Asking the teacher: pencil questions, red-pen answers -->
+                                    <DockPanel Margin="18,20,18,16" Visibility="{Binding IsThreadOpen, Converter={StaticResource Shown}}">
+                                        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,6">
+                                            <Button DockPanel.Dock="Left" Style="{StaticResource Plain}" Content="← 回批注" Padding="0,2" FontSize="12"
+                                                    Foreground="{StaticResource Muted}" Command="{Binding CloseThreadCommand}" />
+                                            <TextBlock Text="{Binding ThreadTitle}" FontFamily="{StaticResource Hand}" FontSize="20"
+                                                       Foreground="{StaticResource RedPen}" HorizontalAlignment="Right" />
+                                        </DockPanel>
+                                        <TextBlock DockPanel.Dock="Top" Text="{Binding ThreadQuote}" FontFamily="{StaticResource Serif}" FontSize="13"
+                                                   Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+                                        <!-- Question box -->
+                                        <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                                            <ItemsControl ItemsSource="{Binding Starters}" Margin="0,0,0,8">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button Style="{StaticResource LineButton}" Content="{Binding}" FontSize="12" Padding="8,3"
+                                                                Margin="0,0,6,6" BorderThickness="1"
+                                                                Command="{Binding DataContext.UseStarterCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" CornerRadius="6" Padding="10,8">
+                                                <TextBox Style="{StaticResource Writing}" Tag="写下想问老师的…" FontSize="14" MinHeight="44" MaxHeight="120"
+                                                         VerticalScrollBarVisibility="Auto" MaxLength="1000"
+                                                         Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="问题" />
+                                            </Border>
+                                            <DockPanel Margin="0,8,0,0">
+                                                <Button DockPanel.Dock="Right" Style="{StaticResource InkButton}" Content="问" Padding="18,6"
+                                                        Command="{Binding SendQuestionCommand}" />
+                                                <Button DockPanel.Dock="Right" Style="{StaticResource LineButton}" Content="叫停" Margin="0,0,8,0" Padding="10,5"
+                                                        Command="{Binding StopAnsweringCommand}"
+                                                        Visibility="{Binding IsAnswering, Converter={StaticResource Shown}}" />
+                                                <TextBlock Text="每问一次花一次额度" FontSize="11" Foreground="{StaticResource Muted}" VerticalAlignment="Center" />
+                                            </DockPanel>
+                                        </StackPanel>
+
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                            <StackPanel>
+                                                <TextBlock Text="还没问过。可以问这处为什么这样改、有没有别的说法，或者整篇怎样提高。" FontSize="12"
+                                                           Foreground="{StaticResource Muted}" TextWrapping="Wrap"
+                                                           Visibility="{Binding ThreadIsEmpty, Converter={StaticResource Shown}}" />
+                                                <ItemsControl ItemsSource="{Binding Thread}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="{x:Type teacher:Talk}">
+                                                            <StackPanel Margin="0,0,0,14">
+                                                                <TextBlock Text="{Binding Question, StringFormat='问：{0}'}" FontFamily="{StaticResource Hand}" FontSize="17"
+                                                                           Foreground="{StaticResource Pencil}" TextWrapping="Wrap" LineHeight="24" />
+                                                                <TextBlock Text="{Binding Answer}" FontSize="14" Foreground="#8A2A21" TextWrapping="Wrap"
+                                                                           LineHeight="23" Margin="0,6,0,0" />
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <TextBlock Text="老师在想…" FontFamily="{StaticResource Hand}" FontSize="18" Foreground="{StaticResource RedPen}"
+                                                           Visibility="{Binding IsAnswering, Converter={StaticResource Shown}}" />
+                                            </StackPanel>
                                         </ScrollViewer>
                                     </DockPanel>
 

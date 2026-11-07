@@ -11,13 +11,18 @@ public sealed record TextPiece(string Text, PlacedMark? Mark);
 public sealed partial class MarkCard : ObservableObject
 {
     private readonly Action<int, Decision> _decide;
+    private readonly Action<int> _ask;
 
-    public MarkCard(PlacedMark placed, Action<int, Decision> decide)
+    public MarkCard(PlacedMark placed, Action<int, Decision> decide, Action<int> ask)
     {
         Placed = placed;
         _decide = decide;
+        _ask = ask;
         Decision = placed.Decision;
     }
+
+    [RelayCommand]
+    private void Ask() => _ask(Number);
 
     public PlacedMark Placed { get; }
 

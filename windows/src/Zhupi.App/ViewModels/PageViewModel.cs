@@ -57,7 +57,7 @@ public sealed partial class PageViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasReview), nameof(NoReview), nameof(BandText), nameof(BandRange), nameof(Verdict),
-        nameof(DimensionsText), nameof(TakeLabel), nameof(UnplacedNote), nameof(ShowChecks))]
+        nameof(DimensionsText), nameof(TakeLabel), nameof(UnplacedNote), nameof(ShowChecks), nameof(ShowMarks))]
     public partial StoredReview? Review { get; set; }
 
     [ObservableProperty]
@@ -65,7 +65,7 @@ public sealed partial class PageViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(NotAsking), nameof(ShowChecks))]
-    [NotifyCanExecuteChangedFor(nameof(AskTeacherCommand), nameof(TakeFixesCommand), nameof(HandInOrRewriteCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AskTeacherCommand), nameof(TakeFixesCommand), nameof(HandInOrRewriteCommand), nameof(SendQuestionCommand))]
     public partial bool IsAsking { get; set; }
 
     public bool NotAsking => !IsAsking;
@@ -259,8 +259,9 @@ public sealed partial class PageViewModel : ObservableObject
         Marks.Clear();
         if (review is not null)
         {
-            foreach (var placed in review.Marks) Marks.Add(new MarkCard(placed, Decide));
+            foreach (var placed in review.Marks) Marks.Add(new MarkCard(placed, Decide, OpenMarkThread));
         }
+        IsThreadOpen = false;
         Review = review;
         Pieces = Split(_page.Text, Marks.Select(m => m.Placed with { Decision = m.Decision }));
         OnPropertyChanged(nameof(AwaitsTeacher));
