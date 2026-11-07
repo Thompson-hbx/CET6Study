@@ -29,7 +29,7 @@ public partial class App : Application
             Shutdown(1);
             return;
         }
-        new MainWindow { DataContext = new MainViewModel(_notebook, file) }.Show();
+        new MainWindow { DataContext = new MainViewModel(_notebook, file, TeacherSettings.Load(directory)) }.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

@@ -21,11 +21,14 @@ public sealed record TocLine(string Id, string Number, string Title, string Stat
 public sealed partial class MainViewModel : ObservableObject
 {
     private readonly Notebook _notebook;
+    private readonly TeacherSettings _teacher;
     private bool _syncing;
 
-    public MainViewModel(Notebook notebook, string dataFile)
+    public MainViewModel(Notebook notebook, string dataFile, TeacherSettings teacher)
     {
         _notebook = notebook;
+        _teacher = teacher;
+        Teacher = new TeacherViewModel(teacher);
         DataFile = dataFile;
         Message = "";
         CountText = "";
@@ -35,6 +38,8 @@ public sealed partial class MainViewModel : ObservableObject
     }
 
     public string DataFile { get; }
+
+    public TeacherViewModel Teacher { get; }
 
     public ObservableCollection<TocLine> Contents { get; } = [];
 
@@ -137,7 +142,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     private void Show(Piece piece)
     {
-        var page = new PageViewModel(_notebook, piece, text => Message = text);
+        var page = new PageViewModel(_notebook, piece, _teacher, text => Message = text);
         page.Saved += Refresh;
         page.Turned += Show;
         Page = page;

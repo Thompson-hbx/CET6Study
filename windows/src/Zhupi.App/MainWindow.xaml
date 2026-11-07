@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Zhupi.App.ViewModels"
         xmlns:core="clr-namespace:Zhupi.Core;assembly=Zhupi.Core"
+        xmlns:local="clr-namespace:Zhupi.App"
         Title="朱批" Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         WindowStartupLocation="CenterScreen" Background="{StaticResource Desk}"
         FontFamily="{StaticResource Sans}" FontSize="14" Foreground="{StaticResource Ink}"
@@ -119,8 +120,23 @@
                             <Border DockPanel.Dock="Top" Height="58" Background="{StaticResource Paper}" BorderBrush="{StaticResource HeaderLine}"
                                     BorderThickness="0,0,0,2" Padding="34,0" CornerRadius="0,14,0,0">
                                 <DockPanel>
-                                    <Button DockPanel.Dock="Right" Style="{StaticResource InkButton}" Content="{Binding ActionLabel}"
-                                            Command="{Binding HandInOrRewriteCommand}" ToolTip="Ctrl+Enter" VerticalAlignment="Center" />
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Style="{StaticResource LineButton}" Content="再请一次" Margin="0,0,10,0"
+                                                Command="{Binding AskTeacherCommand}"
+                                                Visibility="{Binding HasReview, Converter={StaticResource Shown}}" />
+                                        <Button Style="{StaticResource LineButton}" Content="{Binding ActionLabel}" Margin="0,0,10,0"
+                                                Command="{Binding HandInOrRewriteCommand}"
+                                                Visibility="{Binding IsHandedIn, Converter={StaticResource Shown}}" />
+                                        <Button Style="{StaticResource InkButton}" Content="{Binding ActionLabel}" ToolTip="Ctrl+Enter"
+                                                Command="{Binding HandInOrRewriteCommand}"
+                                                Visibility="{Binding IsDraft, Converter={StaticResource Shown}}" />
+                                        <Button Style="{StaticResource InkButton}" Content="请老师批改" Background="{StaticResource RedPen}"
+                                                Command="{Binding AskTeacherCommand}"
+                                                Visibility="{Binding AwaitsTeacher, Converter={StaticResource Shown}}" />
+                                        <Button Style="{StaticResource InkButton}" Content="{Binding TakeLabel}" Background="{StaticResource RedPen}"
+                                                Command="{Binding TakeFixesCommand}"
+                                                Visibility="{Binding HasReview, Converter={StaticResource Shown}}" />
+                                    </StackPanel>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Header}" FontSize="13" Foreground="{StaticResource Muted}" />
                                         <TextBlock Text="{Binding SaveNote, StringFormat='  ·  {0}'}" FontSize="13" Foreground="{StaticResource Saved}" />
@@ -188,8 +204,29 @@
                                             <TextBox Style="{StaticResource Writing}" Tag="{Binding TextHint}" Background="{StaticResource RuledPaper}"
                                                      FontFamily="{StaticResource Serif}" FontSize="20" MinHeight="480" MaxLength="30000"
                                                      TextBlock.LineHeight="40" TextBlock.LineStackingStrategy="BlockLineHeight"
-                                                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsHandedIn}"
+                                                     Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                                                     Visibility="{Binding IsDraft, Converter={StaticResource Shown}}"
                                                      AutomationProperties.Name="正文" />
+                                            <!-- A handed-in page is read, not edited: the teacher's marks are drawn on the text. -->
+                                            <Grid Visibility="{Binding IsHandedIn, Converter={StaticResource Shown}}">
+                                                <TextBlock local:MarkedText.Pieces="{Binding Pieces}" Background="{StaticResource RuledPaper}"
+                                                           FontFamily="{StaticResource Serif}" FontSize="20" MinHeight="480" TextWrapping="Wrap"
+                                                           LineHeight="40" LineStackingStrategy="BlockLineHeight" Padding="2,0,0,0"
+                                                           AutomationProperties.Name="正文与批注" />
+                                                <Border Width="130" Height="130" CornerRadius="65" BorderBrush="{StaticResource RedPen}" BorderThickness="3"
+                                                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" IsHitTestVisible="False"
+                                                        Visibility="{Binding HasReview, Converter={StaticResource Shown}}">
+                                                    <Border.RenderTransform>
+                                                        <RotateTransform Angle="-10" CenterX="65" CenterY="65" />
+                                                    </Border.RenderTransform>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding BandText}" FontFamily="{StaticResource Hand}" FontSize="52" FontWeight="Bold"
+                                                                   Foreground="{StaticResource RedPen}" HorizontalAlignment="Center" />
+                                                        <TextBlock Text="{Binding BandRange}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource RedPen}"
+                                                                   HorizontalAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
                                         </StackPanel>
                                     </Border>
                                 </ScrollViewer>
@@ -197,12 +234,86 @@
                                 <!-- Pencil self-checks in the margin -->
                                 <Grid Grid.Column="1" Background="{StaticResource Paper}">
                                     <Rectangle Width="1" HorizontalAlignment="Left" Stroke="#C9BFA9" StrokeDashArray="4 4" />
-                                    <DockPanel Margin="20,30,22,22">
+                                    <!-- Teacher's notes once a review exists -->
+                                    <DockPanel Margin="18,24,18,18" Visibility="{Binding HasReview, Converter={StaticResource Shown}}">
+                                        <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                                            <TextBlock Text="{Binding Verdict}" FontFamily="{StaticResource Hand}" FontSize="19" Foreground="{StaticResource RedPen}"
+                                                       TextWrapping="Wrap" LineHeight="27" />
+                                            <TextBlock Text="{Binding DimensionsText}" FontSize="12" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap"
+                                                       Margin="0,8,0,0" />
+                                            <TextBlock Text="{Binding UnplacedNote}" FontSize="11" Foreground="{StaticResource Muted}" TextWrapping="Wrap"
+                                                       Margin="0,6,0,0" />
+                                            <TextBlock Text="{Binding TeacherNote}" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                            <ItemsControl ItemsSource="{Binding Marks}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type vm:MarkCard}">
+                                                        <Border x:Name="Card" Background="{StaticResource Paper}" BorderBrush="#E8C9C3" BorderThickness="1.5"
+                                                                CornerRadius="8" Padding="12,10" Margin="0,0,0,10">
+                                                            <StackPanel>
+                                                                <DockPanel>
+                                                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Label}" FontSize="11" Foreground="{StaticResource Muted}"
+                                                                               VerticalAlignment="Center" />
+                                                                    <TextBlock x:Name="Number" Text="{Binding Circled}" FontSize="16" Foreground="{StaticResource RedPen}" />
+                                                                    <TextBlock x:Name="Missing" Text="  ✕ 原文里没找到" FontSize="11" Foreground="{StaticResource Muted}"
+                                                                               VerticalAlignment="Center" Visibility="Collapsed" />
+                                                                </DockPanel>
+                                                                <TextBlock Text="{Binding Why}" FontFamily="{StaticResource Hand}" FontSize="18" TextWrapping="Wrap"
+                                                                           LineHeight="25" Foreground="{StaticResource RedPen}" Margin="0,4,0,4" />
+                                                                <TextBlock TextWrapping="Wrap" FontFamily="{StaticResource Serif}" FontSize="14">
+                                                                    <Run Text="{Binding Quote, Mode=OneWay}" TextDecorations="Strikethrough" Foreground="#9A8F7C" />
+                                                                    <Run Text=" → " Foreground="{StaticResource Muted}" />
+                                                                    <Run Text="{Binding Fix, Mode=OneWay}" Foreground="#2F5A2A" />
+                                                                </TextBlock>
+                                                                <UniformGrid Columns="2" Margin="0,10,0,0">
+                                                                    <Button x:Name="TakeButton" Style="{StaticResource LineButton}" Content="✓ 采纳" Margin="0,0,4,0"
+                                                                            Padding="0,5" Command="{Binding TakeCommand}" />
+                                                                    <Button x:Name="LeaveButton" Style="{StaticResource LineButton}" Content="不改" Margin="4,0,0,0"
+                                                                            Padding="0,5" Command="{Binding LeaveCommand}" />
+                                                                </UniformGrid>
+                                                            </StackPanel>
+                                                        </Border>
+                                                        <DataTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMust}" Value="False">
+                                                                <Setter TargetName="Number" Property="Foreground" Value="{StaticResource Amber}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsPlaced}" Value="False">
+                                                                <Setter TargetName="Missing" Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsTaken}" Value="True">
+                                                                <Setter TargetName="TakeButton" Property="Background" Value="{StaticResource RedPen}" />
+                                                                <Setter TargetName="TakeButton" Property="Foreground" Value="#FBF8F0" />
+                                                                <Setter TargetName="TakeButton" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                                                                <Setter TargetName="TakeButton" Property="Content" Value="✓ 已采纳" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsLeft}" Value="True">
+                                                                <Setter TargetName="LeaveButton" Property="Background" Value="#E6DFD0" />
+                                                                <Setter TargetName="LeaveButton" Property="Content" Value="已决定不改" />
+                                                                <Setter TargetName="Card" Property="Opacity" Value="0.7" />
+                                                            </DataTrigger>
+                                                        </DataTemplate.Triggers>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </DockPanel>
+
+                                    <!-- Waiting for the teacher -->
+                                    <StackPanel Margin="20,30,22,22" Visibility="{Binding IsAsking, Converter={StaticResource Shown}}">
+                                        <TextBlock Text="老师正在批改…" FontFamily="{StaticResource Hand}" FontSize="24" Foreground="{StaticResource RedPen}" />
+                                        <TextBlock Text="通常要几十秒。批完之前这一页不会有任何改动。" FontSize="12" Foreground="{StaticResource Muted}"
+                                                   TextWrapping="Wrap" Margin="0,10,0,14" />
+                                        <Button Style="{StaticResource LineButton}" Content="叫停" Command="{Binding StopAskingCommand}" HorizontalAlignment="Left" />
+                                    </StackPanel>
+
+                                    <DockPanel Margin="20,30,22,22" Visibility="{Binding HasReview, Converter={StaticResource Hidden}}">
                                         <TextBlock DockPanel.Dock="Top" Text="{Binding CheckHeading}" FontFamily="{StaticResource Hand}" FontSize="22"
-                                                   Foreground="{StaticResource Pencil}" Margin="0,0,0,14" />
+                                                   Foreground="{StaticResource Pencil}" Margin="0,0,0,14"
+                                                   Visibility="{Binding NotAsking, Converter={StaticResource Shown}}" />
                                         <TextBlock DockPanel.Dock="Bottom" Text="{Binding CheckFootnote}" FontSize="12" Foreground="{StaticResource Muted}"
-                                                   TextWrapping="Wrap" LineHeight="20" />
-                                        <ItemsControl ItemsSource="{Binding Checks}" Visibility="{Binding IsDraft, Converter={StaticResource Shown}}">
+                                                   TextWrapping="Wrap" LineHeight="20" Visibility="{Binding NotAsking, Converter={StaticResource Shown}}" />
+                                        <ItemsControl ItemsSource="{Binding Checks}" Visibility="{Binding ShowChecks, Converter={StaticResource Shown}}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type core:CheckLine}">
                                                     <TextBlock x:Name="Line" FontFamily="{StaticResource Hand}" FontSize="19" TextWrapping="Wrap"
@@ -264,11 +375,54 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22">
+                        <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22"
+                                DataContext="{Binding Teacher}">
                             <StackPanel>
                                 <TextBlock Text="请老师" FontSize="18" FontWeight="Bold" />
-                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,8,0,0"
-                                           Text="AI 批改还没接上：下一步在这里选择 DeepSeek、兼容接口或 ChatGPT 登录。" />
+                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Muted}" Margin="0,6,0,16"
+                                           Text="交了的页可以请 AI 老师用红笔批改。每次批改花一次你自己账户的额度。" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                    <RadioButton Content="DeepSeek" GroupName="Service" IsChecked="{Binding IsDeepSeek}" Margin="0,0,24,0"
+                                                 VerticalContentAlignment="Center" />
+                                    <RadioButton Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}"
+                                                 VerticalContentAlignment="Center" />
+                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="接口地址" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
+                                               Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}" />
+                                    <Border Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
+                                            Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}">
+                                        <TextBox Style="{StaticResource Bare}" Tag="https://…/v1" Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
+                                                 AutomationProperties.Name="接口地址" />
+                                    </Border>
+                                    <TextBlock Grid.Row="1" Text="API Key" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
+                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4">
+                                        <PasswordBox x:Name="KeyBox" BorderThickness="0" Background="Transparent" AutomationProperties.Name="API Key"
+                                                     ToolTip="已保存过时留空即可保持不变" />
+                                    </Border>
+                                    <TextBlock Grid.Row="2" Text="模型" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
+                                    <ComboBox Grid.Row="2" Grid.Column="1" IsEditable="True" ItemsSource="{Binding Models}"
+                                              Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="模型" />
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                                    <Button Style="{StaticResource InkButton}" Content="保存" Click="SaveTeacher" />
+                                    <Button Style="{StaticResource LineButton}" Content="找可用的模型" Margin="10,0,0,0"
+                                            Command="{Binding RefreshModelsCommand}" ToolTip="先保存 Key；列模型不花额度" />
+                                    <Button Style="{StaticResource LineButton}" Content="删除本机 Key" Margin="10,0,0,0"
+                                            Command="{Binding ForgetKeyCommand}" IsEnabled="{Binding HasKey}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding Note}" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,12,0,0" />
+                                <TextBlock Text="Key 用 Windows 加密保存在这台电脑，不进本子、不进备份，也不会显示出来。" FontSize="12"
+                                           Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0" />
                             </StackPanel>
                         </Border>
                     </StackPanel>

@@ -33,6 +33,13 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog(this) == true) Model.ImportOld(dialog.FileName);
     }
 
+    // The key only travels from the password box into DPAPI storage; the box is emptied right after.
+    private void SaveTeacher(object sender, RoutedEventArgs e)
+    {
+        Model.Teacher.Save(KeyBox.Password);
+        KeyBox.Clear();
+    }
+
     private void OpenDataFolder(object sender, RoutedEventArgs e) =>
         Process.Start(new ProcessStartInfo("explorer.exe", $"\"{Path.GetDirectoryName(Model.DataFile)}\"") { UseShellExecute = true });
 
