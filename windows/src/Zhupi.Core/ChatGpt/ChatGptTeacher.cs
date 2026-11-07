@@ -38,7 +38,11 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         }
     }
 
-    public async Task<string> AskForJsonAsync(string instruction, string material, CancellationToken cancel)
+    /// <summary>
+    /// The plan-usage documentation does not list a JSON output setting, so <paramref name="jsonReply"/> relies on
+    /// the instruction alone; the caller still validates the reply.
+    /// </summary>
+    public async Task<string> AskAsync(string instruction, string material, bool jsonReply, CancellationToken cancel)
     {
         if (model.Trim().Length == 0) throw new ChatGptException("先在「设置」里选一个 ChatGPT 模型。");
         var session = await FreshSession(cancel);

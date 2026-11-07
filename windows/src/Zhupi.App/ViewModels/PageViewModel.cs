@@ -183,8 +183,9 @@ public sealed partial class PageViewModel : ObservableObject
         _asking = new CancellationTokenSource();
         try
         {
-            var reply = await teacher.AskForJsonAsync(
-                MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), _asking.Token);
+            var reply = await teacher.AskAsync(
+                MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), jsonReply: true,
+                _asking.Token);
             var review = _book.SaveReview(_page.Id, MarkingProtocol.Read(reply), _teacher.Label);
             ShowReview(review);
             _say($"老师批完了：{review.Marks.Count} 处批注");

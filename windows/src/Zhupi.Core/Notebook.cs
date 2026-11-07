@@ -8,7 +8,7 @@ namespace Zhupi.Core;
 /// </summary>
 public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 2;
+    public const int SchemaVersion = 3;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -90,6 +90,18 @@ public sealed partial class Notebook : IDisposable
                 decision TEXT NOT NULL CHECK (decision IN ('open', 'taken', 'left')),
                 PRIMARY KEY (review_id, number)
             );
+            """, tx);
+        if (version < 3) Exec(db, """
+            CREATE TABLE talks (
+                id TEXT PRIMARY KEY NOT NULL,
+                review_id TEXT NOT NULL REFERENCES reviews (id),
+                mark_number INTEGER,
+                question TEXT NOT NULL,
+                answer TEXT NOT NULL,
+                teacher TEXT NOT NULL,
+                asked_at INTEGER NOT NULL
+            );
+            CREATE INDEX talks_review ON talks (review_id, asked_at);
             """, tx);
         Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();

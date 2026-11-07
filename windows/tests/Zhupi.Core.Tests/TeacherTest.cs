@@ -20,7 +20,7 @@ public sealed class TeacherTest
         var handler = new FakeServer(_ => Ok(Completion("{\"band\":11}")));
         var teacher = new ChatTeacher(new HttpClient(handler), Connection);
 
-        var answer = await teacher.AskForJsonAsync("instruction", "material", CancellationToken.None);
+        var answer = await teacher.AskAsync("instruction", "material", jsonReply: true, CancellationToken.None);
 
         Assert.Equal("{\"band\":11}", answer);
         var sent = Assert.Single(handler.Sent);
@@ -43,7 +43,7 @@ public sealed class TeacherTest
         var handler = new FakeServer(_ => new HttpResponseMessage(code) { Content = new StringContent("secret detail sk-test") });
         var teacher = new ChatTeacher(new HttpClient(handler), Connection);
 
-        var error = await Assert.ThrowsAsync<TeacherException>(() => teacher.AskForJsonAsync("i", "m", CancellationToken.None));
+        var error = await Assert.ThrowsAsync<TeacherException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
 
         Assert.Equal(message, error.Message);
         Assert.Single(handler.Sent);
@@ -54,7 +54,7 @@ public sealed class TeacherTest
     {
         var teacher = new ChatTeacher(new HttpClient(new FakeServer(_ => Ok(Completion("{\"band\":", "length")))), Connection);
 
-        var error = await Assert.ThrowsAsync<TeacherException>(() => teacher.AskForJsonAsync("i", "m", CancellationToken.None));
+        var error = await Assert.ThrowsAsync<TeacherException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
 
         Assert.StartsWith("老师写到一半被截断了", error.Message);
     }

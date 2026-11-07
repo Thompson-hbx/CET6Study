@@ -86,8 +86,7 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) :
         }
     }
 
-    /// <summary>Sends one instruction and one piece of student material; returns the JSON text of the answer.</summary>
-    public async Task<string> AskForJsonAsync(string instruction, string material, CancellationToken cancel)
+    public async Task<string> AskAsync(string instruction, string material, bool jsonReply, CancellationToken cancel)
     {
         if (connection.Model.Length == 0) throw new TeacherException("先在设置里填好模型名。");
         var body = new JsonObject
@@ -96,9 +95,9 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) :
             ["messages"] = new JsonArray(
                 new JsonObject { ["role"] = "system", ["content"] = instruction },
                 new JsonObject { ["role"] = "user", ["content"] = material }),
-            ["response_format"] = new JsonObject { ["type"] = "json_object" },
             ["stream"] = false,
         };
+        if (jsonReply) body["response_format"] = new JsonObject { ["type"] = "json_object" };
         using var request = Request(HttpMethod.Post, "chat/completions");
         request.Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json");
         using var response = await Send(request, cancel);

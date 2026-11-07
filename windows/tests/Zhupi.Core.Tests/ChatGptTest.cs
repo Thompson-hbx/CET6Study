@@ -163,7 +163,7 @@ public sealed class ChatGptTest : IDisposable
         };
         var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), vault, _clock, "gpt-test");
 
-        var reply = await teacher.AskForJsonAsync("instruction", "material", CancellationToken.None);
+        var reply = await teacher.AskAsync("instruction", "material", jsonReply: true, CancellationToken.None);
 
         Assert.Equal("{\"band\":11}", reply);
         Assert.Equal("refresh-2", vault.Session!.RefreshToken);
@@ -196,7 +196,7 @@ public sealed class ChatGptTest : IDisposable
         var noPlan = new MemoryVault { Session = Session() with { Scopes = ["openid", "email"] } };
 
         var error = await Assert.ThrowsAsync<ChatGptException>(() =>
-            new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), noPlan, _clock, "m").AskForJsonAsync("i", "m", CancellationToken.None));
+            new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), noPlan, _clock, "m").AskAsync("i", "m", jsonReply: true, CancellationToken.None));
 
         Assert.True(error.SignInAgain);
         Assert.Empty(api.Calls);
@@ -214,7 +214,7 @@ public sealed class ChatGptTest : IDisposable
         };
         var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), new MemoryVault { Session = Session() }, _clock, "m");
 
-        var error = await Assert.ThrowsAsync<ChatGptException>(() => teacher.AskForJsonAsync("i", "m", CancellationToken.None));
+        var error = await Assert.ThrowsAsync<ChatGptException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
 
         Assert.True(error.SignInAgain);
     }
