@@ -21,7 +21,11 @@
         <SolidColorBrush x:Key="Placeholder" Color="#A89C86" />
 
         <FontFamily x:Key="Sans">Microsoft YaHei UI</FontFamily>
-        <FontFamily x:Key="Serif">Georgia, Microsoft YaHei UI</FontFamily>
+        <!-- Cambria has lining figures, so digits sit level with capitals; Chinese falls back to YaHei. -->
+        <FontFamily x:Key="Serif">Cambria, Microsoft YaHei UI</FontFamily>
+        <!-- Headings and Chinese passages stay in one family so characters, digits and dots line up. -->
+        <FontFamily x:Key="Title">Microsoft YaHei UI</FontFamily>
+        <FontFamily x:Key="Chinese">Microsoft YaHei UI</FontFamily>
         <!-- Built into Windows, so nothing is bundled: KaiTi for Chinese margin notes, Segoe Print for tallies. -->
         <FontFamily x:Key="Hand">KaiTi, STKaiti, Microsoft YaHei UI</FontFamily>
         <FontFamily x:Key="HandLatin">Segoe Print, Georgia</FontFamily>

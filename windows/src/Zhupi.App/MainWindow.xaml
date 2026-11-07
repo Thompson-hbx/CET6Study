@@ -199,8 +199,8 @@
                                                         HorizontalAlignment="Left" VerticalAlignment="Top" Margin="26,-14,0,0" />
                                             </Grid>
 
-                                            <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Serif}"
-                                                     FontSize="26" FontWeight="SemiBold" Margin="0,0,0,6" MaxLength="200"
+                                            <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Title}"
+                                                     FontSize="24" FontWeight="Bold" Margin="0,0,0,8" MaxLength="200" TextWrapping="Wrap"
                                                      Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsHandedIn}"
                                                      AutomationProperties.Name="标题" />
                                             <TextBox Style="{StaticResource Writing}" Tag="{Binding TextHint}" Background="{StaticResource RuledPaper}"
@@ -267,7 +267,7 @@
                                                 <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="14,12"
                                                         Visibility="{Binding IsEditingSource, Converter={StaticResource Shown}}">
                                                     <TextBox Style="{StaticResource Writing}" Tag="把要翻译的中文段落贴在这里，贴好后点「改好了」…"
-                                                             FontFamily="{StaticResource Serif}" FontSize="16" VerticalScrollBarVisibility="Auto" MaxLength="20000"
+                                                             FontFamily="{StaticResource Chinese}" FontSize="16" VerticalScrollBarVisibility="Auto" MaxLength="20000"
                                                              Text="{Binding Task, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="中文原文" />
                                                 </Border>
                                                 <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="10,8"
@@ -286,7 +286,7 @@
                                                                             <DockPanel>
                                                                                 <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource HandLatin}"
                                                                                            FontSize="16" Foreground="{StaticResource Muted}" Width="24" />
-                                                                                <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Serif}" FontSize="16"
+                                                                                <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Chinese}" FontSize="16"
                                                                                            TextWrapping="Wrap" LineHeight="28" />
                                                                             </DockPanel>
                                                                         </Border>
@@ -308,8 +308,8 @@
                                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                         <Border Margin="28,0,0,0" BorderBrush="{StaticResource MarginLine}" BorderThickness="2,0,0,0" Padding="28,18,22,24">
                                             <StackPanel>
-                                                <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Serif}"
-                                                         FontSize="24" FontWeight="SemiBold" Margin="0,0,0,6" MaxLength="200"
+                                                <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Title}"
+                                                         FontSize="20" FontWeight="Bold" Margin="0,0,0,8" MaxLength="200" TextWrapping="Wrap"
                                                          Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="标题" />
                                                 <TextBlock Text="{Binding TranslatedCount}" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,0,0,8" />
                                                 <TextBox Style="{StaticResource Writing}" Tag="{Binding TextHint}" Background="{StaticResource RuledPaper}"
@@ -485,7 +485,7 @@
                                             </Border.Effect>
                                             <StackPanel>
                                                 <TextBlock Text="{Binding SelectedHeading}" FontWeight="Bold" Foreground="#23383C" />
-                                                <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Serif}" FontSize="13" Foreground="#23383C"
+                                                <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Chinese}" FontSize="13" Foreground="#23383C"
                                                            TextWrapping="Wrap" Margin="0,6,0,0" />
                                                 <UniformGrid Columns="2" Margin="0,10,0,0">
                                                     <Button Style="{StaticResource InkButton}" Background="#23383C" Content="难词怎么译" Padding="0,6" Margin="0,0,4,0"
