@@ -1,7 +1,0 @@
-<SmellBaseline>
-    <ManuallySuppressedIssues />
-    <CurrentIssues>
-        <ID>CyclomaticComplexMethod:AppRoot.kt$@Composable fun AppRoot(vm: StudyViewModel, legacy: LegacyScreens)</ID>
-        <ID>CyclomaticComplexMethod:AppRoot.kt$@Composable fun AppRoot(vm: StudyViewModel, diagnostics: com.example.cet6.diagnostics.CrashReporter)</ID>
-    </CurrentIssues>
-</SmellBaseline>

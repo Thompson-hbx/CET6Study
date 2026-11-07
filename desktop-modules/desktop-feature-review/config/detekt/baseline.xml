@@ -1,7 +1,0 @@
-<SmellBaseline>
-    <ManuallySuppressedIssues />
-    <CurrentIssues>
-        <ID>TooManyFunctions:DesktopReviewPage.kt$com.example.cet6.desktop.DesktopHome.kt</ID>
-        <ID>TopLevelPropertyNaming:DesktopReviewPage.kt$const val WEEK_MILLIS = 7L * 24 * 60 * 60 * 1000</ID>
-    </CurrentIssues>
-</SmellBaseline>

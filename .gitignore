@@ -1,20 +1,12 @@
-.gradle/
-.kotlin/
+.vs/
 .idea/
-*.iml
+*.user
 local.properties
-**/build/
-/captures/
 *.apk
 *.aab
 .tools/
 # Personal materials are excluded by default; authorized private backups are staged explicitly.
 /raw-papers/
 /tools/exam-packs/
-/app/src/main/assets/exam-packs/
 __pycache__/
 *.py[cod]
-# Private runtime data for the optional personal sync service.
-/data/
-/sync-server/data/
-

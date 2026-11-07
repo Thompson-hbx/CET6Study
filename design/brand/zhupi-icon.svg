@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="朱批">
-  <rect width="1024" height="1024" rx="228" fill="#16181D"/>
-  <g fill="none" stroke-linecap="round">
-    <path d="M612 326 C 490 336, 392 445, 387 602" stroke="#F5F1E8" stroke-width="80"/>
-    <circle cx="512" cy="605" r="125" stroke="#F5F1E8" stroke-width="80"/>
-    <path transform="rotate(-12 512 530)" stroke="#E5432A" stroke-width="40"
-      d="M196 572 C 172 470, 230 360, 327 300 C 400 262, 460 250, 512 250 C 697 250, 847 375, 847 530 C 847 685, 697 810, 512 810 C 327 810, 177 685, 177 530 C 172 440, 225 340, 311 288"/>
-  </g>
-</svg>

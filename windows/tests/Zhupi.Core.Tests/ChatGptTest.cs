@@ -224,12 +224,15 @@ public sealed class ChatGptTest : IDisposable
     {
         var api = new FakeAuth(_ => new HttpResponseMessage(HttpStatusCode.OK), _key)
         {
-            Api = _ => Json(new { models = new object[]
+            Api = _ => Json(new
+            {
+                models = new object[]
             {
                 new { slug = "gpt-b", display_name = "B", visibility = "list" },
                 new { slug = "gpt-hidden", display_name = "H", visibility = "hide" },
                 new { slug = "gpt-a", display_name = "", visibility = "list" },
-            } }),
+            }
+            }),
         };
         var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), new MemoryVault { Session = Session() }, _clock, "m");
 
@@ -263,15 +266,26 @@ public sealed class ChatGptTest : IDisposable
         new() { ["code"] = "the-code", ["state"] = attempt.State, ["client_id"] = clientId };
 
     private FakeAuth AuthServer(string idToken) =>
-        new(_ => Json(new { access_token = "access-1", refresh_token = "refresh-1", id_token = idToken, token_type = "Bearer", expires_in = 3600,
-            scope = "openid profile email offline_access resource.invoke chatgpt.tokens.use.direct" }), _key);
+        new(_ => Json(new
+        {
+            access_token = "access-1",
+            refresh_token = "refresh-1",
+            id_token = idToken,
+            token_type = "Bearer",
+            expires_in = 3600,
+            scope = "openid profile email offline_access resource.invoke chatgpt.tokens.use.direct"
+        }), _key);
 
     private string IdToken(string nonce, string audience = Issued, string issuer = "https://auth.openai.com", int lifetime = 3600, RSA? signer = null)
     {
         var header = ChatGptAuth.Base64Url(JsonSerializer.SerializeToUtf8Bytes(new { alg = "RS256", kid = "test-key" }));
         var payload = ChatGptAuth.Base64Url(JsonSerializer.SerializeToUtf8Bytes(new
         {
-            iss = issuer, aud = audience, sub = "user-123", email = "learner@example.com", nonce,
+            iss = issuer,
+            aud = audience,
+            sub = "user-123",
+            email = "learner@example.com",
+            nonce,
             exp = _clock.GetUtcNow().AddSeconds(lifetime).ToUnixTimeSeconds(),
         }));
         var signature = (signer ?? _key).SignData(Encoding.ASCII.GetBytes(header + "." + payload), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
