@@ -37,6 +37,8 @@ dotnet run --project windows/src/Zhupi.App
 
 试用或检查时可用 `--data-dir=<目录>` 指向别的文件夹，避免碰到正式本子。
 
+字体（可选，都是开源字体，不随仓库分发）：批注等手写处用[霞鹜文楷](https://github.com/lxgw/LxgwWenKai)（`LXGWWenKai-Regular.ttf`），标题用 Noto Serif SC。装到当前用户即可；没装时分别退回楷体、华文中宋。
+
 ## 开发
 
 ```powershell
