@@ -12,17 +12,22 @@ public sealed partial class MarkCard : ObservableObject
 {
     private readonly Action<int, Decision> _decide;
     private readonly Action<int> _ask;
+    private readonly Action<int> _collect;
 
-    public MarkCard(PlacedMark placed, Action<int, Decision> decide, Action<int> ask)
+    public MarkCard(PlacedMark placed, Action<int, Decision> decide, Action<int> ask, Action<int> collect)
     {
         Placed = placed;
         _decide = decide;
         _ask = ask;
+        _collect = collect;
         Decision = placed.Decision;
     }
 
     [RelayCommand]
     private void Ask() => _ask(Number);
+
+    [RelayCommand]
+    private void Collect() => _collect(Number);
 
     public PlacedMark Placed { get; }
 

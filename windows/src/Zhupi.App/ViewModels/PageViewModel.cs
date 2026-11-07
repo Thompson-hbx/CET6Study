@@ -261,12 +261,27 @@ public sealed partial class PageViewModel : ObservableObject
         Marks.Clear();
         if (review is not null)
         {
-            foreach (var placed in review.Marks) Marks.Add(new MarkCard(placed, Decide, OpenMarkThread));
+            foreach (var placed in review.Marks) Marks.Add(new MarkCard(placed, Decide, OpenMarkThread, CollectMark));
         }
         IsThreadOpen = false;
         Review = review;
         Pieces = Split(_page.Text, Marks.Select(m => m.Placed with { Decision = m.Decision }));
         OnPropertyChanged(nameof(AwaitsTeacher));
+    }
+
+    /// <summary>The learner's phrase goes on the front, the teacher's fix on the back, the reason as a note.</summary>
+    private void CollectMark(int number)
+    {
+        if (Marks.FirstOrDefault(m => m.Number == number) is not { } mark) return;
+        try
+        {
+            _book.AddWord(mark.Quote, mark.Fix, mark.Why, _page.Id);
+            _say($"「{mark.Fix}」收进单词本了");
+        }
+        catch (NotebookException e)
+        {
+            _say(e.Message);
+        }
     }
 
     private void Decide(int number, Decision decision)

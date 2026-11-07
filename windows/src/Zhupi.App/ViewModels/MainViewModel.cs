@@ -29,6 +29,7 @@ public sealed partial class MainViewModel : ObservableObject
         _notebook = notebook;
         _teacher = teacher;
         Teacher = new TeacherViewModel(teacher);
+        Words = new WordsViewModel(notebook, TimeProvider.System, text => Message = text);
         DataFile = dataFile;
         Message = "";
         CountText = "";
@@ -41,10 +42,12 @@ public sealed partial class MainViewModel : ObservableObject
 
     public TeacherViewModel Teacher { get; }
 
+    public WordsViewModel Words { get; }
+
     public ObservableCollection<TocLine> Contents { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsWritingBook), nameof(IsSettings), nameof(IsEmptyBook), nameof(BookName), nameof(Kind))]
+    [NotifyPropertyChangedFor(nameof(IsWritingBook), nameof(IsSettings), nameof(IsWords), nameof(IsEmptyBook), nameof(BookName), nameof(Kind))]
     public partial Book Tab { get; set; }
 
     [ObservableProperty]
@@ -67,7 +70,9 @@ public sealed partial class MainViewModel : ObservableObject
 
     public bool IsSettings => Tab == Book.Settings;
 
-    public bool IsEmptyBook => Tab is Book.Words or Book.Review;
+    public bool IsWords => Tab == Book.Words;
+
+    public bool IsEmptyBook => Tab == Book.Review;
 
     public bool HasPage => Page is not null;
 
@@ -111,6 +116,7 @@ public sealed partial class MainViewModel : ObservableObject
     partial void OnTabChanged(Book value)
     {
         Page?.Save();
+        if (Tab == Book.Words) Words.Refresh();
         if (!IsWritingBook) return;
         Search = "";
         if (Page is null || Page.IsEssay != (Kind == PieceKind.Essay)) OpenLatest();

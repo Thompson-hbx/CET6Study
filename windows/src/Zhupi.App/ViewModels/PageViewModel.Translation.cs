@@ -85,6 +85,32 @@ public sealed partial class PageViewModel
     [RelayCommand]
     private void StopHint() => _hinting?.Cancel();
 
+    /// <summary>Every "中文 → English" line of the hint becomes a card; lines already in the book are skipped.</summary>
+    [RelayCommand]
+    private void CollectHint(SentenceHint hint)
+    {
+        var pairs = HintTerms.Read(hint.Text);
+        if (pairs.Count == 0)
+        {
+            _say("这条提示里没有「中文 → 英文」的词条可收");
+            return;
+        }
+        var added = 0;
+        foreach (var (front, back) in pairs)
+        {
+            try
+            {
+                _book.AddWord(front, back, SelectedSentence?.Text ?? "", _page.Id);
+                added++;
+            }
+            catch (NotebookException)
+            {
+                // Already in the book or too long: keep going with the rest.
+            }
+        }
+        _say(added == pairs.Count ? $"收进单词本 {added} 条" : $"收进单词本 {added} 条，另外 {pairs.Count - added} 条已经有了或太长");
+    }
+
     /// <summary>Rebuilds the numbered sentences from the source, keeping the selection on the same number when it still exists.</summary>
     private void RefreshSentences()
     {
