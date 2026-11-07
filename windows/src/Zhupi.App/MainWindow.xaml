@@ -384,9 +384,27 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
                                     <RadioButton Content="DeepSeek" GroupName="Service" IsChecked="{Binding IsDeepSeek}" Margin="0,0,24,0"
                                                  VerticalContentAlignment="Center" />
-                                    <RadioButton Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}"
+                                    <RadioButton Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}" Margin="0,0,24,0"
+                                                 VerticalContentAlignment="Center" />
+                                    <RadioButton Content="ChatGPT 账号（用套餐额度）" GroupName="Service" IsChecked="{Binding IsChatGpt}"
                                                  VerticalContentAlignment="Center" />
                                 </StackPanel>
+                                <!-- ChatGPT: sign in through the browser; no password or key is typed here -->
+                                <Border Background="{StaticResource PaperLeft}" Padding="16,14" Margin="0,0,0,14"
+                                        Visibility="{Binding IsChatGpt, Converter={StaticResource Shown}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Account}" FontWeight="Bold" />
+                                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,6,0,12"
+                                                   Text="会打开浏览器到 ChatGPT 官方页面登录，朱批只收到授权凭证，看不到你的密码。套餐额度和 ChatGPT、Codex 共用。" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Style="{StaticResource InkButton}" Content="{Binding SignInLabel}" Command="{Binding SignInCommand}" />
+                                            <Button Style="{StaticResource LineButton}" Content="取消" Margin="10,0,0,0" Command="{Binding CancelSignInCommand}"
+                                                    Visibility="{Binding WaitingForBrowser, Converter={StaticResource Shown}}" />
+                                            <Button Style="{StaticResource LineButton}" Content="退出登录" Margin="10,0,0,0" Command="{Binding SignOutCommand}"
+                                                    Visibility="{Binding SignedIn, Converter={StaticResource Shown}}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="90" />
@@ -404,8 +422,10 @@
                                         <TextBox Style="{StaticResource Bare}" Tag="https://…/v1" Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
                                                  AutomationProperties.Name="接口地址" />
                                     </Border>
-                                    <TextBlock Grid.Row="1" Text="API Key" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
-                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4">
+                                    <TextBlock Grid.Row="1" Text="API Key" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
+                                               Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
+                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
+                                            Visibility="{Binding UsesKey, Converter={StaticResource Shown}}">
                                         <PasswordBox x:Name="KeyBox" BorderThickness="0" Background="Transparent" AutomationProperties.Name="API Key"
                                                      ToolTip="已保存过时留空即可保持不变" />
                                     </Border>
@@ -418,10 +438,11 @@
                                     <Button Style="{StaticResource LineButton}" Content="找可用的模型" Margin="10,0,0,0"
                                             Command="{Binding RefreshModelsCommand}" ToolTip="先保存 Key；列模型不花额度" />
                                     <Button Style="{StaticResource LineButton}" Content="删除本机 Key" Margin="10,0,0,0"
-                                            Command="{Binding ForgetKeyCommand}" IsEnabled="{Binding HasKey}" />
+                                            Command="{Binding ForgetKeyCommand}" IsEnabled="{Binding HasKey}"
+                                            Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
                                 </StackPanel>
                                 <TextBlock Text="{Binding Note}" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,12,0,0" />
-                                <TextBlock Text="Key 用 Windows 加密保存在这台电脑，不进本子、不进备份，也不会显示出来。" FontSize="12"
+                                <TextBlock Text="Key 和 ChatGPT 登录凭证都用 Windows 加密保存在这台电脑，不进本子、不进备份，也不会显示出来。" FontSize="12"
                                            Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,6,0,0" />
                             </StackPanel>
                         </Border>

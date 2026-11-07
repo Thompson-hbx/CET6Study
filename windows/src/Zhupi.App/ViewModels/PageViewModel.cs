@@ -168,10 +168,11 @@ public sealed partial class PageViewModel : ObservableObject
     private async Task AskTeacher()
     {
         if (!_page.IsHandedIn) return;
-        TeacherConnection connection;
+        using var http = ChatTeacher.NewHttpClient();
+        ITeacher teacher;
         try
         {
-            connection = _teacher.Connection();
+            teacher = _teacher.CreateTeacher(http);
         }
         catch (TeacherException e)
         {
@@ -182,8 +183,7 @@ public sealed partial class PageViewModel : ObservableObject
         _asking = new CancellationTokenSource();
         try
         {
-            using var http = ChatTeacher.NewHttpClient();
-            var reply = await new ChatTeacher(http, connection).AskForJsonAsync(
+            var reply = await teacher.AskForJsonAsync(
                 MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), _asking.Token);
             var review = _book.SaveReview(_page.Id, MarkingProtocol.Read(reply), _teacher.Label);
             ShowReview(review);
@@ -194,7 +194,7 @@ public sealed partial class PageViewModel : ObservableObject
         {
             _say("已经叫停，这次没有保存");
         }
-        catch (Exception e) when (e is TeacherException or NotebookException)
+        catch (Exception e) when (e is TeacherException or NotebookException or Zhupi.Core.ChatGpt.ChatGptException)
         {
             _say(e.Message);
         }

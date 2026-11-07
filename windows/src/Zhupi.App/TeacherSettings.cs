@@ -1,24 +1,28 @@
 using System.IO;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using Zhupi.Core.ChatGpt;
 using Zhupi.Core.Teacher;
 
 namespace Zhupi.App;
 
 /// <summary>
-/// Which teacher to ask. The address and model sit in plain <c>teacher.json</c>; the API key is encrypted
-/// with Windows DPAPI for this user into <c>teacher.key</c>, and is never written anywhere else.
+/// Which teacher to ask. Address and model choices sit in plain <c>teacher.json</c>; an API key is encrypted
+/// with Windows DPAPI into <c>teacher.key</c>, and a ChatGPT sign-in lives in <see cref="ChatGptVault"/>.
 /// </summary>
 public sealed class TeacherSettings(string directory)
 {
     private static readonly byte[] Entropy = "Zhupi teacher key v1"u8.ToArray();
 
-    private sealed record Saved(TeacherService Service, string Address, string Model);
+    private sealed record Saved(TeacherService Service, string Address, string Model, string? ChatGptModel);
 
     private string SettingsFile => Path.Combine(directory, "teacher.json");
 
     private string KeyFile => Path.Combine(directory, "teacher.key");
+
+    public ChatGptVault Vault { get; } = new(directory);
 
     public TeacherService Service { get; private set; } = TeacherService.DeepSeek;
 
@@ -26,9 +30,16 @@ public sealed class TeacherSettings(string directory)
 
     public string Model { get; private set; } = "";
 
+    public string ChatGptModel { get; private set; } = "";
+
     public bool HasKey => File.Exists(KeyFile);
 
-    public string Label => $"{(Service == TeacherService.DeepSeek ? "DeepSeek" : new Uri(Address).Host)} · {Model}";
+    public string Label => Service switch
+    {
+        TeacherService.ChatGpt => $"ChatGPT · {ChatGptModel}",
+        TeacherService.DeepSeek => $"DeepSeek · {Model}",
+        _ => $"{new Uri(Address).Host} · {Model}",
+    };
 
     public static TeacherSettings Load(string directory)
     {
@@ -36,24 +47,27 @@ public sealed class TeacherSettings(string directory)
         if (!File.Exists(settings.SettingsFile)) return settings;
         try
         {
-            var saved = JsonSerializer.Deserialize<Saved>(File.ReadAllText(settings.SettingsFile));
-            if (saved is not null)
+            if (JsonSerializer.Deserialize<Saved>(File.ReadAllText(settings.SettingsFile)) is { } saved)
             {
-                settings.Service = saved.Service;
-                settings.Address = saved.Address;
-                settings.Model = saved.Model;
+                (settings.Service, settings.Address, settings.Model, settings.ChatGptModel) =
+                    (saved.Service, saved.Address, saved.Model, saved.ChatGptModel ?? "");
             }
         }
         catch (JsonException)
         {
-            // A damaged settings file only costs the learner re-entering the address; the notebook is untouched.
+            // A damaged settings file only costs re-entering the choice; the notebook is untouched.
         }
         return settings;
     }
 
-    /// <summary>Saves the choice; an empty <paramref name="key"/> keeps the stored one unless the address changed.</summary>
+    /// <summary>Saves an API-key teacher; an empty <paramref name="key"/> keeps the stored one unless the address changed.</summary>
     public void Save(TeacherService service, string address, string model, string key)
     {
+        if (service == TeacherService.ChatGpt)
+        {
+            SaveChatGpt(model);
+            return;
+        }
         var checkedAddress = TeacherConnection.CheckedAddress(service == TeacherService.DeepSeek ? TeacherConnection.DeepSeekAddress : address).ToString();
         var addressChanged = checkedAddress != Address;
         if (key.Trim().Length == 0 && (!HasKey || addressChanged))
@@ -66,8 +80,14 @@ public sealed class TeacherSettings(string directory)
         {
             File.WriteAllBytes(KeyFile, ProtectedData.Protect(Encoding.UTF8.GetBytes(key.Trim()), Entropy, DataProtectionScope.CurrentUser));
         }
-        File.WriteAllText(SettingsFile, JsonSerializer.Serialize(new Saved(service, checkedAddress, model.Trim())));
         (Service, Address, Model) = (service, checkedAddress, model.Trim());
+        Persist();
+    }
+
+    public void SaveChatGpt(string model)
+    {
+        (Service, ChatGptModel) = (TeacherService.ChatGpt, model.Trim());
+        Persist();
     }
 
     public void ForgetKey()
@@ -75,7 +95,11 @@ public sealed class TeacherSettings(string directory)
         if (HasKey) File.Delete(KeyFile);
     }
 
-    /// <summary>The connection to use now, or null with the reason when something is missing.</summary>
+    /// <summary>The teacher to ask now; throws with a readable reason when something is missing.</summary>
+    public ITeacher CreateTeacher(HttpClient http) => Service == TeacherService.ChatGpt
+        ? new ChatGptTeacher(http, new ChatGptAuth(http, TimeProvider.System), Vault, TimeProvider.System, ChatGptModel)
+        : new ChatTeacher(http, Connection());
+
     public TeacherConnection Connection()
     {
         if (!HasKey) throw new TeacherException("还没请老师：先到「设置」填好 API Key 和模型。");
@@ -90,5 +114,11 @@ public sealed class TeacherSettings(string directory)
             throw new TeacherException("保存的 API Key 解不开了（可能换了 Windows 账户），请到「设置」重新填写。");
         }
         return new TeacherConnection(Address, key, Model);
+    }
+
+    private void Persist()
+    {
+        Directory.CreateDirectory(directory);
+        File.WriteAllText(SettingsFile, JsonSerializer.Serialize(new Saved(Service, Address, Model, ChatGptModel)));
     }
 }
