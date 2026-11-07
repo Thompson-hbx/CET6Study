@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Microsoft.Win32;
 using Zhupi.App.ViewModels;
 
@@ -16,6 +17,14 @@ public partial class MainWindow : Window
     }
 
     private MainViewModel Model => (MainViewModel)DataContext;
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+        TitleBar.Tint(this, Colour("Desk"), Colour("Ink"), Colour("PaperEdge"));
+    }
+
+    private Color Colour(string key) => ((SolidColorBrush)FindResource(key)).Color;
 
     private void FocusSearch(object sender, ExecutedRoutedEventArgs e)
     {

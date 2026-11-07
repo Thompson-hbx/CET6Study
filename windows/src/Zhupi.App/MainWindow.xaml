@@ -5,7 +5,7 @@
         xmlns:core="clr-namespace:Zhupi.Core;assembly=Zhupi.Core"
         xmlns:local="clr-namespace:Zhupi.App"
         xmlns:teacher="clr-namespace:Zhupi.Core.Teacher;assembly=Zhupi.Core"
-        Title="朱批" Width="1440" Height="900" MinWidth="1100" MinHeight="640"
+        Title="朱批" Icon="Assets/zhupi.ico" Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         WindowStartupLocation="CenterScreen" Background="{StaticResource Desk}"
         FontFamily="{StaticResource Sans}" FontSize="14" Foreground="{StaticResource Ink}"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
