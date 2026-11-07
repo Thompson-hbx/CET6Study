@@ -12,6 +12,7 @@ public enum TeacherService
 {
     DeepSeek,
     Compatible,
+    ChatGpt,
 }
 
 /// <summary>Where the teacher lives. Not a record, so the key cannot leak through a generated ToString.</summary>
@@ -56,7 +57,7 @@ public sealed class TeacherConnection
 /// Talks to an OpenAI-style chat completions endpoint and asks for exactly one JSON object back.
 /// It never retries on its own: every request may cost the learner money.
 /// </summary>
-public sealed class ChatTeacher(HttpClient http, TeacherConnection connection)
+public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) : ITeacher
 {
     /// <summary>Redirects are off so the key can never follow a redirect to another host.</summary>
     public static HttpClient NewHttpClient() => new(new SocketsHttpHandler
