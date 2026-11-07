@@ -1,7 +1,0 @@
-<SmellBaseline>
-    <ManuallySuppressedIssues />
-    <CurrentIssues>
-        <ID>CyclomaticComplexMethod:HomeTabs.kt$@Composable fun TodayHome(vm: StudyViewModel, padding: PaddingValues, onOpen: (CoachPractice) -&gt; Unit, onStart: (ExamPaper, CoachKind) -&gt; Unit, onRoute: (String) -&gt; Unit)</ID>
-        <ID>TopLevelPropertyNaming:HomeTabs.kt$private const val WEEK_MILLIS = 7L * 24 * 60 * 60 * 1000</ID>
-    </CurrentIssues>
-</SmellBaseline>

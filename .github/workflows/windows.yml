@@ -1,0 +1,24 @@
+name: Windows
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: windows
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: windows/global.json
+      - name: Format
+        run: dotnet format Zhupi.slnx --verify-no-changes --severity warn
+      - name: Build
+        run: dotnet build Zhupi.slnx --configuration Release
+      - name: Test
+        run: dotnet test Zhupi.slnx --configuration Release --no-build

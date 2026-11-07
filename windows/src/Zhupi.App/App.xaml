@@ -1,0 +1,239 @@
+﻿<Application x:Class="Zhupi.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Zhupi.App"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <!-- Notebook palette: kraft desk, cream paper, blue rules, red teacher's pen. -->
+        <SolidColorBrush x:Key="Desk" Color="#D9C9A8" />
+        <SolidColorBrush x:Key="Paper" Color="#FBF8F0" />
+        <SolidColorBrush x:Key="PaperLeft" Color="#F4EEDF" />
+        <SolidColorBrush x:Key="PaperEdge" Color="#E2D6BC" />
+        <SolidColorBrush x:Key="Ink" Color="#2B2620" />
+        <SolidColorBrush x:Key="InkSoft" Color="#4F4436" />
+        <SolidColorBrush x:Key="Muted" Color="#6E6252" />
+        <SolidColorBrush x:Key="Pencil" Color="#6E6A63" />
+        <SolidColorBrush x:Key="RedPen" Color="#C2362B" />
+        <SolidColorBrush x:Key="Amber" Color="#B0602A" />
+        <SolidColorBrush x:Key="MarginLine" Color="#E9A79E" />
+        <SolidColorBrush x:Key="HeaderLine" Color="#E9C7C1" />
+        <SolidColorBrush x:Key="Saved" Color="#5E7A4C" />
+        <SolidColorBrush x:Key="Placeholder" Color="#A89C86" />
+
+        <FontFamily x:Key="Sans">Microsoft YaHei UI</FontFamily>
+        <FontFamily x:Key="Serif">Georgia, Microsoft YaHei UI</FontFamily>
+        <!-- Built into Windows, so nothing is bundled: KaiTi for Chinese margin notes, Segoe Print for tallies. -->
+        <FontFamily x:Key="Hand">KaiTi, STKaiti, Microsoft YaHei UI</FontFamily>
+        <FontFamily x:Key="HandLatin">Segoe Print, Georgia</FontFamily>
+
+        <!-- One ruled row is 40 px; the editor uses the same line height so text sits on the rules. -->
+        <DrawingBrush x:Key="RuledPaper" TileMode="Tile" Viewport="0,0,40,40" ViewportUnits="Absolute" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="#FBF8F0">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,40,40" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#CFDCE6">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,39,40,1" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+        <BooleanToVisibilityConverter x:Key="Shown" />
+        <local:HiddenWhenTrue x:Key="Hidden" />
+        <local:EqualsConverter x:Key="Is" />
+
+        <!-- Buttons -->
+        <Style x:Key="Plain" TargetType="ButtonBase">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ButtonBase">
+                        <Border x:Name="Face" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="False" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Face" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Face" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                                <Setter TargetName="Face" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="InkButton" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="Background" Value="{StaticResource Ink}" />
+            <Setter Property="Foreground" Value="#FBF8F0" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="16,8" />
+        </Style>
+        <Style x:Key="LineButton" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="BorderBrush" Value="{StaticResource InkSoft}" />
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="Padding" Value="14,7" />
+        </Style>
+        <Style x:Key="DashedButton" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="Foreground" Value="{StaticResource InkSoft}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="Face" Background="Transparent" Height="40">
+                            <Rectangle RadiusX="8" RadiusY="8" Stroke="#A8977A" StrokeThickness="2" StrokeDashArray="3 2" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Face" Property="Background" Value="#EDE4CF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Coloured divider tabs; the open one pokes further out in paper colour. -->
+        <Style x:Key="DividerTab" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Height" Value="56" />
+            <Setter Property="Margin" Value="26,0,0,10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="10,0,0,10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Face" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="2" Direction="225" BlurRadius="0" Opacity="0.12" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Face" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                                <Setter TargetName="Face" Property="BorderThickness" Value="2,2,0,2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Height" Value="64" />
+                    <Setter Property="Margin" Value="18,0,0,10" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="15" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Text boxes without chrome; Tag is the placeholder. -->
+        <Style x:Key="Bare" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="CaretBrush" Value="{StaticResource Ink}" />
+            <Setter Property="SelectionBrush" Value="#F2C4BB" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <TextBlock x:Name="Hint" Text="{TemplateBinding Tag}" Foreground="{StaticResource Placeholder}"
+                                           FontStyle="Italic" Margin="2,0,0,0" TextWrapping="Wrap" IsHitTestVisible="False" Visibility="Collapsed" />
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Hint" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Writing" TargetType="TextBox" BasedOn="{StaticResource Bare}">
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="SpellCheck.IsEnabled" Value="False" />
+        </Style>
+
+        <!-- Table of contents rows. -->
+        <Style x:Key="TocRow" TargetType="ListBoxItem">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Row" Background="Transparent" BorderBrush="Transparent" BorderThickness="1.5"
+                                CornerRadius="6" Padding="10,9" Margin="0,0,0,4">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="#EFE6D2" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="{StaticResource Paper}" />
+                                <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource InkSoft}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Thin pencil-like scroll bars. -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="10" />
+            <Setter Property="MinWidth" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Track x:Name="PART_Track" IsDirectionReversed="True" Margin="3,6">
+                            <Track.Thumb>
+                                <Thumb>
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Border Background="#C9BC9F" CornerRadius="2" />
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

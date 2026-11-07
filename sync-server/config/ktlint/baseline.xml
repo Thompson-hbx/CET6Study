@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<baseline version="1.0">
-    <file name="src/main/kotlin/com/example/cet6/server/StudyStore.kt">
-        <error line="23" column="1" source="standard:max-line-length" />
-    </file>
-</baseline>

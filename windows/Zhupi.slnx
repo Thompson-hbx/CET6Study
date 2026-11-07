@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Zhupi.App/Zhupi.App.csproj" />
+    <Project Path="src/Zhupi.Core/Zhupi.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Zhupi.Core.Tests/Zhupi.Core.Tests.csproj" />
+  </Folder>
+</Solution>

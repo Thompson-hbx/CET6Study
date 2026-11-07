@@ -1,9 +1,0 @@
-<SmellBaseline>
-    <ManuallySuppressedIssues />
-    <CurrentIssues>
-        <ID>CyclomaticComplexMethod:ExamScreens.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -&gt; Unit)</ID>
-        <ID>CyclomaticComplexMethod:MainActivity.kt$@Composable private fun TodayScreen(vm: StudyViewModel, onWords: () -&gt; Unit, onReading: () -&gt; Unit, onWriting: () -&gt; Unit, onReview: (CoachPractice) -&gt; Unit)</ID>
-        <ID>CyclomaticComplexMethod:MainActivity.kt$@Composable private fun WordScreen(vm: StudyViewModel)</ID>
-        <ID>NestedBlockDepth:ExamScreens.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun ExamHistory(vm: StudyViewModel, onOpen: (CoachPractice) -&gt; Unit)</ID>
-    </CurrentIssues>
-</SmellBaseline>

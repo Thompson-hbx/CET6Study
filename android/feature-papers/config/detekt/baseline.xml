@@ -1,6 +1,0 @@
-<SmellBaseline>
-    <ManuallySuppressedIssues />
-    <CurrentIssues>
-        <ID>CyclomaticComplexMethod:PaperPdfActivity.kt$PaperPdfActivity$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun PdfScreen(name: String)</ID>
-    </CurrentIssues>
-</SmellBaseline>
