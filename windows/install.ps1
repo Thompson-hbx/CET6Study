@@ -3,23 +3,28 @@
     Installs 朱批 for the current user: a Release build in a fixed folder plus a Start menu shortcut.
 
 .DESCRIPTION
-    No administrator rights are needed and nothing outside the current user's profile is touched.
-    Run it again after pulling changes to update. The notebook in %LOCALAPPDATA%\Zhupi is never touched,
-    not even by -Uninstall.
+    No administrator rights are needed. Run it again after pulling changes to update: without -Destination it
+    reuses the folder the existing Start menu shortcut points to, so a custom location is only typed once.
+    The notebook in %LOCALAPPDATA%\Zhupi is never touched, not even by -Uninstall.
 
 .EXAMPLE
+    pwsh -File windows/install.ps1 -Destination D:\Software\Zhupi
     pwsh -File windows/install.ps1
     pwsh -File windows/install.ps1 -Uninstall
 #>
 [CmdletBinding()]
 param(
-    [string] $Destination = (Join-Path $env:LOCALAPPDATA 'Programs\Zhupi'),
+    [string] $Destination,
     [string] $ShortcutFolder = [Environment]::GetFolderPath('Programs'),
     [switch] $Uninstall
 )
 
 $ErrorActionPreference = 'Stop'
 $shortcut = Join-Path $ShortcutFolder '朱批.lnk'
+if (-not $Destination) {
+    $installed = if (Test-Path $shortcut) { (New-Object -ComObject WScript.Shell).CreateShortcut($shortcut).WorkingDirectory }
+    $Destination = if ($installed) { $installed } else { Join-Path $env:LOCALAPPDATA 'Programs\Zhupi' }
+}
 $exe = Join-Path $Destination 'Zhupi.App.exe'
 
 # Files of a running copy are locked, and replacing them half-way would leave a broken install.

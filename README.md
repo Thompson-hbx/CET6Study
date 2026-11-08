@@ -24,9 +24,10 @@
 dotnet run --project windows/src/Zhupi.App
 ```
 
-装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `%LOCALAPPDATA%\Programs\Zhupi\`，并在开始菜单加「朱批」快捷方式。更新代码后再运行一次即可升级；运行前先关掉已打开的朱批。`-Uninstall` 删除程序和快捷方式，本子不动。
+装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `-Destination` 指定的文件夹（不写时默认 `%LOCALAPPDATA%\Programs\Zhupi\`），并在开始菜单加「朱批」快捷方式。更新代码后不带参数再运行一次即可升级，会沿用开始菜单快捷方式指向的位置；运行前先关掉已打开的朱批。`-Uninstall` 删除程序和快捷方式，本子不动。
 
 ```powershell
+pwsh -File windows/install.ps1 -Destination D:\Software\Zhupi
 pwsh -File windows/install.ps1
 ```
 
