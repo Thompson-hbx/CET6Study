@@ -57,7 +57,7 @@ public sealed partial class PageViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasReview), nameof(NoReview), nameof(BandText), nameof(BandRange), nameof(Verdict),
-        nameof(DimensionsText), nameof(TakeLabel), nameof(ShowChecks), nameof(ShowMarks))]
+        nameof(DimensionsText), nameof(TakeLabel), nameof(ShowChecks), nameof(ShowMarks), nameof(TeacherNote))]
     public partial StoredReview? Review { get; set; }
 
     [ObservableProperty]
@@ -97,7 +97,8 @@ public sealed partial class PageViewModel : ObservableObject
 
     public string TakeLabel => $"抄一遍改好的（采纳 {Marks.Count(m => m.IsTaken && m.IsPlaced)} 处）";
 
-    public string TeacherNote => $"老师：{_teacher.Label}";
+    // The teacher who marked this page, which may differ from the one chosen in settings now.
+    public string TeacherNote => Review is null ? "" : $"老师：{Review.Teacher}";
 
     public string Id => _page.Id;
 
@@ -157,8 +158,25 @@ public sealed partial class PageViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Called when the window turns away from this page: an answer arriving later would land on a page nobody
+    /// is looking at (and invite a second paid request from the new one), so requests still running are stopped.
+    /// </summary>
+    public void Close()
+    {
+        _pause.Stop();
+        Saved = null;
+        Turned = null;
+        _asking?.Cancel();
+        _answering?.Cancel();
+        _hinting?.Cancel();
+    }
+
+    // A new marking would close the open thread and hide the answer still on its way.
+    private bool CanAsk() => !IsAsking && !IsAnswering;
+
     /// <summary>Sends the handed-in page to the configured teacher once; nothing is retried automatically.</summary>
-    [RelayCommand(CanExecute = nameof(NotAsking))]
+    [RelayCommand(CanExecute = nameof(CanAsk))]
     private async Task AskTeacher()
     {
         if (!_page.IsHandedIn) return;
@@ -279,21 +297,23 @@ public sealed partial class PageViewModel : ObservableObject
         }
     }
 
-    private void Decide(int number, Decision decision)
+    /// <summary>Stores the choice; the card shows it only when this returns true, so a failed write is not displayed.</summary>
+    private bool Decide(MarkCard card, Decision decision)
     {
-        if (Review is null) return;
+        if (Review is null) return false;
         try
         {
-            _book.Decide(Review.Id, number, decision);
+            _book.Decide(Review.Id, card.Number, decision);
         }
         catch (NotebookException e)
         {
             _say(e.Message);
-            return;
+            return false;
         }
-        // The card updates itself after this returns; rebuild the marked text from the new choice.
-        Pieces = Split(_page.Text, Marks.Select(m => m.Number == number ? m.Placed with { Decision = decision } : m.Placed with { Decision = m.Decision }));
+        card.Decision = decision;
+        Pieces = Split(_page.Text, Marks.Select(m => m.Placed with { Decision = m.Decision }));
         OnPropertyChanged(nameof(TakeLabel));
+        return true;
     }
 
     /// <summary>Cuts the text into plain runs and marked runs, in order; overlapping marks keep the first.</summary>

@@ -58,6 +58,19 @@ public sealed class MarkingTest : IDisposable
         Assert.Equal(8, MarkingProtocol.Read("```json\n{\"band\": 8}\n```").Band);
 
     [Fact]
+    public void DropsAMarkTooLongToApplyWholeInsteadOfCuttingIt()
+    {
+        var reply = "{\"band\":5,\"marks\":[" +
+            $"{{\"quote\":\"q\",\"fix\":\"{new string('x', 401)}\"}}," +
+            $"{{\"quote\":\"{new string('y', 401)}\",\"fix\":\"f\"}}," +
+            "{\"quote\":\"kept\",\"fix\":\"ok\"}]}";
+
+        var mark = Assert.Single(MarkingProtocol.Read(reply).Marks);
+
+        Assert.Equal((1, "kept", "ok"), (mark.Number, mark.Quote, mark.Fix));
+    }
+
+    [Fact]
     public void KeepsAtMostTwelveMarks()
     {
         var many = "{\"band\":5,\"marks\":[" + string.Join(",", Enumerable.Range(0, 20).Select(i => $"{{\"quote\":\"q{i}\"}}")) + "]}";

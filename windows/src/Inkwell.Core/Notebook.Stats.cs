@@ -48,7 +48,7 @@ public sealed partial class Notebook
 
         const string newestReviews = """
             SELECT r.id, r.piece_id, r.band, r.created_at FROM reviews r
-            WHERE r.created_at = (SELECT MAX(created_at) FROM reviews WHERE piece_id = r.piece_id)
+            WHERE r.id = (SELECT id FROM reviews WHERE piece_id = r.piece_id ORDER BY created_at DESC, rowid DESC LIMIT 1)
               AND r.piece_id IN (SELECT id FROM pieces WHERE discarded_at IS NULL)
             """;
 

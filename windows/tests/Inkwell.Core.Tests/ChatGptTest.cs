@@ -275,7 +275,64 @@ public sealed class ChatGptTest : IDisposable
         Assert.Equal(("abc+1", "s", "oaiapp_x"), (query["code"], query["state"], query["client_id"]));
     }
 
+    [Fact]
+    public async Task AConnectionDroppedMidStreamIsAnErrorNotACrash()
+    {
+        var api = new FakeAuth(_ => Json(new { }), _key)
+        {
+            Api = _ => new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(new BrokenStream(Encoding.UTF8.GetBytes(Event("response.output_text.delta", delta: "{\"band\":")))),
+            },
+        };
+        var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), new MemoryVault { Session = Session() }, _clock, "m");
+
+        await Assert.ThrowsAsync<ChatGptException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task ARefreshAnsweredWithSomethingOtherThanJsonIsAnError()
+    {
+        var vault = new MemoryVault { Session = Session() with { ExpiresAt = _clock.GetUtcNow().AddMinutes(2) } };
+        var api = new FakeAuth(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("<html>proxy</html>") }, _key);
+        var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), vault, _clock, "m");
+
+        var error = await Assert.ThrowsAsync<ChatGptException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+
+        Assert.False(error.SignInAgain);
+        Assert.Equal("refresh-1", vault.Session!.RefreshToken);
+        Assert.Empty(api.Calls);
+    }
+
+    [Fact]
+    public async Task AResetStrayConnectionDoesNotEndTheLoopbackWait()
+    {
+        using var loopback = new LoopbackCallback();
+        var waiting = loopback.WaitAsync(new CancellationTokenSource(TimeSpan.FromSeconds(10)).Token);
+
+        using (var stray = new TcpClient())
+        {
+            await stray.ConnectAsync(IPAddress.Loopback, loopback.RedirectUri.Port);
+            stray.LingerState = new LingerOption(true, 0);
+        }
+        using var http = new HttpClient();
+        var answer = await http.GetAsync(loopback.RedirectUri + "?code=c&state=s");
+
+        Assert.Equal(HttpStatusCode.OK, answer.StatusCode);
+        Assert.Equal("c", (await waiting)["code"]);
+    }
+
     // ----- helpers -----
+
+    /// <summary>Hands out its bytes, then fails like a connection that went away.</summary>
+    private sealed class BrokenStream(byte[] head) : MemoryStream(head)
+    {
+        public override int Read(byte[] buffer, int offset, int count) =>
+            Position < Length ? base.Read(buffer, offset, count) : throw new IOException("connection reset");
+
+        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
+            Position < Length ? base.ReadAsync(buffer, cancellationToken) : throw new IOException("connection reset");
+    }
 
     private ChatGptSession Session() => new(Issued, "user-123", "learner@example.com", "id", "access-1", "refresh-1",
         _clock.GetUtcNow().AddHours(1), ["openid", "chatgpt.tokens.use.direct"]);

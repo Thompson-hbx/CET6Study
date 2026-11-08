@@ -10,11 +10,11 @@ public sealed record TextPiece(string Text, PlacedMark? Mark);
 /// <summary>One red-pen note in the margin, with the learner's take / leave choice.</summary>
 public sealed partial class MarkCard : ObservableObject
 {
-    private readonly Action<int, Decision> _decide;
+    private readonly Func<MarkCard, Decision, bool> _decide;
     private readonly Action<int> _ask;
     private readonly Action<int> _collect;
 
-    public MarkCard(PlacedMark placed, Action<int, Decision> decide, Action<int> ask, Action<int> collect)
+    public MarkCard(PlacedMark placed, Func<MarkCard, Decision, bool> decide, Action<int> ask, Action<int> collect)
     {
         Placed = placed;
         _decide = decide;
@@ -55,17 +55,12 @@ public sealed partial class MarkCard : ObservableObject
 
     public bool IsLeft => Decision == Decision.Left;
 
+    // The page stores the choice and sets Decision only once the notebook accepted it.
     [RelayCommand]
-    private void Take() => Choose(Decision == Decision.Taken ? Decision.Open : Decision.Taken);
+    private void Take() => _decide(this, Decision == Decision.Taken ? Decision.Open : Decision.Taken);
 
     [RelayCommand]
-    private void Leave() => Choose(Decision == Decision.Left ? Decision.Open : Decision.Left);
-
-    private void Choose(Decision decision)
-    {
-        _decide(Number, decision);
-        Decision = decision;
-    }
+    private void Leave() => _decide(this, Decision == Decision.Left ? Decision.Open : Decision.Left);
 
     public static string Circle(int n) => n is >= 1 and <= 20 ? ((char)('①' + n - 1)).ToString() : $"({n})";
 }

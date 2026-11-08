@@ -30,30 +30,42 @@ public sealed class LoopbackCallback : IDisposable
         while (true)
         {
             using var client = await _listener.AcceptTcpClientAsync(cancel);
-            await using var stream = client.GetStream();
-            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
-            timeout.CancelAfter(TimeSpan.FromSeconds(10));
-            var requestLine = await ReadRequestLine(stream, timeout.Token);
-            var parts = requestLine?.Split(' ');
-            if (parts is not { Length: 3 } || parts[0] != "GET" || !parts[1].StartsWith(CallbackPath, StringComparison.Ordinal))
+            try
             {
-                await Respond(stream, "404 Not Found", "这里没有东西。", cancel);
-                continue;
+                if (await Serve(client, cancel) is { } query) return query;
             }
-            var target = parts[1];
-            var question = target.IndexOf('?');
-            var path = question < 0 ? target : target[..question];
-            if (path != CallbackPath)
+            catch (Exception e) when (e is IOException or SocketException)
             {
-                await Respond(stream, "404 Not Found", "这里没有东西。", cancel);
-                continue;
+                // A reset stray connection (a browser preconnect, another local program) must not end the sign-in.
             }
-            var query = Parse(question < 0 ? "" : target[(question + 1)..]);
-            await Respond(stream, "200 OK", query.ContainsKey("error")
-                ? "ChatGPT 登录没有完成。可以关掉这个页面，回到墨水瓶再试一次。"
-                : "登录信息已经交给墨水瓶，可以关掉这个页面，回到墨水瓶了。", cancel);
-            return query;
         }
+    }
+
+    private static async Task<IReadOnlyDictionary<string, string>?> Serve(TcpClient client, CancellationToken cancel)
+    {
+        await using var stream = client.GetStream();
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        timeout.CancelAfter(TimeSpan.FromSeconds(10));
+        var requestLine = await ReadRequestLine(stream, timeout.Token);
+        var parts = requestLine?.Split(' ');
+        if (parts is not { Length: 3 } || parts[0] != "GET" || !parts[1].StartsWith(CallbackPath, StringComparison.Ordinal))
+        {
+            await Respond(stream, "404 Not Found", "这里没有东西。", cancel);
+            return null;
+        }
+        var target = parts[1];
+        var question = target.IndexOf('?');
+        var path = question < 0 ? target : target[..question];
+        if (path != CallbackPath)
+        {
+            await Respond(stream, "404 Not Found", "这里没有东西。", cancel);
+            return null;
+        }
+        var query = Parse(question < 0 ? "" : target[(question + 1)..]);
+        await Respond(stream, "200 OK", query.ContainsKey("error")
+            ? "ChatGPT 登录没有完成。可以关掉这个页面，回到墨水瓶再试一次。"
+            : "登录信息已经交给墨水瓶，可以关掉这个页面，回到墨水瓶了。", cancel);
+        return query;
     }
 
     private static async Task<string?> ReadRequestLine(NetworkStream stream, CancellationToken cancel)

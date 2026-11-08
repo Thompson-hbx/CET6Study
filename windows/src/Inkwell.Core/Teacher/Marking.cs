@@ -23,6 +23,8 @@ public static class MarkingProtocol
 {
     public const int MaxMarks = 12;
 
+    private const int MaxQuote = 400;
+
     /// <summary>The five public CET-6 bands for writing and translation, by their middle score.</summary>
     public static readonly IReadOnlyList<int> Bands = [2, 5, 8, 11, 14];
 
@@ -92,10 +94,12 @@ public static class MarkingProtocol
                 foreach (var m in list.EnumerateArray())
                 {
                     if (marks.Count == MaxMarks) break;
-                    var quote = Text(m, "quote", 400);
-                    if (quote.Length == 0) continue;
+                    // Quote and fix are applied to the next draft, so a cut-off one would corrupt it: drop that mark, don't trim.
+                    var quote = Text(m, "quote", int.MaxValue);
+                    var fix = Text(m, "fix", int.MaxValue);
+                    if (quote.Length == 0 || quote.Length > MaxQuote || fix.Length > MaxQuote) continue;
                     var severity = Text(m, "severity", 10) == "must" ? Severity.Must : Severity.Maybe;
-                    marks.Add(new Mark(marks.Count + 1, quote, Text(m, "fix", 400), Text(m, "why", 200), severity, Text(m, "kind", 10)));
+                    marks.Add(new Mark(marks.Count + 1, quote, fix, Text(m, "why", 200), severity, Text(m, "kind", 10)));
                 }
             }
             return new Marking(band, verdict, dimensions, marks);

@@ -64,8 +64,16 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
         using var response = await Send(request, HttpCompletionOption.ResponseHeadersRead, cancel);
-        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(cancel), Encoding.UTF8);
-        return await ReadStream(reader, cancel);
+        try
+        {
+            using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(cancel), Encoding.UTF8);
+            return await ReadStream(reader, cancel);
+        }
+        catch (Exception e) when (e is IOException or HttpRequestException)
+        {
+            // A dropped connection mid-stream surfaces here, after the headers; the partial answer is discarded.
+            throw new ChatGptException("和 ChatGPT 的连接中途断了，没有收到完整批改，没有保存。");
+        }
     }
 
     /// <summary>Collects output text until <c>response.completed</c>; anything else ends without an answer.</summary>
@@ -131,7 +139,9 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
             if (latest.ExpiresAt - clock.GetUtcNow() > TimeSpan.FromMinutes(5)) return latest;
             try
             {
-                var renewed = await auth.RefreshAsync(latest, cancel);
+                // Not cancelled by the learner's stop: the server may already have rotated the refresh token,
+                // and dropping its answer would leave only a spent token and force a new sign-in.
+                var renewed = await auth.RefreshAsync(latest, CancellationToken.None);
                 vault.Save(renewed);
                 return renewed;
             }
@@ -163,21 +173,24 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
             throw new ChatGptException("ChatGPT 太久没回应，已经停下，没有保存。");
         }
         if (response.IsSuccessStatusCode) return response;
-        var status = (int)response.StatusCode;
-        string? code = null;
-        try
+        using (response)
         {
-            using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancel));
-            if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e))
+            var status = (int)response.StatusCode;
+            string? code = null;
+            try
             {
-                code = e.ValueKind == JsonValueKind.Object ? Text(e, "code") : null;
+                using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancel));
+                if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e))
+                {
+                    code = e.ValueKind == JsonValueKind.Object ? Text(e, "code") : null;
+                }
             }
+            catch (Exception e) when (e is JsonException or IOException or HttpRequestException)
+            {
+                // The status alone still explains the failure when the error body is unreadable.
+            }
+            throw Explain(code, status);
         }
-        catch (JsonException)
-        {
-        }
-        response.Dispose();
-        throw Explain(code, status);
     }
 
     /// <summary>The documented plan-usage error codes, in words; unknown ones fall back to the HTTP status.</summary>

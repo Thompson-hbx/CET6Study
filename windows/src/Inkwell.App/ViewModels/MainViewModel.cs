@@ -166,6 +166,7 @@ public sealed partial class MainViewModel : ObservableObject
     private void Restore(TocLine? line)
     {
         if (line is null || !ShowingTrash) return;
+        if (line.Id == Page?.Id) Page?.Save();
         _notebook.Restore(line.Id);
         Message = $"「{line.Title}」放回了目录";
         LeaveTrashIfEmpty(line.Id);
@@ -176,6 +177,8 @@ public sealed partial class MainViewModel : ObservableObject
     {
         if (line is null || !ShowingTrash) return;
         if (!Confirm($"彻底删除「{line.Title}」？它的批改、问答和翻译提示会一起删掉，不能恢复。")) return;
+        // Stop the open page first so its pending save cannot write to a page that no longer exists.
+        if (line.Id == Page?.Id) Page?.Close();
         _notebook.Purge(line.Id);
         Message = $"「{line.Title}」已彻底删除";
         LeaveTrashIfEmpty(line.Id);
@@ -227,6 +230,7 @@ public sealed partial class MainViewModel : ObservableObject
         if (Tab == Book.Words) Words.Refresh();
         if (Tab == Book.Review) LookBack.Refresh();
         if (Tab == Book.Papers) Papers.Refresh();
+        if (Tab == Book.Settings) OnPropertyChanged(nameof(CanImport));
         if (!IsWritingBook) return;
         Search = "";
         if (Page is null || Page.IsEssay != (Kind == PieceKind.Essay)) OpenLatest();
@@ -254,6 +258,7 @@ public sealed partial class MainViewModel : ObservableObject
         var latest = (ShowingTrash ? _notebook.Trash(Kind) : _notebook.Contents(Kind)).FirstOrDefault();
         if (latest is null)
         {
+            Page?.Close();
             Page = null;
             Refresh();
         }
@@ -268,6 +273,7 @@ public sealed partial class MainViewModel : ObservableObject
         var page = new PageViewModel(_notebook, piece, _teacher, text => Message = text);
         page.Saved += Refresh;
         page.Turned += Show;
+        Page?.Close();
         Page = page;
         Refresh();
     }

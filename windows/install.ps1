@@ -38,14 +38,19 @@ $exe = Join-Path $Destination 'Inkwell.App.exe'
 
 # Files of a running copy are locked, and replacing them half-way would leave a broken install.
 $running = Get-Process -Name 'Inkwell.App', 'Zhupi.App' -ErrorAction SilentlyContinue |
-    Where-Object { $_.Path -and $_.Path.StartsWith($Destination, [StringComparison]::OrdinalIgnoreCase) }
+    Where-Object { $_.Path -and $_.Path.StartsWith($Destination.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase) }
 if ($running) {
     throw "墨水瓶正在从 $Destination 运行，请先关掉它再装。"
 }
 
 if ($Uninstall) {
     foreach ($link in $shortcut, $formerShortcut) { if (Test-Path $link) { Remove-Item $link } }
-    if (Test-Path $Destination) { Remove-Item $Destination -Recurse }
+    # Only a folder that holds the program is removed, so a mistyped shared -Destination is never wiped.
+    if (Test-Path $exe) {
+        Remove-Item $Destination -Recurse
+    } elseif (Test-Path $Destination) {
+        throw "$Destination 里没有 Inkwell.App.exe，不像墨水瓶的安装文件夹，没有删除。"
+    }
     Write-Host "已卸载程序和开始菜单快捷方式；本子（$env:LOCALAPPDATA\Inkwell）原样保留。"
     return
 }

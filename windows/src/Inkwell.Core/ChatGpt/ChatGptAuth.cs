@@ -152,6 +152,10 @@ public sealed class ChatGptAuth(HttpClient http, TimeProvider clock)
         {
             return false;
         }
+        catch (TaskCanceledException) when (!cancel.IsCancellationRequested)
+        {
+            return false;
+        }
     }
 
     private ChatGptSession Session(string clientId, string subject, string email, string idToken, JsonElement tokens, string? previousRefresh)
@@ -171,6 +175,27 @@ public sealed class ChatGptAuth(HttpClient http, TimeProvider clock)
 
     /// <summary>Signature against OpenAI's published keys, then issuer, audience, expiry and nonce.</summary>
     private async Task<IdClaims> VerifyIdTokenAsync(string idToken, string clientId, string nonce, CancellationToken cancel)
+    {
+        try
+        {
+            return await VerifyIdTokenCoreAsync(idToken, clientId, nonce, cancel);
+        }
+        catch (HttpRequestException)
+        {
+            throw new ChatGptException("取不到 OpenAI 的签名公钥，暂时没法确认登录，请稍后再试。");
+        }
+        catch (TaskCanceledException) when (!cancel.IsCancellationRequested)
+        {
+            throw new ChatGptException("取 OpenAI 的签名公钥太久没回应，暂时没法确认登录，请稍后再试。");
+        }
+        catch (Exception e) when (e is JsonException or KeyNotFoundException or InvalidOperationException or CryptographicException)
+        {
+            // Malformed tokens or key sets are treated as failed verification, never as a crash or a pass.
+            throw BadIdToken();
+        }
+    }
+
+    private async Task<IdClaims> VerifyIdTokenCoreAsync(string idToken, string clientId, string nonce, CancellationToken cancel)
     {
         var parts = idToken.Split('.');
         if (parts.Length != 3) throw BadIdToken();
@@ -224,13 +249,24 @@ public sealed class ChatGptAuth(HttpClient http, TimeProvider clock)
         {
             throw new ChatGptException("连不上 ChatGPT 登录服务，请检查网络；已保存的登录没有被清除。");
         }
+        catch (TaskCanceledException) when (!cancel.IsCancellationRequested)
+        {
+            throw new ChatGptException("ChatGPT 登录服务太久没回应，请稍后再试；已保存的登录没有被清除。");
+        }
         using (response)
         {
             var body = await response.Content.ReadAsStringAsync(cancel);
             if (response.IsSuccessStatusCode)
             {
-                using var ok = JsonDocument.Parse(body);
-                return ok.RootElement.Clone();
+                try
+                {
+                    using var ok = JsonDocument.Parse(body);
+                    if (ok.RootElement.ValueKind == JsonValueKind.Object) return ok.RootElement.Clone();
+                }
+                catch (JsonException)
+                {
+                }
+                throw new ChatGptException("ChatGPT 登录服务的回复看不懂，请稍后再试；已保存的登录没有被清除。");
             }
             var code = ErrorCode(body);
             if (code is not null && SignInAgainCodes.Contains(code))

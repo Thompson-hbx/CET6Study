@@ -36,7 +36,7 @@ public sealed partial class PageViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(NotAnswering))]
-    [NotifyCanExecuteChangedFor(nameof(SendQuestionCommand), nameof(CloseThreadCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SendQuestionCommand), nameof(CloseThreadCommand), nameof(AskTeacherCommand))]
     public partial bool IsAnswering { get; set; }
 
     public bool NotAnswering => !IsAnswering;
@@ -82,6 +82,7 @@ public sealed partial class PageViewModel
     private async Task SendQuestion()
     {
         if (Review is not { } review) return;
+        var sent = Question;
         string question;
         try
         {
@@ -113,7 +114,8 @@ public sealed partial class PageViewModel
             var talk = _book.SaveTalk(review.Id, mark, question, answer, _teacher.Label);
             if (IsThreadOpen && ThreadMark == mark) Thread.Add(talk);
             OnPropertyChanged(nameof(ThreadIsEmpty));
-            Question = "";
+            // Keep a next question the learner started typing while waiting.
+            if (Question == sent) Question = "";
         }
         catch (OperationCanceledException)
         {
