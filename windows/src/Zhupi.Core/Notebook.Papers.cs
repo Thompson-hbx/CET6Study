@@ -65,8 +65,9 @@ public sealed partial class Notebook
             command.CommandText = """
                 SELECT pp.paper_id, p.kind, COUNT(*), SUM(p.handed_in_at IS NOT NULL),
                        (SELECT p2.id FROM paper_pages pp2 JOIN pieces p2 ON p2.id = pp2.piece_id
-                        WHERE pp2.paper_id = pp.paper_id AND p2.kind = p.kind ORDER BY p2.number DESC LIMIT 1)
+                        WHERE pp2.paper_id = pp.paper_id AND p2.kind = p.kind AND p2.discarded_at IS NULL ORDER BY p2.number DESC LIMIT 1)
                 FROM paper_pages pp JOIN pieces p ON p.id = pp.piece_id
+                WHERE p.discarded_at IS NULL
                 GROUP BY pp.paper_id, p.kind;
                 """;
             using var reader = command.ExecuteReader();
@@ -107,7 +108,7 @@ public sealed partial class Notebook
         if (task.Length == 0) throw new NotebookException(kind == PieceKind.Essay ? "这套卷子没有作文题。" : "这套卷子没有翻译原文。");
         var draft = Scalar(_db, """
             SELECT p.id FROM paper_pages pp JOIN pieces p ON p.id = pp.piece_id
-            WHERE pp.paper_id = $paper AND p.kind = $kind AND p.handed_in_at IS NULL
+            WHERE pp.paper_id = $paper AND p.kind = $kind AND p.handed_in_at IS NULL AND p.discarded_at IS NULL
             ORDER BY p.number DESC LIMIT 1;
             """, null, ("$paper", paperId), ("$kind", Stored(kind)));
         if (draft is string id) return Get(id);

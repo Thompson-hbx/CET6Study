@@ -169,5 +169,24 @@ public sealed class ExamPackTest : IDisposable
         Assert.Equal(2, _book.Shelf().Single().Essay.Pages);
     }
 
+    [Fact]
+    public void AFolderOfPacksImportsOnceAndReportsBadFiles()
+    {
+        var folder = Directory.CreateDirectory(Path.Combine(_dir.FullName, "packs")).FullName;
+        File.WriteAllBytes(Path.Combine(folder, "a.json"), Pack(Paper()));
+        File.WriteAllBytes(Path.Combine(folder, "b.json"), Pack(Paper(set: 2)));
+        File.WriteAllText(Path.Combine(folder, "broken.json"), "not json");
+        File.WriteAllText(Path.Combine(folder, "notes.txt"), "ignored");
+
+        var first = ExamPackFolder.ImportAll(_book, folder);
+        var again = ExamPackFolder.ImportAll(_book, folder);
+
+        Assert.Equal((2, 0, 0), (first.Added, first.Updated, first.Unchanged));
+        Assert.Equal(["broken.json"], first.Unreadable);
+        Assert.Equal((0, 0, 2), (again.Added, again.Updated, again.Unchanged));
+        Assert.Equal(2, _book.Shelf().Count);
+        Assert.False(ExamPackFolder.ImportAll(_book, Path.Combine(_dir.FullName, "missing")).ChangedAnything);
+    }
+
     private static (int, int, int) Counts(PackImport import) => (import.Added, import.Updated, import.Unchanged);
 }

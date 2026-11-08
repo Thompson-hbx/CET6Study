@@ -31,15 +31,16 @@ public sealed partial class Notebook
         var now = Now();
         long Count(string sql, params (string, object?)[] p) => Convert.ToInt64(Scalar(_db, sql, null, p));
 
-        var essays = (int)Count("SELECT COUNT(*) FROM pieces WHERE kind = 'essay' AND handed_in_at IS NOT NULL;");
-        var translations = (int)Count("SELECT COUNT(*) FROM pieces WHERE kind = 'translation' AND handed_in_at IS NOT NULL;");
+        // Pages in the trash are left out everywhere here, so test pages thrown away stop counting.
+        var essays = (int)Count("SELECT COUNT(*) FROM pieces WHERE kind = 'essay' AND handed_in_at IS NOT NULL AND discarded_at IS NULL;");
+        var translations = (int)Count("SELECT COUNT(*) FROM pieces WHERE kind = 'translation' AND handed_in_at IS NOT NULL AND discarded_at IS NULL;");
 
         // Days on which any page was written or handed in, in local time, inside the window.
         var since = now.AddDays(-activeDayWindow).ToUnixTimeMilliseconds();
         var days = new HashSet<DateOnly>();
         using (var command = _db.CreateCommand())
         {
-            command.CommandText = "SELECT updated_at FROM pieces WHERE updated_at >= $since UNION ALL SELECT handed_in_at FROM pieces WHERE handed_in_at >= $since;";
+            command.CommandText = "SELECT updated_at FROM pieces WHERE updated_at >= $since AND discarded_at IS NULL UNION ALL SELECT handed_in_at FROM pieces WHERE handed_in_at >= $since AND discarded_at IS NULL;";
             command.Parameters.AddWithValue("$since", since);
             using var reader = command.ExecuteReader();
             while (reader.Read()) days.Add(DateOnly.FromDateTime(DateTimeOffset.FromUnixTimeMilliseconds(reader.GetInt64(0)).ToLocalTime().Date));
@@ -48,6 +49,7 @@ public sealed partial class Notebook
         const string newestReviews = """
             SELECT r.id, r.piece_id, r.band, r.created_at FROM reviews r
             WHERE r.created_at = (SELECT MAX(created_at) FROM reviews WHERE piece_id = r.piece_id)
+              AND r.piece_id IN (SELECT id FROM pieces WHERE discarded_at IS NULL)
             """;
 
         var bands = new List<BandPoint>();
