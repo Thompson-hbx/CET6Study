@@ -155,9 +155,11 @@
             <Grid>
                 <!-- Writing books: contents on the left page, the open page on the right -->
                 <Grid Visibility="{Binding IsWritingBook, Converter={StaticResource Shown}}">
+                    <!-- Fixed widths at full size; near the minimum window the contents and the margin give way, so the
+                         translation draft's two writing columns stay wide enough not to split English words. -->
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="330" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" MinWidth="250" MaxWidth="330" />
+                        <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
 
                     <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
@@ -175,7 +177,7 @@
                             <Border DockPanel.Dock="Top" BorderBrush="#A8977A" BorderThickness="0,0,0,1.5" Margin="0,18,0,0" Padding="0,0,0,6">
                                 <DockPanel>
                                     <TextBlock Text="翻找" FontSize="12" Foreground="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,10,0" />
-                                    <TextBox x:Name="SearchBox" Style="{StaticResource Bare}" Tag="标题、题目或正文 · Ctrl+F" FontSize="13"
+                                    <TextBox x:Name="SearchBox" Style="{StaticResource Bare}" Tag="标题、题目或正文" ToolTip="Ctrl+F" FontSize="13"
                                              Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="翻找" />
                                 </DockPanel>
                             </Border>
@@ -297,7 +299,7 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="0.6*" MinWidth="250" MaxWidth="300" />
                                 </Grid.ColumnDefinitions>
 
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
@@ -417,7 +419,7 @@
                                                         <ItemsControl ItemsSource="{Binding Sentences}" AutomationProperties.Name="原文句子">
                                                             <ItemsControl.ItemTemplate>
                                                                 <DataTemplate DataType="{x:Type vm:SourceSentence}">
-                                                                    <Button Style="{StaticResource Plain}" HorizontalContentAlignment="Left" Padding="0" Margin="0,0,0,2"
+                                                                    <Button Style="{StaticResource Plain}" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,0,0,2"
                                                                             Command="{Binding DataContext.SelectSentenceCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                                             CommandParameter="{Binding}" AutomationProperties.Name="{Binding Text}">
                                                                         <Border x:Name="Highlight" Padding="6,6" CornerRadius="3">
@@ -1086,7 +1088,7 @@
                                         <TextBlock Text="搬旧本子" FontSize="16" FontWeight="Bold" Margin="0,0,0,12" />
                                         <Button Style="{StaticResource LineButton}" Content="选择旧数据文件…" Click="ChooseOldFile"
                                                 IsEnabled="{Binding CanImport}" HorizontalAlignment="Left" />
-                                        <TextBlock Text="{Binding Message}" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="{StaticResource InkSoft}" />
+                                        <TextBlock Text="{Binding ImportNote}" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="{StaticResource InkSoft}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource Tape}" Background="#A6A9C4C9">

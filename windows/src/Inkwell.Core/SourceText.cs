@@ -22,7 +22,8 @@ public static class SourceText
         {
             current.Append(flat[i]);
             if (!Enders.Contains(flat[i])) continue;
-            while (i + 1 < flat.Length && Closers.Contains(flat[i + 1])) current.Append(flat[++i]);
+            // "？！" and "……。" end one sentence, not two.
+            while (i + 1 < flat.Length && (Closers.Contains(flat[i + 1]) || Enders.Contains(flat[i + 1]))) current.Append(flat[++i]);
             Add(sentences, current);
         }
         Add(sentences, current);

@@ -111,6 +111,10 @@ public sealed partial class MainViewModel : ObservableObject
 
     public bool CanImport => _notebook.IsEmpty;
 
+    /// <summary>The outcome of moving the old notebook, kept apart from <see cref="Message"/> so the import card shows only its own news.</summary>
+    [ObservableProperty]
+    public partial string ImportNote { get; set; } = "";
+
     [RelayCommand]
     private void ShowTab(Book tab) => Tab = tab;
 
@@ -130,14 +134,14 @@ public sealed partial class MainViewModel : ObservableObject
         try
         {
             var summary = OldNotesImport.Run(path, _notebook);
-            Message = $"搬好了：作文 {summary.Essays} 篇、翻译 {summary.Translations} 段（其中已交 {summary.HandedIn}），其他 {summary.SkippedOther} 条没有搬";
+            Message = ImportNote = $"搬好了：作文 {summary.Essays} 篇、翻译 {summary.Translations} 段（其中已交 {summary.HandedIn}），其他 {summary.SkippedOther} 条没有搬";
             OnPropertyChanged(nameof(CanImport));
             Tab = Book.Essays;
             OpenLatest();
         }
         catch (Exception e) when (e is NotebookException or Microsoft.Data.Sqlite.SqliteException or IOException)
         {
-            Message = e is NotebookException ? e.Message : "旧数据文件读不了，没有搬";
+            Message = ImportNote = e is NotebookException ? e.Message : "旧数据文件读不了，没有搬";
         }
     }
 

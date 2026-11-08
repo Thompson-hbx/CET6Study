@@ -58,6 +58,22 @@ public sealed class SelfCheckTest
         Assert.Equal(2, SelfCheck.EnglishSentences("It matters. Whenever it comes, people go home... "));
 
     [Fact]
+    public void NumbersAndAbbreviationsDoNotEndASentence()
+    {
+        Assert.Equal(2, SelfCheck.EnglishSentences("It costs 3.5 dollars. Mr. Smith agreed."));
+        Assert.Equal(2, SelfCheck.EnglishSentences("Cities, e.g. Beijing, grow. The U.S. is far."));
+    }
+
+    [Fact]
+    public void ReadsMoreWaysOfWritingTheRangeAndTheOpening()
+    {
+        Assert.Equal(new WordTarget(150, 200, true), SelfCheck.EssayTarget("写一篇 150—200 字的短文"));
+        Assert.Equal(new WordTarget(150, 200, true), SelfCheck.EssayTarget("150～200 words"));
+        Assert.Equal("Nowadays, more people read online.",
+            SelfCheck.RequiredOpening("You should start your essay with the sentence \"Nowadays, more people read online.\""));
+    }
+
+    [Fact]
     public void TranslationComparesSentenceCounts()
     {
         const string source = "春节是中国最重要的传统节日。每到春节，人们都会回家。除夕夜全家团聚！";

@@ -114,6 +114,31 @@ public sealed class MarkingTest : IDisposable
     }
 
     [Fact]
+    public void AQuoteNeverStartsOrEndsInsideAWord()
+    {
+        Assert.Equal([5], Placement.Locate("This is hard.", [M(1, "is")]));
+        Assert.Equal([null], Placement.Locate("He has many knowledges.", [M(1, "an")]));
+        Assert.Equal([8], Placement.Locate("Another other thing", [M(1, "other")]));
+        Assert.Equal([7], Placement.Locate("I said don't go.", [M(1, "don't")]));
+    }
+
+    [Fact]
+    public void CurlyAndStraightQuotesFindEachOther()
+    {
+        Assert.Equal([2], Placement.Locate("I don't think so.", [M(1, "don’t think")]));
+        Assert.Equal([2], Placement.Locate("I don’t think so.", [M(1, "don't think")]));
+    }
+
+    [Fact]
+    public void DeletingAWordLeavesOneSpace()
+    {
+        const string text = "It is very very good.";
+        var placed = Placement.Locate(text, [M(1, "very")]);
+        Assert.Equal("It is very good.", Placement.Apply(text, [new PlacedMark(M(1, "very"), placed[0], Decision.Taken)]));
+        Assert.Equal("It is good.", Placement.Apply("It is good indeed.", [new PlacedMark(M(1, "indeed"), 11, Decision.Taken)]));
+    }
+
+    [Fact]
     public void AppliesOnlyTakenPlacedFixes()
     {
         const string text = "a b c d";

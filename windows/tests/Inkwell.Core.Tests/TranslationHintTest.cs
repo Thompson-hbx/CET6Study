@@ -24,6 +24,10 @@ public sealed class TranslationHintTest : IDisposable
     }
 
     [Fact]
+    public void RunsOfEndMarksEndOneSentence() =>
+        Assert.Equal(["真的吗？！", "太好了……。", "走吧"], SourceText.Sentences("真的吗？！太好了……。走吧"));
+
+    [Fact]
     public void RemovesPdfLineBreaksButKeepsSpacesBetweenLatinWords()
     {
         Assert.Equal(["人工智能辅助诊断系统帮助医生识别 AI model 的早期症状。", "第二句。"],

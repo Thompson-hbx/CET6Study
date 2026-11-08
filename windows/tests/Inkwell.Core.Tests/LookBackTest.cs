@@ -76,4 +76,44 @@ public sealed class LookBackTest : IDisposable
         Assert.Equal((1, 1, 0), (look.Taken, look.Left, look.Undecided));
         Assert.Equal((2, 2, 1), (look.Words, look.WordReviewsThisWeek, look.RememberedThisWeek));
     }
+
+    [Fact]
+    public void ActiveDaysCountEveryKindOfWorkOnLocalDaysInsideTheWindow()
+    {
+        var clock = new DayClock(new DateTimeOffset(2026, 11, 1, 22, 0, 0, TimeSpan.FromHours(8)));
+        var dir = Directory.CreateTempSubdirectory("inkwell-days-");
+        try
+        {
+            using var book = Notebook.Open(Path.Combine(dir.FullName, "study.db"), clock);
+            var old = book.NewPage(PieceKind.Essay);
+            clock.Now = clock.Now.AddDays(3);
+            var page = book.NewPage(PieceKind.Essay);
+            book.Write(page.Id, "t", "task", "People enjoys it.");
+            clock.Now = clock.Now.AddDays(1);
+            book.HandIn(page.Id);
+            clock.Now = clock.Now.AddDays(1);
+            book.SaveReview(page.Id, Marks(8, ("People enjoys", "People enjoy", "must", "语法")), "t");
+            clock.Now = clock.Now.AddDays(1);
+            var card = book.AddWord("a", "b", "", null);
+            book.ReviewWord(card.Id, Recall.Remembered);
+
+            // Nov 4 (started and written), 5 (handed in), 6 (marked), 7 (words); Nov 1 is outside the four-day window.
+            Assert.Equal(4, book.LookBack(activeDayWindow: 4).ActiveDays);
+            Assert.Equal(5, book.LookBack(activeDayWindow: 14).ActiveDays);
+            Assert.NotNull(old);
+        }
+        finally
+        {
+            dir.Delete(recursive: true);
+        }
+    }
+
+    private sealed class DayClock(DateTimeOffset now) : TimeProvider
+    {
+        public DateTimeOffset Now { get; set; } = now;
+
+        public override DateTimeOffset GetUtcNow() => Now.ToUniversalTime();
+
+        public override TimeZoneInfo LocalTimeZone { get; } = TimeZoneInfo.CreateCustomTimeZone("UTC+8", TimeSpan.FromHours(8), "UTC+8", "UTC+8");
+    }
 }

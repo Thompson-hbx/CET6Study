@@ -46,7 +46,7 @@ public sealed partial class Notebook
         var card = QueryWords($"SELECT {WordColumns} FROM words WHERE id = $id;", ("$id", id)).SingleOrDefault()
             ?? throw new NotebookException("这张卡片找不到了。");
         var now = Now();
-        var (box, due) = WordSchedule.Next(card.Box, recall, now);
+        var (box, due) = WordSchedule.Next(card.Box, recall, now, _clock.LocalTimeZone);
         using var tx = _db.BeginTransaction();
         Exec(_db, "UPDATE words SET box = $box, due_at = $due, reviews = reviews + 1 WHERE id = $id;", tx,
             ("$box", box), ("$due", due.ToUnixTimeMilliseconds()), ("$id", id));

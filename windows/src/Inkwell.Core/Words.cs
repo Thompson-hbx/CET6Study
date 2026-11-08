@@ -23,23 +23,30 @@ public sealed record WordCard(
 }
 
 /// <summary>Reads "中文 → English" lines from a translation hint; other lines are skipped.</summary>
-public static class HintTerms
+public static partial class HintTerms
 {
     private static readonly string[] Arrows = ["→", "->", "=>"];
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^\d+[.、)）]\s*")]
+    private static partial System.Text.RegularExpressions.Regex ListNumber();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"\s*[（(][^()（）]*[)）]\s*$")]
+    private static partial System.Text.RegularExpressions.Regex TrailingNote();
 
     public static IReadOnlyList<(string Front, string Back)> Read(string hint)
     {
         var pairs = new List<(string, string)>();
         foreach (var raw in hint.Split('\n'))
         {
-            var line = raw.Trim().TrimStart('-', '*', '•', '·').Trim();
+            // Markdown emphasis and list numbers are formatting, not part of the term.
+            var line = ListNumber().Replace(raw.Replace("*", "").Replace("__", "").Trim().TrimStart('-', '•', '·').Trim(), "");
             var arrow = Arrows.Select(a => (Arrow: a, At: line.IndexOf(a, StringComparison.Ordinal))).Where(x => x.At > 0).OrderBy(x => x.At).FirstOrDefault();
             if (arrow.Arrow is null) continue;
             var front = line[..arrow.At].Trim();
             var back = line[(arrow.At + arrow.Arrow.Length)..].Trim();
-            // A trailing usage note in brackets stays out of the card's back.
-            var bracket = back.IndexOfAny(['（', '(']);
-            if (bracket > 0) back = back[..bracket].Trim();
+            // Only a usage note in brackets at the very end stays out of the card's back; brackets inside the
+            // phrase ("take (sth.) into account") are part of it.
+            back = TrailingNote().Replace(back, "").Trim();
             if (front.Length > 0 && back.Length > 0) pairs.Add((front, back));
         }
         return pairs;
@@ -58,10 +65,21 @@ public static class WordSchedule
 
     public static TimeSpan Gap(int box) => TimeSpan.FromDays(1 << (Math.Clamp(box, FirstBox, LastBox) - 1));
 
-    public static (int Box, DateTimeOffset Due) Next(int box, Recall recall, DateTimeOffset now) => recall switch
+    /// <summary>
+    /// Gaps of a day or more end at the start of that local day, so a card reviewed in the evening is due the
+    /// next morning of its day rather than that evening; shorter waits stay exact.
+    /// </summary>
+    public static (int Box, DateTimeOffset Due) Next(int box, Recall recall, DateTimeOffset now, TimeZoneInfo zone) => recall switch
     {
-        Recall.Remembered => (Math.Min(box + 1, LastBox), now + Gap(Math.Min(box + 1, LastBox))),
-        Recall.Fuzzy => (box, now + Gap(box) / 2),
+        Recall.Remembered => (Math.Min(box + 1, LastBox), After(now, Gap(Math.Min(box + 1, LastBox)), zone)),
+        Recall.Fuzzy => (box, After(now, Gap(box) / 2, zone)),
         _ => (FirstBox, now + RetryAfterForgetting),
     };
+
+    private static DateTimeOffset After(DateTimeOffset now, TimeSpan gap, TimeZoneInfo zone)
+    {
+        if (gap < TimeSpan.FromDays(1)) return now + gap;
+        var day = TimeZoneInfo.ConvertTime(now + gap, zone).Date;
+        return new DateTimeOffset(day, zone.GetUtcOffset(day));
+    }
 }

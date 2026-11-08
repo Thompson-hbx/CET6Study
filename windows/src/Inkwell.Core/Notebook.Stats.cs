@@ -35,15 +35,32 @@ public sealed partial class Notebook
         var essays = (int)Count("SELECT COUNT(*) FROM pieces WHERE kind = 'essay' AND handed_in_at IS NOT NULL AND discarded_at IS NULL;");
         var translations = (int)Count("SELECT COUNT(*) FROM pieces WHERE kind = 'translation' AND handed_in_at IS NOT NULL AND discarded_at IS NULL;");
 
-        // Days on which any page was written or handed in, in local time, inside the window.
-        var since = now.AddDays(-activeDayWindow).ToUnixTimeMilliseconds();
+        // Local days, today and the window's other days back, on which the learner did anything recorded: started,
+        // edited or handed in a page, had it marked, asked, took a hint or reviewed words. A page keeps only its last
+        // edit time, so the other records fill in days that a later edit would otherwise hide.
+        var zone = _clock.LocalTimeZone;
+        var firstDay = TimeZoneInfo.ConvertTime(now, zone).Date.AddDays(1 - activeDayWindow);
+        var since = new DateTimeOffset(firstDay, zone.GetUtcOffset(firstDay)).ToUnixTimeMilliseconds();
         var days = new HashSet<DateOnly>();
         using (var command = _db.CreateCommand())
         {
-            command.CommandText = "SELECT updated_at FROM pieces WHERE updated_at >= $since AND discarded_at IS NULL UNION ALL SELECT handed_in_at FROM pieces WHERE handed_in_at >= $since AND discarded_at IS NULL;";
+            command.CommandText = """
+                SELECT at FROM (
+                SELECT created_at AS at FROM pieces WHERE discarded_at IS NULL
+                UNION ALL SELECT updated_at FROM pieces WHERE discarded_at IS NULL
+                UNION ALL SELECT handed_in_at FROM pieces WHERE handed_in_at IS NOT NULL AND discarded_at IS NULL
+                UNION ALL SELECT r.created_at FROM reviews r JOIN pieces p ON p.id = r.piece_id WHERE p.discarded_at IS NULL
+                UNION ALL SELECT t.asked_at FROM talks t JOIN reviews r ON r.id = t.review_id JOIN pieces p ON p.id = r.piece_id WHERE p.discarded_at IS NULL
+                UNION ALL SELECT h.given_at FROM hints h JOIN pieces p ON p.id = h.piece_id WHERE p.discarded_at IS NULL
+                UNION ALL SELECT reviewed_at FROM word_reviews
+                ) WHERE at >= $since;
+                """;
             command.Parameters.AddWithValue("$since", since);
             using var reader = command.ExecuteReader();
-            while (reader.Read()) days.Add(DateOnly.FromDateTime(DateTimeOffset.FromUnixTimeMilliseconds(reader.GetInt64(0)).ToLocalTime().Date));
+            while (reader.Read())
+            {
+                days.Add(DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(reader.GetInt64(0)), zone).Date));
+            }
         }
 
         const string newestReviews = """

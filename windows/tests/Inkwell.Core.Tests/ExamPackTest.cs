@@ -155,6 +155,24 @@ public sealed class ExamPackTest : IDisposable
     }
 
     [Fact]
+    public void AnUntouchedDraftTakesOverACorrectedTaskAndAWrittenOneKeepsItsOwn()
+    {
+        _book.ImportPapers(ExamPackFile.Parse(Pack(Paper())));
+        var empty = _book.StartFromPaper("cet6-2030-06-15-1", PieceKind.Translation);
+        var essay = _book.StartFromPaper("cet6-2030-06-15-1", PieceKind.Essay);
+        _book.Write(essay.Id, essay.Title, essay.Task, "I have started.");
+
+        var newer = Paper(revision: 2);
+        newer["chineseText"] = "改过的原文。";
+        newer["writingPrompt"] = "A corrected essay prompt.";
+        _book.ImportPapers(ExamPackFile.Parse(Pack(newer)));
+
+        Assert.Equal("改过的原文。", _book.StartFromPaper("cet6-2030-06-15-1", PieceKind.Translation).Task);
+        Assert.Equal(empty.Id, _book.StartFromPaper("cet6-2030-06-15-1", PieceKind.Translation).Id);
+        Assert.Equal(essay.Task, _book.StartFromPaper("cet6-2030-06-15-1", PieceKind.Essay).Task);
+    }
+
+    [Fact]
     public void AfterHandingInAnotherAttemptIsANewPage()
     {
         _book.ImportPapers(ExamPackFile.Parse(Pack(Paper())));

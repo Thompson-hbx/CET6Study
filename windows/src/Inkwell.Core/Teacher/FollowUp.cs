@@ -55,7 +55,8 @@ public static class FollowUpProtocol
         foreach (var talk in earlier.Reverse())
         {
             var exchange = $"学生：{talk.Question}\n老师：{talk.Answer}";
-            if (used + exchange.Length > HistoryBudget) break;
+            // One very long exchange should not push out the shorter ones before it.
+            if (used + exchange.Length > HistoryBudget) continue;
             kept.Insert(0, exchange);
             used += exchange.Length;
         }

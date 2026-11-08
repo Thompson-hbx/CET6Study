@@ -19,10 +19,22 @@ public sealed class WordBookTest : IDisposable
     {
         Assert.Equal([1, 2, 4, 8, 16, 32], Enumerable.Range(1, 6).Select(b => WordSchedule.Gap(b).TotalDays));
         var now = DateTimeOffset.UnixEpoch;
-        Assert.Equal((3, now.AddDays(4)), WordSchedule.Next(2, Recall.Remembered, now));
-        Assert.Equal((6, now.AddDays(32)), WordSchedule.Next(6, Recall.Remembered, now));
-        Assert.Equal((4, now.AddDays(4)), WordSchedule.Next(4, Recall.Fuzzy, now));
-        Assert.Equal((1, now.AddMinutes(10)), WordSchedule.Next(5, Recall.Forgot, now));
+        var utc = TimeZoneInfo.Utc;
+        Assert.Equal((3, now.AddDays(4)), WordSchedule.Next(2, Recall.Remembered, now, utc));
+        Assert.Equal((6, now.AddDays(32)), WordSchedule.Next(6, Recall.Remembered, now, utc));
+        Assert.Equal((4, now.AddDays(4)), WordSchedule.Next(4, Recall.Fuzzy, now, utc));
+        Assert.Equal((1, now.AddMinutes(10)), WordSchedule.Next(5, Recall.Forgot, now, utc));
+    }
+
+    [Fact]
+    public void WholeDayGapsEndAtTheStartOfTheLocalDay()
+    {
+        var beijing = TimeZoneInfo.CreateCustomTimeZone("UTC+8", TimeSpan.FromHours(8), "UTC+8", "UTC+8");
+        var evening = new DateTimeOffset(2026, 11, 8, 21, 0, 0, TimeSpan.FromHours(8));
+
+        Assert.Equal(new DateTimeOffset(2026, 11, 10, 0, 0, 0, TimeSpan.FromHours(8)), WordSchedule.Next(1, Recall.Remembered, evening, beijing).Due);
+        Assert.Equal(evening.AddHours(12), WordSchedule.Next(1, Recall.Fuzzy, evening, beijing).Due);
+        Assert.Equal(evening.AddMinutes(10), WordSchedule.Next(1, Recall.Forgot, evening, beijing).Due);
     }
 
     [Fact]
@@ -83,6 +95,16 @@ public sealed class WordBookTest : IDisposable
 
         Assert.Equal(
             [("无论身在何处", "wherever they are"), ("尽量", "try one's best to"), ("团聚", "reunite with")],
+            HintTerms.Read(hint));
+    }
+
+    [Fact]
+    public void BracketsInsideThePhraseStayAndFormattingGoes()
+    {
+        const string hint = "1. 考虑 → take (sth.) into account\n**茶馆** → teahouse（名词）\n2、致力于 -> be committed to (doing) sth";
+
+        Assert.Equal(
+            [("考虑", "take (sth.) into account"), ("茶馆", "teahouse"), ("致力于", "be committed to (doing) sth")],
             HintTerms.Read(hint));
     }
 

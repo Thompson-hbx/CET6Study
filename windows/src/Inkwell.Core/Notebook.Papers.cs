@@ -111,7 +111,13 @@ public sealed partial class Notebook
             WHERE pp.paper_id = $paper AND p.kind = $kind AND p.handed_in_at IS NULL AND p.discarded_at IS NULL
             ORDER BY p.number DESC LIMIT 1;
             """, null, ("$paper", paperId), ("$kind", Stored(kind)));
-        if (draft is string id) return Get(id);
+        if (draft is string id)
+        {
+            // A later revision of the pack may have corrected the task; an untouched draft takes it over, a draft
+            // with writing on it keeps the task it was written against.
+            var open = Get(id);
+            return open.Task != task && open.Text.Trim().Length == 0 ? Write(id, open.Title, task, open.Text) : open;
+        }
         using var tx = _db.BeginTransaction();
         var page = Insert(kind, paper.PageTitle(kind), task, "", revises: null, tx);
         Link(page.Id, paperId, tx);

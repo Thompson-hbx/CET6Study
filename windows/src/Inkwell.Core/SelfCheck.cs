@@ -86,8 +86,15 @@ public static partial class SelfCheck
         return lines;
     }
 
-    /// <summary>English sentences that contain at least one word, split at . ! and ?.</summary>
-    public static int EnglishSentences(string text) => EnglishSentence().Matches(text).Count(m => Words(m.Value) > 0);
+    /// <summary>
+    /// English sentences that contain at least one word, split at . ! and ?. A point inside a number (3.5) or
+    /// after a common abbreviation (Mr., e.g., U.S.) does not end a sentence, so it cannot hide a missing one.
+    /// </summary>
+    public static int EnglishSentences(string text)
+    {
+        var plain = Abbreviation().Replace(DecimalPoint().Replace(text, ","), m => m.Value.Replace(".", ""));
+        return EnglishSentence().Matches(plain).Count(m => Words(m.Value) > 0);
+    }
 
     public static int Paragraphs(string text) =>
         text.Split('\n').Count(line => Words(line) > 0);
@@ -99,11 +106,11 @@ public static partial class SelfCheck
     [GeneratedRegex(@"[A-Za-z]+(?:['’-][A-Za-z]+)*")]
     private static partial Regex EnglishWord();
 
-    [GeneratedRegex(@"(?:at least\s+(?<min>\d{2,3})\s+words\s+but\s+no\s+more\s+than\s+(?<max>\d{2,3})\s+words)|(?:(?<min>\d{2,3})\s*(?:-|–|~|to|至|到)\s*(?<max>\d{2,3})\s*(?:words|个?词))",
+    [GeneratedRegex(@"(?:at least\s+(?<min>\d{2,3})\s+words\s+but\s+no\s+more\s+than\s+(?<max>\d{2,3})\s+words)|(?:(?<min>\d{2,3})\s*(?:-|–|—|－|~|～|to|至|到)\s*(?<max>\d{2,3})\s*(?:words|个?词|个?字))",
         RegexOptions.IgnoreCase)]
     private static partial Regex WordRange();
 
-    [GeneratedRegex(@"begins?\s+with\s+the\s+(?:following\s+)?sentence[:：]?\s*[“""](?<s>[^”""]{4,300})[”""]", RegexOptions.IgnoreCase)]
+    [GeneratedRegex(@"(?:begin|start)s?\s+(?:your\s+essay\s+)?with\s+the\s+(?:following\s+)?sentence[:：]?\s*[“""](?<s>[^”""]{4,300})[”""]", RegexOptions.IgnoreCase)]
     private static partial Regex Opening();
 
     [GeneratedRegex(@"[^.!?]+[.!?]?")]
@@ -111,4 +118,10 @@ public static partial class SelfCheck
 
     [GeneratedRegex(@"\s+")]
     private static partial Regex Spaces();
+
+    [GeneratedRegex(@"(?<=\d)\.(?=\d)")]
+    private static partial Regex DecimalPoint();
+
+    [GeneratedRegex(@"\b(?:Mr|Mrs|Ms|Dr|Prof|St|vs|etc|e\.g|i\.e|U\.S|U\.K|a\.m|p\.m)\.", RegexOptions.IgnoreCase)]
+    private static partial Regex Abbreviation();
 }
