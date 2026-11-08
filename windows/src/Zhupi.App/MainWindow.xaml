@@ -101,21 +101,32 @@
                                 </ListBox.InputBindings>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type vm:TocLine}">
-                                        <!-- A context menu sits outside the visual tree, so the window's model travels in through Tag. -->
-                                        <DockPanel Background="Transparent" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
-                                            <DockPanel.ContextMenu>
-                                                <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-                                                    <MenuItem Header="放进废纸篓" Command="{Binding DiscardCommand}"
-                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                              Visibility="{Binding ShowingTrash, Converter={StaticResource Hidden}}" />
-                                                    <MenuItem Header="放回目录" Command="{Binding RestoreCommand}"
-                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                              Visibility="{Binding ShowingTrash, Converter={StaticResource Shown}}" />
-                                                    <MenuItem Header="彻底删除…" Command="{Binding PurgeCommand}"
-                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                              Visibility="{Binding ShowingTrash, Converter={StaticResource Shown}}" />
-                                                </ContextMenu>
-                                            </DockPanel.ContextMenu>
+                                        <DockPanel>
+                                            <!-- Row actions: hidden (not collapsed) so the status column does not jump when they appear. -->
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                <StackPanel.Style>
+                                                    <Style TargetType="StackPanel">
+                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Style>
+                                                <Button Style="{StaticResource RowIcon}" Content="&#xE7A7;" ToolTip="放回目录" AutomationProperties.Name="放回目录"
+                                                        Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
+                                                        Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Shown}}" />
+                                                <Button Style="{StaticResource RowIcon}" Content="&#xE74D;" ToolTip="彻底删除" AutomationProperties.Name="彻底删除"
+                                                        Command="{Binding DataContext.PurgeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
+                                                        Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Shown}}" />
+                                                <Button Style="{StaticResource RowIcon}" Content="&#xE74D;" ToolTip="放进废纸篓" AutomationProperties.Name="放进废纸篓"
+                                                        Command="{Binding DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
+                                                        Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Hidden}}" />
+                                            </StackPanel>
                                             <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource Serif}"
                                                        Foreground="{StaticResource Muted}" Width="28" />
                                             <TextBlock DockPanel.Dock="Right" Text="{Binding Status}" FontSize="12" Foreground="{StaticResource Muted}"
