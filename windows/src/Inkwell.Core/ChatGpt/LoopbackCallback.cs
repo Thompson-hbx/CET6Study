@@ -70,9 +70,16 @@ public sealed class LoopbackCallback : IDisposable
             await Respond(stream, "400 Bad Request", "这不是墨水瓶这次登录的回信，已经忽略。", cancel);
             return null;
         }
-        await Respond(stream, "200 OK", query.ContainsKey("error")
-            ? "ChatGPT 登录没有完成。可以关掉这个页面，回到墨水瓶再试一次。"
-            : "登录信息已经交给墨水瓶，可以关掉这个页面，回到墨水瓶了。", cancel);
+        try
+        {
+            await Respond(stream, "200 OK", query.ContainsKey("error")
+                ? "ChatGPT 登录没有完成。可以关掉这个页面，回到墨水瓶再试一次。"
+                : "登录信息已经交给墨水瓶，可以关掉这个页面，回到墨水瓶了。", cancel);
+        }
+        catch (Exception e) when (e is IOException or SocketException)
+        {
+            // The code is single-use and already here; a browser that left early must not cost the sign-in.
+        }
         return query;
     }
 

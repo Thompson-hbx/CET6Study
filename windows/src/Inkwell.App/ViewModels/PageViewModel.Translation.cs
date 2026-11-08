@@ -144,6 +144,7 @@ public sealed partial class PageViewModel
                 jsonReply: false, cancel);
             _book.SaveHint(_page.Id, sentence.Number, sentence.Text, kind, text, _teacher.Label);
             if (SelectedSentence == sentence) LoadHints();
+            if (_closed) Say($"第 {sentence.Number} 句的提示回来了，已经记下");
         });
     }
 }

@@ -16,7 +16,8 @@ public sealed record Dimension(string Name, string Level);
 public sealed record Mark(int Number, string Quote, string Fix, string Why, Severity Severity, string Kind);
 
 /// <summary>What the teacher handed back for one page, as checked here before anything is stored.</summary>
-public sealed record Marking(int Band, string Verdict, IReadOnlyList<Dimension> Dimensions, IReadOnlyList<Mark> Marks);
+/// <remarks><paramref name="Dropped"/> counts marks left out because they broke the shape, so the learner can be told.</remarks>
+public sealed record Marking(int Band, string Verdict, IReadOnlyList<Dimension> Dimensions, IReadOnlyList<Mark> Marks, int Dropped = 0);
 
 /// <summary>Writes the request for a review and reads the reply. The wording and the reply shape are this app's own.</summary>
 public static class MarkingProtocol
@@ -46,7 +47,7 @@ public static class MarkingProtocol
                   "quote": "从学生文字中原样复制的一小段，通常 2 到 12 个词，大小写和标点都必须一致",
                   "fix": "用来替换 quote 的写法，只改必要的部分",
                   "why": "中文说明为什么这样改，不超过 40 字",
-                  "severity": "must（错误，必须改）或 maybe（没错，但可以写得更好）",
+                  "severity": "只写 must 或 maybe 这一个词：must 是错误、必须改，maybe 是没错但可以写得更好",
                   "kind": "{{kinds}} 之一"
                 }
               ]
@@ -89,6 +90,7 @@ public static class MarkingProtocol
             }
 
             var marks = new List<Mark>();
+            var dropped = 0;
             if (root.TryGetProperty("marks", out var list) && list.ValueKind == JsonValueKind.Array)
             {
                 foreach (var m in list.EnumerateArray())
@@ -99,23 +101,20 @@ public static class MarkingProtocol
                     // fix written out on purpose still means "delete this".
                     var quote = Text(m, "quote", int.MaxValue);
                     var fix = Text(m, "fix", int.MaxValue);
-                    if (quote.Length == 0 || quote.Length > MaxQuote || fix.Length > MaxQuote || !HasText(m, "fix")) continue;
-                    Severity severity;
-                    switch (Text(m, "severity", 10))
+                    // Models sometimes echo the explanation after the word ("must（错误…）"), so only the leading word counts.
+                    var level = Text(m, "severity", 40).ToLowerInvariant();
+                    Severity? severity = level.StartsWith("must", StringComparison.Ordinal) ? Severity.Must
+                        : level.StartsWith("maybe", StringComparison.Ordinal) ? Severity.Maybe
+                        : null;
+                    if (quote.Length == 0 || quote.Length > MaxQuote || fix.Length > MaxQuote || !HasText(m, "fix") || severity is null)
                     {
-                        case "must":
-                            severity = Severity.Must;
-                            break;
-                        case "maybe":
-                            severity = Severity.Maybe;
-                            break;
-                        default:
-                            continue;
+                        dropped++;
+                        continue;
                     }
-                    marks.Add(new Mark(marks.Count + 1, quote, fix, Text(m, "why", 200), severity, Text(m, "kind", 10)));
+                    marks.Add(new Mark(marks.Count + 1, quote, fix, Text(m, "why", 200), severity.Value, Text(m, "kind", 10)));
                 }
             }
-            return new Marking(band, verdict, dimensions, marks);
+            return new Marking(band, verdict, dimensions, marks, dropped);
         }
         catch (JsonException)
         {

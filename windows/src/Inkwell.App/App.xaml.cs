@@ -48,20 +48,39 @@ public partial class App : Application
         if (packs.ChangedAnything) model.Message = PackReport(packs);
         if (adopted) model.Message = $"旧本子已从 {DataFolder.FormerName} 文件夹复制过来，原文件夹保留不动。" + (packs.ChangedAnything ? " " + model.Message : "");
         DispatcherUnhandledException += (_, args) => Unexpected(model, directory, args);
+        // Logging off or shutting down does not raise Window.Closing, so the last pause of typing is saved here.
+        SessionEnding += (_, _) => model.SaveOpenPage();
         new MainWindow { DataContext = model }.Show();
     }
 
+    private const int RepeatLimit = 3;
+    private static readonly TimeSpan RepeatWindow = TimeSpan.FromSeconds(30);
+    private readonly Queue<DateTimeOffset> _recentErrors = new();
     private bool _reporting;
 
     /// <summary>
     /// The last stop for an error no handler expected: closing the window would lose what is being typed, so the
-    /// open page is saved, the details go to errors.log beside the notebook, and the learner is told.
+    /// open page is saved, the details go to errors.log beside the notebook, and the learner is told. An error that
+    /// keeps coming back (from layout or a timer, say) would trap the learner in dialogs, so then the app closes.
     /// </summary>
     private void Unexpected(MainViewModel model, string directory, DispatcherUnhandledExceptionEventArgs args)
     {
         args.Handled = true;
+        var log = Path.Combine(directory, "errors.log");
+        try
+        {
+            File.AppendAllText(log, $"{DateTimeOffset.Now:O}{Environment.NewLine}{args.Exception}{Environment.NewLine}{Environment.NewLine}");
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            log = "（日志也没写上）";
+        }
         // The dialog pumps messages, so a repeating error must not stack dialogs on top of each other.
         if (_reporting) return;
+        var now = DateTimeOffset.Now;
+        _recentErrors.Enqueue(now);
+        while (now - _recentErrors.Peek() > RepeatWindow) _recentErrors.Dequeue();
+        var repeating = _recentErrors.Count >= RepeatLimit;
         _reporting = true;
         try
         {
@@ -75,17 +94,8 @@ public partial class App : Application
                 // Whatever broke may also break saving; the dialog below then says the text may not be stored.
                 saved = false;
             }
-            var log = Path.Combine(directory, "errors.log");
-            try
-            {
-                File.AppendAllText(log, $"{DateTimeOffset.Now:O}{Environment.NewLine}{args.Exception}{Environment.NewLine}{Environment.NewLine}");
-            }
-            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-            {
-                log = "（日志也没写上）";
-            }
             MessageBox.Show(
-                $"出了一个没想到的错误：{args.Exception.Message}\n\n" +
+                (repeating ? "同一类错误接连出现，墨水瓶要先关掉。" : "出了一个没想到的错误。") + $"\n{args.Exception.Message}\n\n" +
                 (saved ? "正在写的内容已经记在本子上。" : "正在写的内容可能没记上，请先把它复制出来。") +
                 $"\n错误详情：{log}",
                 "墨水瓶", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -94,6 +104,7 @@ public partial class App : Application
         {
             _reporting = false;
         }
+        if (repeating) Shutdown(1);
     }
 
     private static string PackReport(FolderImport packs)

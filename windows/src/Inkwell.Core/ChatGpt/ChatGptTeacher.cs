@@ -130,7 +130,8 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
                     case "response.incomplete":
                         throw new ChatGptException("ChatGPT 没写完就停了（回复不完整），没有保存；可以换个模型或缩短文字再请一次。");
                     case "response.failed":
-                        throw Explain(root.TryGetProperty("response", out var r) && r.TryGetProperty("error", out var e) ? Text(e, "code") : null, 0);
+                        throw Explain(root.TryGetProperty("response", out var r) && r.ValueKind == JsonValueKind.Object && r.TryGetProperty("error", out var e)
+                            ? Text(e, "code") : null, 0);
                     case "error":
                         throw Explain(Text(root, "code") is { Length: > 0 } c ? c : root.TryGetProperty("error", out var e2) ? Text(e2, "code") : null, 0);
                 }
@@ -158,7 +159,15 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
                 // Not cancelled by the learner's stop: the server may already have rotated the refresh token,
                 // and dropping its answer would leave only a spent token and force a new sign-in.
                 var renewed = await auth.RefreshAsync(latest, CancellationToken.None);
-                vault.Save(renewed);
+                try
+                {
+                    vault.Save(renewed);
+                }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+                {
+                    // The old refresh token is spent now, so the learner has to know the renewal was not kept.
+                    throw new ChatGptException("ChatGPT 登录续期了，但没能存到这台电脑上，这次没有发请求；请在设置里重新登录。");
+                }
                 return renewed;
             }
             catch (ChatGptException e) when (e.SignInAgain)

@@ -563,7 +563,12 @@
                                             <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" CornerRadius="6" Padding="10,8">
                                                 <TextBox Style="{StaticResource Writing}" Tag="写下想问老师的…" FontSize="14" MinHeight="44" MaxHeight="120"
                                                          VerticalScrollBarVisibility="Auto" MaxLength="1000"
-                                                         Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="问题" />
+                                                         Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="问题">
+                                                    <!-- Inside the question box Ctrl+Enter sends the question, not the window's 重写一稿. -->
+                                                    <TextBox.InputBindings>
+                                                        <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding SendQuestionCommand}" />
+                                                    </TextBox.InputBindings>
+                                                </TextBox>
                                             </Border>
                                             <DockPanel Margin="0,8,0,0">
                                                 <Button DockPanel.Dock="Right" Style="{StaticResource InkButton}" Content="问" Padding="18,6"

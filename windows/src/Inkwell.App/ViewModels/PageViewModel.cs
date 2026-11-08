@@ -161,9 +161,16 @@ public sealed partial class PageViewModel : ObservableObject
         }
     }
 
+    /// <summary>A request to the teacher is on its way; the page is kept alive until it settles.</summary>
+    public bool IsBusy => IsAsking || IsAnswering || IsHinting;
+
+    /// <summary>Raised when the last running request of this page has finished, been stopped or failed.</summary>
+    public event Action? Settled;
+
     /// <summary>
-    /// Called when the window turns away from this page: an answer arriving later would land on a page nobody
-    /// is looking at (and invite a second paid request from the new one), so requests still running are stopped.
+    /// Called when the window turns away from this page. A request still running is already being paid for, so it
+    /// keeps going and stores its answer on this page; the window keeps this view model until <see cref="Settled"/>
+    /// and shows it again if the learner comes back, so no second request can start meanwhile.
     /// </summary>
     public void Close()
     {
@@ -171,6 +178,15 @@ public sealed partial class PageViewModel : ObservableObject
         _pause.Stop();
         Saved = null;
         Turned = null;
+    }
+
+    /// <summary>The page is shown again after <see cref="Close"/>.</summary>
+    public void Reopen() => _closed = false;
+
+    /// <summary>The page is gone from the notebook, so nothing could be stored: stop whatever still runs.</summary>
+    public void Abandon()
+    {
+        Close();
         _asking?.Cancel();
         _answering?.Cancel();
         _hinting?.Cancel();
@@ -189,17 +205,21 @@ public sealed partial class PageViewModel : ObservableObject
             var reply = await teacher.AskAsync(
                 MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), jsonReply: true,
                 cancel);
-            var review = _book.SaveReview(_page.Id, MarkingProtocol.Read(reply), _teacher.Label);
+            var marking = MarkingProtocol.Read(reply);
+            var review = _book.SaveReview(_page.Id, marking, _teacher.Label);
             ShowReview(review);
-            _say($"老师批完了：{review.Marks.Count} 处批注");
+            Say($"老师批完了：{review.Marks.Count} 处批注" + (marking.Dropped > 0 ? $"；另有 {marking.Dropped} 处写得不合格式，没有收" : ""));
             Saved?.Invoke();
         });
     }
 
+    // While the learner is on another page, say which page a late answer belongs to.
+    private void Say(string text) => _say(_closed ? $"No.{_page.Number:00} 那一页：{text}" : text);
+
     /// <summary>
-    /// One paid request to the configured teacher: <paramref name="work"/> runs once, a stop or a page change
-    /// cancels it, and failures become a message; whatever <paramref name="work"/> stores happens only after the
-    /// full reply arrived.
+    /// One paid request to the configured teacher: <paramref name="work"/> runs once, only a stop cancels it,
+    /// and failures become a message; whatever <paramref name="work"/> stores happens only after the full reply
+    /// arrived.
     /// </summary>
     private async Task UseTeacher(Action<bool> busy, Action<CancellationTokenSource?> keep, string stopped, Func<ITeacher, CancellationToken, Task> work)
     {
@@ -223,17 +243,18 @@ public sealed partial class PageViewModel : ObservableObject
         }
         catch (OperationCanceledException)
         {
-            _say(_closed ? "换了一页，刚才那次请求已经停下，没有保存" : stopped);
+            Say(stopped);
         }
         catch (Exception e) when (e is TeacherException or NotebookException or Inkwell.Core.ChatGpt.ChatGptException)
         {
-            _say(e.Message);
+            Say(e.Message);
         }
         finally
         {
             keep(null);
             busy(false);
         }
+        if (!IsBusy) Settled?.Invoke();
     }
 
     [RelayCommand]

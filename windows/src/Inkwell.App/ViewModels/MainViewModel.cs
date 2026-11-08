@@ -23,6 +23,7 @@ public sealed partial class MainViewModel : ObservableObject
 {
     private readonly Notebook _notebook;
     private readonly TeacherSettings _teacher;
+    private readonly Dictionary<string, PageViewModel> _waiting = [];
     private bool _syncing;
 
     public MainViewModel(Notebook notebook, string dataFile, TeacherSettings teacher)
@@ -177,9 +178,20 @@ public sealed partial class MainViewModel : ObservableObject
     {
         if (line is null || !ShowingTrash) return;
         if (!Confirm($"彻底删除「{line.Title}」？它的批改、问答和翻译提示会一起删掉，不能恢复。")) return;
-        // Stop the open page first so its pending save cannot write to a page that no longer exists.
-        if (line.Id == Page?.Id) Page?.Close();
-        _notebook.Purge(line.Id);
+        // Write the pending pause now, so no save is left to land on a page that no longer exists.
+        if (line.Id == Page?.Id) Page?.Save();
+        try
+        {
+            _notebook.Purge(line.Id);
+        }
+        catch (NotebookException e)
+        {
+            Message = e.Message;
+            return;
+        }
+        // Nothing a running request brings back could be stored any more.
+        if (line.Id == Page?.Id) Page?.Abandon();
+        if (_waiting.Remove(line.Id, out var waiting)) waiting.Abandon();
         Message = $"「{line.Title}」已彻底删除";
         LeaveTrashIfEmpty(line.Id);
     }
@@ -258,7 +270,7 @@ public sealed partial class MainViewModel : ObservableObject
         var latest = (ShowingTrash ? _notebook.Trash(Kind) : _notebook.Contents(Kind)).FirstOrDefault();
         if (latest is null)
         {
-            Page?.Close();
+            Leave(Page);
             Page = null;
             Refresh();
         }
@@ -270,12 +282,38 @@ public sealed partial class MainViewModel : ObservableObject
 
     private void Show(Piece piece)
     {
-        var page = new PageViewModel(_notebook, piece, _teacher, text => Message = text, text => Confirm(text));
+        // Reopening the page that is waiting for the teacher: keep that view, so its answer still shows up here
+        // and the buttons stay disabled instead of offering a second paid request.
+        if (Page is { IsBusy: true } current && current.Id == piece.Id)
+        {
+            Refresh();
+            return;
+        }
+        if (_waiting.Remove(piece.Id, out var page))
+        {
+            page.Reopen();
+        }
+        else
+        {
+            page = new PageViewModel(_notebook, piece, _teacher, text => Message = text, text => Confirm(text));
+            page.Settled += () =>
+            {
+                if (Page != page) _waiting.Remove(page.Id);
+            };
+        }
         page.Saved += Refresh;
         page.Turned += Show;
-        Page?.Close();
+        Leave(Page);
         Page = page;
         Refresh();
+    }
+
+    /// <summary>A page left while its request runs is kept until the answer is stored, see <see cref="PageViewModel.Close"/>.</summary>
+    private void Leave(PageViewModel? page)
+    {
+        if (page is null) return;
+        page.Close();
+        if (page.IsBusy) _waiting[page.Id] = page;
     }
 
     private void Refresh()

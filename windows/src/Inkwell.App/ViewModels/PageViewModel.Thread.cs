@@ -102,6 +102,7 @@ public sealed partial class PageViewModel
             OnPropertyChanged(nameof(ThreadIsEmpty));
             // Keep a next question the learner started typing while waiting.
             if (Question == sent) Question = "";
+            if (_closed) Say("老师回答了你的问题，已经记下");
         });
     }
 

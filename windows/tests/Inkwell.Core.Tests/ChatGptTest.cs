@@ -325,6 +325,24 @@ public sealed class ChatGptTest : IDisposable
     }
 
     [Fact]
+    public async Task AFailedEventWithoutAResponseObjectIsStillAnError() =>
+        await Assert.ThrowsAsync<ChatGptException>(() =>
+            ChatGptTeacher.ReadStream(new StringReader("data: {\"type\":\"response.failed\",\"response\":null}\n\n"), CancellationToken.None));
+
+    [Fact]
+    public async Task ARenewalThatCannotBeStoredSendsNothing()
+    {
+        var vault = new MemoryVault { Session = Session() with { ExpiresAt = _clock.GetUtcNow().AddMinutes(2) }, FailSave = true };
+        var api = new FakeAuth(_ => Json(new { access_token = "access-2", refresh_token = "refresh-2", expires_in = 3600, scope = "chatgpt.tokens.use.direct" }), _key);
+        var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock), vault, _clock, "m");
+
+        var error = await Assert.ThrowsAsync<ChatGptException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+
+        Assert.Contains("没能存到", error.Message);
+        Assert.Empty(api.Calls);
+    }
+
+    [Fact]
     public async Task AStreamThatGoesSilentStopsWithAnError()
     {
         var error = await Assert.ThrowsAsync<ChatGptException>(() =>
@@ -458,7 +476,9 @@ public sealed class ChatGptTest : IDisposable
 
         public ChatGptSession? Load() => Session;
 
-        public void Save(ChatGptSession session) => Session = session;
+        public bool FailSave { get; init; }
+
+        public void Save(ChatGptSession session) => Session = FailSave ? throw new IOException("disk full") : session;
 
         public void Clear() => Session = null;
     }

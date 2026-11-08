@@ -71,19 +71,21 @@ public sealed class MarkingTest : IDisposable
     }
 
     [Fact]
-    public void DropsAMarkWithoutAFixOrAKnownSeverityButKeepsADeliberateDeletion()
+    public void DropsAMarkWithoutAFixOrAKnownSeverityAndCountsIt()
     {
         const string reply = """
             {"band": 8, "marks": [
               {"quote": "no fix", "severity": "must"},
               {"quote": "odd severity", "fix": "x", "severity": "critical"},
-              {"quote": " very", "fix": "", "severity": "maybe"}
+              {"quote": " very", "fix": "", "severity": "maybe"},
+              {"quote": "echoed", "fix": "e", "severity": "Must（错误，必须改）"}
             ]}
             """;
 
-        var mark = Assert.Single(MarkingProtocol.Read(reply).Marks);
+        var marking = MarkingProtocol.Read(reply);
 
-        Assert.Equal(("very", "", Severity.Maybe), (mark.Quote, mark.Fix, mark.Severity));
+        Assert.Equal(2, marking.Dropped);
+        Assert.Equal([("very", "", Severity.Maybe), ("echoed", "e", Severity.Must)], marking.Marks.Select(m => (m.Quote, m.Fix, m.Severity)));
     }
 
     [Fact]
