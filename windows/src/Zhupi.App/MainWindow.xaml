@@ -7,7 +7,7 @@
         xmlns:teacher="clr-namespace:Zhupi.Core.Teacher;assembly=Zhupi.Core"
         Title="朱批" Icon="Assets/zhupi.ico" Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         WindowStartupLocation="CenterScreen" Background="{StaticResource Desk}"
-        FontFamily="{StaticResource Sans}" FontSize="14" Foreground="{StaticResource Ink}"
+        FontFamily="{StaticResource Print}" FontSize="14" Foreground="{StaticResource Ink}"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewPageCommand}" />
@@ -127,7 +127,7 @@
                                                         Command="{Binding DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
                                                         Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Hidden}}" />
                                             </StackPanel>
-                                            <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource Serif}"
+                                            <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource Print}"
                                                        Foreground="{StaticResource Muted}" Width="28" />
                                             <TextBlock DockPanel.Dock="Right" Text="{Binding Status}" FontSize="12" Foreground="{StaticResource Muted}"
                                                        Margin="8,0,0,0" VerticalAlignment="Center" />
@@ -183,7 +183,7 @@
                             <Border DockPanel.Dock="Bottom" Height="52" Background="{StaticResource Paper}" BorderBrush="{StaticResource HeaderLine}"
                                     BorderThickness="0,2,0,0" Padding="34,0" CornerRadius="0,0,14,0">
                                 <DockPanel VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding WordCount, StringFormat='{}{0} 词'}" FontFamily="{StaticResource HandLatin}" FontSize="20"
+                                    <TextBlock Text="{Binding WordCount, StringFormat='{}{0} 词'}" FontFamily="{StaticResource Hand}" FontSize="20"
                                                VerticalAlignment="Center" />
                                     <Grid Width="300" Height="16" Margin="18,0,12,0" VerticalAlignment="Center"
                                           Visibility="{Binding IsEssay, Converter={StaticResource Shown}}">
@@ -222,7 +222,7 @@
                                                     </Border.Effect>
                                                     <StackPanel>
                                                         <TextBlock Text="{Binding TaskLabel}" FontSize="12" FontWeight="Bold" Margin="0,0,0,8" />
-                                                        <TextBox Style="{StaticResource Writing}" Tag="{Binding TaskHint}" FontFamily="{StaticResource Serif}"
+                                                        <TextBox Style="{StaticResource Writing}" Tag="{Binding TaskHint}" FontFamily="{StaticResource Print}"
                                                                  FontSize="15" Foreground="{StaticResource InkSoft}" MinHeight="44" MaxLength="20000"
                                                                  Text="{Binding Task, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsHandedIn}"
                                                                  AutomationProperties.Name="{Binding TaskLabel}" />
@@ -238,18 +238,18 @@
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding ReferenceHeading}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource Saved}" />
                                                     <TextBox Style="{StaticResource Writing}" IsReadOnly="True" Text="{Binding Reference, Mode=OneWay}"
-                                                             FontFamily="{StaticResource Serif}" FontSize="17" Foreground="{StaticResource InkSoft}"
+                                                             FontFamily="{StaticResource Print}" FontSize="17" Foreground="{StaticResource InkSoft}"
                                                              TextBlock.LineHeight="30" Margin="0,8,0,10" AutomationProperties.Name="{Binding ReferenceHeading}" />
                                                     <TextBlock Text="{Binding ReferenceSource}" FontSize="11" Foreground="{StaticResource Muted}" TextWrapping="Wrap" />
                                                 </StackPanel>
                                             </Border>
 
-                                            <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Title}"
+                                            <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Print}"
                                                      FontSize="24" FontWeight="Bold" Margin="0,0,0,8" MaxLength="200" TextWrapping="Wrap"
                                                      Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsHandedIn}"
                                                      AutomationProperties.Name="标题" />
                                             <TextBox Style="{StaticResource Writing}" Tag="{Binding TextHint}" Background="{StaticResource RuledPaper}"
-                                                     FontFamily="{StaticResource Serif}" FontSize="20" MinHeight="480" MaxLength="30000"
+                                                     FontFamily="{StaticResource Print}" FontSize="20" MinHeight="480" MaxLength="30000"
                                                      TextBlock.LineHeight="40" TextBlock.LineStackingStrategy="BlockLineHeight"
                                                      Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                                                      Visibility="{Binding IsDraft, Converter={StaticResource Shown}}"
@@ -257,7 +257,7 @@
                                             <!-- A handed-in page is read, not edited: the teacher's marks are drawn on the text. -->
                                             <Grid Visibility="{Binding IsHandedIn, Converter={StaticResource Shown}}">
                                                 <TextBlock local:MarkedText.Pieces="{Binding Pieces}" Background="{StaticResource RuledPaper}"
-                                                           FontFamily="{StaticResource Serif}" FontSize="20" MinHeight="480" TextWrapping="Wrap"
+                                                           FontFamily="{StaticResource Print}" FontSize="20" MinHeight="480" TextWrapping="Wrap"
                                                            LineHeight="40" LineStackingStrategy="BlockLineHeight" Padding="2,0,0,0"
                                                            AutomationProperties.Name="正文与批注" />
                                                 <Border Width="130" Height="130" CornerRadius="65" BorderBrush="{StaticResource RedPen}" BorderThickness="3"
@@ -311,7 +311,7 @@
                                                 <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="14,12"
                                                         Visibility="{Binding IsEditingSource, Converter={StaticResource Shown}}">
                                                     <TextBox Style="{StaticResource Writing}" Tag="把要翻译的中文段落贴在这里，贴好后点「改好了」…"
-                                                             FontFamily="{StaticResource Chinese}" FontSize="16" VerticalScrollBarVisibility="Auto" MaxLength="20000"
+                                                             FontFamily="{StaticResource Print}" FontSize="16" VerticalScrollBarVisibility="Auto" MaxLength="20000"
                                                              Text="{Binding Task, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="中文原文" />
                                                 </Border>
                                                 <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="10,8"
@@ -328,9 +328,9 @@
                                                                             CommandParameter="{Binding}" AutomationProperties.Name="{Binding Text}">
                                                                         <Border x:Name="Highlight" Padding="6,6" CornerRadius="3">
                                                                             <DockPanel>
-                                                                                <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource HandLatin}"
+                                                                                <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource Hand}"
                                                                                            FontSize="16" Foreground="{StaticResource Muted}" Width="24" />
-                                                                                <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Chinese}" FontSize="16"
+                                                                                <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Print}" FontSize="16"
                                                                                            TextWrapping="Wrap" LineHeight="28" />
                                                                             </DockPanel>
                                                                         </Border>
@@ -352,12 +352,12 @@
                                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                         <Border Margin="28,0,0,0" BorderBrush="{StaticResource MarginLine}" BorderThickness="2,0,0,0" Padding="28,18,22,24">
                                             <StackPanel>
-                                                <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Title}"
+                                                <TextBox Style="{StaticResource Bare}" Tag="{Binding TitleHint}" FontFamily="{StaticResource Print}"
                                                          FontSize="20" FontWeight="Bold" Margin="0,0,0,8" MaxLength="200" TextWrapping="Wrap"
                                                          Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="标题" />
                                                 <TextBlock Text="{Binding TranslatedCount}" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,0,0,8" />
                                                 <TextBox Style="{StaticResource Writing}" Tag="{Binding TextHint}" Background="{StaticResource RuledPaper}"
-                                                         FontFamily="{StaticResource Serif}" FontSize="20" MinHeight="480" MaxLength="30000"
+                                                         FontFamily="{StaticResource Print}" FontSize="20" MinHeight="480" MaxLength="30000"
                                                          TextBlock.LineHeight="40" TextBlock.LineStackingStrategy="BlockLineHeight"
                                                          Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="译文" />
                                             </StackPanel>
@@ -395,7 +395,7 @@
                                                                 </DockPanel>
                                                                 <TextBlock Text="{Binding Why}" FontFamily="{StaticResource Hand}" FontSize="18" TextWrapping="Wrap"
                                                                            LineHeight="25" Foreground="{StaticResource RedPen}" Margin="0,4,0,4" />
-                                                                <TextBlock TextWrapping="Wrap" FontFamily="{StaticResource Serif}" FontSize="14">
+                                                                <TextBlock TextWrapping="Wrap" FontFamily="{StaticResource Print}" FontSize="14">
                                                                     <Run Text="{Binding Quote, Mode=OneWay}" TextDecorations="Strikethrough" Foreground="#9A8F7C" />
                                                                     <Run Text=" → " Foreground="{StaticResource Muted}" />
                                                                     <Run Text="{Binding Fix, Mode=OneWay}" Foreground="#2F5A2A" />
@@ -446,7 +446,7 @@
                                             <TextBlock Text="{Binding ThreadTitle}" FontFamily="{StaticResource Hand}" FontSize="20"
                                                        Foreground="{StaticResource RedPen}" HorizontalAlignment="Right" />
                                         </DockPanel>
-                                        <TextBlock DockPanel.Dock="Top" Text="{Binding ThreadQuote}" FontFamily="{StaticResource Serif}" FontSize="13"
+                                        <TextBlock DockPanel.Dock="Top" Text="{Binding ThreadQuote}" FontFamily="{StaticResource Print}" FontSize="13"
                                                    Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,0,0,10" />
 
                                         <!-- Question box -->
@@ -524,7 +524,7 @@
                                             </Border.Effect>
                                             <StackPanel>
                                                 <TextBlock Text="{Binding SelectedHeading}" FontWeight="Bold" Foreground="#23383C" />
-                                                <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Chinese}" FontSize="13" Foreground="#23383C"
+                                                <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Print}" FontSize="13" Foreground="#23383C"
                                                            TextWrapping="Wrap" Margin="0,6,0,0" />
                                                 <UniformGrid Columns="2" Margin="0,10,0,0">
                                                     <Button Style="{StaticResource InkButton}" Background="#23383C" Content="难词怎么译" Padding="0,6" Margin="0,0,4,0"
@@ -593,17 +593,17 @@
                             <TextBlock Text="这阵子" FontFamily="{StaticResource Hand}" FontSize="30" />
                             <UniformGrid Columns="3" Margin="0,22,0,0">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Data.EssaysHandedIn}" FontFamily="{StaticResource HandLatin}" FontSize="40"
+                                    <TextBlock Text="{Binding Data.EssaysHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
                                                Foreground="{StaticResource RedPen}" />
                                     <TextBlock Text="篇作文交了" Foreground="{StaticResource Muted}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Data.TranslationsHandedIn}" FontFamily="{StaticResource HandLatin}" FontSize="40"
+                                    <TextBlock Text="{Binding Data.TranslationsHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
                                                Foreground="#2D4F7C" />
                                     <TextBlock Text="段翻译交了" Foreground="{StaticResource Muted}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Data.ActiveDays}" FontFamily="{StaticResource HandLatin}" FontSize="40" />
+                                    <TextBlock Text="{Binding Data.ActiveDays}" FontFamily="{StaticResource Hand}" FontSize="40" />
                                     <TextBlock Text="天动过笔（近两周）" Foreground="{StaticResource Muted}" />
                                 </StackPanel>
                             </UniformGrid>
@@ -622,7 +622,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type vm:BandBar}">
                                             <StackPanel Width="40" Margin="0,0,8,0" VerticalAlignment="Bottom" ToolTip="{Binding Tip}">
-                                                <TextBlock Text="{Binding Band}" FontFamily="{StaticResource HandLatin}" FontSize="14"
+                                                <TextBlock Text="{Binding Band}" FontFamily="{StaticResource Hand}" FontSize="14"
                                                            HorizontalAlignment="Center" />
                                                 <Rectangle x:Name="Bar" Height="{Binding Height}" Fill="{StaticResource RedPen}" Opacity="0.85"
                                                            RadiusX="2" RadiusY="2" Margin="6,2,6,0" />
@@ -663,11 +663,11 @@
                                         <Border BorderBrush="#E9C7C1" BorderThickness="0,0,0,1" Padding="0,10">
                                             <StackPanel>
                                                 <DockPanel>
-                                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Count}" FontFamily="{StaticResource HandLatin}" FontSize="18"
+                                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Count}" FontFamily="{StaticResource Hand}" FontSize="18"
                                                                Foreground="{StaticResource RedPen}" />
                                                     <TextBlock Text="{Binding Kind}" FontFamily="{StaticResource Hand}" FontSize="22" />
                                                 </DockPanel>
-                                                <TextBlock Text="{Binding Example}" FontFamily="{StaticResource Serif}" FontSize="14"
+                                                <TextBlock Text="{Binding Example}" FontFamily="{StaticResource Print}" FontSize="14"
                                                            Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,4,0,0" />
                                             </StackPanel>
                                         </Border>
@@ -736,7 +736,7 @@
                                                        Foreground="{StaticResource RedPen}" Width="34" Margin="8,0,0,0" VerticalAlignment="Center" />
                                             <TextBlock DockPanel.Dock="Right" Text="待校对" FontSize="11" Foreground="{StaticResource Amber}" Margin="6,0,0,0"
                                                        VerticalAlignment="Center" Visibility="{Binding Unreviewed, Converter={StaticResource Shown}}" />
-                                            <TextBlock Text="{Binding Label}" FontFamily="{StaticResource Title}" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{Binding Label}" FontFamily="{StaticResource Print}" TextTrimming="CharacterEllipsis" />
                                         </DockPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -754,7 +754,7 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                                       Visibility="{Binding HasPaper, Converter={StaticResource Shown}}">
                             <StackPanel Margin="52,40,52,40" MaxWidth="860" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding Label}" FontFamily="{StaticResource Title}" FontSize="30" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Label}" FontFamily="{StaticResource Print}" FontSize="30" FontWeight="Bold" />
                                 <TextBlock Text="{Binding SourceLine}" FontSize="12" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,0" />
                                 <TextBlock Text="{Binding ReviewNote}" FontSize="12" Foreground="{StaticResource Amber}" TextWrapping="Wrap" Margin="0,4,0,0" />
 
@@ -775,7 +775,7 @@
                                             </StackPanel>
                                         </DockPanel>
                                         <TextBlock DockPanel.Dock="Bottom" Text="{Binding EssayReference}" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,10,0,0" />
-                                        <TextBlock Text="{Binding EssayTask}" FontFamily="{StaticResource Serif}" FontSize="14" Foreground="{StaticResource InkSoft}"
+                                        <TextBlock Text="{Binding EssayTask}" FontFamily="{StaticResource Print}" FontSize="14" Foreground="{StaticResource InkSoft}"
                                                    TextWrapping="Wrap" LineHeight="22" MaxHeight="154" TextTrimming="CharacterEllipsis" />
                                     </DockPanel>
                                 </Border>
@@ -797,7 +797,7 @@
                                             </StackPanel>
                                         </DockPanel>
                                         <TextBlock DockPanel.Dock="Bottom" Text="{Binding TranslationReference}" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,10,0,0" />
-                                        <TextBlock Text="{Binding TranslationTask}" FontFamily="{StaticResource Chinese}" FontSize="15" Foreground="{StaticResource InkSoft}"
+                                        <TextBlock Text="{Binding TranslationTask}" FontFamily="{StaticResource Print}" FontSize="15" Foreground="{StaticResource InkSoft}"
                                                    TextWrapping="Wrap" LineHeight="26" MaxHeight="182" TextTrimming="CharacterEllipsis" />
                                     </DockPanel>
                                 </Border>
@@ -840,7 +840,7 @@
                                                  Text="{Binding NewFront, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="正面" />
                                     </Border>
                                     <Border BorderBrush="#A8977A" BorderThickness="0,0,0,1" Padding="0,3" Margin="0,6,0,0">
-                                        <TextBox Style="{StaticResource Bare}" Tag="背面：要记住的英文" FontSize="13" FontFamily="{StaticResource Serif}" MaxLength="300"
+                                        <TextBox Style="{StaticResource Bare}" Tag="背面：要记住的英文" FontSize="13" FontFamily="{StaticResource Print}" MaxLength="300"
                                                  Text="{Binding NewBack, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="背面" />
                                     </Border>
                                     <Border BorderBrush="#A8977A" BorderThickness="0,0,0,1" Padding="0,3" Margin="0,6,0,0">
@@ -871,7 +871,7 @@
                                                     </StackPanel>
                                                     <StackPanel>
                                                         <TextBlock Text="{Binding Front}" TextTrimming="CharacterEllipsis" />
-                                                        <TextBlock Text="{Binding Back}" FontFamily="{StaticResource Serif}" FontSize="13"
+                                                        <TextBlock Text="{Binding Back}" FontFamily="{StaticResource Print}" FontSize="13"
                                                                    Foreground="{StaticResource InkSoft}" TextTrimming="CharacterEllipsis" />
                                                     </StackPanel>
                                                 </DockPanel>
@@ -899,11 +899,11 @@
                                 </Border.Effect>
                                 <StackPanel>
                                     <TextBlock Text="{Binding BoxText}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" />
-                                    <TextBlock Text="{Binding Current.Front}" FontFamily="{StaticResource Serif}" FontSize="28" TextWrapping="Wrap"
+                                    <TextBlock Text="{Binding Current.Front}" FontFamily="{StaticResource Print}" FontSize="28" TextWrapping="Wrap"
                                                TextAlignment="Center" Margin="0,36,0,0" />
                                     <StackPanel Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}" Margin="0,24,0,0">
                                         <Rectangle Height="1" Fill="#E9C7C1" Margin="40,0,40,20" />
-                                        <TextBlock Text="{Binding Current.Back}" FontFamily="{StaticResource HandLatin}" FontSize="26"
+                                        <TextBlock Text="{Binding Current.Back}" FontFamily="{StaticResource Hand}" FontSize="26"
                                                    Foreground="{StaticResource RedPen}" TextWrapping="Wrap" TextAlignment="Center" />
                                         <TextBlock Text="{Binding Current.Note}" FontFamily="{StaticResource Hand}" FontSize="16"
                                                    Foreground="{StaticResource Pencil}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0" />

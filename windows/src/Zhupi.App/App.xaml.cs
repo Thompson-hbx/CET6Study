@@ -40,7 +40,7 @@ public partial class App : Application
 
     /// <summary>
     /// WPF's system font list leaves out fonts installed for the current user only, which is how LXGW WenKai is
-    /// installed, so the handwriting family is pointed at that folder when the font is there.
+    /// installed, so the handwriting family's Chinese fallback is pointed at that folder when the font is there.
     /// </summary>
     public void UsePerUserFonts()
     {
@@ -48,7 +48,7 @@ public partial class App : Application
         if (!Directory.Exists(folder)) return;
         var location = new Uri(folder);
         if (!Fonts.GetFontFamilies(location).Any(f => f.Source.EndsWith("#LXGW WenKai", StringComparison.Ordinal))) return;
-        Resources["Hand"] = new FontFamily(location, "./#LXGW WenKai, KaiTi, STKaiti, Microsoft YaHei UI");
+        Resources["Hand"] = new FontFamily(location, "Segoe Print, ./#LXGW WenKai, KaiTi, STKaiti");
     }
 
     protected override void OnExit(ExitEventArgs e)

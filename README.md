@@ -45,7 +45,7 @@ pwsh -File windows/install.ps1
 
 试用或检查时可用 `--data-dir=<目录>` 指向别的文件夹，避免碰到正式本子。
 
-字体（可选，都是开源字体，不随仓库分发）：批注等手写处用[霞鹜文楷](https://github.com/lxgw/LxgwWenKai)（`LXGWWenKai-Regular.ttf`），标题用 Noto Serif SC。装到当前用户即可；没装时分别退回楷体、华文中宋。
+字体：全软件只用两种。印刷体（标题、正文、题目、按钮）用 [Noto Serif SC](https://github.com/notofonts/noto-cjk)，没装时退回华文中宋；手写体（红笔批注、便利贴、大数字）用 Windows 自带的 Segoe Print，它没有中文，手写里的中文用 [霞鹜文楷](https://github.com/lxgw/LxgwWenKai)（`LXGWWenKai-Regular.ttf`，可只装给当前用户），没装时退回楷体。两款开源字体不随仓库分发。
 
 ## 开发
 

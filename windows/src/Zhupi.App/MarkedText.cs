@@ -23,7 +23,8 @@ public static class MarkedText
     private static readonly Brush Red = Frozen(Color.FromRgb(0xC2, 0x36, 0x2B));
     private static readonly Brush Amber = Frozen(Color.FromRgb(0xB0, 0x60, 0x2A));
     private static readonly Brush Grey = Frozen(Color.FromRgb(0x9A, 0x8F, 0x7C));
-    private static readonly FontFamily Hand = new("Segoe Print, KaiTi");
+    // The app's handwriting family, looked up each time so the per-user font fallback set at startup applies.
+    private static FontFamily Hand => Application.Current?.TryFindResource("Hand") as FontFamily ?? new FontFamily("Segoe Print, KaiTi");
 
     private static void Rebuild(DependencyObject target, DependencyPropertyChangedEventArgs e)
     {
