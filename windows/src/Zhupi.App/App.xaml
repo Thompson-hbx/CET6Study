@@ -260,6 +260,13 @@
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
+        <!-- Calligraphy lettered straight onto the desk, where the desk shows: Gabriola ships with Windows. -->
+        <Style x:Key="DeskLettering" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Gabriola, Segoe Script" />
+            <Setter Property="Foreground" Value="#4D5A3E1A" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        </Style>
         <!-- Leather cover peeking out behind the pages, in the stamp's vermilion. -->
         <LinearGradientBrush x:Key="Cover" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#A2463A" Offset="0" />
@@ -383,6 +390,77 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!-- Title bar: the window's name and caption buttons sitting straight on the desk. Everything dims when the window
+             is not active, as the system bar does. Tag carries hover/press for the maximize button, whose mouse input
+             arrives as non-client messages (see TitleBar) and never reaches WPF. -->
+        <Style x:Key="CaptionTitle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource InkSoft}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource Placeholder}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Caption" TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="{StaticResource InkSoft}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource Placeholder}" />
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1F5A3E1A" />
+                </Trigger>
+                <Trigger Property="Tag" Value="hot">
+                    <Setter Property="Background" Value="#1F5A3E1A" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#335A3E1A" />
+                </Trigger>
+                <Trigger Property="Tag" Value="pressed">
+                    <Setter Property="Background" Value="#335A3E1A" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CaptionMaximize" TargetType="Button" BasedOn="{StaticResource Caption}">
+            <Setter Property="Content" Value="&#xE922;" />
+            <Setter Property="ToolTip" Value="最大化" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                    <Setter Property="Content" Value="&#xE923;" />
+                    <Setter Property="ToolTip" Value="还原" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CaptionClose" TargetType="Button" BasedOn="{StaticResource Caption}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource RedPen}" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A52A21" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="InkButton" TargetType="Button" BasedOn="{StaticResource Plain}">
             <Setter Property="Background" Value="{StaticResource Ink}" />
             <Setter Property="Foreground" Value="#FBF8F0" />
@@ -499,6 +577,133 @@
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
             <Setter Property="SpellCheck.IsEnabled" Value="False" />
+        </Style>
+
+        <!-- A choice written on a ruled line, like the other fields: no Windows box, a chevron on the right and a
+             paper drop-down. Editable combos type into a bare text box; the chevron stays clickable beside it. -->
+        <Style x:Key="ComboRow" TargetType="ComboBoxItem">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Row" Background="Transparent" CornerRadius="4" Padding="10,6">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="{StaticResource PaperLeft}" />
+                                <Setter Property="Foreground" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="#EFE6D2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LineCombo" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ComboRow}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Line" Background="Transparent" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" />
+                            <ToggleButton Focusable="False" ClickMode="Press" Cursor="Hand"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent">
+                                            <TextBlock x:Name="Chevron" Text="&#xE70D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="11"
+                                                       Foreground="{StaticResource Muted}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Chevron" Property="Foreground" Value="{StaticResource RedPen}" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="Chevron" Property="Text" Value="&#xE70E;" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="Picked" IsHitTestVisible="False" Margin="2,7,30,7" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+                            <TextBox x:Name="PART_EditableTextBox" Style="{StaticResource Bare}" Margin="0,7,30,7" VerticalAlignment="Center"
+                                     Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}" Tag="{TemplateBinding Tag}" />
+                            <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}">
+                                <Border Margin="0,4,12,12" TextOptions.TextFormattingMode="Display"
+                                        Background="{StaticResource Paper}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1"
+                                        CornerRadius="6" Padding="4" MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="270" Opacity="0.18" Color="#3C280A" />
+                                    </Border.Effect>
+                                    <ScrollViewer>
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Picked" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Line" Property="BorderBrush" Value="{StaticResource Ink}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="Line" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- One of several choices: an inked ring, filled with a red-pen dot when chosen. -->
+        <Style x:Key="Choice" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <Grid Width="18" Height="18" VerticalAlignment="Center">
+                                <Ellipse x:Name="Ring" Fill="White" Stroke="{StaticResource InkSoft}" StrokeThickness="1.5" />
+                                <Ellipse x:Name="Dot" Width="8" Height="8" Fill="{StaticResource RedPen}" Visibility="Collapsed" />
+                            </Grid>
+                            <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource Ink}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Dot" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource RedPen}" />
+                                <Setter TargetName="Ring" Property="StrokeThickness" Value="2.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Table of contents rows. -->

@@ -21,10 +21,22 @@ public partial class MainWindow : Window
     protected override void OnSourceInitialized(EventArgs e)
     {
         base.OnSourceInitialized(e);
-        TitleBar.Tint(this, Colour("Desk"), Colour("Ink"), Colour("PaperEdge"));
+        TitleBar.Tint(this, ((SolidColorBrush)FindResource("PaperEdge")).Color);
+        TitleBar.OfferSnapLayouts(this, MaximizeButton);
     }
 
-    private Color Colour(string key) => ((SolidColorBrush)FindResource(key)).Color;
+    protected override void OnStateChanged(EventArgs e)
+    {
+        base.OnStateChanged(e);
+        BorderThickness = WindowState == WindowState.Maximized ? TitleBar.MaximizedOverhang(this) : new Thickness(0);
+    }
+
+    private void Minimize(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
+
+    // Reached from the keyboard or UI Automation; mouse clicks on this button are handled in TitleBar.
+    private void ToggleMaximize(object sender, RoutedEventArgs e) => TitleBar.ToggleMaximize(this);
+
+    private void CloseWindow(object sender, RoutedEventArgs e) => SystemCommands.CloseWindow(this);
 
     private void FocusSearch(object sender, ExecutedRoutedEventArgs e)
     {

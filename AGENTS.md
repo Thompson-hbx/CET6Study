@@ -31,6 +31,8 @@
 ## 界面检查
 
 - 不要在用户的桌面上弹出测试窗口、抢焦点或截取屏幕。检查界面时把窗口放到屏幕外（`Left/Top = -32000`、`ShowActivated = false`、`ShowInTaskbar = false`），用 `RenderTargetBitmap` 渲染成图片。
+- 做法：在临时目录建一个 `net10.0-windows` WPF 控制台项目，引用 `Zhupi.App.csproj`；`new App()` 后调用 `InitializeComponent()` 载入资源，在临时目录用 `Notebook.Open` 建一本测试本子并写入示例页，再 `new MainWindow { DataContext = new MainViewModel(...) }`。逐个设置 `Tab`，用 `DispatcherPriority.ApplicationIdle` 推动布局后渲染 `VisualTreeHelper.GetChild(window, 0)`。至少看一次最小窗口 1100×640。
+- 下拉框等 `Popup` 不在窗口的可视树里，截窗口看不到；打开后取 `PART_Popup` 的 `Child` 单独渲染。
 - 设计稿在 Artifact 画布「朱批 Windows 界面设计」的「A 作业本」页。
 
 ## 数据与凭证

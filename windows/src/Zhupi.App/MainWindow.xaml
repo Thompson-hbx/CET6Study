@@ -9,6 +9,11 @@
         WindowStartupLocation="CenterScreen" Background="{StaticResource DeskLight}"
         FontFamily="{StaticResource Print}" FontSize="14" Foreground="{StaticResource Ink}"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+    <!-- The desk runs up under our own title bar; GlassFrameThickness -1 keeps the system shadow, rounded corners
+         and resize edges, and the caption buttons are drawn by us (see TitleBar for snap layouts). -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36" ResizeBorderThickness="6" GlassFrameThickness="-1" UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewPageCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding Page.SaveCommand}" />
@@ -18,31 +23,69 @@
         <CommandBinding Command="Find" Executed="FocusSearch" />
     </Window.CommandBindings>
 
-    <Grid Margin="0,28,28,28">
+    <Grid Margin="0,0,28,28">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="92" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition Height="24" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
         <!-- Desk texture over the window background; the negative margin undoes the grid's margin so it reaches every edge.
              Three tile sizes (420, 330, 240) are stacked so no single repeat is visible. -->
-        <Grid Grid.ColumnSpan="2" Margin="0,-28,-28,-28" IsHitTestVisible="False">
+        <Grid Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="0,0,-28,-28" IsHitTestVisible="False">
             <Rectangle Fill="{StaticResource DeskMottle}" />
             <Rectangle Fill="{StaticResource DeskFibres}" />
             <Rectangle Fill="{StaticResource DeskGrain}" />
         </Grid>
 
+        <!-- A line of calligraphy across the top band of the desk, and a spine title up the far left edge. -->
+        <TextBlock Grid.RowSpan="2" Grid.ColumnSpan="2" Style="{StaticResource DeskLettering}" Text="Practice makes perfect"
+                   FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,4,0,0" />
+        <TextBlock Grid.Row="2" Style="{StaticResource DeskLettering}" Text="Write · Revise · Improve" FontSize="24"
+                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-2,0,0,0">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="-90" />
+            </TextBlock.LayoutTransform>
+        </TextBlock>
+
+        <!-- ===== Title bar: the window's name on the desk and caption buttons drawn like the notebook's ===== -->
+        <DockPanel Grid.ColumnSpan="2" Margin="0,0,-28,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Style="{StaticResource Caption}" Content="&#xE921;" Click="Minimize" ToolTip="最小化" AutomationProperties.Name="最小化" />
+                <Button x:Name="MaximizeButton" Style="{StaticResource CaptionMaximize}" Click="ToggleMaximize" AutomationProperties.Name="最大化" />
+                <Button Style="{StaticResource CaptionClose}" Content="&#xE8BB;" Click="CloseWindow" ToolTip="关闭" AutomationProperties.Name="关闭" />
+            </StackPanel>
+            <!-- A small red seal, the name in brush hand and an English line in calligraphy. -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0" IsHitTestVisible="False">
+                <Border Width="22" Height="22" Background="{StaticResource RedPen}" CornerRadius="3">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="-6" CenterX="11" CenterY="11" />
+                    </Border.RenderTransform>
+                    <TextBlock Text="朱" FontFamily="{StaticResource Hand}" FontSize="15" FontWeight="Bold" Foreground="#FBF8F0"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Style="{StaticResource CaptionTitle}" Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource Hand}" FontSize="16" Margin="9,0,0,0" />
+                <TextBlock Style="{StaticResource CaptionTitle}" Text="Zhupi · CET-6 Writing Notebook" FontFamily="Gabriola, Segoe Script"
+                           FontSize="19" Margin="10,3,0,0" />
+            </StackPanel>
+        </DockPanel>
+
         <!-- Things left on the desk, under the tabs and the notebook so they never cover anything you click. -->
-        <Canvas Grid.ColumnSpan="2" IsHitTestVisible="False" VerticalAlignment="Top" Height="0">
+        <Canvas Grid.Row="2" Grid.ColumnSpan="2" IsHitTestVisible="False" VerticalAlignment="Top" Height="0">
             <!-- A coffee ring in the top corner, running off the desk edge. -->
-            <Path Canvas.Left="-22" Canvas.Top="-44" Stroke="#2A6B3F1C" StrokeThickness="5" Opacity="0.9"
+            <Path Canvas.Left="-22" Canvas.Top="-30" Stroke="#2A6B3F1C" StrokeThickness="5" Opacity="0.9"
                   Data="M60,4 C92,3 118,28 117,60 C116,93 90,118 58,116 C26,115 2,90 4,58 C6,27 30,5 60,4 Z" />
-            <Path Canvas.Left="-22" Canvas.Top="-44" Stroke="#1C6B3F1C" StrokeThickness="2"
+            <Path Canvas.Left="-22" Canvas.Top="-30" Stroke="#1C6B3F1C" StrokeThickness="2"
                   Data="M58,12 C88,13 110,34 108,62 C106,90 84,109 58,108 C31,107 12,86 13,60" />
         </Canvas>
 
         <!-- ===== Divider tabs ===== -->
-        <DockPanel Margin="0,70,0,0">
+        <DockPanel Grid.Row="2" Margin="0,70,0,0">
             <RadioButton DockPanel.Dock="Bottom" Style="{StaticResource DividerTab}" Background="#B9AE97" Height="48" FontSize="13"
                          Content="设置" AutomationProperties.Name="设置"
                          Command="{Binding ShowTabCommand}" CommandParameter="{x:Static vm:Book.Settings}"
@@ -105,16 +148,16 @@
         </DockPanel>
 
         <!-- ===== The open notebook: cover, a stack of page edges, a ribbon, then the open spread ===== -->
-        <Border Grid.Column="1" CornerRadius="4,18,18,4" Background="{StaticResource Cover}" Margin="0,-6,-14,-14">
+        <Border Grid.Row="2" Grid.Column="1" CornerRadius="4,18,18,4" Background="{StaticResource Cover}" Margin="0,-6,-14,-14">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="30" ShadowDepth="10" Direction="270" Opacity="0.3" Color="#3C280A" />
             </Border.Effect>
         </Border>
-        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="#EFE7D4" BorderBrush="#D6C8AA" BorderThickness="0,0,1,1" Margin="0,4,-7,-7" />
-        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="#F5EFE0" BorderBrush="#DDD0B4" BorderThickness="0,0,1,1" Margin="0,2,-3.5,-3.5" />
-        <Path Grid.Column="1" Data="M0,0 L18,0 L18,52 L9,43 L0,52 Z" Fill="#A8322A" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+        <Border Grid.Row="2" Grid.Column="1" CornerRadius="4,14,14,4" Background="#EFE7D4" BorderBrush="#D6C8AA" BorderThickness="0,0,1,1" Margin="0,4,-7,-7" />
+        <Border Grid.Row="2" Grid.Column="1" CornerRadius="4,14,14,4" Background="#F5EFE0" BorderBrush="#DDD0B4" BorderThickness="0,0,1,1" Margin="0,2,-3.5,-3.5" />
+        <Path Grid.Row="2" Grid.Column="1" Data="M0,0 L18,0 L18,52 L9,43 L0,52 Z" Fill="#A8322A" HorizontalAlignment="Right" VerticalAlignment="Bottom"
               Margin="0,0,150,-24" IsHitTestVisible="False" />
-        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="{StaticResource Paper}">
+        <Border Grid.Row="2" Grid.Column="1" CornerRadius="4,14,14,4" Background="{StaticResource Paper}">
             <Grid>
                 <!-- Writing books: contents on the left page, the open page on the right -->
                 <Grid Visibility="{Binding IsWritingBook, Converter={StaticResource Shown}}">
@@ -1030,107 +1073,129 @@
                 <!-- Settings: the notebook's title page -->
                 <ScrollViewer Visibility="{Binding IsSettings, Converter={StaticResource Shown}}" VerticalScrollBarVisibility="Auto"
                               Background="#F6F1E6">
-                    <StackPanel Margin="56,40" MaxWidth="980" HorizontalAlignment="Left">
-                        <TextBlock Text="本子扉页" FontSize="24" FontWeight="Bold" Margin="0,0,0,28" />
-
-                        <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22" Margin="0,0,0,20">
-                            <StackPanel>
-                                <TextBlock Text="本子放在哪里" FontSize="18" FontWeight="Bold" Margin="0,0,0,12" />
-                                <Border Background="{StaticResource PaperLeft}" Padding="12,10">
-                                    <TextBlock Text="{Binding DataFile}" FontSize="13" TextWrapping="Wrap" />
-                                </Border>
-                                <Button Style="{StaticResource LineButton}" Content="打开文件夹" Click="OpenDataFolder"
-                                        HorizontalAlignment="Left" Margin="0,12,0,0" />
-                            </StackPanel>
+                    <Grid>
+                        <!-- The owner's seal pressed on the title page, faint and behind the cards. -->
+                        <Border Width="150" Height="150" BorderBrush="{StaticResource RedPen}" BorderThickness="5" CornerRadius="12" Opacity="0.22"
+                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,46,64,0" IsHitTestVisible="False">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="-9" CenterX="75" CenterY="75" />
+                            </Border.RenderTransform>
+                            <TextBlock Text="朱批" FontFamily="{StaticResource Hand}" FontSize="54" FontWeight="Bold" Foreground="{StaticResource RedPen}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
+                        <StackPanel Margin="56,40" MaxWidth="980" HorizontalAlignment="Left">
+                            <TextBlock Text="本子扉页" FontSize="24" FontWeight="Bold" />
+                            <Path Style="{StaticResource Squiggle}" Width="110" HorizontalAlignment="Left" Margin="0,4,0,28" />
 
-                        <Border Background="#FFF3B8" Padding="22,18" Margin="0,0,0,20">
-                            <StackPanel>
-                                <TextBlock Text="搬旧本子" FontSize="16" FontWeight="Bold" Margin="0,0,0,12" />
-                                <Button Style="{StaticResource LineButton}" Content="选择旧数据文件…" Click="ChooseOldFile"
-                                        IsEnabled="{Binding CanImport}" HorizontalAlignment="Left" />
-                                <TextBlock Text="{Binding Message}" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="{StaticResource InkSoft}" />
-                            </StackPanel>
-                        </Border>
-
-                        <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22"
-                                DataContext="{Binding Teacher}">
-                            <StackPanel>
-                                <TextBlock Text="请老师" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
-                                    <RadioButton Content="DeepSeek" GroupName="Service" IsChecked="{Binding IsDeepSeek}" Margin="0,0,24,0"
-                                                 VerticalContentAlignment="Center" />
-                                    <RadioButton Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}" Margin="0,0,24,0"
-                                                 VerticalContentAlignment="Center" />
-                                    <RadioButton Content="ChatGPT 账号（用套餐额度）" GroupName="Service" IsChecked="{Binding IsChatGpt}"
-                                                 VerticalContentAlignment="Center" />
+                            <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22" Margin="0,0,0,20">
+                                <StackPanel>
+                                    <TextBlock Text="本子放在哪里" FontSize="18" FontWeight="Bold" Margin="0,0,0,12" />
+                                    <Border Background="{StaticResource PaperLeft}" Padding="12,10">
+                                        <TextBlock Text="{Binding DataFile}" FontSize="13" TextWrapping="Wrap" />
+                                    </Border>
+                                    <Button Style="{StaticResource LineButton}" Content="打开文件夹" Click="OpenDataFolder"
+                                            HorizontalAlignment="Left" Margin="0,12,0,0" />
                                 </StackPanel>
-                                <!-- ChatGPT: sign in through the browser; no password or key is typed here -->
-                                <Border Background="{StaticResource PaperLeft}" Padding="16,14" Margin="0,0,0,14"
-                                        Visibility="{Binding IsChatGpt, Converter={StaticResource Shown}}">
+                            </Border>
+
+                            <Grid Margin="0,6,0,24">
+                                <Border Background="#FFF3B8" Padding="22,20,22,18">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="280" Opacity="0.12" Color="#3C280A" />
+                                    </Border.Effect>
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Account}" FontWeight="Bold" Margin="0,0,0,12" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Style="{StaticResource InkButton}" Content="{Binding SignInLabel}" Command="{Binding SignInCommand}" />
-                                            <Button Style="{StaticResource LineButton}" Content="取消" Margin="10,0,0,0" Command="{Binding CancelSignInCommand}"
-                                                    Visibility="{Binding WaitingForBrowser, Converter={StaticResource Shown}}" />
-                                            <Button Style="{StaticResource LineButton}" Content="退出登录" Margin="10,0,0,0" Command="{Binding SignOutCommand}"
-                                                    Visibility="{Binding SignedIn, Converter={StaticResource Shown}}" />
-                                        </StackPanel>
+                                        <TextBlock Text="搬旧本子" FontSize="16" FontWeight="Bold" Margin="0,0,0,12" />
+                                        <Button Style="{StaticResource LineButton}" Content="选择旧数据文件…" Click="ChooseOldFile"
+                                                IsEnabled="{Binding CanImport}" HorizontalAlignment="Left" />
+                                        <TextBlock Text="{Binding Message}" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="{StaticResource InkSoft}" />
                                     </StackPanel>
                                 </Border>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="90" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="接口地址" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
-                                               Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}" />
-                                    <Border Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
-                                            Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}">
-                                        <TextBox Style="{StaticResource Bare}" Tag="https://…/v1" Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
-                                                 AutomationProperties.Name="接口地址" />
-                                    </Border>
-                                    <TextBlock Grid.Row="1" Text="API Key" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
-                                               Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
-                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
-                                            Visibility="{Binding UsesKey, Converter={StaticResource Shown}}">
-                                        <PasswordBox x:Name="KeyBox" BorderThickness="0" Background="Transparent" AutomationProperties.Name="API Key"
-                                                     ToolTip="已保存过时留空即可保持不变" />
-                                    </Border>
-                                    <TextBlock Grid.Row="2" Text="模型" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
-                                    <ComboBox Grid.Row="2" Grid.Column="1" IsEditable="True" ItemsSource="{Binding Models}"
-                                              Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="模型" />
-                                    <TextBlock Grid.Row="3" Text="批改深度" VerticalAlignment="Top" Margin="0,16,0,0" Foreground="{StaticResource InkSoft}" />
-                                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,12,0,0">
-                                        <ComboBox ItemsSource="{Binding Depths}" SelectedValuePath="Value" SelectedValue="{Binding Depth}"
-                                                  AutomationProperties.Name="批改深度">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type vm:DepthChoice}">
-                                                    <TextBlock Text="{Binding Name}" />
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
+                                <Border Style="{StaticResource Tape}" Background="#A6A9C4C9">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="-2" />
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
+
+                            <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22"
+                                    DataContext="{Binding Teacher}">
+                                <StackPanel>
+                                    <TextBlock Text="请老师" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                        <RadioButton Style="{StaticResource Choice}" Content="DeepSeek" GroupName="Service" IsChecked="{Binding IsDeepSeek}" Margin="0,0,24,0"
+                                                     VerticalContentAlignment="Center" />
+                                        <RadioButton Style="{StaticResource Choice}" Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}" Margin="0,0,24,0"
+                                                     VerticalContentAlignment="Center" />
+                                        <RadioButton Style="{StaticResource Choice}" Content="ChatGPT 账号（用套餐额度）" GroupName="Service" IsChecked="{Binding IsChatGpt}"
+                                                     VerticalContentAlignment="Center" />
                                     </StackPanel>
-                                </Grid>
-                                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                                    <Button Style="{StaticResource InkButton}" Content="保存" Click="SaveTeacher" />
-                                    <Button Style="{StaticResource LineButton}" Content="找可用的模型" Margin="10,0,0,0"
-                                            Command="{Binding RefreshModelsCommand}" ToolTip="先保存 Key；列模型不花额度" />
-                                    <Button Style="{StaticResource LineButton}" Content="删除本机 Key" Margin="10,0,0,0"
-                                            Command="{Binding ForgetKeyCommand}" IsEnabled="{Binding HasKey}"
-                                            Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
+                                    <!-- ChatGPT: sign in through the browser; no password or key is typed here -->
+                                    <Border Background="{StaticResource PaperLeft}" Padding="16,14" Margin="0,0,0,14"
+                                            Visibility="{Binding IsChatGpt, Converter={StaticResource Shown}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Account}" FontWeight="Bold" Margin="0,0,0,12" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Style="{StaticResource InkButton}" Content="{Binding SignInLabel}" Command="{Binding SignInCommand}" />
+                                                <Button Style="{StaticResource LineButton}" Content="取消" Margin="10,0,0,0" Command="{Binding CancelSignInCommand}"
+                                                        Visibility="{Binding WaitingForBrowser, Converter={StaticResource Shown}}" />
+                                                <Button Style="{StaticResource LineButton}" Content="退出登录" Margin="10,0,0,0" Command="{Binding SignOutCommand}"
+                                                        Visibility="{Binding SignedIn, Converter={StaticResource Shown}}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="90" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="接口地址" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
+                                                   Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}" />
+                                        <Border Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
+                                                Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}">
+                                            <TextBox Style="{StaticResource Bare}" Tag="https://…/v1" Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
+                                                     AutomationProperties.Name="接口地址" />
+                                        </Border>
+                                        <TextBlock Grid.Row="1" Text="API Key" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
+                                                   Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
+                                        <Border Grid.Row="1" Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
+                                                Visibility="{Binding UsesKey, Converter={StaticResource Shown}}">
+                                            <PasswordBox x:Name="KeyBox" BorderThickness="0" Background="Transparent" AutomationProperties.Name="API Key"
+                                                         ToolTip="已保存过时留空即可保持不变" />
+                                        </Border>
+                                        <TextBlock Grid.Row="2" Text="模型" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
+                                        <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource LineCombo}" IsEditable="True" ItemsSource="{Binding Models}"
+                                                  Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="模型" />
+                                        <TextBlock Grid.Row="3" Text="批改深度" VerticalAlignment="Top" Margin="0,16,0,0" Foreground="{StaticResource InkSoft}" />
+                                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,12,0,0">
+                                            <ComboBox Style="{StaticResource LineCombo}" ItemsSource="{Binding Depths}" SelectedValuePath="Value" SelectedValue="{Binding Depth}"
+                                                      AutomationProperties.Name="批改深度">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type vm:DepthChoice}">
+                                                        <TextBlock Text="{Binding Name}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                                        <Button Style="{StaticResource InkButton}" Content="保存" Click="SaveTeacher" />
+                                        <Button Style="{StaticResource LineButton}" Content="找可用的模型" Margin="10,0,0,0"
+                                                Command="{Binding RefreshModelsCommand}" ToolTip="先保存 Key；列模型不花额度" />
+                                        <Button Style="{StaticResource LineButton}" Content="删除本机 Key" Margin="10,0,0,0"
+                                                Command="{Binding ForgetKeyCommand}" IsEnabled="{Binding HasKey}"
+                                                Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Note}" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,12,0,0" />
                                 </StackPanel>
-                                <TextBlock Text="{Binding Note}" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,12,0,0" />
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </Border>
