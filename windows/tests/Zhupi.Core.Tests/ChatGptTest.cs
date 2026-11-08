@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Zhupi.Core.ChatGpt;
+using Zhupi.Core.Teacher;
 
 namespace Zhupi.Core.Tests;
 
@@ -175,6 +176,23 @@ public sealed class ChatGptTest : IDisposable
         Assert.Equal("instruction", body.RootElement.GetProperty("instructions").GetString());
         Assert.Equal("gpt-test", body.RootElement.GetProperty("model").GetString());
         Assert.Equal("material", body.RootElement.GetProperty("input")[0].GetProperty("content").GetString());
+        Assert.False(body.RootElement.TryGetProperty("reasoning", out _));
+    }
+
+    [Fact]
+    public async Task AChosenDepthIsSentAsReasoningEffort()
+    {
+        var api = new FakeAuth(_ => throw new InvalidOperationException("no refresh expected"), _key)
+        {
+            Api = _ => Sse(Event("response.output_text.delta", delta: "{}"), Event("response.completed")),
+        };
+        var teacher = new ChatGptTeacher(new HttpClient(api), new ChatGptAuth(new HttpClient(api), _clock),
+            new MemoryVault { Session = Session() }, _clock, "m", Depth.High);
+
+        await teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None);
+
+        using var body = JsonDocument.Parse(api.Calls.Single(c => c.Url.EndsWith("/v1/responses")).Body);
+        Assert.Equal("high", body.RootElement.GetProperty("reasoning").GetProperty("effort").GetString());
     }
 
     [Fact]

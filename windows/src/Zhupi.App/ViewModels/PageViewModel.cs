@@ -57,7 +57,7 @@ public sealed partial class PageViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasReview), nameof(NoReview), nameof(BandText), nameof(BandRange), nameof(Verdict),
-        nameof(DimensionsText), nameof(TakeLabel), nameof(UnplacedNote), nameof(ShowChecks), nameof(ShowMarks))]
+        nameof(DimensionsText), nameof(TakeLabel), nameof(ShowChecks), nameof(ShowMarks))]
     public partial StoredReview? Review { get; set; }
 
     [ObservableProperty]
@@ -97,8 +97,6 @@ public sealed partial class PageViewModel : ObservableObject
 
     public string TakeLabel => $"抄一遍改好的（采纳 {Marks.Count(m => m.IsTaken && m.IsPlaced)} 处）";
 
-    public string UnplacedNote => Marks.Any(m => !m.IsPlaced) ? "带 ✕ 的批注在原文里没找到对应的话，采纳了也不会写进新稿。" : "";
-
     public string TeacherNote => $"老师：{_teacher.Label}";
 
     public string Id => _page.Id;
@@ -125,10 +123,6 @@ public sealed partial class PageViewModel : ObservableObject
 
     public string CheckHeading => IsHandedIn ? "这一页已经交了" : "交之前自己查一查";
 
-    public string CheckFootnote => IsHandedIn
-        ? "请老师批改会花一次 AI 额度。不想请也可以直接「重写一稿」，这页原样留着。"
-        : "铅笔字只按题目要求自动核对，不花 AI 额度。";
-
     public int WordCount => SelfCheck.Words(Text);
 
     public WordTarget Target => SelfCheck.EssayTarget(Task);
@@ -139,7 +133,7 @@ public sealed partial class PageViewModel : ObservableObject
     /// <summary>Where the lower bound sits on the 300 px word ruler.</summary>
     public double TargetStartX => 300.0 * Target.Min / Target.Max - 1;
 
-    public string WordNote => IsEssay ? $"目标 {Target.Min}–{Target.Max}" : "逐句对着原文写";
+    public string WordNote => IsEssay ? $"目标 {Target.Min}–{Target.Max}" : "";
 
     [RelayCommand]
     public void Save()
@@ -251,6 +245,7 @@ public sealed partial class PageViewModel : ObservableObject
         _loading = false;
         SaveNote = page.IsHandedIn ? $"交于 {page.HandedInAt!.Value.ToLocalTime():M月d日 HH:mm}" : $"已记在本子上 {page.UpdatedAt.ToLocalTime():HH:mm}";
         RefreshChecks();
+        LoadReference(page);
         IsEditingSource = false;
         RefreshSentences();
         ShowReview(page.IsHandedIn ? _book.LatestReview(page.Id) : null);

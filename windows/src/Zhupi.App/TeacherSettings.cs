@@ -16,7 +16,8 @@ public sealed class TeacherSettings(string directory)
 {
     private static readonly byte[] Entropy = "Zhupi teacher key v1"u8.ToArray();
 
-    private sealed record Saved(TeacherService Service, string Address, string Model, string? ChatGptModel);
+    // Depth is optional so settings files written before it existed still load.
+    private sealed record Saved(TeacherService Service, string Address, string Model, string? ChatGptModel, Depth Depth = Depth.Default);
 
     private string SettingsFile => Path.Combine(directory, "teacher.json");
 
@@ -32,6 +33,9 @@ public sealed class TeacherSettings(string directory)
 
     public string ChatGptModel { get; private set; } = "";
 
+    /// <summary>One depth for every service: it describes how carefully to mark, not a service setting.</summary>
+    public Depth Depth { get; private set; } = Depth.Default;
+
     public bool HasKey => File.Exists(KeyFile);
 
     public string Label => Service switch
@@ -39,7 +43,7 @@ public sealed class TeacherSettings(string directory)
         TeacherService.ChatGpt => $"ChatGPT · {ChatGptModel}",
         TeacherService.DeepSeek => $"DeepSeek · {Model}",
         _ => $"{new Uri(Address).Host} · {Model}",
-    };
+    } + (Depth == Depth.Default ? "" : $" · 深度{Depth.Label()}");
 
     public static TeacherSettings Load(string directory)
     {
@@ -51,6 +55,7 @@ public sealed class TeacherSettings(string directory)
             {
                 (settings.Service, settings.Address, settings.Model, settings.ChatGptModel) =
                     (saved.Service, saved.Address, saved.Model, saved.ChatGptModel ?? "");
+                settings.Depth = Enum.IsDefined(saved.Depth) ? saved.Depth : Depth.Default;
             }
         }
         catch (JsonException)
@@ -61,11 +66,11 @@ public sealed class TeacherSettings(string directory)
     }
 
     /// <summary>Saves an API-key teacher; an empty <paramref name="key"/> keeps the stored one unless the address changed.</summary>
-    public void Save(TeacherService service, string address, string model, string key)
+    public void Save(TeacherService service, string address, string model, string key, Depth depth)
     {
         if (service == TeacherService.ChatGpt)
         {
-            SaveChatGpt(model);
+            SaveChatGpt(model, depth);
             return;
         }
         var checkedAddress = TeacherConnection.CheckedAddress(service == TeacherService.DeepSeek ? TeacherConnection.DeepSeekAddress : address).ToString();
@@ -80,13 +85,13 @@ public sealed class TeacherSettings(string directory)
         {
             File.WriteAllBytes(KeyFile, ProtectedData.Protect(Encoding.UTF8.GetBytes(key.Trim()), Entropy, DataProtectionScope.CurrentUser));
         }
-        (Service, Address, Model) = (service, checkedAddress, model.Trim());
+        (Service, Address, Model, Depth) = (service, checkedAddress, model.Trim(), depth);
         Persist();
     }
 
-    public void SaveChatGpt(string model)
+    public void SaveChatGpt(string model, Depth? depth = null)
     {
-        (Service, ChatGptModel) = (TeacherService.ChatGpt, model.Trim());
+        (Service, ChatGptModel, Depth) = (TeacherService.ChatGpt, model.Trim(), depth ?? Depth);
         Persist();
     }
 
@@ -97,8 +102,8 @@ public sealed class TeacherSettings(string directory)
 
     /// <summary>The teacher to ask now; throws with a readable reason when something is missing.</summary>
     public ITeacher CreateTeacher(HttpClient http) => Service == TeacherService.ChatGpt
-        ? new ChatGptTeacher(http, new ChatGptAuth(http, TimeProvider.System), Vault, TimeProvider.System, ChatGptModel)
-        : new ChatTeacher(http, Connection());
+        ? new ChatGptTeacher(http, new ChatGptAuth(http, TimeProvider.System), Vault, TimeProvider.System, ChatGptModel, Depth)
+        : new ChatTeacher(http, Connection(), Depth);
 
     public TeacherConnection Connection()
     {
@@ -119,6 +124,6 @@ public sealed class TeacherSettings(string directory)
     private void Persist()
     {
         Directory.CreateDirectory(directory);
-        File.WriteAllText(SettingsFile, JsonSerializer.Serialize(new Saved(Service, Address, Model, ChatGptModel)));
+        File.WriteAllText(SettingsFile, JsonSerializer.Serialize(new Saved(Service, Address, Model, ChatGptModel, Depth)));
     }
 }

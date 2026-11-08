@@ -10,12 +10,12 @@
 - **请老师批改**：模拟档位（2 / 5 / 8 / 11 / 14）、总评、四个维度和最多 12 处红笔批注；必改红线、可改虚线；逐条「采纳 / 不改」，「抄一遍改好的」只写进采纳的改法。
 - **问老师**：就某一处批注或整篇追问，问答记在这一页上。
 - **老师从哪来**：DeepSeek、兼容 OpenAI 的接口（API Key），或 ChatGPT 账号登录后用套餐额度（按 OpenAI「Sign in with ChatGPT」开源 / 本机应用流程实现）。
+- **批改深度**：默认 / 浅 / 中 / 深 / 最深，类似 Codex、Claude Code 的思考强度；ChatGPT 发 `reasoning.effort`，DeepSeek 和兼容接口发 `reasoning_effort`，「默认」不发、由服务自己决定。越深越慢、越花额度；模型不支持某一档时如实报错，不自动降档重试。
 - **翻译逐句**：中文原文按句编号，点一句后在便利贴上问「难词怎么译 / 句子怎么搭」，老师只给词和骨架、不给整句；提示记在页上。
 - **单词本**：从批注、翻译提示收词或手动加；六格抽屉法复习（间隔 1、2、4、8、16、32 天），「忘了」十分钟后再考。
 - **复盘**：交了多少、近两周动笔天数、最近各页档位、必改批注里最常见的类别，以及批注处理和单词复习情况。
+- **套卷**：导入自己整理的真题内容包（格式见 `docs/EXAM_IMPORT.md`），按考次排在书架上；一键把作文题或翻译原文翻开成新的一页，标出每套写到哪一步。包里附的参考译文 / 范文在交稿后才能翻开对照。同一套再导入时按修订号更新，修订号相同但内容不同的不覆盖。
 - **搬旧本子**：一次性把旧手机 App 备份里的作文、翻译正文搬进空本子。
-
-尚未实现：套卷导入。
 
 ## 运行
 
@@ -23,6 +23,13 @@
 
 ```powershell
 dotnet run --project windows/src/Zhupi.App
+```
+
+装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `-Destination` 指定的文件夹（不写时默认 `%LOCALAPPDATA%\Programs\Zhupi\`），并在开始菜单加「朱批」快捷方式。更新代码后不带参数再运行一次即可升级，会沿用开始菜单快捷方式指向的位置；运行前先关掉已打开的朱批。`-Uninstall` 删除程序和快捷方式，本子不动。
+
+```powershell
+pwsh -File windows/install.ps1 -Destination D:\Software\Zhupi
+pwsh -File windows/install.ps1
 ```
 
 数据在 `%LOCALAPPDATA%\Zhupi\`：
@@ -36,6 +43,8 @@ dotnet run --project windows/src/Zhupi.App
 | `chatgpt.client`、`chatgpt.host` | OpenAI 发给本机朱批的应用编号、本机标识（不是凭证） |
 
 试用或检查时可用 `--data-dir=<目录>` 指向别的文件夹，避免碰到正式本子。
+
+字体（可选，都是开源字体，不随仓库分发）：批注等手写处用[霞鹜文楷](https://github.com/lxgw/LxgwWenKai)（`LXGWWenKai-Regular.ttf`），标题用 Noto Serif SC。装到当前用户即可；没装时分别退回楷体、华文中宋。
 
 ## 开发
 

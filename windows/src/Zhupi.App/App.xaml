@@ -21,9 +21,15 @@
         <SolidColorBrush x:Key="Placeholder" Color="#A89C86" />
 
         <FontFamily x:Key="Sans">Microsoft YaHei UI</FontFamily>
-        <FontFamily x:Key="Serif">Georgia, Microsoft YaHei UI</FontFamily>
-        <!-- Built into Windows, so nothing is bundled: KaiTi for Chinese margin notes, Segoe Print for tallies. -->
-        <FontFamily x:Key="Hand">KaiTi, STKaiti, Microsoft YaHei UI</FontFamily>
+        <!-- Cambria has lining figures, so digits sit level with capitals; Chinese falls back to YaHei. -->
+        <FontFamily x:Key="Serif">Cambria, Microsoft YaHei UI</FontFamily>
+        <!-- Headings use one Song-style family (lining digits, Chinese and dots from the same font) to keep the notebook look; STZhongsong is the fallback. -->
+        <FontFamily x:Key="Title">Noto Serif SC, STZhongsong</FontFamily>
+        <FontFamily x:Key="Chinese">Microsoft YaHei UI</FontFamily>
+        <!-- Margin notes: LXGW WenKai (open-source, installed per user) has proportional Latin letters and digits
+             that match its Chinese, unlike KaiTi's typed-looking ones. KaiTi is the fallback when it is missing.
+             Segoe Print stays for tallies. -->
+        <FontFamily x:Key="Hand">LXGW WenKai, KaiTi, STKaiti, Microsoft YaHei UI</FontFamily>
         <FontFamily x:Key="HandLatin">Segoe Print, Georgia</FontFamily>
 
         <!-- One ruled row is 40 px; the editor uses the same line height so text sits on the rules. -->
