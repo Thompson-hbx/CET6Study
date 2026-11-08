@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Zhupi.App"
         xmlns:teacher="clr-namespace:Zhupi.Core.Teacher;assembly=Zhupi.Core"
         Title="朱批" Icon="Assets/zhupi.ico" Width="1440" Height="900" MinWidth="1100" MinHeight="640"
-        WindowStartupLocation="CenterScreen" Background="{StaticResource Desk}"
+        WindowStartupLocation="CenterScreen" Background="{StaticResource DeskLight}"
         FontFamily="{StaticResource Print}" FontSize="14" Foreground="{StaticResource Ink}"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
     <Window.InputBindings>
@@ -24,13 +24,30 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Desk texture over the window background; the negative margin undoes the grid's margin so it reaches every edge.
+             Three tile sizes (420, 330, 240) are stacked so no single repeat is visible. -->
+        <Grid Grid.ColumnSpan="2" Margin="0,-28,-28,-28" IsHitTestVisible="False">
+            <Rectangle Fill="{StaticResource DeskMottle}" />
+            <Rectangle Fill="{StaticResource DeskFibres}" />
+            <Rectangle Fill="{StaticResource DeskGrain}" />
+        </Grid>
+
+        <!-- Things left on the desk, under the tabs and the notebook so they never cover anything you click. -->
+        <Canvas Grid.ColumnSpan="2" IsHitTestVisible="False" VerticalAlignment="Top" Height="0">
+            <!-- A coffee ring in the top corner, running off the desk edge. -->
+            <Path Canvas.Left="-22" Canvas.Top="-44" Stroke="#2A6B3F1C" StrokeThickness="5" Opacity="0.9"
+                  Data="M60,4 C92,3 118,28 117,60 C116,93 90,118 58,116 C26,115 2,90 4,58 C6,27 30,5 60,4 Z" />
+            <Path Canvas.Left="-22" Canvas.Top="-44" Stroke="#1C6B3F1C" StrokeThickness="2"
+                  Data="M58,12 C88,13 110,34 108,62 C106,90 84,109 58,108 C31,107 12,86 13,60" />
+        </Canvas>
+
         <!-- ===== Divider tabs ===== -->
         <DockPanel Margin="0,70,0,0">
             <RadioButton DockPanel.Dock="Bottom" Style="{StaticResource DividerTab}" Background="#B9AE97" Height="48" FontSize="13"
                          Content="设置" AutomationProperties.Name="设置"
                          Command="{Binding ShowTabCommand}" CommandParameter="{x:Static vm:Book.Settings}"
                          IsChecked="{Binding Tab, Mode=OneWay, Converter={StaticResource Is}, ConverterParameter={x:Static vm:Book.Settings}}" />
-            <StackPanel>
+            <StackPanel DockPanel.Dock="Top">
                 <RadioButton Style="{StaticResource DividerTab}" Background="#FBF8F0" Content="作文" AutomationProperties.Name="作文"
                              Command="{Binding ShowTabCommand}" CommandParameter="{x:Static vm:Book.Essays}"
                              IsChecked="{Binding Tab, Mode=OneWay, Converter={StaticResource Is}, ConverterParameter={x:Static vm:Book.Essays}}" />
@@ -47,13 +64,57 @@
                              Command="{Binding ShowTabCommand}" CommandParameter="{x:Static vm:Book.Review}"
                              IsChecked="{Binding Tab, Mode=OneWay, Converter={StaticResource Is}, ConverterParameter={x:Static vm:Book.Review}}" />
             </StackPanel>
+            <!-- A pencil lying in the free space between the tabs and 设置; it shrinks rather than slide under the tabs on short windows. -->
+            <Viewbox StretchDirection="DownOnly" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="26,14,0,14" IsHitTestVisible="False">
+                <StackPanel>
+                    <StackPanel.LayoutTransform>
+                        <RotateTransform Angle="7" />
+                    </StackPanel.LayoutTransform>
+                    <StackPanel.Effect>
+                        <DropShadowEffect BlurRadius="4" ShadowDepth="3" Direction="300" Opacity="0.25" Color="#3C280A" />
+                    </StackPanel.Effect>
+                    <!-- A yellow pencil, eraser up: eraser, ferrule, three-faceted body, sharpened wood and lead. -->
+                    <Canvas Width="14" Height="210">
+                        <Rectangle Width="14" Height="18" RadiusX="3" RadiusY="3" Fill="#E39A92" />
+                        <Rectangle Canvas.Top="15" Width="14" Height="14">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#A9A59B" Offset="0" />
+                                    <GradientStop Color="#E2DFD7" Offset="0.45" />
+                                    <GradientStop Color="#8F8B82" Offset="1" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle Canvas.Top="19" Width="14" Height="1" Fill="#7E7A71" />
+                        <Rectangle Canvas.Top="24" Width="14" Height="1" Fill="#7E7A71" />
+                        <Rectangle Canvas.Top="29" Width="4" Height="150" Fill="#E3AC34" />
+                        <Rectangle Canvas.Top="29" Canvas.Left="4" Width="6" Height="150" Fill="#F4C64A" />
+                        <Rectangle Canvas.Top="29" Canvas.Left="10" Width="4" Height="150" Fill="#C9932A" />
+                        <Path Data="M0,179 L14,179 L9,201 L5,201 Z" Fill="#E9CBA0" />
+                        <Path Data="M10,179 L14,179 L9,201 Z" Fill="#D2AF82" />
+                        <Path Data="M5,201 L9,201 L7,209 Z" Fill="#3A3530" />
+                    </Canvas>
+                    <!-- Eraser crumbs by the tip. -->
+                    <Canvas Width="26" Height="14">
+                        <Ellipse Canvas.Left="12" Canvas.Top="2" Width="5" Height="3" Fill="#C98A82" />
+                        <Ellipse Canvas.Left="20" Canvas.Top="8" Width="4" Height="3" Fill="#D69A92" />
+                        <Ellipse Canvas.Left="4" Canvas.Top="10" Width="3" Height="2" Fill="#C98A82" />
+                    </Canvas>
+                </StackPanel>
+            </Viewbox>
         </DockPanel>
 
-        <!-- ===== The open notebook ===== -->
-        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="{StaticResource Paper}">
+        <!-- ===== The open notebook: cover, a stack of page edges, a ribbon, then the open spread ===== -->
+        <Border Grid.Column="1" CornerRadius="4,18,18,4" Background="{StaticResource Cover}" Margin="0,-6,-14,-14">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="30" ShadowDepth="10" Direction="270" Opacity="0.25" Color="#3C280A" />
+                <DropShadowEffect BlurRadius="30" ShadowDepth="10" Direction="270" Opacity="0.3" Color="#3C280A" />
             </Border.Effect>
+        </Border>
+        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="#EFE7D4" BorderBrush="#D6C8AA" BorderThickness="0,0,1,1" Margin="0,4,-7,-7" />
+        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="#F5EFE0" BorderBrush="#DDD0B4" BorderThickness="0,0,1,1" Margin="0,2,-3.5,-3.5" />
+        <Path Grid.Column="1" Data="M0,0 L18,0 L18,52 L9,43 L0,52 Z" Fill="#A8322A" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Margin="0,0,150,-24" IsHitTestVisible="False" />
+        <Border Grid.Column="1" CornerRadius="4,14,14,4" Background="{StaticResource Paper}">
             <Grid>
                 <!-- Writing books: contents on the left page, the open page on the right -->
                 <Grid Visibility="{Binding IsWritingBook, Converter={StaticResource Shown}}">
@@ -62,7 +123,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Background="{StaticResource PaperLeft}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
+                    <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
                             CornerRadius="4,0,0,4" Padding="28,30">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,18">
@@ -143,7 +204,9 @@
                     <Grid Grid.Column="1">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                                     Visibility="{Binding HasPage, Converter={StaticResource Hidden}}">
-                            <TextBlock Text="这一本还没写过" FontFamily="{StaticResource Hand}" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,26" />
+                            <TextBlock Style="{StaticResource EmptyIcon}" Text="&#xE70F;" />
+                            <TextBlock Text="这一本还没写过" FontFamily="{StaticResource Hand}" FontSize="36" HorizontalAlignment="Center" />
+                            <Path Style="{StaticResource Squiggle}" Margin="0,2,0,26" />
                             <Button Style="{StaticResource InkButton}" Command="{Binding NewPageCommand}" Content="翻开第一页"
                                     HorizontalAlignment="Center" />
                         </StackPanel>
@@ -587,10 +650,11 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Background="{StaticResource PaperLeft}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
+                    <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
                             CornerRadius="4,0,0,4" Padding="40,34">
                         <StackPanel>
                             <TextBlock Text="这阵子" FontFamily="{StaticResource Hand}" FontSize="30" />
+                            <Path Style="{StaticResource Squiggle}" Width="96" HorizontalAlignment="Left" Margin="0,2,0,0" />
                             <UniformGrid Columns="3" Margin="0,22,0,0">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Data.EssaysHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
@@ -654,7 +718,8 @@
 
                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Background="{StaticResource Paper}">
                         <StackPanel Margin="40,34">
-                            <TextBlock Text="老毛病" FontFamily="{StaticResource Hand}" FontSize="30" Foreground="{StaticResource RedPen}" Margin="0,0,0,14" />
+                            <TextBlock Text="老毛病" FontFamily="{StaticResource Hand}" FontSize="30" Foreground="{StaticResource RedPen}" />
+                            <Path Style="{StaticResource Squiggle}" Width="96" HorizontalAlignment="Left" Margin="0,2,0,14" />
                             <TextBlock Text="还没有必改的批注。" Foreground="{StaticResource Muted}"
                                        Visibility="{Binding HasHabits, Converter={StaticResource Hidden}}" />
                             <ItemsControl ItemsSource="{Binding Habits}">
@@ -675,24 +740,44 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <Border Background="#FFF3B8" Padding="18,14" Margin="0,30,0,0">
-                                <Border.RenderTransform>
+                            <Grid Margin="0,30,0,0">
+                                <Grid.RenderTransform>
                                     <RotateTransform Angle="-0.8" />
-                                </Border.RenderTransform>
-                                <StackPanel>
-                                    <TextBlock Text="批注改了多少" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Decisions}" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{StaticResource InkSoft}" />
-                                </StackPanel>
-                            </Border>
-                            <Border Background="#F6E1D6" Padding="18,14" Margin="0,18,0,0">
-                                <Border.RenderTransform>
+                                </Grid.RenderTransform>
+                                <Border Background="#FFF3B8" Padding="18,16,18,14">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="280" Opacity="0.12" Color="#3C280A" />
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <TextBlock Text="批注改了多少" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Decisions}" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{StaticResource InkSoft}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource Tape}" Background="#A6A9C4C9">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="-3" />
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
+                            <Grid Margin="0,24,0,0">
+                                <Grid.RenderTransform>
                                     <RotateTransform Angle="0.6" />
-                                </Border.RenderTransform>
-                                <StackPanel>
-                                    <TextBlock Text="单词本" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding WordsLine}" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{StaticResource InkSoft}" />
-                                </StackPanel>
-                            </Border>
+                                </Grid.RenderTransform>
+                                <Border Background="#F6E1D6" Padding="18,16,18,14">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Direction="260" Opacity="0.12" Color="#3C280A" />
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <TextBlock Text="单词本" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding WordsLine}" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{StaticResource InkSoft}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource Tape}" Background="#A6C9C59A" HorizontalAlignment="Left" Margin="40,-12,0,0">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="2.5" />
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
@@ -704,7 +789,7 @@
                         <ColumnDefinition Width="360" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border Background="{StaticResource PaperLeft}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
+                    <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
                             CornerRadius="4,0,0,4" Padding="28,30">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,18">
@@ -747,7 +832,9 @@
                     <Grid Grid.Column="1" Background="{StaticResource Paper}">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="560"
                                     Visibility="{Binding IsEmpty, Converter={StaticResource Shown}}">
-                            <TextBlock Text="书架还空着" FontFamily="{StaticResource Hand}" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,26" />
+                            <TextBlock Style="{StaticResource EmptyIcon}" Text="&#xE8F1;" />
+                            <TextBlock Text="书架还空着" FontFamily="{StaticResource Hand}" FontSize="36" HorizontalAlignment="Center" />
+                            <Path Style="{StaticResource Squiggle}" Margin="0,2,0,26" />
                             <Button Style="{StaticResource InkButton}" Click="ChoosePack" Content="选择内容包…" HorizontalAlignment="Center" />
                         </StackPanel>
 
@@ -813,7 +900,7 @@
                         <ColumnDefinition Width="360" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border Background="{StaticResource PaperLeft}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
+                    <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
                             CornerRadius="4,0,0,4" Padding="28,30">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,18">
@@ -887,29 +974,45 @@
                     <Grid Grid.Column="1" Background="{StaticResource Paper}">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="520"
                                     Visibility="{Binding NoCard, Converter={StaticResource Shown}}">
+                            <TextBlock Style="{StaticResource EmptyIcon}" Text="&#xE73E;" />
                             <TextBlock Text="今天的格子空了" FontFamily="{StaticResource Hand}" FontSize="34" HorizontalAlignment="Center" />
+                            <Path Style="{StaticResource Squiggle}" Margin="0,2,0,0" />
                             <TextBlock Text="{Binding DoneNote}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" TextAlignment="Center"
                                        Margin="0,14,0,0" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="520"
                                     Visibility="{Binding HasCard, Converter={StaticResource Shown}}">
-                            <Border Background="White" BorderBrush="#E9A79E" BorderThickness="1,6,1,1" MinHeight="300" Padding="34,28">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="14" ShadowDepth="4" Direction="270" Opacity="0.15" Color="#3C280A" />
-                                </Border.Effect>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding BoxText}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" />
-                                    <TextBlock Text="{Binding Current.Front}" FontFamily="{StaticResource Print}" FontSize="28" TextWrapping="Wrap"
-                                               TextAlignment="Center" Margin="0,36,0,0" />
-                                    <StackPanel Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}" Margin="0,24,0,0">
-                                        <Rectangle Height="1" Fill="#E9C7C1" Margin="40,0,40,20" />
-                                        <TextBlock Text="{Binding Current.Back}" FontFamily="{StaticResource Hand}" FontSize="26"
-                                                   Foreground="{StaticResource RedPen}" TextWrapping="Wrap" TextAlignment="Center" />
-                                        <TextBlock Text="{Binding Current.Note}" FontFamily="{StaticResource Hand}" FontSize="16"
-                                                   Foreground="{StaticResource Pencil}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0" />
+                            <!-- An index card taped to the page at its two top corners. -->
+                            <Grid>
+                                <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" MinHeight="300" Padding="34,28">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="14" ShadowDepth="4" Direction="270" Opacity="0.15" Color="#3C280A" />
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding BoxText}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" />
+                                        <Rectangle Height="1.5" Fill="{StaticResource MarginLine}" Margin="-34,10,-34,0" />
+                                        <TextBlock Text="{Binding Current.Front}" FontFamily="{StaticResource Print}" FontSize="28" TextWrapping="Wrap"
+                                                   TextAlignment="Center" Margin="0,30,0,0" />
+                                        <StackPanel Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}" Margin="0,24,0,0">
+                                            <Rectangle Height="1" Fill="#E9C7C1" Margin="40,0,40,20" />
+                                            <TextBlock Text="{Binding Current.Back}" FontFamily="{StaticResource Hand}" FontSize="26"
+                                                       Foreground="{StaticResource RedPen}" TextWrapping="Wrap" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding Current.Note}" FontFamily="{StaticResource Hand}" FontSize="16"
+                                                       Foreground="{StaticResource Pencil}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </Border>
+                                </Border>
+                                <Border Style="{StaticResource Tape}" Width="76" HorizontalAlignment="Left" Margin="-28,-2,0,0">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="-40" />
+                                    </Border.RenderTransform>
+                                </Border>
+                                <Border Style="{StaticResource Tape}" Width="76" HorizontalAlignment="Right" Margin="0,-2,-28,0" Background="#A6A9C4C9">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="40" />
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
                             <Button Style="{StaticResource InkButton}" Content="翻过来" HorizontalAlignment="Center" Margin="0,22,0,0"
                                     Command="{Binding FlipCommand}"
                                     Visibility="{Binding IsFlipped, Converter={StaticResource Hidden}}" />
