@@ -56,7 +56,7 @@ public sealed partial class PageViewModel
 
     public string TranslatedCount => Sentences.Count == 0
         ? ""
-        : $"写到第 {Math.Min(SelfCheck.EnglishSentences(Text), Sentences.Count)} 句，共 {Sentences.Count} 句（按句号估计）";
+        : $"写到第 {Math.Min(SelfCheck.EnglishSentences(Text), Sentences.Count)} 句，共 {Sentences.Count} 句";
 
     [RelayCommand]
     private void SelectSentence(SourceSentence sentence)

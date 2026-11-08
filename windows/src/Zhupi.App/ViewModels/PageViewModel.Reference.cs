@@ -30,7 +30,7 @@ public sealed partial class PageViewModel
         {
             if (_paper is null) return "";
             var source = IsEssay ? _paper.ReferenceEssaySource : _paper.ReferenceTranslationSource;
-            return $"{_paper.Label} · " + (source.Length > 0 ? $"来源：{source}" : "来源未注明") + " · 不是官方评分标准";
+            return $"{_paper.Label} · " + (source.Length > 0 ? $"来源：{source}" : "来源未注明");
         }
     }
 

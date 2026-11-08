@@ -32,11 +32,11 @@ public sealed partial class TeacherViewModel : ObservableObject
 
     public IReadOnlyList<DepthChoice> Depths { get; } =
     [
-        new(Depth.Default, "默认", "不指定，由服务自己决定"),
-        new(Depth.Low, "浅", "想得少，最快、最省额度"),
-        new(Depth.Medium, "中", "多想一会儿"),
-        new(Depth.High, "深", "仔细推敲，慢一些、更花额度"),
-        new(Depth.Max, "最深", "想得最久，只有部分模型支持"),
+        new(Depth.Default, "默认"),
+        new(Depth.Low, "浅"),
+        new(Depth.Medium, "中"),
+        new(Depth.High, "深"),
+        new(Depth.Max, "最深"),
     ];
 
     [ObservableProperty]
@@ -235,8 +235,8 @@ public sealed partial class TeacherViewModel : ObservableObject
         }
     }
 
-    private string AccountNote() => _settings.Vault.Load() is null ? "点「使用 ChatGPT 登录」，在浏览器里登录并同意授权。" : Account;
+    private string AccountNote() => _settings.Vault.Load() is null ? "" : Account;
 }
 
 /// <summary>One option in the 批改深度 picker.</summary>
-public sealed record DepthChoice(Depth Value, string Name, string Hint);
+public sealed record DepthChoice(Depth Value, string Name);

@@ -51,7 +51,7 @@ public sealed partial class PapersViewModel : ObservableObject
         ? $"来源：{p.SourceName}　·　{License(p.License)}　·　修订 {p.Revision}"
         : "";
 
-    public string ReviewNote => Current is { Paper.Reviewed: false } ? "这套还没人工校对过，题目和原文可能有出入，做之前对照一下原卷。" : "";
+    public string ReviewNote => Current is { Paper.Reviewed: false } ? "待校对" : "";
 
     public bool HasEssay => Current?.Paper.HasEssay == true;
 
@@ -69,9 +69,9 @@ public sealed partial class PapersViewModel : ObservableObject
 
     public string TranslationAction => Current is { } c ? Action(c.Translation, "做这段翻译") : "";
 
-    public string EssayReference => Current is { Paper.ReferenceEssay.Length: > 0 } ? "附参考范文，交了之后可在页顶翻开对照" : "没有参考范文";
+    public string EssayReference => Current is { Paper.ReferenceEssay.Length: > 0 } ? "附参考范文" : "";
 
-    public string TranslationReference => Current is { Paper.ReferenceTranslation.Length: > 0 } ? "附参考译文，交了之后可在页顶翻开对照" : "没有参考译文";
+    public string TranslationReference => Current is { Paper.ReferenceTranslation.Length: > 0 } ? "附参考译文" : "";
 
     public void Refresh()
     {
