@@ -31,11 +31,24 @@ public partial class App : Application
             return;
         }
         UsePerUserFonts();
+        // Packs installed next to the program are this learner's own papers; bringing them in is repeat-safe.
+        var packs = ExamPackFolder.ImportAll(_notebook, Path.Combine(AppContext.BaseDirectory, "packs"));
         var model = new MainViewModel(_notebook, file, TeacherSettings.Load(directory))
         {
             Confirm = text => MessageBox.Show(text, "朱批", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel) == MessageBoxResult.OK,
         };
+        if (packs.ChangedAnything) model.Message = PackReport(packs);
         new MainWindow { DataContext = model }.Show();
+    }
+
+    private static string PackReport(FolderImport packs)
+    {
+        var parts = new List<string>();
+        if (packs.Added > 0) parts.Add($"新增 {packs.Added} 套");
+        if (packs.Updated > 0) parts.Add($"更新 {packs.Updated} 套");
+        if (packs.Skipped.Count > 0) parts.Add($"跳过 {packs.Skipped.Count} 套（{string.Join("；", packs.Skipped.Take(2).Select(k => $"{k.Id} {k.Reason}"))}）");
+        if (packs.Unreadable.Count > 0) parts.Add($"读不了 {string.Join("、", packs.Unreadable)}");
+        return "套卷：" + string.Join("，", parts);
     }
 
     /// <summary>

@@ -26,7 +26,7 @@
 dotnet run --project windows/src/Zhupi.App
 ```
 
-装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `-Destination` 指定的文件夹（不写时默认 `%LOCALAPPDATA%\Programs\Zhupi\`），并在开始菜单加「朱批」快捷方式。更新代码后不带参数再运行一次即可升级，会沿用开始菜单快捷方式指向的位置；运行前先关掉已打开的朱批。`-Uninstall` 删除程序和快捷方式，本子不动。
+装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `-Destination` 指定的文件夹（不写时默认 `%LOCALAPPDATA%\Programs\Zhupi\`），并在开始菜单加「朱批」快捷方式。更新代码后不带参数再运行一次即可升级，会沿用开始菜单快捷方式指向的位置；运行前先关掉已打开的朱批。`-Uninstall` 删除程序和快捷方式，本子不动。安装时还会把自己的套卷内容包（默认 `docs/EXAM_IMPORT.md` 里写的最新个人内容包，可用 `-Pack` 指定）复制到安装目录的 `packs\`，朱批每次启动自动导入，重复导入不会多出套卷；内容包只在本机，不进仓库。
 
 ```powershell
 pwsh -File windows/install.ps1 -Destination D:\Software\Zhupi
