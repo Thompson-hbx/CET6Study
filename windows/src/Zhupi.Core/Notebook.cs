@@ -8,7 +8,7 @@ namespace Zhupi.Core;
 /// </summary>
 public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 6;
+    public const int SchemaVersion = 7;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -166,6 +166,8 @@ public sealed partial class Notebook : IDisposable
             );
             CREATE INDEX paper_pages_paper ON paper_pages (paper_id);
             """, tx);
+        // A page in the trash keeps every row it had; only discarded_at marks it, so restoring loses nothing.
+        if (version < 7) Exec(db, "ALTER TABLE pieces ADD COLUMN discarded_at INTEGER;", tx);
         Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();
     }
@@ -175,7 +177,7 @@ public sealed partial class Notebook : IDisposable
     public bool IsEmpty => Convert.ToInt64(Scalar(_db, "SELECT COUNT(*) FROM pieces;")) == 0;
 
     public int Count(PieceKind kind) =>
-        Convert.ToInt32(Scalar(_db, "SELECT COUNT(*) FROM pieces WHERE kind = $kind;", null, ("$kind", Stored(kind))));
+        Convert.ToInt32(Scalar(_db, "SELECT COUNT(*) FROM pieces WHERE kind = $kind AND discarded_at IS NULL;", null, ("$kind", Stored(kind))));
 
     /// <summary>Table of contents for one book, latest page first; <paramref name="search"/> matches title, task or text.</summary>
     public IReadOnlyList<Piece> Contents(PieceKind kind, string search = "")
@@ -183,7 +185,7 @@ public sealed partial class Notebook : IDisposable
         var filter = string.IsNullOrWhiteSpace(search)
             ? ""
             : " AND (instr(lower(title), lower($q)) > 0 OR instr(lower(task), lower($q)) > 0 OR instr(lower(text), lower($q)) > 0)";
-        return Query($"SELECT {Columns} FROM pieces WHERE kind = $kind{filter} ORDER BY number DESC;",
+        return Query($"SELECT {Columns} FROM pieces WHERE kind = $kind AND discarded_at IS NULL{filter} ORDER BY number DESC;",
             ("$kind", Stored(kind)), ("$q", search.Trim()));
     }
 

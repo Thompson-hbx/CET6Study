@@ -87,15 +87,35 @@
                                              Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="翻找" />
                                 </DockPanel>
                             </Border>
-                            <TextBlock DockPanel.Dock="Top" Text="目  录" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,22,0,10" />
+                            <TextBlock DockPanel.Dock="Top" Text="{Binding TocHeading}" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,22,0,10" />
                             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Message}" FontSize="12" Foreground="{StaticResource InkSoft}"
                                        TextWrapping="Wrap" Margin="0,12,0,0" />
+                            <Button DockPanel.Dock="Bottom" Style="{StaticResource Plain}" Content="{Binding TrashLabel}" FontSize="12"
+                                    Foreground="{StaticResource Muted}" HorizontalAlignment="Left" Padding="2,4" Margin="0,10,0,0"
+                                    Command="{Binding ToggleTrashCommand}" Visibility="{Binding HasTrash, Converter={StaticResource Shown}}" />
                             <ListBox ItemsSource="{Binding Contents}" SelectedItem="{Binding Selected}" Background="Transparent" BorderThickness="0"
                                      ItemContainerStyle="{StaticResource TocRow}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                      AutomationProperties.Name="目录">
+                                <ListBox.InputBindings>
+                                    <KeyBinding Key="Delete" Command="{Binding DeleteSelectedCommand}" />
+                                </ListBox.InputBindings>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type vm:TocLine}">
-                                        <DockPanel>
+                                        <!-- A context menu sits outside the visual tree, so the window's model travels in through Tag. -->
+                                        <DockPanel Background="Transparent" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <DockPanel.ContextMenu>
+                                                <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                    <MenuItem Header="放进废纸篓" Command="{Binding DiscardCommand}"
+                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                              Visibility="{Binding ShowingTrash, Converter={StaticResource Hidden}}" />
+                                                    <MenuItem Header="放回目录" Command="{Binding RestoreCommand}"
+                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                              Visibility="{Binding ShowingTrash, Converter={StaticResource Shown}}" />
+                                                    <MenuItem Header="彻底删除…" Command="{Binding PurgeCommand}"
+                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                              Visibility="{Binding ShowingTrash, Converter={StaticResource Shown}}" />
+                                                </ContextMenu>
+                                            </DockPanel.ContextMenu>
                                             <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource Serif}"
                                                        Foreground="{StaticResource Muted}" Width="28" />
                                             <TextBlock DockPanel.Dock="Right" Text="{Binding Status}" FontSize="12" Foreground="{StaticResource Muted}"

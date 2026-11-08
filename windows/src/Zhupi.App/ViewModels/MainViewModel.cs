@@ -73,6 +73,25 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty]
     public partial string CountText { get; set; }
 
+    /// <summary>The contents list shows the book's trash instead of its pages.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TocHeading), nameof(TrashLabel), nameof(HasTrash))]
+    public partial bool ShowingTrash { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TrashLabel), nameof(HasTrash))]
+    public partial int TrashCount { get; set; }
+
+    /// <summary>An empty trash has nothing to open, so its entry only appears once a page is in it.</summary>
+    public bool HasTrash => ShowingTrash || TrashCount > 0;
+
+    public string TocHeading => ShowingTrash ? "废 纸 篓" : "目  录";
+
+    public string TrashLabel => ShowingTrash ? "← 回到目录" : $"废纸篓 · {TrashCount}";
+
+    /// <summary>Asks the learner before something cannot be undone; the window supplies the dialog.</summary>
+    public Func<string, bool> Confirm { get; set; } = _ => false;
+
     public bool IsWritingBook => Tab is Book.Essays or Book.Translations;
 
     public bool IsSettings => Tab == Book.Settings;
@@ -98,6 +117,7 @@ public sealed partial class MainViewModel : ObservableObject
     private void NewPage()
     {
         if (!IsWritingBook) Tab = Book.Essays;
+        ShowingTrash = false;
         Page?.Save();
         Show(_notebook.NewPage(Kind));
         Message = "翻开了新的一页";
@@ -122,6 +142,71 @@ public sealed partial class MainViewModel : ObservableObject
 
     public void SaveOpenPage() => Page?.Save();
 
+    [RelayCommand]
+    private void ToggleTrash()
+    {
+        Page?.Save();
+        ShowingTrash = !ShowingTrash;
+        Search = "";
+        OpenFirst();
+    }
+
+    [RelayCommand]
+    private void Discard(TocLine? line)
+    {
+        if (line is null || ShowingTrash) return;
+        if (line.Id == Page?.Id) Page?.Save();
+        _notebook.Discard(line.Id);
+        Message = $"「{line.Title}」放进了废纸篓";
+        if (line.Id == Page?.Id) OpenFirst();
+        else Refresh();
+    }
+
+    [RelayCommand]
+    private void Restore(TocLine? line)
+    {
+        if (line is null || !ShowingTrash) return;
+        _notebook.Restore(line.Id);
+        Message = $"「{line.Title}」放回了目录";
+        LeaveTrashIfEmpty(line.Id);
+    }
+
+    [RelayCommand]
+    private void Purge(TocLine? line)
+    {
+        if (line is null || !ShowingTrash) return;
+        if (!Confirm($"彻底删除「{line.Title}」？它的批改、问答和翻译提示会一起删掉，不能恢复。")) return;
+        _notebook.Purge(line.Id);
+        Message = $"「{line.Title}」已彻底删除";
+        LeaveTrashIfEmpty(line.Id);
+    }
+
+    /// <summary>Once the last page has left the trash there is nothing to look at there, so go back to the contents.</summary>
+    private void LeaveTrashIfEmpty(string changedId)
+    {
+        if (_notebook.Trash(Kind).Count == 0)
+        {
+            ShowingTrash = false;
+            OpenFirst();
+        }
+        else if (changedId == Page?.Id)
+        {
+            OpenFirst();
+        }
+        else
+        {
+            Refresh();
+        }
+    }
+
+    /// <summary>The Delete key: into the trash from the contents, out of the notebook from the trash.</summary>
+    [RelayCommand]
+    private void DeleteSelected()
+    {
+        if (ShowingTrash) Purge(Selected);
+        else Discard(Selected);
+    }
+
     /// <summary>Turns to the essay or translation book at the page started from a paper.</summary>
     private void OpenFromPaper(Piece piece)
     {
@@ -138,6 +223,7 @@ public sealed partial class MainViewModel : ObservableObject
     partial void OnTabChanged(Book value)
     {
         Page?.Save();
+        ShowingTrash = false;
         if (Tab == Book.Words) Words.Refresh();
         if (Tab == Book.Review) LookBack.Refresh();
         if (Tab == Book.Papers) Papers.Refresh();
@@ -158,7 +244,14 @@ public sealed partial class MainViewModel : ObservableObject
 
     private void OpenLatest()
     {
-        var latest = _notebook.Contents(Kind).FirstOrDefault();
+        ShowingTrash = false;
+        OpenFirst();
+    }
+
+    /// <summary>Opens the top line of whichever list is showing, the contents or the trash.</summary>
+    private void OpenFirst()
+    {
+        var latest = (ShowingTrash ? _notebook.Trash(Kind) : _notebook.Contents(Kind)).FirstOrDefault();
         if (latest is null)
         {
             Page = null;
@@ -185,7 +278,7 @@ public sealed partial class MainViewModel : ObservableObject
         try
         {
             Contents.Clear();
-            foreach (var p in _notebook.Contents(Kind, Search))
+            foreach (var p in ShowingTrash ? _notebook.Trash(Kind) : _notebook.Contents(Kind, Search))
             {
                 var title = p.Title.Trim().Length > 0 ? p.Title.Trim() : FirstLine(p.Task) ?? "（空白页）";
                 var status = p.IsHandedIn ? "已交" : p.Revises is null ? "草稿" : "重写稿";
@@ -193,6 +286,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
             Selected = Contents.FirstOrDefault(line => line.Id == Page?.Id);
             CountText = $"共 {_notebook.Count(Kind)} 页";
+            TrashCount = _notebook.Trash(Kind).Count;
         }
         finally
         {

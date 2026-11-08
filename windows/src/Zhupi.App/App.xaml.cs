@@ -31,7 +31,11 @@ public partial class App : Application
             return;
         }
         UsePerUserFonts();
-        new MainWindow { DataContext = new MainViewModel(_notebook, file, TeacherSettings.Load(directory)) }.Show();
+        var model = new MainViewModel(_notebook, file, TeacherSettings.Load(directory))
+        {
+            Confirm = text => MessageBox.Show(text, "朱批", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel) == MessageBoxResult.OK,
+        };
+        new MainWindow { DataContext = model }.Show();
     }
 
     /// <summary>
