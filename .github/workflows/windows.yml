@@ -17,8 +17,8 @@ jobs:
         with:
           global-json-file: windows/global.json
       - name: Format
-        run: dotnet format Zhupi.slnx --verify-no-changes --severity warn
+        run: dotnet format Inkwell.slnx --verify-no-changes --severity warn
       - name: Build
-        run: dotnet build Zhupi.slnx --configuration Release
+        run: dotnet build Inkwell.slnx --configuration Release
       - name: Test
-        run: dotnet test Zhupi.slnx --configuration Release --no-build
+        run: dotnet test Inkwell.slnx --configuration Release --no-build

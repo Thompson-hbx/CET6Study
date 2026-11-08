@@ -1,0 +1,790 @@
+﻿<Application x:Class="Inkwell.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Inkwell.App"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <!-- Notebook palette: kraft desk, cream paper, blue rules, red teacher's pen. -->
+        <SolidColorBrush x:Key="Desk" Color="#D9C9A8" />
+        <SolidColorBrush x:Key="Paper" Color="#FBF8F0" />
+        <SolidColorBrush x:Key="PaperLeft" Color="#F4EEDF" />
+        <SolidColorBrush x:Key="PaperEdge" Color="#E2D6BC" />
+        <SolidColorBrush x:Key="Ink" Color="#2B2620" />
+        <SolidColorBrush x:Key="InkSoft" Color="#4F4436" />
+        <SolidColorBrush x:Key="Muted" Color="#6E6252" />
+        <SolidColorBrush x:Key="Pencil" Color="#6E6A63" />
+        <SolidColorBrush x:Key="RedPen" Color="#C2362B" />
+        <SolidColorBrush x:Key="Amber" Color="#B0602A" />
+        <SolidColorBrush x:Key="MarginLine" Color="#E9A79E" />
+        <SolidColorBrush x:Key="HeaderLine" Color="#E9C7C1" />
+        <SolidColorBrush x:Key="Saved" Color="#5E7A4C" />
+        <SolidColorBrush x:Key="Placeholder" Color="#A89C86" />
+
+        <!-- Desk lit from above the notebook; the edges fall off so the book reads as the thing on the desk. -->
+        <RadialGradientBrush x:Key="DeskLight" Center="0.5,0.42" GradientOrigin="0.5,0.42" RadiusX="0.78" RadiusY="0.85">
+            <GradientStop Color="#E3D5B6" Offset="0" />
+            <GradientStop Color="#D9C9A8" Offset="0.62" />
+            <GradientStop Color="#C8B48E" Offset="1" />
+        </RadialGradientBrush>
+        <!-- Kraft-paper fibres and specks tiled over the desk light, so the desk reads as a surface, not a flat fill.
+             The strokes were generated once with a fixed seed and kept inside the tile, so the seams do not show. -->
+        <DrawingBrush x:Key="DeskGrain" TileMode="Tile" Viewport="0,0,240,240" ViewportUnits="Absolute" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,240,240" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Geometry="M190,197 Q194,202 191,206 M159,113 Q154,115 151,120 M65,192 Q62,196 58,201 M164,46 Q164,54 161,62 M193,165 Q190,169 184,169 M192,193 Q194,196 193,200 M152,70 Q146,73 139,72 M157,86 Q149,88 141,90 M155,167 Q149,175 140,178 M87,144 Q93,148 94,155 M211,126 Q218,128 224,131 M47,116 Q50,120 55,120 M168,3 Q166,6 163,7 M217,149 Q221,153 223,157 M161,213 Q160,222 163,229 M124,113 Q123,119 117,122 M179,64 Q181,71 180,79 M5,30 Q5,35 2,40 M108,223 Q111,228 116,230 M147,64 Q150,70 148,76 M91,73 Q86,75 83,79 M233,222 Q236,227 238,234 M96,117 Q89,123 82,128 M1,108 Q4,110 8,109 M27,172 Q29,181 34,188 M15,46 Q8,48 2,48 M188,195 Q190,201 188,207 M87,35 Q86,42 82,47 M151,23 Q157,25 164,28 M216,151 Q212,153 211,157 M20,148 Q11,148 4,153 M108,167 Q104,167 102,171 M218,106 Q215,110 209,113 M171,15 Q165,22 157,26 M226,20 Q220,20 217,24 M103,221 Q107,224 110,222 M153,129 Q157,128 161,129 M82,19 Q80,21 78,24 M111,119 Q115,120 118,120 M7,126 Q12,126 16,130 M136,93 Q139,96 143,99 M219,101 Q224,102 227,105 M137,189 Q138,193 136,197 M91,106 Q94,114 97,123 M159,172 Q156,179 152,186 M15,10 Q11,11 9,15 M24,88 Q30,91 36,89 M54,136 Q50,137 45,138 M174,207 Q181,209 186,214 M27,236 Q35,239 44,239 M162,175 Q160,179 158,183 M49,206 Q44,212 37,216 M142,61 Q134,63 130,70 M170,164 Q167,166 165,169 M8,88 Q17,89 24,94">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#1F5A3E1A" Thickness="1" StartLineCap="Round" EndLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Geometry="M33,2 Q35,5 38,3 M21,142 Q23,144 25,147 M150,115 Q151,119 155,120 M46,108 Q40,109 37,114 M194,123 Q200,125 205,127 M207,127 Q203,133 199,139 M202,216 Q208,221 215,223 M205,81 Q208,83 210,86 M205,87 Q209,85 214,87 M149,184 Q147,186 144,186 M30,219 Q24,219 21,224 M125,186 Q122,191 125,195 M202,142 Q196,143 191,147 M16,32 Q21,35 27,35 M37,121 Q43,125 49,126 M38,175 Q35,177 31,177 M151,206 Q149,212 144,214 M147,109 Q142,111 138,116 M233,150 Q230,154 225,152 M212,7 Q207,10 202,7 M66,173 Q70,178 70,184 M201,90 Q197,90 195,93 M113,97 Q118,99 123,98 M25,107 Q33,110 41,108 M163,115 Q166,117 169,117 M130,83 Q129,90 128,98 M149,1 Q144,3 140,5 M41,9 Q45,7 48,9 M37,14 Q31,17 29,24 M52,175 Q49,177 50,181 M86,44 Q93,47 98,53 M92,131 Q97,136 97,142 M103,140 Q102,146 99,151 M61,64 Q56,65 52,65 M67,156 Q70,161 73,166 M19,27 Q22,32 21,37 M63,0 Q66,3 69,7 M142,205 Q139,211 134,215 M119,174 Q116,178 112,177 M12,124 Q8,123 6,126 M154,207 Q150,207 148,209 M32,28 Q37,33 36,38 M66,42 Q70,41 72,45 M52,79 Q53,85 55,91">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#40FFFFFF" Thickness="1.2" StartLineCap="Round" EndLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#2E5A3E1A" Geometry="M117.1,78.2 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M47.5,43.9 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M54.2,196.0 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M54.6,85.0 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M141.8,142.7 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M136.4,55.3 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M98.0,95.6 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M218.7,10.1 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M87.9,119.8 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M237.5,104.9 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M87.1,170.2 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M139.7,15.5 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M74.0,141.1 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M58.8,110.8 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M88.5,103.2 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M191.0,18.9 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M237.9,4.8 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M145.3,115.5 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M153.0,198.0 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M237.6,39.9 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M115.3,18.7 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M9.0,194.7 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M146.6,128.6 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M198.3,93.1 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M148.1,100.7 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M118.6,187.3 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M5.7,191.5 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M184.9,195.9 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M154.1,134.7 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0 M79.1,208.8 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M50.5,237.2 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M51.9,222.4 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M100.6,86.2 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M37.4,165.7 m-1.0,0 a1.0,1.0 0 1 0 2.0,0 a1.0,1.0 0 1 0 -2.0,0 M200.4,177.3 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M120.4,49.4 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M161.0,152.8 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M219.3,224.7 m-0.6,0 a0.6,0.6 0 1 0 1.2,0 a0.6,0.6 0 1 0 -1.2,0 M174.8,30.0 m-0.8,0 a0.8,0.8 0 1 0 1.6,0 a0.8,0.8 0 1 0 -1.6,0 M121.3,180.7 m-1.3,0 a1.3,1.3 0 1 0 2.6,0 a1.3,1.3 0 1 0 -2.6,0" />
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <!-- Soft cloudy patches where the kraft took the dye unevenly; a larger tile than the fibres so the two never line up. -->
+        <DrawingBrush x:Key="DeskMottle" TileMode="Tile" Viewport="0,0,420,420" ViewportUnits="Absolute" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,420,420" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#10804C1E" Offset="0" />
+                                <GradientStop Color="#00804C1E" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="333,199" RadiusX="65" RadiusY="53" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#145A3E1A" Offset="0" />
+                                <GradientStop Color="#005A3E1A" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="202,247" RadiusX="50" RadiusY="46" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#145A3E1A" Offset="0" />
+                                <GradientStop Color="#005A3E1A" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="305,277" RadiusX="57" RadiusY="36" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#10804C1E" Offset="0" />
+                                <GradientStop Color="#00804C1E" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="237,121" RadiusX="93" RadiusY="80" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#1CFFF6E0" Offset="0" />
+                                <GradientStop Color="#00FFF6E0" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="336,247" RadiusX="43" RadiusY="27" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#10804C1E" Offset="0" />
+                                <GradientStop Color="#00804C1E" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="216,252" RadiusX="64" RadiusY="60" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#24FFFFFF" Offset="0" />
+                                <GradientStop Color="#00FFFFFF" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="179,228" RadiusX="45" RadiusY="39" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#1A6B4A22" Offset="0" />
+                                <GradientStop Color="#006B4A22" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="139,146" RadiusX="79" RadiusY="57" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#24FFFFFF" Offset="0" />
+                                <GradientStop Color="#00FFFFFF" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="176,349" RadiusX="62" RadiusY="58" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#1CFFF6E0" Offset="0" />
+                                <GradientStop Color="#00FFF6E0" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="68,170" RadiusX="52" RadiusY="50" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#145A3E1A" Offset="0" />
+                                <GradientStop Color="#005A3E1A" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="302,131" RadiusX="44" RadiusY="37" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#24FFFFFF" Offset="0" />
+                                <GradientStop Color="#00FFFFFF" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="353,79" RadiusX="41" RadiusY="31" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#1A6B4A22" Offset="0" />
+                                <GradientStop Color="#006B4A22" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="103,230" RadiusX="43" RadiusY="40" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#1A6B4A22" Offset="0" />
+                                <GradientStop Color="#006B4A22" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="191,181" RadiusX="94" RadiusY="86" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#24FFFFFF" Offset="0" />
+                                <GradientStop Color="#00FFFFFF" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="371,242" RadiusX="40" RadiusY="38" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Brush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#1A6B4A22" Offset="0" />
+                                <GradientStop Color="#006B4A22" Offset="1" />
+                            </RadialGradientBrush>
+                        </GeometryDrawing.Brush>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="322,258" RadiusX="52" RadiusY="39" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <!-- A few longer fibres on a third tile size, breaking up the repeat of the short ones. -->
+        <DrawingBrush x:Key="DeskFibres" TileMode="Tile" Viewport="0,0,330,330" ViewportUnits="Absolute" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,330,330" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Geometry="M70,85 Q63,94 53,100 M24,30 Q20,40 19,51 M123,150 Q110,150 97,153 M286,60 Q299,71 315,75 M82,63 Q73,77 60,87 M314,291 Q313,304 306,315 M272,197 Q276,206 284,213 M23,75 Q19,91 17,106 M92,303 Q101,306 107,314 M147,20 Q157,27 167,33 M43,120 Q27,124 12,131 M228,193 Q239,192 245,201 M300,231 Q291,231 282,233 M159,241 Q172,253 177,270 M180,243 Q165,246 152,252 M262,302 Q265,317 275,328 M287,138 Q274,147 262,157 M206,126 Q207,141 199,153 M243,192 Q250,206 248,223 M248,10 Q246,23 240,34 M230,164 Q227,180 219,195 M299,218 Q304,233 305,250">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#245A3E1A" Thickness="1.4" StartLineCap="Round" EndLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Geometry="M220,66 Q218,79 225,90 M290,127 Q292,137 286,145 M164,276 Q151,278 143,287 M91,56 Q96,64 94,73 M137,206 Q133,216 137,225 M14,234 Q9,242 10,252 M6,45 Q4,52 8,59 M78,46 Q90,48 101,50 M208,216 Q196,222 185,232 M66,157 Q72,160 78,164 M236,59 Q240,68 248,73 M172,203 Q163,207 158,216 M299,29 Q288,35 275,34 M150,206 Q140,208 131,212 M290,263 Q280,263 270,267 M68,238 Q57,243 48,251">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#38FFFFFF" Thickness="1.6" StartLineCap="Round" EndLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        <!-- Calligraphy lettered straight onto the desk, where the desk shows: Gabriola ships with Windows. -->
+        <Style x:Key="DeskLettering" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Gabriola, Segoe Script" />
+            <Setter Property="Foreground" Value="#4D5A3E1A" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        </Style>
+        <!-- The program's mark: an ink bottle, half full of blue-black ink, drawn on a 48 x 48 grid.
+             Used in the title bar, at the top of each book's left page, faintly on the settings page and for the .ico. -->
+        <DrawingImage x:Key="InkwellMark">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,48,48" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FBF8F0" Geometry="M19,11 V16 C12,17 8,20 8,26 V39 C8,42 10,44 13,44 H35 C38,44 40,42 40,39 V26 C40,20 36,17 29,16 V11 Z" />
+                    <GeometryDrawing Brush="#2D4F7C" Geometry="M8,30 C16,26.5 24,33.5 40,29 V39 C40,42 38,44 35,44 H13 C10,44 8,42 8,39 Z" />
+                    <GeometryDrawing Geometry="M19,11 V16 C12,17 8,20 8,26 V39 C8,42 10,44 13,44 H35 C38,44 40,42 40,39 V26 C40,20 36,17 29,16 V11">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#2B2620" Thickness="2.4" LineJoin="Round" StartLineCap="Round" EndLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#C2362B">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="15.5,3,17,9" RadiusX="2" RadiusY="2" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Geometry="M12.5,25 V35">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#B3FFFFFF" Thickness="2" StartLineCap="Round" EndLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        <!-- Leather cover peeking out behind the pages, in the stamp's vermilion. -->
+        <LinearGradientBrush x:Key="Cover" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#A2463A" Offset="0" />
+            <GradientStop Color="#7C2C22" Offset="1" />
+        </LinearGradientBrush>
+        <!-- The left page darkens toward the spine, where the paper curves into the binding. -->
+        <LinearGradientBrush x:Key="LeftPage" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#F4EEDF" Offset="0" />
+            <GradientStop Color="#F4EEDF" Offset="0.88" />
+            <GradientStop Color="#E8DCC4" Offset="1" />
+        </LinearGradientBrush>
+
+        <!-- A red-pen wave drawn under a heading or an empty page's line. -->
+        <Style x:Key="Squiggle" TargetType="Path">
+            <Setter Property="Data" Value="M2,6 C20,1 38,10 58,5 S98,0 118,5 S150,10 170,4" />
+            <Setter Property="Stroke" Value="{StaticResource RedPen}" />
+            <Setter Property="StrokeThickness" Value="2.5" />
+            <Setter Property="StrokeStartLineCap" Value="Round" />
+            <Setter Property="StrokeEndLineCap" Value="Round" />
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="Width" Value="172" />
+            <Setter Property="Height" Value="9" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+        </Style>
+        <!-- Faint line-art above an empty page's message. -->
+        <Style x:Key="EmptyIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="54" />
+            <Setter Property="Foreground" Value="{StaticResource Placeholder}" />
+            <Setter Property="Opacity" Value="0.55" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,0,18" />
+        </Style>
+        <!-- A strip of washi tape holding a card or note to the page. -->
+        <Style x:Key="Tape" TargetType="Border">
+            <Setter Property="Width" Value="104" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Background" Value="#A6E7B9A1" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,-12,0,0" />
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+        </Style>
+
+        <!-- Two families only. Print is everything typed: headings, essays, tasks, Chinese passages, buttons.
+             Hand is everything written by hand: the teacher's red pen, margin notes and big tallies. Segoe Print has
+             no Chinese, so Chinese inside handwriting falls through to LXGW WenKai (see App.UsePerUserFonts). -->
+        <FontFamily x:Key="Print">Noto Serif SC, STZhongsong, SimSun</FontFamily>
+        <FontFamily x:Key="Hand">Segoe Print, LXGW WenKai, KaiTi, STKaiti</FontFamily>
+
+        <!-- One ruled row is 40 px; the editor uses the same line height so text sits on the rules. -->
+        <DrawingBrush x:Key="RuledPaper" TileMode="Tile" Viewport="0,0,40,40" ViewportUnits="Absolute" Stretch="None">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="#FBF8F0">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,40,40" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#CFDCE6">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,39,40,1" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+        <BooleanToVisibilityConverter x:Key="Shown" />
+        <local:HiddenWhenTrue x:Key="Hidden" />
+        <local:EqualsConverter x:Key="Is" />
+
+        <!-- Buttons -->
+        <Style x:Key="Plain" TargetType="ButtonBase">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ButtonBase">
+                        <Border x:Name="Face" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="False" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Face" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Face" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                                <Setter TargetName="Face" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- A small glyph button on a contents row; it only shows on the row under the cursor or the selected row. -->
+        <Style x:Key="RowIcon" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource Muted}" />
+            <Setter Property="Padding" Value="5,3" />
+            <Setter Property="Margin" Value="4,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource RedPen}" />
+                    <Setter Property="Background" Value="#E6DAC0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!-- Title bar: the window's name and caption buttons sitting straight on the desk. Everything dims when the window
+             is not active, as the system bar does. Tag carries hover/press for the maximize button, whose mouse input
+             arrives as non-client messages (see TitleBar) and never reaches WPF. -->
+        <Style x:Key="CaptionTitle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource InkSoft}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource Placeholder}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Caption" TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="{StaticResource InkSoft}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource Placeholder}" />
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1F5A3E1A" />
+                </Trigger>
+                <Trigger Property="Tag" Value="hot">
+                    <Setter Property="Background" Value="#1F5A3E1A" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#335A3E1A" />
+                </Trigger>
+                <Trigger Property="Tag" Value="pressed">
+                    <Setter Property="Background" Value="#335A3E1A" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CaptionMaximize" TargetType="Button" BasedOn="{StaticResource Caption}">
+            <Setter Property="Content" Value="&#xE922;" />
+            <Setter Property="ToolTip" Value="最大化" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                    <Setter Property="Content" Value="&#xE923;" />
+                    <Setter Property="ToolTip" Value="还原" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CaptionClose" TargetType="Button" BasedOn="{StaticResource Caption}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource RedPen}" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A52A21" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="InkButton" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="Background" Value="{StaticResource Ink}" />
+            <Setter Property="Foreground" Value="#FBF8F0" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="16,8" />
+        </Style>
+        <Style x:Key="LineButton" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="BorderBrush" Value="{StaticResource InkSoft}" />
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="Padding" Value="14,7" />
+        </Style>
+        <Style x:Key="DashedButton" TargetType="Button" BasedOn="{StaticResource Plain}">
+            <Setter Property="Foreground" Value="{StaticResource InkSoft}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="Face" Background="Transparent" Height="40">
+                            <Rectangle RadiusX="8" RadiusY="8" Stroke="#A8977A" StrokeThickness="2" StrokeDashArray="3 2" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Face" Property="Background" Value="#EDE4CF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Coloured divider tabs; the open one pokes further out in paper colour. -->
+        <Style x:Key="DividerTab" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Height" Value="56" />
+            <Setter Property="Margin" Value="26,0,0,10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="10,0,0,10">
+                            <Grid>
+                                <!-- Card-stock sheen on the top half of the tab. -->
+                                <Border CornerRadius="10,0,0,0" IsHitTestVisible="False">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#55FFFFFF" Offset="0" />
+                                            <GradientStop Color="#00FFFFFF" Offset="0.55" />
+                                            <GradientStop Color="#00000000" Offset="0.8" />
+                                            <GradientStop Color="#14000000" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                </Border>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Face" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="2" Direction="225" BlurRadius="0" Opacity="0.12" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Face" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                                <Setter TargetName="Face" Property="BorderThickness" Value="2,2,0,2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Height" Value="64" />
+                    <Setter Property="Margin" Value="18,0,0,10" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="15" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Text boxes without chrome; Tag is the placeholder. -->
+        <Style x:Key="Bare" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="CaretBrush" Value="{StaticResource Ink}" />
+            <Setter Property="SelectionBrush" Value="#F2C4BB" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <TextBlock x:Name="Hint" Text="{TemplateBinding Tag}" Foreground="{StaticResource Placeholder}"
+                                           FontStyle="Italic" Margin="2,0,0,0" TextWrapping="Wrap" IsHitTestVisible="False" Visibility="Collapsed" />
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Hint" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Writing" TargetType="TextBox" BasedOn="{StaticResource Bare}">
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="SpellCheck.IsEnabled" Value="False" />
+        </Style>
+
+        <!-- A choice written on a ruled line, like the other fields: no Windows box, a chevron on the right and a
+             paper drop-down. Editable combos type into a bare text box; the chevron stays clickable beside it. -->
+        <Style x:Key="ComboRow" TargetType="ComboBoxItem">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Row" Background="Transparent" CornerRadius="4" Padding="10,6">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="{StaticResource PaperLeft}" />
+                                <Setter Property="Foreground" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="#EFE6D2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LineCombo" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ComboRow}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Line" Background="Transparent" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" />
+                            <ToggleButton Focusable="False" ClickMode="Press" Cursor="Hand"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent">
+                                            <TextBlock x:Name="Chevron" Text="&#xE70D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="11"
+                                                       Foreground="{StaticResource Muted}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Chevron" Property="Foreground" Value="{StaticResource RedPen}" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="Chevron" Property="Text" Value="&#xE70E;" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="Picked" IsHitTestVisible="False" Margin="2,7,30,7" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+                            <TextBox x:Name="PART_EditableTextBox" Style="{StaticResource Bare}" Margin="0,7,30,7" VerticalAlignment="Center"
+                                     Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}" Tag="{TemplateBinding Tag}" />
+                            <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}">
+                                <Border Margin="0,4,12,12" TextOptions.TextFormattingMode="Display"
+                                        Background="{StaticResource Paper}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1"
+                                        CornerRadius="6" Padding="4" MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="270" Opacity="0.18" Color="#3C280A" />
+                                    </Border.Effect>
+                                    <ScrollViewer>
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Picked" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Line" Property="BorderBrush" Value="{StaticResource Ink}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="Line" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- One of several choices: an inked ring, filled with a red-pen dot when chosen. -->
+        <Style x:Key="Choice" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <Grid Width="18" Height="18" VerticalAlignment="Center">
+                                <Ellipse x:Name="Ring" Fill="White" Stroke="{StaticResource InkSoft}" StrokeThickness="1.5" />
+                                <Ellipse x:Name="Dot" Width="8" Height="8" Fill="{StaticResource RedPen}" Visibility="Collapsed" />
+                            </Grid>
+                            <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource Ink}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Dot" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource RedPen}" />
+                                <Setter TargetName="Ring" Property="StrokeThickness" Value="2.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Table of contents rows. -->
+        <Style x:Key="TocRow" TargetType="ListBoxItem">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Row" Background="Transparent" BorderBrush="Transparent" BorderThickness="1.5"
+                                CornerRadius="6" Padding="10,9" Margin="0,0,0,4">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="#EFE6D2" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Row" Property="Background" Value="{StaticResource Paper}" />
+                                <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource InkSoft}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Row" Property="BorderBrush" Value="{StaticResource RedPen}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Thin pencil-like scroll bars. -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="10" />
+            <Setter Property="MinWidth" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Track x:Name="PART_Track" IsDirectionReversed="True" Margin="3,6">
+                            <Track.Thumb>
+                                <Thumb>
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Border Background="#C9BC9F" CornerRadius="2" />
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

@@ -1,4 +1,4 @@
-# 朱批 · 六级写译工作台（Windows）
+# 墨水瓶 Inkwell · 六级写译工作台（Windows）
 
 个人自用的大学英语六级作文、翻译练习程序，界面像一本作业本：在横线纸上写，交稿后请 AI 老师用红笔批改，逐条决定采纳或不改，再抄出新的一稿。数据只存在这台电脑上。
 
@@ -23,17 +23,17 @@
 需要 .NET 10 SDK（仓库的 `windows/global.json` 固定为 10.0.403，允许更新的功能版本）。
 
 ```powershell
-dotnet run --project windows/src/Zhupi.App
+dotnet run --project windows/src/Inkwell.App
 ```
 
-装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `-Destination` 指定的文件夹（不写时默认 `%LOCALAPPDATA%\Programs\Zhupi\`），并在开始菜单加「朱批」快捷方式。更新代码后不带参数再运行一次即可升级，会沿用开始菜单快捷方式指向的位置；运行前先关掉已打开的朱批。`-Uninstall` 删除程序和快捷方式，本子不动。安装时还会把自己的套卷内容包（默认 `docs/EXAM_IMPORT.md` 里写的最新个人内容包，可用 `-Pack` 指定）复制到安装目录的 `packs\`，朱批每次启动自动导入，重复导入不会多出套卷；内容包只在本机，不进仓库。
+装到本机（只装给当前用户，不需要管理员）：编译 Release 版放到 `-Destination` 指定的文件夹（不写时默认 `%LOCALAPPDATA%\Programs\Inkwell\`），并在开始菜单加「墨水瓶」快捷方式。更新代码后不带参数再运行一次即可升级，会沿用开始菜单快捷方式指向的位置；运行前先关掉已打开的墨水瓶。`-Uninstall` 删除程序和快捷方式，本子不动。用旧名「朱批」装过的，直接运行脚本会就地升级：沿用原安装位置，换掉旧快捷方式和旧程序文件。安装时还会把自己的套卷内容包（默认 `docs/EXAM_IMPORT.md` 里写的最新个人内容包，可用 `-Pack` 指定）复制到安装目录的 `packs\`，墨水瓶每次启动自动导入，重复导入不会多出套卷；内容包只在本机，不进仓库。
 
 ```powershell
-pwsh -File windows/install.ps1 -Destination D:\Software\Zhupi
+pwsh -File windows/install.ps1 -Destination D:\Software\Inkwell
 pwsh -File windows/install.ps1
 ```
 
-数据在 `%LOCALAPPDATA%\Zhupi\`：
+数据在 `%LOCALAPPDATA%\Inkwell\`（程序原名朱批；首次以新名启动时自动把旧的 `%LOCALAPPDATA%\Zhupi\` 复制过来，旧文件夹原样保留）：
 
 | 文件 | 内容 |
 | --- | --- |
@@ -41,7 +41,7 @@ pwsh -File windows/install.ps1
 | `teacher.json` | 选的老师、接口地址和模型（不含密钥） |
 | `teacher.key` | API Key，Windows DPAPI 加密 |
 | `chatgpt.session`、`chatgpt.hint` | ChatGPT 登录凭证，DPAPI 加密 |
-| `chatgpt.client`、`chatgpt.host` | OpenAI 发给本机朱批的应用编号、本机标识（不是凭证） |
+| `chatgpt.client`、`chatgpt.host` | OpenAI 发给本机墨水瓶的应用编号、本机标识（不是凭证） |
 
 试用或检查时可用 `--data-dir=<目录>` 指向别的文件夹，避免碰到正式本子。
 
@@ -51,14 +51,14 @@ pwsh -File windows/install.ps1
 
 ```powershell
 cd windows
-dotnet build Zhupi.slnx
-dotnet test Zhupi.slnx
-dotnet format Zhupi.slnx --verify-no-changes --severity warn
+dotnet build Inkwell.slnx
+dotnet test Inkwell.slnx
+dotnet format Inkwell.slnx --verify-no-changes --severity warn
 ```
 
-- `windows/src/Zhupi.Core`：本子存储、自查、老师请求与批改协议、ChatGPT 登录（`net10.0`，可测试）。
-- `windows/src/Zhupi.App`：WPF 界面（`net10.0-windows`），CommunityToolkit.Mvvm。
-- `windows/tests/Zhupi.Core.Tests`：xUnit；网络都用假服务端，不发真实请求。
+- `windows/src/Inkwell.Core`：本子存储、自查、老师请求与批改协议、ChatGPT 登录（`net10.0`，可测试）。
+- `windows/src/Inkwell.App`：WPF 界面（`net10.0-windows`），CommunityToolkit.Mvvm。
+- `windows/tests/Inkwell.Core.Tests`：xUnit；网络都用假服务端，不发真实请求。
 
 `tools/` 是整理个人真题内容包的 Python 脚本，见 [docs/EXAM_IMPORT.md](docs/EXAM_IMPORT.md)。私人资料的保存规则见 [docs/PRIVATE_BACKUP.md](docs/PRIVATE_BACKUP.md)。
 

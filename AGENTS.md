@@ -1,21 +1,21 @@
-# 朱批（CET6Study）协作说明
+# 墨水瓶 Inkwell（CET6Study）协作说明
 
 个人本地优先的六级作文 / 翻译练习程序，只有 Windows 版（WPF）。用法与功能见 `README.md`。
 
 ## 技术栈
 
 - .NET 10（`windows/global.json`：SDK 10.0.403，`rollForward: latestFeature`），C#，`Nullable` 与 `TreatWarningsAsErrors` 在 `windows/Directory.Build.props` 统一开启。
-- `windows/src/Zhupi.Core`（`net10.0`）：`Notebook`（SQLite，`Microsoft.Data.Sqlite`）、`SelfCheck`、`Teacher/`（老师接口、批改与追问协议、批注定位）、`ChatGpt/`（Sign in with ChatGPT、Responses 调用）。
-- `windows/src/Zhupi.App`（`net10.0-windows`，WPF）：`CommunityToolkit.Mvvm`；DPAPI（`ProtectedData`，Windows 桌面运行时自带）保存 API Key 和 ChatGPT 凭证。
-- `windows/tests/Zhupi.Core.Tests`：xUnit。网络请求一律用假 `HttpMessageHandler`；本机回调测试只监听 127.0.0.1。
+- `windows/src/Inkwell.Core`（`net10.0`）：`Notebook`（SQLite，`Microsoft.Data.Sqlite`）、`SelfCheck`、`Teacher/`（老师接口、批改与追问协议、批注定位）、`ChatGpt/`（Sign in with ChatGPT、Responses 调用）。
+- `windows/src/Inkwell.App`（`net10.0-windows`，WPF）：`CommunityToolkit.Mvvm`；DPAPI（`ProtectedData`，Windows 桌面运行时自带）保存 API Key 和 ChatGPT 凭证。
+- `windows/tests/Inkwell.Core.Tests`：xUnit。网络请求一律用假 `HttpMessageHandler`；本机回调测试只监听 127.0.0.1。
 - 新增 NuGet 依赖前先问用户。
 
 ## 命令（PowerShell，在 `windows/` 下）
 
-- 构建：`dotnet build Zhupi.slnx`
-- 测试：`dotnet test Zhupi.slnx`
-- 格式检查：`dotnet format Zhupi.slnx --verify-no-changes --severity warn`（规则在仓库根目录 `.editorconfig`）
-- 运行：`dotnet run --project src/Zhupi.App`；`--data-dir=<目录>` 使用隔离数据。
+- 构建：`dotnet build Inkwell.slnx`
+- 测试：`dotnet test Inkwell.slnx`
+- 格式检查：`dotnet format Inkwell.slnx --verify-no-changes --severity warn`（规则在仓库根目录 `.editorconfig`）
+- 运行：`dotnet run --project src/Inkwell.App`；`--data-dir=<目录>` 使用隔离数据。
 - 用户正在运行程序时，`bin/` 里的文件被占用；检查编译可加 `-p:BaseOutputPath=<临时目录>\`，不要关掉用户的窗口，除非用户同意。
 
 ## 约定
@@ -31,13 +31,14 @@
 ## 界面检查
 
 - 不要在用户的桌面上弹出测试窗口、抢焦点或截取屏幕。检查界面时把窗口放到屏幕外（`Left/Top = -32000`、`ShowActivated = false`、`ShowInTaskbar = false`），用 `RenderTargetBitmap` 渲染成图片。
-- 做法：在临时目录建一个 `net10.0-windows` WPF 控制台项目，引用 `Zhupi.App.csproj`；`new App()` 后调用 `InitializeComponent()` 载入资源，在临时目录用 `Notebook.Open` 建一本测试本子并写入示例页，再 `new MainWindow { DataContext = new MainViewModel(...) }`。逐个设置 `Tab`，用 `DispatcherPriority.ApplicationIdle` 推动布局后渲染 `VisualTreeHelper.GetChild(window, 0)`。至少看一次最小窗口 1100×640。
+- 做法：在临时目录建一个 `net10.0-windows` WPF 控制台项目，引用 `Inkwell.App.csproj`；`new App()` 后调用 `InitializeComponent()` 载入资源，在临时目录用 `Notebook.Open` 建一本测试本子并写入示例页，再 `new MainWindow { DataContext = new MainViewModel(...) }`。逐个设置 `Tab`，用 `DispatcherPriority.ApplicationIdle` 推动布局后渲染 `VisualTreeHelper.GetChild(window, 0)`。至少看一次最小窗口 1100×640。
 - 下拉框等 `Popup` 不在窗口的可视树里，截窗口看不到；打开后取 `PART_Popup` 的 `Child` 单独渲染。
-- 设计稿在 Artifact 画布「朱批 Windows 界面设计」的「A 作业本」页。
+- 设计稿在 Artifact 画布「朱批 Windows 界面设计」（程序改名前的画布名）的「A 作业本」页。
 
 ## 数据与凭证
 
-- `%LOCALAPPDATA%\Zhupi\` 下的 `study.db` 是真实学习记录；不得擅自删除、覆盖或在上面做试验。
+- `%LOCALAPPDATA%\Inkwell\` 下的 `study.db` 是真实学习记录；不得擅自删除、覆盖或在上面做试验。程序原名朱批（Zhupi），首次以新名启动时把 `%LOCALAPPDATA%\Zhupi\` 整个复制过来（`DataFolder.AdoptFormer`），旧文件夹保留作备份，同样不得改动。
+- `TeacherSettings` 和 `ChatGptVault` 的 DPAPI 附加熵仍是旧名字符串，改了已保存的 Key 和登录就解不开，不要改。
 - 不读取、输出或记录 API Key、ChatGPT 令牌、`teacher.key`、`chatgpt.session`、`chatgpt.hint` 的内容；只可确认文件是否存在。
 - 私人资料（`raw-papers/`、`.tools/private-exams/`、`.tools/` 下的数据库快照）受版权或隐私限制，按 `docs/PRIVATE_BACKUP.md` 保留，不要移动、重新编码或改动字节；不要 `git add -f` 其他 `.tools/` 内容。
 
