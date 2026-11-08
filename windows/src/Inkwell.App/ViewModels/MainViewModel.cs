@@ -270,7 +270,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     private void Show(Piece piece)
     {
-        var page = new PageViewModel(_notebook, piece, _teacher, text => Message = text);
+        var page = new PageViewModel(_notebook, piece, _teacher, text => Message = text, text => Confirm(text));
         page.Saved += Refresh;
         page.Turned += Show;
         Page?.Close();
@@ -284,7 +284,8 @@ public sealed partial class MainViewModel : ObservableObject
         try
         {
             Contents.Clear();
-            foreach (var p in ShowingTrash ? _notebook.Trash(Kind) : _notebook.Contents(Kind, Search))
+            var trash = _notebook.Trash(Kind);
+            foreach (var p in ShowingTrash ? trash : _notebook.Contents(Kind, Search))
             {
                 var title = p.Title.Trim().Length > 0 ? p.Title.Trim() : FirstLine(p.Task) ?? "（空白页）";
                 var status = p.IsHandedIn ? "已交" : p.Revises is null ? "草稿" : "重写稿";
@@ -292,7 +293,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
             Selected = Contents.FirstOrDefault(line => line.Id == Page?.Id);
             CountText = $"共 {_notebook.Count(Kind)} 页";
-            TrashCount = _notebook.Trash(Kind).Count;
+            TrashCount = trash.Count;
         }
         finally
         {

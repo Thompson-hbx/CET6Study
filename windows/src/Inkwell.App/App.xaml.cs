@@ -1,6 +1,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Inkwell.App.ViewModels;
 using Inkwell.Core;
 using Microsoft.Data.Sqlite;
@@ -46,7 +47,53 @@ public partial class App : Application
         };
         if (packs.ChangedAnything) model.Message = PackReport(packs);
         if (adopted) model.Message = $"旧本子已从 {DataFolder.FormerName} 文件夹复制过来，原文件夹保留不动。" + (packs.ChangedAnything ? " " + model.Message : "");
+        DispatcherUnhandledException += (_, args) => Unexpected(model, directory, args);
         new MainWindow { DataContext = model }.Show();
+    }
+
+    private bool _reporting;
+
+    /// <summary>
+    /// The last stop for an error no handler expected: closing the window would lose what is being typed, so the
+    /// open page is saved, the details go to errors.log beside the notebook, and the learner is told.
+    /// </summary>
+    private void Unexpected(MainViewModel model, string directory, DispatcherUnhandledExceptionEventArgs args)
+    {
+        args.Handled = true;
+        // The dialog pumps messages, so a repeating error must not stack dialogs on top of each other.
+        if (_reporting) return;
+        _reporting = true;
+        try
+        {
+            var saved = true;
+            try
+            {
+                model.SaveOpenPage();
+            }
+            catch (Exception)
+            {
+                // Whatever broke may also break saving; the dialog below then says the text may not be stored.
+                saved = false;
+            }
+            var log = Path.Combine(directory, "errors.log");
+            try
+            {
+                File.AppendAllText(log, $"{DateTimeOffset.Now:O}{Environment.NewLine}{args.Exception}{Environment.NewLine}{Environment.NewLine}");
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+                log = "（日志也没写上）";
+            }
+            MessageBox.Show(
+                $"出了一个没想到的错误：{args.Exception.Message}\n\n" +
+                (saved ? "正在写的内容已经记在本子上。" : "正在写的内容可能没记上，请先把它复制出来。") +
+                $"\n错误详情：{log}",
+                "墨水瓶", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            _reporting = false;
+        }
     }
 
     private static string PackReport(FolderImport packs)

@@ -143,7 +143,7 @@ public sealed partial class TeacherViewModel : ObservableObject
             var attempt = ChatGptAuth.Begin(loopback.RedirectUri, vault.HostId, vault.RememberedClientId, vault.RememberedIdToken, previous?.Email);
             Note = "已在浏览器打开 ChatGPT 登录页，登录并同意授权后回到这里…";
             Process.Start(new ProcessStartInfo(attempt.AuthorizeUrl.ToString()) { UseShellExecute = true });
-            var callback = await loopback.WaitAsync(_signingIn.Token);
+            var callback = await loopback.WaitAsync(attempt.State, _signingIn.Token);
             WaitingForBrowser = false;
             Note = "正在确认登录…";
             using var http = ChatTeacher.NewHttpClient();

@@ -18,6 +18,9 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
     private static readonly Uri Api = new("https://api.openai.com/v1/");
     private static readonly SemaphoreSlim Refreshing = new(1, 1);
 
+    // Generous, because deep reasoning can pause between events; a silence this long means the stream is stuck.
+    private static readonly TimeSpan StreamIdleLimit = TimeSpan.FromMinutes(5);
+
     public async Task<IReadOnlyList<PlanModel>> ModelsAsync(CancellationToken cancel)
     {
         var session = await FreshSession(cancel);
@@ -67,7 +70,7 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         try
         {
             using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(cancel), Encoding.UTF8);
-            return await ReadStream(reader, cancel);
+            return await ReadStream(reader, cancel, StreamIdleLimit);
         }
         catch (Exception e) when (e is IOException or HttpRequestException)
         {
@@ -77,12 +80,25 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
     }
 
     /// <summary>Collects output text until <c>response.completed</c>; anything else ends without an answer.</summary>
-    internal static async Task<string> ReadStream(TextReader reader, CancellationToken cancel)
+    internal static async Task<string> ReadStream(TextReader reader, CancellationToken cancel, TimeSpan? idle = null)
     {
         var text = new StringBuilder();
         var data = new StringBuilder();
-        while (await reader.ReadLineAsync(cancel) is { } line)
+        // HttpClient.Timeout stops at the response headers, so a stream that goes silent afterwards needs its own limit.
+        using var quiet = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        while (true)
         {
+            quiet.CancelAfter(idle ?? Timeout.InfiniteTimeSpan);
+            string? line;
+            try
+            {
+                line = await reader.ReadLineAsync(quiet.Token);
+            }
+            catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
+            {
+                throw new ChatGptException("ChatGPT 太久没有动静，已经停下，没有保存；可以稍后再请一次。");
+            }
+            if (line is null) break;
             if (line.StartsWith("data:", StringComparison.Ordinal))
             {
                 data.Append(line.AsSpan(5).TrimStart(' '));

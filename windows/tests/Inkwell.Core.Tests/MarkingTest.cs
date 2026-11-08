@@ -61,9 +61,9 @@ public sealed class MarkingTest : IDisposable
     public void DropsAMarkTooLongToApplyWholeInsteadOfCuttingIt()
     {
         var reply = "{\"band\":5,\"marks\":[" +
-            $"{{\"quote\":\"q\",\"fix\":\"{new string('x', 401)}\"}}," +
-            $"{{\"quote\":\"{new string('y', 401)}\",\"fix\":\"f\"}}," +
-            "{\"quote\":\"kept\",\"fix\":\"ok\"}]}";
+            $"{{\"quote\":\"q\",\"fix\":\"{new string('x', 401)}\",\"severity\":\"must\"}}," +
+            $"{{\"quote\":\"{new string('y', 401)}\",\"fix\":\"f\",\"severity\":\"must\"}}," +
+            "{\"quote\":\"kept\",\"fix\":\"ok\",\"severity\":\"must\"}]}";
 
         var mark = Assert.Single(MarkingProtocol.Read(reply).Marks);
 
@@ -71,9 +71,25 @@ public sealed class MarkingTest : IDisposable
     }
 
     [Fact]
+    public void DropsAMarkWithoutAFixOrAKnownSeverityButKeepsADeliberateDeletion()
+    {
+        const string reply = """
+            {"band": 8, "marks": [
+              {"quote": "no fix", "severity": "must"},
+              {"quote": "odd severity", "fix": "x", "severity": "critical"},
+              {"quote": " very", "fix": "", "severity": "maybe"}
+            ]}
+            """;
+
+        var mark = Assert.Single(MarkingProtocol.Read(reply).Marks);
+
+        Assert.Equal(("very", "", Severity.Maybe), (mark.Quote, mark.Fix, mark.Severity));
+    }
+
+    [Fact]
     public void KeepsAtMostTwelveMarks()
     {
-        var many = "{\"band\":5,\"marks\":[" + string.Join(",", Enumerable.Range(0, 20).Select(i => $"{{\"quote\":\"q{i}\"}}")) + "]}";
+        var many = "{\"band\":5,\"marks\":[" + string.Join(",", Enumerable.Range(0, 20).Select(i => $"{{\"quote\":\"q{i}\",\"fix\":\"f\",\"severity\":\"must\"}}")) + "]}";
 
         Assert.Equal(MarkingProtocol.MaxMarks, MarkingProtocol.Read(many).Marks.Count);
     }

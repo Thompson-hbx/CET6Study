@@ -94,11 +94,24 @@ public static class MarkingProtocol
                 foreach (var m in list.EnumerateArray())
                 {
                     if (marks.Count == MaxMarks) break;
-                    // Quote and fix are applied to the next draft, so a cut-off one would corrupt it: drop that mark, don't trim.
+                    // Quote and fix are applied to the next draft, so a cut-off or missing one would corrupt it
+                    // (a missing fix would delete the quote): drop that mark rather than trim or guess. An empty
+                    // fix written out on purpose still means "delete this".
                     var quote = Text(m, "quote", int.MaxValue);
                     var fix = Text(m, "fix", int.MaxValue);
-                    if (quote.Length == 0 || quote.Length > MaxQuote || fix.Length > MaxQuote) continue;
-                    var severity = Text(m, "severity", 10) == "must" ? Severity.Must : Severity.Maybe;
+                    if (quote.Length == 0 || quote.Length > MaxQuote || fix.Length > MaxQuote || !HasText(m, "fix")) continue;
+                    Severity severity;
+                    switch (Text(m, "severity", 10))
+                    {
+                        case "must":
+                            severity = Severity.Must;
+                            break;
+                        case "maybe":
+                            severity = Severity.Maybe;
+                            break;
+                        default:
+                            continue;
+                    }
                     marks.Add(new Mark(marks.Count + 1, quote, fix, Text(m, "why", 200), severity, Text(m, "kind", 10)));
                 }
             }
@@ -129,6 +142,9 @@ public static class MarkingProtocol
         var text = value.GetString()!.Trim();
         return text.Length > limit ? text[..limit] : text;
     }
+
+    private static bool HasText(JsonElement element, string name) =>
+        element.ValueKind == JsonValueKind.Object && element.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.String;
 
     private static TeacherException Bad() => new("老师的回复不合格式，没有保存；可以再请一次，或换个模型。");
 }

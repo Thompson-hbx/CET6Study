@@ -263,13 +263,15 @@ public sealed class ChatGptTest : IDisposable
         using var loopback = new LoopbackCallback();
         Assert.Equal("127.0.0.1", loopback.RedirectUri.Host);
         Assert.Equal("/auth/callback", loopback.RedirectUri.AbsolutePath);
-        var waiting = loopback.WaitAsync(new CancellationTokenSource(TimeSpan.FromSeconds(10)).Token);
+        var waiting = loopback.WaitAsync("s", new CancellationTokenSource(TimeSpan.FromSeconds(10)).Token);
 
         using var http = new HttpClient();
         var stray = await http.GetAsync(new Uri(loopback.RedirectUri, "/favicon.ico"));
+        var forged = await http.GetAsync(loopback.RedirectUri + "?code=evil&state=other");
         var answer = await http.GetAsync(loopback.RedirectUri + "?code=abc%2B1&state=s&client_id=oaiapp_x");
 
         Assert.Equal(HttpStatusCode.NotFound, stray.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, forged.StatusCode);
         Assert.Equal(HttpStatusCode.OK, answer.StatusCode);
         var query = await waiting;
         Assert.Equal(("abc+1", "s", "oaiapp_x"), (query["code"], query["state"], query["client_id"]));
@@ -308,7 +310,7 @@ public sealed class ChatGptTest : IDisposable
     public async Task AResetStrayConnectionDoesNotEndTheLoopbackWait()
     {
         using var loopback = new LoopbackCallback();
-        var waiting = loopback.WaitAsync(new CancellationTokenSource(TimeSpan.FromSeconds(10)).Token);
+        var waiting = loopback.WaitAsync("s", new CancellationTokenSource(TimeSpan.FromSeconds(10)).Token);
 
         using (var stray = new TcpClient())
         {
@@ -322,7 +324,35 @@ public sealed class ChatGptTest : IDisposable
         Assert.Equal("c", (await waiting)["code"]);
     }
 
+    [Fact]
+    public async Task AStreamThatGoesSilentStopsWithAnError()
+    {
+        var error = await Assert.ThrowsAsync<ChatGptException>(() =>
+            ChatGptTeacher.ReadStream(new SilentReader(), CancellationToken.None, TimeSpan.FromMilliseconds(50)));
+
+        Assert.Contains("太久没有动静", error.Message);
+    }
+
+    [Fact]
+    public async Task StoppingASilentStreamIsStillAStop()
+    {
+        using var stop = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            ChatGptTeacher.ReadStream(new SilentReader(), stop.Token, TimeSpan.FromMinutes(5)));
+    }
+
     // ----- helpers -----
+
+    /// <summary>A server that sent its headers and then nothing more.</summary>
+    private sealed class SilentReader : TextReader
+    {
+        public override async ValueTask<string?> ReadLineAsync(CancellationToken cancellationToken)
+        {
+            await Task.Delay(Timeout.Infinite, cancellationToken);
+            return null;
+        }
+    }
 
     /// <summary>Hands out its bytes, then fails like a connection that went away.</summary>
     private sealed class BrokenStream(byte[] head) : MemoryStream(head)

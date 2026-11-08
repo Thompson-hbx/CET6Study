@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core;
-using Inkwell.Core.ChatGpt;
 using Inkwell.Core.Teacher;
 
 namespace Inkwell.App.ViewModels;
@@ -138,40 +137,13 @@ public sealed partial class PageViewModel
     {
         if (SelectedSentence is not { } sentence) return;
         Save();
-        using var http = ChatTeacher.NewHttpClient();
-        ITeacher teacher;
-        try
+        var sentences = Sentences.Select(s => s.Text).ToList();
+        await UseTeacher(busy => IsHinting = busy, cancel => _hinting = cancel, "已经叫停，这次提示没有记下", async (teacher, cancel) =>
         {
-            teacher = _teacher.CreateTeacher(http);
-        }
-        catch (TeacherException e)
-        {
-            _say(e.Message);
-            return;
-        }
-        IsHinting = true;
-        _hinting = new CancellationTokenSource();
-        try
-        {
-            var sentences = Sentences.Select(s => s.Text).ToList();
             var text = await teacher.AskAsync(HintProtocol.Instruction(kind), HintProtocol.Material(sentences, sentence.Number),
-                jsonReply: false, _hinting.Token);
+                jsonReply: false, cancel);
             _book.SaveHint(_page.Id, sentence.Number, sentence.Text, kind, text, _teacher.Label);
             if (SelectedSentence == sentence) LoadHints();
-        }
-        catch (OperationCanceledException)
-        {
-            _say("已经叫停，这次提示没有记下");
-        }
-        catch (Exception e) when (e is TeacherException or NotebookException or ChatGptException)
-        {
-            _say(e.Message);
-        }
-        finally
-        {
-            _hinting.Dispose();
-            _hinting = null;
-            IsHinting = false;
-        }
+        });
     }
 }

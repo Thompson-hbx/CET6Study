@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core;
-using Inkwell.Core.ChatGpt;
 using Inkwell.Core.Teacher;
 
 namespace Inkwell.App.ViewModels;
@@ -93,44 +92,17 @@ public sealed partial class PageViewModel
             _say(e.Message);
             return;
         }
-        using var http = ChatTeacher.NewHttpClient();
-        ITeacher teacher;
-        try
-        {
-            teacher = _teacher.CreateTeacher(http);
-        }
-        catch (TeacherException e)
-        {
-            _say(e.Message);
-            return;
-        }
-        IsAnswering = true;
-        _answering = new CancellationTokenSource();
         var mark = ThreadMark;
-        try
+        await UseTeacher(busy => IsAnswering = busy, cancel => _answering = cancel, "已经叫停，这个问题没有记下，可以再问一次", async (teacher, cancel) =>
         {
             var answer = await teacher.AskAsync(FollowUpProtocol.Instruction(_page.Kind),
-                FollowUpProtocol.Material(_page, review, mark, Thread.ToList(), question), jsonReply: false, _answering.Token);
+                FollowUpProtocol.Material(_page, review, mark, Thread.ToList(), question), jsonReply: false, cancel);
             var talk = _book.SaveTalk(review.Id, mark, question, answer, _teacher.Label);
             if (IsThreadOpen && ThreadMark == mark) Thread.Add(talk);
             OnPropertyChanged(nameof(ThreadIsEmpty));
             // Keep a next question the learner started typing while waiting.
             if (Question == sent) Question = "";
-        }
-        catch (OperationCanceledException)
-        {
-            _say("已经叫停，这个问题没有记下，可以再问一次");
-        }
-        catch (Exception e) when (e is TeacherException or NotebookException or ChatGptException)
-        {
-            _say(e.Message);
-        }
-        finally
-        {
-            _answering.Dispose();
-            _answering = null;
-            IsAnswering = false;
-        }
+        });
     }
 
     [RelayCommand]

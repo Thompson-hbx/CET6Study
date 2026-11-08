@@ -6,7 +6,7 @@ namespace Inkwell.Core.ChatGpt;
 
 /// <summary>
 /// Waits on 127.0.0.1 for the browser to come back from ChatGPT sign-in. It listens before the browser is
-/// opened, answers only <c>GET /auth/callback</c>, and stops after the first such request.
+/// opened, answers only <c>GET /auth/callback</c>, and stops after the first such request with this attempt's state.
 /// </summary>
 public sealed class LoopbackCallback : IDisposable
 {
@@ -24,15 +24,18 @@ public sealed class LoopbackCallback : IDisposable
 
     public void Dispose() => _listener.Stop();
 
-    /// <summary>The query parameters of the callback request.</summary>
-    public async Task<IReadOnlyDictionary<string, string>> WaitAsync(CancellationToken cancel)
+    /// <summary>
+    /// The query parameters of the callback request that carries <paramref name="state"/>. Callbacks with another
+    /// state are answered and ignored, so a local program racing the browser cannot end the sign-in.
+    /// </summary>
+    public async Task<IReadOnlyDictionary<string, string>> WaitAsync(string state, CancellationToken cancel)
     {
         while (true)
         {
             using var client = await _listener.AcceptTcpClientAsync(cancel);
             try
             {
-                if (await Serve(client, cancel) is { } query) return query;
+                if (await Serve(client, state, cancel) is { } query) return query;
             }
             catch (Exception e) when (e is IOException or SocketException)
             {
@@ -41,7 +44,7 @@ public sealed class LoopbackCallback : IDisposable
         }
     }
 
-    private static async Task<IReadOnlyDictionary<string, string>?> Serve(TcpClient client, CancellationToken cancel)
+    private static async Task<IReadOnlyDictionary<string, string>?> Serve(TcpClient client, string state, CancellationToken cancel)
     {
         await using var stream = client.GetStream();
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
@@ -62,6 +65,11 @@ public sealed class LoopbackCallback : IDisposable
             return null;
         }
         var query = Parse(question < 0 ? "" : target[(question + 1)..]);
+        if (!query.TryGetValue("state", out var returned) || returned != state)
+        {
+            await Respond(stream, "400 Bad Request", "这不是墨水瓶这次登录的回信，已经忽略。", cancel);
+            return null;
+        }
         await Respond(stream, "200 OK", query.ContainsKey("error")
             ? "ChatGPT 登录没有完成。可以关掉这个页面，回到墨水瓶再试一次。"
             : "登录信息已经交给墨水瓶，可以关掉这个页面，回到墨水瓶了。", cancel);

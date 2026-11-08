@@ -14,16 +14,19 @@ public sealed partial class PageViewModel : ObservableObject
     private readonly Notebook _book;
     private readonly TeacherSettings _teacher;
     private readonly Action<string> _say;
+    private readonly Func<string, bool> _confirm;
     private readonly DispatcherTimer _pause = new() { Interval = TimeSpan.FromMilliseconds(700) };
     private Piece _page;
     private bool _loading;
+    private bool _closed;
     private CancellationTokenSource? _asking;
 
-    public PageViewModel(Notebook book, Piece page, TeacherSettings teacher, Action<string> say)
+    public PageViewModel(Notebook book, Piece page, TeacherSettings teacher, Action<string> say, Func<string, bool> confirm)
     {
         _book = book;
         _teacher = teacher;
         _say = say;
+        _confirm = confirm;
         _page = page;
         _pause.Tick += (_, _) => Save();
         _loading = true;
@@ -164,6 +167,7 @@ public sealed partial class PageViewModel : ObservableObject
     /// </summary>
     public void Close()
     {
+        _closed = true;
         _pause.Stop();
         Saved = null;
         Turned = null;
@@ -180,6 +184,25 @@ public sealed partial class PageViewModel : ObservableObject
     private async Task AskTeacher()
     {
         if (!_page.IsHandedIn) return;
+        await UseTeacher(busy => IsAsking = busy, cancel => _asking = cancel, "已经叫停，这次没有保存", async (teacher, cancel) =>
+        {
+            var reply = await teacher.AskAsync(
+                MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), jsonReply: true,
+                cancel);
+            var review = _book.SaveReview(_page.Id, MarkingProtocol.Read(reply), _teacher.Label);
+            ShowReview(review);
+            _say($"老师批完了：{review.Marks.Count} 处批注");
+            Saved?.Invoke();
+        });
+    }
+
+    /// <summary>
+    /// One paid request to the configured teacher: <paramref name="work"/> runs once, a stop or a page change
+    /// cancels it, and failures become a message; whatever <paramref name="work"/> stores happens only after the
+    /// full reply arrived.
+    /// </summary>
+    private async Task UseTeacher(Action<bool> busy, Action<CancellationTokenSource?> keep, string stopped, Func<ITeacher, CancellationToken, Task> work)
+    {
         using var http = ChatTeacher.NewHttpClient();
         ITeacher teacher;
         try
@@ -191,21 +214,16 @@ public sealed partial class PageViewModel : ObservableObject
             _say(e.Message);
             return;
         }
-        IsAsking = true;
-        _asking = new CancellationTokenSource();
+        using var cancel = new CancellationTokenSource();
+        busy(true);
+        keep(cancel);
         try
         {
-            var reply = await teacher.AskAsync(
-                MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), jsonReply: true,
-                _asking.Token);
-            var review = _book.SaveReview(_page.Id, MarkingProtocol.Read(reply), _teacher.Label);
-            ShowReview(review);
-            _say($"老师批完了：{review.Marks.Count} 处批注");
-            Saved?.Invoke();
+            await work(teacher, cancel.Token);
         }
         catch (OperationCanceledException)
         {
-            _say("已经叫停，这次没有保存");
+            _say(_closed ? "换了一页，刚才那次请求已经停下，没有保存" : stopped);
         }
         catch (Exception e) when (e is TeacherException or NotebookException or Inkwell.Core.ChatGpt.ChatGptException)
         {
@@ -213,9 +231,8 @@ public sealed partial class PageViewModel : ObservableObject
         }
         finally
         {
-            _asking.Dispose();
-            _asking = null;
-            IsAsking = false;
+            keep(null);
+            busy(false);
         }
     }
 
@@ -241,6 +258,8 @@ public sealed partial class PageViewModel : ObservableObject
     private void HandInOrRewrite()
     {
         Save();
+        // Handing in cannot be undone, and its button sits where a double click on the previous page's buttons lands.
+        if (!_page.IsHandedIn && !_confirm("交稿？交了之后这一页就不能再改，要改只能「重写一稿」。")) return;
         try
         {
             var next = _page.IsHandedIn ? _book.Rewrite(_page.Id) : _book.HandIn(_page.Id);
