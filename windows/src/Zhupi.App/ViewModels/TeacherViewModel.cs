@@ -24,10 +24,23 @@ public sealed partial class TeacherViewModel : ObservableObject
         Note = "";
         Service = settings.Service;
         Model = settings.Service == TeacherService.ChatGpt ? settings.ChatGptModel : settings.Model;
+        Depth = settings.Depth;
         Note = settings.Service == TeacherService.ChatGpt ? AccountNote() : settings.HasKey ? "已保存 API Key（加密在这台电脑）" : "还没填 API Key";
     }
 
     public ObservableCollection<string> Models { get; } = [];
+
+    public IReadOnlyList<DepthChoice> Depths { get; } =
+    [
+        new(Depth.Default, "默认", "不指定，由服务自己决定"),
+        new(Depth.Low, "浅", "想得少，最快、最省额度"),
+        new(Depth.Medium, "中", "多想一会儿"),
+        new(Depth.High, "深", "仔细推敲，慢一些、更花额度"),
+        new(Depth.Max, "最深", "想得最久，只有部分模型支持"),
+    ];
+
+    [ObservableProperty]
+    public partial Depth Depth { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsCompatible), nameof(IsDeepSeek), nameof(IsChatGpt), nameof(UsesKey))]
@@ -94,7 +107,7 @@ public sealed partial class TeacherViewModel : ObservableObject
     {
         try
         {
-            _settings.Save(Service, Address, Model, key);
+            _settings.Save(Service, Address, Model, key, Depth);
             Note = Model.Trim().Length == 0 ? "已保存；还差一个模型名" : $"已保存：{_settings.Label}";
         }
         catch (Exception e) when (e is TeacherException or IOException or UnauthorizedAccessException)
@@ -142,7 +155,7 @@ public sealed partial class TeacherViewModel : ObservableObject
             vault.Save(session);
             vault.RememberedClientId = session.ClientId;
             vault.RememberedIdToken = session.IdToken;
-            _settings.SaveChatGpt(Model);
+            _settings.SaveChatGpt(Model, Depth);
             Note = AccountNote();
         }
         catch (OperationCanceledException)
@@ -224,3 +237,6 @@ public sealed partial class TeacherViewModel : ObservableObject
 
     private string AccountNote() => _settings.Vault.Load() is null ? "点「使用 ChatGPT 登录」，在浏览器里登录并同意授权。" : Account;
 }
+
+/// <summary>One option in the 批改深度 picker.</summary>
+public sealed record DepthChoice(Depth Value, string Name, string Hint);

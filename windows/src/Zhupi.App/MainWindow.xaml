@@ -979,6 +979,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="接口地址" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
                                                Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}" />
@@ -997,6 +998,22 @@
                                     <TextBlock Grid.Row="2" Text="模型" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
                                     <ComboBox Grid.Row="2" Grid.Column="1" IsEditable="True" ItemsSource="{Binding Models}"
                                               Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="模型" />
+                                    <TextBlock Grid.Row="3" Text="批改深度" VerticalAlignment="Top" Margin="0,16,0,0" Foreground="{StaticResource InkSoft}" />
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,12,0,0">
+                                        <ComboBox ItemsSource="{Binding Depths}" SelectedValuePath="Value" SelectedValue="{Binding Depth}"
+                                                  AutomationProperties.Name="批改深度">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type vm:DepthChoice}">
+                                                    <TextBlock>
+                                                        <Run Text="{Binding Name, Mode=OneWay}" FontWeight="Bold" />
+                                                        <Run Text="{Binding Hint, Mode=OneWay}" Foreground="{StaticResource Muted}" />
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,6,0,0"
+                                                   Text="像 Codex、Claude Code 的思考强度：越深越慢，花的额度也越多。批改、追问和翻译提示都按这一档。不是每个模型都支持每一档，不支持时会提示，改回「默认」即可。" />
+                                    </StackPanel>
                                 </Grid>
                                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                                     <Button Style="{StaticResource InkButton}" Content="保存" Click="SaveTeacher" />

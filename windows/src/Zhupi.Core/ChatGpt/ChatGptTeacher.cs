@@ -13,7 +13,7 @@ public sealed record PlanModel(string Slug, string Name);
 /// documentation requires: <c>store: false</c>, <c>stream: true</c>, and only a <c>response.completed</c>
 /// event counts as an answer. Nothing is retried automatically.
 /// </summary>
-public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVault vault, TimeProvider clock, string model) : ITeacher
+public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVault vault, TimeProvider clock, string model, Depth depth = Depth.Default) : ITeacher
 {
     private static readonly Uri Api = new("https://api.openai.com/v1/");
     private static readonly SemaphoreSlim Refreshing = new(1, 1);
@@ -54,6 +54,9 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
             ["store"] = false,
             ["stream"] = true,
         };
+        // Not on the plan-usage list of unsupported fields; a model that refuses a level answers with
+        // subscription_sharing_unsupported_capability, which Explain turns into advice to change the depth.
+        if (depth.Effort() is { } effort) body["reasoning"] = new JsonObject { ["effort"] = effort };
         using var request = new HttpRequestMessage(HttpMethod.Post, new Uri(Api, "responses"))
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
@@ -185,7 +188,7 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         "subscription_sharing_user_not_eligible" => new("这个 ChatGPT 账号的套餐不能给第三方应用用。可以改用 DeepSeek 等 API Key。"),
         "subscription_sharing_usage_unavailable" or "subscription_sharing_user_unavailable" =>
             new("ChatGPT 套餐服务暂时不可用，稍后再试；登录仍然保留。"),
-        "subscription_sharing_unsupported_capability" => new("这个模型不支持这样的请求，请在设置里换一个模型。"),
+        "subscription_sharing_unsupported_capability" => new("这个模型不支持这样的请求（可能是批改深度这一档），请在设置里把深度改回「默认」或换一个模型。"),
         "subscription_sharing_invalid_user" => new("ChatGPT 登录已失效，请重新登录。", signInAgain: true),
         "subscription_sharing_route_not_supported" or "chatpass_v2_scope_not_authorized" or "chatpass_v2_invalid_authorization_context" =>
             new("ChatGPT 不接受朱批这次的调用方式，请重新登录；若仍不行，请改用 API Key。", signInAgain: true),

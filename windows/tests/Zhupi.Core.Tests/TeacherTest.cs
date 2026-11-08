@@ -32,6 +32,32 @@ public sealed class TeacherTest
         Assert.Equal("json_object", body.RootElement.GetProperty("response_format").GetProperty("type").GetString());
         Assert.Equal("instruction", body.RootElement.GetProperty("messages")[0].GetProperty("content").GetString());
         Assert.Equal("material", body.RootElement.GetProperty("messages")[1].GetProperty("content").GetString());
+        Assert.False(body.RootElement.TryGetProperty("reasoning_effort", out _));
+    }
+
+    [Theory]
+    [InlineData(Depth.Low, "low")]
+    [InlineData(Depth.Medium, "medium")]
+    [InlineData(Depth.High, "high")]
+    [InlineData(Depth.Max, "max")]
+    public async Task AChosenDepthIsSentAsReasoningEffort(Depth depth, string effort)
+    {
+        var handler = new FakeServer(_ => Ok(Completion("{}")));
+
+        await new ChatTeacher(new HttpClient(handler), Connection, depth).AskAsync("i", "m", jsonReply: true, CancellationToken.None);
+
+        using var body = JsonDocument.Parse(Assert.Single(handler.Sent).Body);
+        Assert.Equal(effort, body.RootElement.GetProperty("reasoning_effort").GetString());
+    }
+
+    [Fact]
+    public async Task ARefusedDepthSaysHowToGoBack()
+    {
+        var teacher = new ChatTeacher(new HttpClient(new FakeServer(_ => new HttpResponseMessage(HttpStatusCode.BadRequest))), Connection, Depth.Max);
+
+        var error = await Assert.ThrowsAsync<TeacherException>(() => teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+
+        Assert.Equal("请求没被接受（400）：这个模型可能不支持批改深度「最深」，到「设置」改回「默认」或换一档再试。", error.Message);
     }
 
     [Theory]

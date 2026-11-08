@@ -57,7 +57,7 @@ public sealed class TeacherConnection
 /// Talks to an OpenAI-style chat completions endpoint and asks for exactly one JSON object back.
 /// It never retries on its own: every request may cost the learner money.
 /// </summary>
-public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) : ITeacher
+public sealed class ChatTeacher(HttpClient http, TeacherConnection connection, Depth depth = Depth.Default) : ITeacher
 {
     /// <summary>Redirects are off so the key can never follow a redirect to another host.</summary>
     public static HttpClient NewHttpClient() => new(new SocketsHttpHandler
@@ -66,7 +66,8 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) :
         ConnectTimeout = TimeSpan.FromSeconds(20),
     })
     {
-        Timeout = TimeSpan.FromMinutes(5),
+        // Deep thinking can take several minutes before the first word of a long marking.
+        Timeout = TimeSpan.FromMinutes(10),
     };
 
     public async Task<IReadOnlyList<string>> ModelsAsync(CancellationToken cancel)
@@ -98,6 +99,7 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) :
             ["stream"] = false,
         };
         if (jsonReply) body["response_format"] = new JsonObject { ["type"] = "json_object" };
+        if (depth.Effort() is { } effort) body["reasoning_effort"] = effort;
         using var request = Request(HttpMethod.Post, "chat/completions");
         request.Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json");
         using var response = await Send(request, cancel);
@@ -153,6 +155,7 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection) :
             429 => "请求太频繁或额度用完了，稍后再试（429）。",
             >= 300 and < 400 => $"服务要求跳转到别处（{code}），为保护 Key 没有跟过去，请改用最终地址。",
             >= 500 => $"服务暂时出错（{code}），稍后再试。",
+            400 when depth != Depth.Default => $"请求没被接受（400）：这个模型可能不支持批改深度「{depth.Label()}」，到「设置」改回「默认」或换一档再试。",
             _ => $"请求没被接受（{code}），请检查地址、模型名和账户。",
         });
     }
