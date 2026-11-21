@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: windows/global.json
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Format
@@ -53,7 +53,7 @@ jobs:
             )) {
               if (-not (Test-Path -LiteralPath $req -PathType Leaf)) { throw "Missing installed file: $req" }
             }
-            pwsh -NoProfile -File windows/install.ps1 -Destination $dest -ShortcutFolder $links -Uninstall
+            pwsh -NoProfile -File windows/install.ps1 -ShortcutFolder $links -Uninstall
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
             if (Test-Path -LiteralPath (Join-Path $dest 'Inkwell.App.exe')) { throw 'Exe not removed by -Uninstall' }
             if (Test-Path -LiteralPath (Join-Path $links '墨水瓶.lnk')) { throw 'Shortcut not removed by -Uninstall' }
