@@ -2,12 +2,17 @@ name: Windows
 
 on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: windows
@@ -16,9 +21,48 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: windows/global.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Format
         run: dotnet format Inkwell.slnx --verify-no-changes --severity warn
       - name: Build
         run: dotnet build Inkwell.slnx --configuration Release
       - name: Test
         run: dotnet test Inkwell.slnx --configuration Release --no-build
+      - name: Publish
+        run: dotnet publish src/Inkwell.App/Inkwell.App.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=false -o "${{ runner.temp }}\inkwell-publish" --nologo
+      - name: Installer smoke test
+        working-directory: .
+        shell: pwsh
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP ("inkwell-smoke-" + [guid]::NewGuid().ToString('N'))
+          $dest = Join-Path $root 'app'
+          $links = Join-Path $root 'links'
+          $pack = Join-Path $root 'smoke-pack.json'
+          try {
+            New-Item -ItemType Directory -Path $root, $links -Force | Out-Null
+            Copy-Item -LiteralPath 'tools/exam-sample.json' -Destination $pack
+            pwsh -NoProfile -File windows/install.ps1 -Destination $dest -ShortcutFolder $links -Pack $pack
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            foreach ($req in @(
+              (Join-Path $dest 'Inkwell.App.exe'),
+              (Join-Path $dest '.inkwell-install-files.json'),
+              (Join-Path $dest 'packs\smoke-pack.json'),
+              (Join-Path $links '墨水瓶.lnk')
+            )) {
+              if (-not (Test-Path -LiteralPath $req -PathType Leaf)) { throw "Missing installed file: $req" }
+            }
+            pwsh -NoProfile -File windows/install.ps1 -Destination $dest -ShortcutFolder $links -Uninstall
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            if (Test-Path -LiteralPath (Join-Path $dest 'Inkwell.App.exe')) { throw 'Exe not removed by -Uninstall' }
+            if (Test-Path -LiteralPath (Join-Path $links '墨水瓶.lnk')) { throw 'Shortcut not removed by -Uninstall' }
+            if (-not (Test-Path -LiteralPath (Join-Path $dest 'packs\smoke-pack.json') -PathType Leaf)) { throw 'Pack was deleted by -Uninstall' }
+          } finally {
+            if (Test-Path -LiteralPath $root) { Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue }
+          }
+      - name: Python tests
+        working-directory: .
+        run: |
+          python -m pip install --disable-pip-version-check pypdf reportlab
+          python -B -m unittest discover -s tools -p "test_*.py" -v

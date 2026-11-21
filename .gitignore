@@ -1,5 +1,6 @@
 .vs/
 .idea/
+.claude/
 *.user
 local.properties
 *.apk

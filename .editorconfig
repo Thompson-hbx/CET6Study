@@ -5,9 +5,13 @@ charset = utf-8
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{cs,xaml,csproj,props,slnx,json}]
+[*.{cs,xaml}]
 indent_style = space
 indent_size = 4
+
+[*.{csproj,props,slnx,json}]
+indent_style = space
+indent_size = 2
 
 [*.cs]
 csharp_style_namespace_declarations = file_scoped:warning
