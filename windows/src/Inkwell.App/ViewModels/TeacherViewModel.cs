@@ -1,6 +1,10 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Security.Cryptography;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core.ChatGpt;
@@ -14,19 +18,43 @@ public sealed partial class TeacherViewModel : ObservableObject
     private static readonly TimeSpan SignInWait = TimeSpan.FromMinutes(5);
 
     private readonly TeacherSettings _settings;
+    private readonly Func<HttpClient> _httpFactory;
+    private readonly Action<Uri> _openBrowser;
+    private readonly TimeProvider _clock;
     private CancellationTokenSource? _signingIn;
+    private CancellationTokenSource? _signingOut;
+    private CancellationTokenSource? _refreshing;
 
     public TeacherViewModel(TeacherSettings settings)
+        : this(settings, ChatTeacher.NewHttpClient, OpenSystemBrowser, TimeProvider.System)
+    {
+    }
+
+    internal TeacherViewModel(TeacherSettings settings, Func<HttpClient> httpFactory, Action<Uri> openBrowser, TimeProvider clock)
     {
         _settings = settings;
-        Address = settings.Service == TeacherService.Compatible ? settings.Address : "";
+        _httpFactory = httpFactory;
+        _openBrowser = openBrowser;
+        _clock = clock;
+        Address = settings.Service == TeacherService.Compatible ||
+                  (settings.Service == TeacherService.ChatGpt &&
+                   !string.Equals(settings.Address, TeacherConnection.DeepSeekAddress, StringComparison.OrdinalIgnoreCase))
+            ? settings.Address
+            : "";
         Model = "";
         Note = "";
         Service = settings.Service;
         Model = settings.Service == TeacherService.ChatGpt ? settings.ChatGptModel : settings.Model;
         Depth = settings.Depth;
-        Note = settings.Service == TeacherService.ChatGpt ? AccountNote() : settings.HasKey ? "已保存 API Key（加密在这台电脑）" : "还没填 API Key";
+        Note = settings.Service == TeacherService.ChatGpt ? AccountNote() : HasKey ? "已保存 API Key（加密在这台电脑）" : "还没填 API Key";
     }
+
+    internal TimeSpan RevokeTimeout { get; init; } = TimeSpan.FromSeconds(5);
+
+    internal TimeSpan SignInTimeout { get; init; } = SignInWait;
+
+    private static void OpenSystemBrowser(Uri url) =>
+        Process.Start(new ProcessStartInfo(url.ToString()) { UseShellExecute = true });
 
     public ObservableCollection<string> Models { get; } = [];
 
@@ -57,7 +85,7 @@ public sealed partial class TeacherViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Idle))]
-    [NotifyCanExecuteChangedFor(nameof(RefreshModelsCommand), nameof(SignInCommand), nameof(SignOutCommand))]
+    [NotifyCanExecuteChangedFor(nameof(RefreshModelsCommand), nameof(SignInCommand), nameof(SignOutCommand), nameof(ForgetKeyCommand))]
     public partial bool Busy { get; set; }
 
     [ObservableProperty]
@@ -85,7 +113,9 @@ public sealed partial class TeacherViewModel : ObservableObject
 
     public bool UsesKey => !IsChatGpt;
 
-    public bool HasKey => _settings.HasKey;
+    public bool HasKey => UsesKey && _settings.HasKeyFor(Service, Address);
+
+    private bool CanForgetKey() => Idle && HasKey;
 
     public bool SignedIn => _settings.Vault.Load() is not null;
 
@@ -99,30 +129,52 @@ public sealed partial class TeacherViewModel : ObservableObject
     {
         Models.Clear();
         Model = value == TeacherService.ChatGpt ? _settings.ChatGptModel : _settings.Model;
-        Note = value == TeacherService.ChatGpt ? AccountNote() : _settings.HasKey ? "已保存 API Key（加密在这台电脑）" : "还没填 API Key";
+        OnPropertyChanged(nameof(HasKey));
+        ForgetKeyCommand.NotifyCanExecuteChanged();
+        Note = value == TeacherService.ChatGpt ? AccountNote() : HasKey ? "已保存 API Key（加密在这台电脑）" : "还没填 API Key";
+    }
+
+    partial void OnAddressChanged(string value)
+    {
+        if (Service != TeacherService.Compatible) return;
+        OnPropertyChanged(nameof(HasKey));
+        ForgetKeyCommand.NotifyCanExecuteChanged();
     }
 
     /// <summary>Called by the view with the password box contents, which then clears the box.</summary>
     public void Save(string key)
     {
+        if (Busy) return;
         try
         {
             _settings.Save(Service, Address, Model, key, Depth);
-            Note = Model.Trim().Length == 0 ? "已保存；还差一个模型名" : $"已保存：{_settings.Label}";
+            if (Service == TeacherService.Compatible) Address = _settings.Address;
+            Model = Service == TeacherService.ChatGpt ? _settings.ChatGptModel : _settings.Model;
+            Note = Model.Length == 0 ? "已保存；还差一个模型名" : $"已保存：{_settings.Label}";
         }
         catch (Exception e) when (e is TeacherException or IOException or UnauthorizedAccessException)
         {
             Note = e is TeacherException ? e.Message : "没存上：写不进本子所在的文件夹";
         }
         OnPropertyChanged(nameof(HasKey));
+        ForgetKeyCommand.NotifyCanExecuteChanged();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanForgetKey))]
     private void ForgetKey()
     {
-        _settings.ForgetKey();
-        Note = "这台电脑上的 API Key 已删除；要撤销 Key 本身，请到服务商网站操作";
+        if (!CanForgetKey()) return;
+        try
+        {
+            _settings.ForgetKey();
+            Note = "这台电脑上的 API Key 已删除；要撤销 Key 本身，请到服务商网站操作";
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            Note = "没能删除本机上的 API Key，请检查本子所在文件夹后重试。";
+        }
         OnPropertyChanged(nameof(HasKey));
+        ForgetKeyCommand.NotifyCanExecuteChanged();
     }
 
     /// <summary>
@@ -132,43 +184,92 @@ public sealed partial class TeacherViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(Idle))]
     private async Task SignIn()
     {
+        if (Busy) return;
         Busy = true;
         WaitingForBrowser = true;
-        _signingIn = new CancellationTokenSource(SignInWait);
+        using var signingIn = new CancellationTokenSource(SignInTimeout, _clock);
+        _signingIn = signingIn;
         var vault = _settings.Vault;
+        SignInAttempt? attempt = null;
         try
         {
-            using var loopback = new LoopbackCallback();
-            var previous = vault.Load();
-            var attempt = ChatGptAuth.Begin(loopback.RedirectUri, vault.HostId, vault.RememberedClientId, vault.RememberedIdToken, previous?.Email);
-            Note = "已在浏览器打开 ChatGPT 登录页，登录并同意授权后回到这里…";
-            Process.Start(new ProcessStartInfo(attempt.AuthorizeUrl.ToString()) { UseShellExecute = true });
-            var callback = await loopback.WaitAsync(attempt.State, _signingIn.Token);
+            ChatGptSession? previous;
+            string hostId;
+            string? rememberedClientId;
+            string? rememberedIdToken;
+            lock (vault)
+            {
+                previous = vault.Load();
+                hostId = vault.HostId;
+                rememberedClientId = vault.RememberedClientId;
+                rememberedIdToken = vault.RememberedIdToken;
+            }
+            IReadOnlyDictionary<string, string> callback;
+            try
+            {
+                using var loopback = new LoopbackCallback();
+                attempt = ChatGptAuth.Begin(loopback.RedirectUri, hostId, rememberedClientId, rememberedIdToken, previous?.Email);
+                Note = "已在浏览器打开 ChatGPT 登录页，登录并同意授权后回到这里…";
+                _openBrowser(attempt.AuthorizeUrl);
+                callback = await loopback.WaitAsync(attempt.State, signingIn.Token);
+            }
+            catch (Exception e) when (e is IOException or SocketException or Win32Exception or InvalidOperationException)
+            {
+                Note = "没能打开浏览器或本机端口，没有登录。";
+                return;
+            }
             WaitingForBrowser = false;
             Note = "正在确认登录…";
-            using var http = ChatTeacher.NewHttpClient();
-            var session = await new ChatGptAuth(http, TimeProvider.System).FinishAsync(attempt, callback, _signingIn.Token);
-            if (previous is not null && previous.Subject != session.Subject)
+            using var http = _httpFactory();
+            var session = await new ChatGptAuth(http, _clock).FinishAsync(attempt, callback, signingIn.Token);
+            var switched = previous is not null && previous.Subject != session.Subject;
+            try
             {
-                Note = "这次登录的是另一个 ChatGPT 账号，已切换过去。";
+                lock (vault)
+                {
+                    vault.Save(session);
+                    vault.RememberedClientId = session.ClientId;
+                    vault.RememberedIdToken = session.IdToken;
+                }
+                if (IsChatGpt)
+                {
+                    _settings.SaveChatGpt(Model, Depth);
+                    Model = _settings.ChatGptModel;
+                }
+                Note = switched ? "这次登录的是另一个 ChatGPT 账号，已切换过去。" : AccountNote();
             }
-            vault.Save(session);
-            vault.RememberedClientId = session.ClientId;
-            vault.RememberedIdToken = session.IdToken;
-            _settings.SaveChatGpt(Model, Depth);
-            Note = AccountNote();
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException or CryptographicException)
+            {
+                Note = "ChatGPT 登录成功了，但没能把登录状态存到这台电脑上，请检查本子所在文件夹后重试。";
+            }
         }
         catch (OperationCanceledException)
         {
             Note = "登录已取消或等太久了，没有登录。";
         }
-        catch (Exception e) when (e is ChatGptException or IOException or System.Net.Sockets.SocketException or System.ComponentModel.Win32Exception)
+        catch (ChatGptException e)
         {
-            Note = e is ChatGptException ? e.Message : "没能打开浏览器或本机端口，没有登录。";
+            if (e.ForgetClient && attempt is not null)
+            {
+                try
+                {
+                    lock (vault)
+                    {
+                        if (vault.RememberedClientId == attempt.ClientId)
+                        {
+                            vault.RememberedClientId = null;
+                            vault.RememberedIdToken = null;
+                        }
+                    }
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
+                {
+                }
+            }
+            Note = e.Message;
         }
         finally
         {
-            _signingIn?.Dispose();
             _signingIn = null;
             WaitingForBrowser = false;
             Busy = false;
@@ -181,25 +282,50 @@ public sealed partial class TeacherViewModel : ObservableObject
     [RelayCommand]
     private void CancelSignIn() => _signingIn?.Cancel();
 
-    /// <summary>Revokes the refresh token at OpenAI, then forgets the tokens here either way.</summary>
+    /// <summary>Ends the local session before attempting remote revocation.</summary>
     [RelayCommand(CanExecute = nameof(Idle))]
     private async Task SignOut()
     {
-        if (_settings.Vault.Load() is not { } session) return;
+        if (Busy) return;
         Busy = true;
+        Note = "正在退出 ChatGPT…";
+        using var signingOut = new CancellationTokenSource();
+        _signingOut = signingOut;
         try
         {
-            using var http = ChatTeacher.NewHttpClient();
-            var revoked = await new ChatGptAuth(http, TimeProvider.System).RevokeAsync(session, CancellationToken.None);
-            _settings.Vault.Clear();
-            // The ID token is only a re-sign-in hint; after signing out it must not be sent again.
-            _settings.Vault.RememberedIdToken = null;
+            var session = await ChatGptTeacher.EndSessionAsync(_settings.Vault, signingOut.Token);
+            if (session is null)
+            {
+                Note = AccountNote();
+                return;
+            }
+            using var http = _httpFactory();
+            using var revokeCts = CancellationTokenSource.CreateLinkedTokenSource(signingOut.Token);
+            revokeCts.CancelAfter(RevokeTimeout);
+            bool revoked;
+            try
+            {
+                revoked = await new ChatGptAuth(http, _clock).RevokeAsync(session, revokeCts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                revoked = false;
+            }
             Note = revoked
                 ? "已退出，并让 OpenAI 撤销了这次授权。"
                 : "已在本机退出，但没能确认 OpenAI 那边已撤销；可以到 ChatGPT 设置里断开墨水瓶。";
         }
+        catch (OperationCanceledException)
+        {
+            Note = AccountNote();
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or CryptographicException)
+        {
+            Note = "没能在本机清除登录状态，请检查本子所在文件夹后重试。";
+        }
         finally
         {
+            _signingOut = null;
             Busy = false;
             OnPropertyChanged(nameof(SignedIn));
             OnPropertyChanged(nameof(SignInLabel));
@@ -211,28 +337,58 @@ public sealed partial class TeacherViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(Idle))]
     private async Task RefreshModels()
     {
+        if (Busy) return;
         Busy = true;
+        using var refreshing = new CancellationTokenSource();
+        _refreshing = refreshing;
         try
         {
-            using var http = ChatTeacher.NewHttpClient();
-            IReadOnlyList<string> models = Service == TeacherService.ChatGpt
-                ? (await new ChatGptTeacher(http, new ChatGptAuth(http, TimeProvider.System), _settings.Vault, TimeProvider.System, "")
-                    .ModelsAsync(CancellationToken.None)).Select(m => m.Slug).ToList()
-                : await new ChatTeacher(http, _settings.Connection()).ModelsAsync(CancellationToken.None);
+            using var http = _httpFactory();
+            IReadOnlyList<string> models;
+            if (Service == TeacherService.ChatGpt)
+            {
+                models = (await new ChatGptTeacher(http, new ChatGptAuth(http, _clock), _settings.Vault, _clock, "")
+                    .ModelsAsync(refreshing.Token)).Select(m => m.Slug).ToList();
+            }
+            else
+            {
+                var connection = _settings.ConnectionFor(Service, Address, Model);
+                models = await new ChatTeacher(http, connection).ModelsAsync(refreshing.Token);
+                if (Service == TeacherService.Compatible) Address = connection.Address.ToString();
+            }
+            Model = Model.Trim();
             Models.Clear();
             foreach (var m in models) Models.Add(m);
             Note = models.Count == 0 ? "没有列出可用的模型，可以手动填写" : $"找到 {models.Count} 个模型，选一个后点「保存」";
-            if (Model.Trim().Length == 0 && models.Count > 0) Model = models[0];
+            if (Model.Length == 0 && models.Count > 0) Model = models[0];
+        }
+        catch (OperationCanceledException)
+        {
+            Note = "已取消查找可用模型。";
         }
         catch (Exception e) when (e is TeacherException or ChatGptException)
         {
             Note = e.Message;
         }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or CryptographicException)
+        {
+            Note = "读取或保存登录状态失败，请检查本子所在文件夹后重试。";
+        }
         finally
         {
+            _refreshing = null;
             Busy = false;
+            OnPropertyChanged(nameof(SignedIn));
+            OnPropertyChanged(nameof(SignInLabel));
             OnPropertyChanged(nameof(Account));
         }
+    }
+
+    public void CancelPending()
+    {
+        _signingIn?.Cancel();
+        _signingOut?.Cancel();
+        _refreshing?.Cancel();
     }
 
     private string AccountNote() => _settings.Vault.Load() is null ? "" : Account;

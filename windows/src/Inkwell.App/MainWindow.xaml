@@ -1,4 +1,4 @@
-﻿<Window x:Class="Inkwell.App.MainWindow"
+<Window x:Class="Inkwell.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Inkwell.App.ViewModels"
@@ -16,8 +16,8 @@
     </WindowChrome.WindowChrome>
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewPageCommand}" />
-        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding Page.SaveCommand}" />
-        <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding Page.HandInOrRewriteCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding VisiblePage.SaveCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding VisiblePage.HandInOrRewriteCommand}" />
     </Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Command="Find" Executed="FocusSearch" />
@@ -80,7 +80,7 @@
 
         <!-- ===== Divider tabs ===== -->
         <DockPanel Grid.Row="2" Margin="0,70,0,0">
-            <RadioButton DockPanel.Dock="Bottom" Style="{StaticResource DividerTab}" Background="#B9AE97" Height="48" FontSize="13"
+            <RadioButton DockPanel.Dock="Bottom" Style="{StaticResource SettingsDividerTab}" Background="#B9AE97"
                          Content="设置" AutomationProperties.Name="设置"
                          Command="{Binding ShowTabCommand}" CommandParameter="{x:Static vm:Book.Settings}"
                          IsChecked="{Binding Tab, Mode=OneWay, Converter={StaticResource Is}, ConverterParameter={x:Static vm:Book.Settings}}" />
@@ -163,7 +163,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
-                            CornerRadius="4,0,0,4" Padding="28,30">
+                            CornerRadius="4,0,0,4" Padding="22,28">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,18">
                                 <Image Source="{StaticResource InkwellMark}" Width="54" Height="54" />
@@ -175,13 +175,24 @@
                             <Button DockPanel.Dock="Top" Style="{StaticResource DashedButton}" Command="{Binding NewPageCommand}"
                                     Content="＋ 翻开新的一页" ToolTip="Ctrl+N" />
                             <Border DockPanel.Dock="Top" BorderBrush="#A8977A" BorderThickness="0,0,0,1.5" Margin="0,18,0,0" Padding="0,0,0,6">
-                                <DockPanel>
+                                <DockPanel MinHeight="24">
                                     <TextBlock Text="翻找" FontSize="12" Foreground="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <Button DockPanel.Dock="Right" Style="{StaticResource RowIcon}" Content="&#xE711;" Focusable="False"
+                                            Command="{Binding ClearSearchCommand}" Visibility="{Binding HasSearchText, Converter={StaticResource Shown}}"
+                                            ToolTip="清除查找 (Esc)" AutomationProperties.Name="清除查找" />
                                     <TextBox x:Name="SearchBox" Style="{StaticResource Bare}" Tag="标题、题目或正文" ToolTip="Ctrl+F" FontSize="13"
-                                             Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="翻找" />
+                                             Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" PreviewKeyDown="SearchBoxPreviewKeyDown"
+                                             AutomationProperties.Name="翻找" VerticalAlignment="Center">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Escape" Command="{Binding ClearSearchCommand}" />
+                                        </TextBox.InputBindings>
+                                    </TextBox>
                                 </DockPanel>
                             </Border>
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding TocHeading}" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,22,0,10" />
+                            <DockPanel DockPanel.Dock="Top" Margin="0,22,0,10">
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding SearchSummary}" FontSize="12" Foreground="{StaticResource Muted}" />
+                                <TextBlock Text="{Binding TocHeading}" FontSize="12" Foreground="{StaticResource Muted}" />
+                            </DockPanel>
                             <TextBlock DockPanel.Dock="Bottom" Text="{Binding Message}" FontSize="12" Foreground="{StaticResource InkSoft}"
                                        TextWrapping="Wrap" Margin="0,12,0,0" />
                             <Button DockPanel.Dock="Bottom" Style="{StaticResource Plain}" Content="{Binding TrashLabel}" FontSize="12"
@@ -196,11 +207,10 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type vm:TocLine}">
                                         <DockPanel>
-                                            <!-- Row actions: hidden (not collapsed) so the status column does not jump when they appear. -->
                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                 <StackPanel.Style>
                                                     <Style TargetType="StackPanel">
-                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                        <Setter Property="Visibility" Value="Collapsed" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
                                                                 <Setter Property="Visibility" Value="Visible" />
@@ -212,20 +222,44 @@
                                                     </Style>
                                                 </StackPanel.Style>
                                                 <Button Style="{StaticResource RowIcon}" Content="&#xE7A7;" ToolTip="放回目录" AutomationProperties.Name="放回目录"
+                                                        Padding="4,3" Margin="2,0,0,0"
                                                         Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
                                                         Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Shown}}" />
                                                 <Button Style="{StaticResource RowIcon}" Content="&#xE74D;" ToolTip="彻底删除" AutomationProperties.Name="彻底删除"
+                                                        Padding="4,3" Margin="2,0,0,0"
                                                         Command="{Binding DataContext.PurgeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
                                                         Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Shown}}" />
                                                 <Button Style="{StaticResource RowIcon}" Content="&#xE74D;" ToolTip="放进废纸篓" AutomationProperties.Name="放进废纸篓"
+                                                        Padding="4,3" Margin="2,0,0,0"
                                                         Command="{Binding DataContext.DiscardCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
                                                         Visibility="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource Hidden}}" />
                                             </StackPanel>
                                             <TextBlock DockPanel.Dock="Left" Text="{Binding Number}" FontFamily="{StaticResource Print}"
-                                                       Foreground="{StaticResource Muted}" Width="28" />
+                                                       Foreground="{StaticResource Muted}" Width="24" />
                                             <TextBlock DockPanel.Dock="Right" Text="{Binding Status}" FontSize="12" Foreground="{StaticResource Muted}"
-                                                       Margin="8,0,0,0" VerticalAlignment="Center" />
-                                            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                                                       Margin="6,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}}" Value="True" />
+                                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </MultiDataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding DataContext.ShowingTrash, RelativeSource={RelativeSource AncestorType=ListBox}}" Value="True" />
+                                                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}" />
                                         </DockPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -247,31 +281,42 @@
                         <DockPanel DataContext="{Binding Page}"
                                    Visibility="{Binding DataContext.HasPage, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource Shown}}">
                             <Border DockPanel.Dock="Top" Height="58" Background="{StaticResource Paper}" BorderBrush="{StaticResource HeaderLine}"
-                                    BorderThickness="0,0,0,2" Padding="34,0" CornerRadius="0,14,0,0">
+                                    BorderThickness="0,0,0,2" Padding="22,0" CornerRadius="0,14,0,0">
                                 <DockPanel>
                                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Style="{StaticResource LineButton}" Content="{Binding ReferenceToggle}" Margin="0,0,10,0"
+                                        <Button Style="{StaticResource LineButton}" Content="{Binding ReferenceToggle}" Margin="0,0,6,0" Padding="10,6"
                                                 Command="{Binding ToggleReferenceCommand}"
                                                 Visibility="{Binding HasReference, Converter={StaticResource Shown}}" />
-                                        <Button Style="{StaticResource LineButton}" Content="再请一次" Margin="0,0,10,0"
+                                        <Button Style="{StaticResource LineButton}" Content="再请一次" Margin="0,0,6,0" Padding="10,6"
                                                 Command="{Binding AskTeacherCommand}"
                                                 Visibility="{Binding HasReview, Converter={StaticResource Shown}}" />
-                                        <Button Style="{StaticResource LineButton}" Content="{Binding ActionLabel}" Margin="0,0,10,0"
+                                        <Button Style="{StaticResource LineButton}" Content="{Binding ActionLabel}" Margin="0,0,6,0" Padding="10,6"
                                                 Command="{Binding HandInOrRewriteCommand}"
                                                 Visibility="{Binding IsHandedIn, Converter={StaticResource Shown}}" />
-                                        <Button Style="{StaticResource InkButton}" Content="{Binding ActionLabel}" ToolTip="Ctrl+Enter"
+                                        <Button Style="{StaticResource InkButton}" Content="{Binding ActionLabel}" ToolTip="Ctrl+Enter" Padding="13,7"
                                                 Command="{Binding HandInOrRewriteCommand}"
                                                 Visibility="{Binding IsDraft, Converter={StaticResource Shown}}" />
-                                        <Button Style="{StaticResource InkButton}" Content="请老师批改" Background="{StaticResource RedPen}"
+                                        <Button Style="{StaticResource InkButton}" Content="请老师批改" Background="{StaticResource RedPen}" Padding="13,7"
                                                 Command="{Binding AskTeacherCommand}"
                                                 Visibility="{Binding AwaitsTeacher, Converter={StaticResource Shown}}" />
-                                        <Button Style="{StaticResource InkButton}" Content="{Binding TakeLabel}" Background="{StaticResource RedPen}"
+                                        <Button Style="{StaticResource InkButton}" Content="{Binding TakeLabel}" Background="{StaticResource RedPen}" Padding="13,7"
                                                 Command="{Binding TakeFixesCommand}"
                                                 Visibility="{Binding HasReview, Converter={StaticResource Shown}}" />
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Header}" FontSize="13" Foreground="{StaticResource Muted}" />
-                                        <TextBlock Text="{Binding SaveNote, StringFormat='  ·  {0}'}" FontSize="13" Foreground="{StaticResource Saved}" />
+                                    <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                        <TextBlock Text="{Binding Header}" FontSize="12.5" Foreground="{StaticResource Muted}" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding SaveNote}" FontSize="11.5" TextTrimming="CharacterEllipsis">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource Saved}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasSaveError}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource RedPen}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </StackPanel>
                                 </DockPanel>
                             </Border>
@@ -279,6 +324,8 @@
                             <Border DockPanel.Dock="Bottom" Height="52" Background="{StaticResource Paper}" BorderBrush="{StaticResource HeaderLine}"
                                     BorderThickness="0,2,0,0" Padding="34,0" CornerRadius="0,0,14,0">
                                 <DockPanel VerticalAlignment="Center">
+                                    <Button DockPanel.Dock="Right" Style="{StaticResource LineButton}" Content="导出 Markdown"
+                                            Margin="16,0,0,0" Click="ExportPage" />
                                     <TextBlock Text="{Binding WordCount, StringFormat='{}{0} 词'}" FontFamily="{StaticResource Hand}" FontSize="20"
                                                VerticalAlignment="Center" />
                                     <Grid Width="300" Height="16" Margin="18,0,12,0" VerticalAlignment="Center"
@@ -354,7 +401,7 @@
                                             <Grid Visibility="{Binding IsHandedIn, Converter={StaticResource Shown}}">
                                                 <TextBlock local:MarkedText.Pieces="{Binding Pieces}" Background="{StaticResource RuledPaper}"
                                                            FontFamily="{StaticResource Print}" FontSize="20" MinHeight="480" TextWrapping="Wrap"
-                                                           LineHeight="40" LineStackingStrategy="BlockLineHeight" Padding="2,0,0,0"
+                                                           LineHeight="40" LineStackingStrategy="BlockLineHeight" Padding="2,0,0,160"
                                                            AutomationProperties.Name="正文与批注" />
                                                 <Border Width="130" Height="130" CornerRadius="65" BorderBrush="{StaticResource RedPen}" BorderThickness="3"
                                                         HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" IsHitTestVisible="False"
@@ -469,11 +516,16 @@
                                         <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
                                             <Button Style="{StaticResource LineButton}" Content="问老师（整篇）" HorizontalAlignment="Left"
                                                     Margin="0,0,0,10" Command="{Binding OpenPageThreadCommand}" />
-                                            <TextBlock Text="{Binding Verdict}" FontFamily="{StaticResource Hand}" FontSize="19" Foreground="{StaticResource RedPen}"
-                                                       TextWrapping="Wrap" LineHeight="27" />
-                                            <TextBlock Text="{Binding DimensionsText}" FontSize="12" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap"
-                                                       Margin="0,8,0,0" />
-                                            <TextBlock Text="{Binding TeacherNote}" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,6,0,0" />
+                                            <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Verdict}" FontFamily="{StaticResource Hand}" FontSize="19" Foreground="{StaticResource RedPen}"
+                                                               TextWrapping="Wrap" LineHeight="27" />
+                                                    <TextBlock Text="{Binding DimensionsText}" FontSize="12" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap"
+                                                               Margin="0,8,0,0" />
+                                                    <TextBlock Text="{Binding TeacherNote}" FontSize="11" Foreground="{StaticResource Muted}" TextWrapping="Wrap"
+                                                               Margin="0,6,0,0" />
+                                                </StackPanel>
+                                            </ScrollViewer>
                                         </StackPanel>
                                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                             <ItemsControl ItemsSource="{Binding Marks}">
@@ -524,7 +576,7 @@
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding IsLeft}" Value="True">
                                                                 <Setter TargetName="LeaveButton" Property="Background" Value="#E6DFD0" />
-                                                                <Setter TargetName="LeaveButton" Property="Content" Value="已决定不改" />
+                                                                <Setter TargetName="LeaveButton" Property="Content" Value="已不改" />
                                                                 <Setter TargetName="Card" Property="Opacity" Value="0.7" />
                                                             </DataTrigger>
                                                         </DataTemplate.Triggers>
@@ -535,7 +587,7 @@
                                     </DockPanel>
 
                                     <!-- Asking the teacher: pencil questions, red-pen answers -->
-                                    <DockPanel Margin="18,20,18,16" Visibility="{Binding IsThreadOpen, Converter={StaticResource Shown}}">
+                                    <DockPanel Margin="18,20,18,16" Visibility="{Binding ShowThread, Converter={StaticResource Shown}}">
                                         <DockPanel DockPanel.Dock="Top" Margin="0,0,0,6">
                                             <Button DockPanel.Dock="Left" Style="{StaticResource Plain}" Content="← 回批注" Padding="0,2" FontSize="12"
                                                     Foreground="{StaticResource Muted}" Command="{Binding CloseThreadCommand}" />
@@ -604,76 +656,81 @@
                                         </ScrollViewer>
                                     </DockPanel>
 
-                                    <!-- Waiting for the teacher -->
-                                    <StackPanel Margin="20,30,22,22" Visibility="{Binding IsAsking, Converter={StaticResource Shown}}">
-                                        <TextBlock Text="老师正在批改…" FontFamily="{StaticResource Hand}" FontSize="24" Foreground="{StaticResource RedPen}" Margin="0,0,0,14" />
-                                        <Button Style="{StaticResource LineButton}" Content="叫停" Command="{Binding StopAskingCommand}" HorizontalAlignment="Left" />
-                                    </StackPanel>
+                                    <ScrollViewer Margin="1,0,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                                  Visibility="{Binding ShowDraftMargin, Converter={StaticResource Shown}}">
+                                        <StackPanel Margin="19,30,22,22">
+                                            <TextBlock Text="{Binding CheckHeading}" FontFamily="{StaticResource Hand}" FontSize="22"
+                                                       Foreground="{StaticResource Pencil}" Margin="0,0,0,14" />
+                                            <!-- Hint note for the selected source sentence -->
+                                            <Border Background="#DCEBEE" Padding="14,12" Margin="0,0,4,16"
+                                                    Visibility="{Binding IsTranslationDraft, Converter={StaticResource Shown}}">
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="6" ShadowDepth="3" Direction="270" Opacity="0.15" Color="#3C280A" />
+                                                </Border.Effect>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding SelectedHeading}" FontWeight="Bold" Foreground="#23383C" />
+                                                    <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Print}" FontSize="13" Foreground="#23383C"
+                                                               TextWrapping="Wrap" Margin="0,6,0,0" />
+                                                    <UniformGrid Columns="2" Margin="0,10,0,0">
+                                                        <Button Style="{StaticResource InkButton}" Background="#23383C" Content="难词怎么译" Padding="0,6" Margin="0,0,4,0"
+                                                                FontSize="12" Command="{Binding AskWordsCommand}" />
+                                                        <Button Style="{StaticResource LineButton}" BorderBrush="#23383C" Foreground="#23383C" Content="句子怎么搭"
+                                                                Padding="0,5" Margin="4,0,0,0" FontSize="12" Command="{Binding AskFrameCommand}" />
+                                                    </UniformGrid>
+                                                    <DockPanel Margin="0,8,0,0" Visibility="{Binding IsHinting, Converter={StaticResource Shown}}">
+                                                        <Button DockPanel.Dock="Right" Style="{StaticResource Plain}" Content="叫停" FontSize="12" Padding="4,0"
+                                                                Command="{Binding StopHintCommand}" VerticalAlignment="Top" />
+                                                        <StackPanel>
+                                                            <TextBlock Text="老师在想…" FontFamily="{StaticResource Hand}" FontSize="17" Foreground="#2D4F7C" />
+                                                            <TextBlock Text="提示结束后可交稿" FontSize="12" Foreground="#23383C" TextWrapping="Wrap" />
+                                                        </StackPanel>
+                                                    </DockPanel>
+                                                    <ItemsControl ItemsSource="{Binding SentenceHints}" Margin="0,8,0,0">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate DataType="{x:Type teacher:SentenceHint}">
+                                                                <StackPanel Margin="0,4,0,4">
+                                                                    <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Hand}" FontSize="16" Foreground="#2D4F7C"
+                                                                               TextWrapping="Wrap" LineHeight="23" />
+                                                                    <Button Style="{StaticResource Plain}" Content="＋ 收进单词本" FontSize="11" Padding="0,2"
+                                                                            Foreground="#2D4F7C" HorizontalAlignment="Left"
+                                                                            Command="{Binding DataContext.CollectHintCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                            CommandParameter="{Binding}" />
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Border>
+                                            <ItemsControl ItemsSource="{Binding Checks}" Visibility="{Binding ShowChecks, Converter={StaticResource Shown}}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type core:CheckLine}">
+                                                        <TextBlock x:Name="Line" FontFamily="{StaticResource Hand}" FontSize="19" TextWrapping="Wrap"
+                                                                   LineHeight="28" Margin="0,0,0,10" Foreground="{StaticResource Pencil}">
+                                                            <Run x:Name="Mark" Text="✓ " /><Run Text="{Binding Text, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                        <DataTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding State}" Value="{x:Static core:CheckState.Todo}">
+                                                                <Setter TargetName="Line" Property="Foreground" Value="{StaticResource Amber}" />
+                                                                <Setter TargetName="Mark" Property="Text" Value="□ " />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding State}" Value="{x:Static core:CheckState.Info}">
+                                                                <Setter TargetName="Mark" Property="Text" Value="· " />
+                                                            </DataTrigger>
+                                                        </DataTemplate.Triggers>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </ScrollViewer>
 
-                                    <DockPanel Margin="20,30,22,22" Visibility="{Binding HasReview, Converter={StaticResource Hidden}}">
-                                        <TextBlock DockPanel.Dock="Top" Text="{Binding CheckHeading}" FontFamily="{StaticResource Hand}" FontSize="22"
-                                                   Foreground="{StaticResource Pencil}" Margin="0,0,0,14"
-                                                   Visibility="{Binding NotAsking, Converter={StaticResource Shown}}" />
-                                        <!-- Hint note for the selected source sentence -->
-                                        <Border DockPanel.Dock="Top" Background="#DCEBEE" Padding="14,12" Margin="0,0,0,16"
-                                                Visibility="{Binding IsTranslationDraft, Converter={StaticResource Shown}}">
-                                            <Border.RenderTransform>
-                                                <RotateTransform Angle="0.8" />
-                                            </Border.RenderTransform>
-                                            <Border.Effect>
-                                                <DropShadowEffect BlurRadius="6" ShadowDepth="3" Direction="270" Opacity="0.15" Color="#3C280A" />
-                                            </Border.Effect>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding SelectedHeading}" FontWeight="Bold" Foreground="#23383C" />
-                                                <TextBlock Text="{Binding SelectedSentence.Text}" FontFamily="{StaticResource Print}" FontSize="13" Foreground="#23383C"
-                                                           TextWrapping="Wrap" Margin="0,6,0,0" />
-                                                <UniformGrid Columns="2" Margin="0,10,0,0">
-                                                    <Button Style="{StaticResource InkButton}" Background="#23383C" Content="难词怎么译" Padding="0,6" Margin="0,0,4,0"
-                                                            FontSize="12" Command="{Binding AskWordsCommand}" />
-                                                    <Button Style="{StaticResource LineButton}" BorderBrush="#23383C" Foreground="#23383C" Content="句子怎么搭"
-                                                            Padding="0,5" Margin="4,0,0,0" FontSize="12" Command="{Binding AskFrameCommand}" />
-                                                </UniformGrid>
-                                                <DockPanel Margin="0,8,0,0" Visibility="{Binding IsHinting, Converter={StaticResource Shown}}">
-                                                    <Button DockPanel.Dock="Right" Style="{StaticResource Plain}" Content="叫停" FontSize="12" Padding="4,0"
-                                                            Command="{Binding StopHintCommand}" />
-                                                    <TextBlock Text="老师在想…" FontFamily="{StaticResource Hand}" FontSize="17" Foreground="#2D4F7C" />
-                                                </DockPanel>
-                                                <ItemsControl ItemsSource="{Binding SentenceHints}" Margin="0,8,0,0">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate DataType="{x:Type teacher:SentenceHint}">
-                                                            <StackPanel Margin="0,4,0,4">
-                                                                <TextBlock Text="{Binding Text}" FontFamily="{StaticResource Hand}" FontSize="16" Foreground="#2D4F7C"
-                                                                           TextWrapping="Wrap" LineHeight="23" />
-                                                                <Button Style="{StaticResource Plain}" Content="＋ 收进单词本" FontSize="11" Padding="0,2"
-                                                                        Foreground="#2D4F7C" HorizontalAlignment="Left"
-                                                                        Command="{Binding DataContext.CollectHintCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                                        CommandParameter="{Binding}" />
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </StackPanel>
-                                        </Border>
-                                        <ItemsControl ItemsSource="{Binding Checks}" Visibility="{Binding ShowChecks, Converter={StaticResource Shown}}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type core:CheckLine}">
-                                                    <TextBlock x:Name="Line" FontFamily="{StaticResource Hand}" FontSize="19" TextWrapping="Wrap"
-                                                               LineHeight="28" Margin="0,0,0,10" Foreground="{StaticResource Pencil}">
-                                                        <Run x:Name="Mark" Text="✓ " /><Run Text="{Binding Text, Mode=OneWay}" />
-                                                    </TextBlock>
-                                                    <DataTemplate.Triggers>
-                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static core:CheckState.Todo}">
-                                                            <Setter TargetName="Line" Property="Foreground" Value="{StaticResource Amber}" />
-                                                            <Setter TargetName="Mark" Property="Text" Value="□ " />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static core:CheckState.Info}">
-                                                            <Setter TargetName="Mark" Property="Text" Value="· " />
-                                                        </DataTrigger>
-                                                    </DataTemplate.Triggers>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </DockPanel>
+                                    <!-- Waiting for the teacher: opaque and last in Z-order so underlying margin controls cannot be clicked through -->
+                                    <Border Background="{StaticResource Paper}" Margin="1,0,0,0" Padding="20,30,22,22"
+                                            Visibility="{Binding IsAsking, Converter={StaticResource Shown}}">
+                                        <StackPanel>
+                                            <TextBlock Text="老师正在批改…" FontFamily="{StaticResource Hand}" FontSize="24" Foreground="{StaticResource RedPen}" Margin="0,0,0,14" />
+                                            <Button Style="{StaticResource LineButton}" Content="叫停" Command="{Binding StopAskingCommand}" HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Border>
                                 </Grid>
                             </Grid>
                         </DockPanel>
@@ -689,69 +746,85 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
-                            CornerRadius="4,0,0,4" Padding="40,34">
-                        <StackPanel>
-                            <TextBlock Text="这阵子" FontFamily="{StaticResource Hand}" FontSize="30" />
-                            <Path Style="{StaticResource Squiggle}" Width="96" HorizontalAlignment="Left" Margin="0,2,0,0" />
-                            <UniformGrid Columns="3" Margin="0,22,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Data.EssaysHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
-                                               Foreground="{StaticResource RedPen}" />
-                                    <TextBlock Text="篇作文交了" Foreground="{StaticResource Muted}" />
-                                </StackPanel>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Data.TranslationsHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
-                                               Foreground="#2D4F7C" />
-                                    <TextBlock Text="段翻译交了" Foreground="{StaticResource Muted}" />
-                                </StackPanel>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Data.ActiveDays}" FontFamily="{StaticResource Hand}" FontSize="40" />
-                                    <TextBlock Text="天动过笔（近两周）" Foreground="{StaticResource Muted}" />
-                                </StackPanel>
-                            </UniformGrid>
+                            CornerRadius="4,0,0,4">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Bottom" Text="{Binding DataContext.Message, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       FontSize="12" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="40,8,40,24">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel Margin="40,34,40,24">
+                                    <TextBlock Text="这阵子" FontFamily="{StaticResource Hand}" FontSize="30" />
+                                    <Path Style="{StaticResource Squiggle}" Width="96" HorizontalAlignment="Left" Margin="0,2,0,0" />
+                                    <UniformGrid Columns="3" Margin="0,22,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Data.EssaysHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
+                                                       Foreground="{StaticResource RedPen}" />
+                                            <TextBlock Text="篇作文交了" Foreground="{StaticResource Muted}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Data.TranslationsHandedIn}" FontFamily="{StaticResource Hand}" FontSize="40"
+                                                       Foreground="#2D4F7C" />
+                                            <TextBlock Text="段翻译交了" Foreground="{StaticResource Muted}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Data.ActiveDays}" FontFamily="{StaticResource Hand}" FontSize="40" />
+                                            <TextBlock Text="天动过笔（近两周）" Foreground="{StaticResource Muted}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </UniformGrid>
 
-                            <TextBlock Text="最近几页的档位" FontWeight="Bold" Margin="0,36,0,4" />
-                            <TextBlock Text="还没有批改过的页。" Margin="0,20,0,0" Foreground="{StaticResource Muted}"
-                                       Visibility="{Binding HasBands, Converter={StaticResource Hidden}}" />
-                            <Border BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,16,0,0" Height="210"
-                                    Visibility="{Binding HasBands, Converter={StaticResource Shown}}">
-                                <ItemsControl ItemsSource="{Binding Bars}" VerticalAlignment="Bottom" AutomationProperties.Name="档位图">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type vm:BandBar}">
-                                            <StackPanel Width="40" Margin="0,0,8,0" VerticalAlignment="Bottom" ToolTip="{Binding Tip}">
-                                                <TextBlock Text="{Binding Band}" FontFamily="{StaticResource Hand}" FontSize="14"
-                                                           HorizontalAlignment="Center" />
-                                                <Rectangle x:Name="Bar" Height="{Binding Height}" Fill="{StaticResource RedPen}" Opacity="0.85"
-                                                           RadiusX="2" RadiusY="2" Margin="6,2,6,0" />
-                                            </StackPanel>
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsEssay}" Value="False">
-                                                    <Setter TargetName="Bar" Property="Fill" Value="#2D4F7C" />
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </Border>
-                            <ItemsControl ItemsSource="{Binding Bars}" Margin="0,6,0,0" Visibility="{Binding HasBands, Converter={StaticResource Shown}}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type vm:BandBar}">
-                                        <TextBlock Text="{Binding Label}" Width="40" Margin="0,0,8,0" FontSize="11" TextAlignment="Center"
-                                                   Foreground="{StaticResource Muted}" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
+                                    <TextBlock Text="最近几页的档位" FontWeight="Bold" Margin="0,36,0,4" />
+                                    <TextBlock Text="还没有批改过的页。" Margin="0,20,0,0" Foreground="{StaticResource Muted}"
+                                               Visibility="{Binding HasBands, Converter={StaticResource Hidden}}" />
+                                    <Border BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,16,0,0" Height="210"
+                                            Visibility="{Binding HasBands, Converter={StaticResource Shown}}">
+                                        <ItemsControl ItemsSource="{Binding Bars}" VerticalAlignment="Bottom" AutomationProperties.Name="档位图">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Rows="1" Columns="12" VerticalAlignment="Bottom" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type vm:BandBar}">
+                                                    <StackPanel Margin="2,0" VerticalAlignment="Bottom" ToolTip="{Binding Tip}">
+                                                        <TextBlock Text="{Binding Band}" FontFamily="{StaticResource Hand}" FontSize="14"
+                                                                   HorizontalAlignment="Center" />
+                                                        <Rectangle x:Name="Bar" Height="{Binding Height}" MaxWidth="28" Fill="{StaticResource RedPen}" Opacity="0.85"
+                                                                   RadiusX="2" RadiusY="2" Margin="4,2,4,0" />
+                                                    </StackPanel>
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding IsEssay}" Value="False">
+                                                            <Setter TargetName="Bar" Property="Fill" Value="#2D4F7C" />
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Border>
+                                    <ItemsControl ItemsSource="{Binding Bars}" Margin="0,6,0,0" Visibility="{Binding HasBands, Converter={StaticResource Shown}}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Rows="1" Columns="12" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:BandBar}">
+                                                <TextBlock Text="{Binding Label}" Margin="1,0" FontSize="11" TextAlignment="Center"
+                                                           TextTrimming="CharacterEllipsis" Foreground="{StaticResource Muted}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </DockPanel>
                     </Border>
 
                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Background="{StaticResource Paper}">
@@ -830,13 +903,13 @@
                     <Border Background="{StaticResource LeftPage}" BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,2,0"
                             CornerRadius="4,0,0,4" Padding="28,30">
                         <DockPanel>
-                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,18">
-                                <Image Source="{StaticResource InkwellMark}" Width="54" Height="54" />
+                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,18">
+                                <Image DockPanel.Dock="Left" Source="{StaticResource InkwellMark}" Width="54" Height="54" />
                                 <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
                                     <TextBlock Text="套卷" FontSize="20" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Summary}" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,2,0,0" />
+                                    <TextBlock Text="{Binding Summary}" FontSize="12" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,2,0,0" />
                                 </StackPanel>
-                            </StackPanel>
+                            </DockPanel>
                             <Button DockPanel.Dock="Top" Style="{StaticResource DashedButton}" Click="ChoosePack" Content="＋ 导入内容包…" />
                             <TextBlock DockPanel.Dock="Top" Text="书  架" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,22,0,10" />
                             <TextBlock DockPanel.Dock="Bottom" Text="{Binding DataContext.Message, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -928,6 +1001,18 @@
                 <!-- Word book: list and add form on the left page, one review card on the right -->
                 <Grid DataContext="{Binding Words}"
                       Visibility="{Binding DataContext.IsWords, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource Shown}}">
+                    <Grid.Resources>
+                        <Style x:Key="WordStatus" TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="Foreground" Value="{StaticResource Muted}" />
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="360" />
                         <ColumnDefinition Width="*" />
@@ -968,23 +1053,34 @@
                             <Border DockPanel.Dock="Top" BorderBrush="#A8977A" BorderThickness="0,0,0,1.5" Padding="0,0,0,6" Margin="0,0,0,12">
                                 <DockPanel>
                                     <TextBlock Text="翻找" FontSize="12" Foreground="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <CheckBox DockPanel.Dock="Right" Content="只看待复习" IsChecked="{Binding OnlyDue}" FontSize="12"
+                                              VerticalAlignment="Center" Margin="10,0,0,0" />
                                     <TextBox Style="{StaticResource Bare}" Tag="正面、背面或备注" FontSize="13"
                                              Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="翻找单词" />
                                 </DockPanel>
                             </Border>
+                            <TextBlock DockPanel.Dock="Top" Text="{Binding ListNote}" Style="{StaticResource WordStatus}" Margin="4,2,0,8" />
+                            <TextBlock DockPanel.Dock="Bottom" Text="{Binding Notice}" Style="{StaticResource WordStatus}" Margin="4,12,0,0" />
+                            <TextBlock DockPanel.Dock="Bottom" Text="{Binding DataContext.WordsToast, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Style="{StaticResource WordStatus}" Foreground="{StaticResource InkSoft}" Margin="4,12,0,0" />
                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl ItemsSource="{Binding Lines}" AutomationProperties.Name="单词列表">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type vm:WordLine}">
                                             <Border BorderBrush="{StaticResource PaperEdge}" BorderThickness="0,0,0,1" Padding="4,8">
                                                 <DockPanel>
+                                                    <Button DockPanel.Dock="Right" Style="{StaticResource Plain}" Content="编辑" FontSize="12"
+                                                            Margin="8,0,0,0" Padding="6,4" VerticalAlignment="Center"
+                                                            AutomationProperties.Name="{Binding Card.Front, StringFormat='编辑词条 {0}'}"
+                                                            Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding Card}" />
                                                     <StackPanel DockPanel.Dock="Right" Margin="8,0,0,0">
                                                         <TextBlock Text="{Binding Box}" FontSize="9" Foreground="{StaticResource RedPen}" HorizontalAlignment="Right" />
                                                         <TextBlock Text="{Binding Due}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" />
                                                     </StackPanel>
                                                     <StackPanel>
-                                                        <TextBlock Text="{Binding Front}" TextTrimming="CharacterEllipsis" />
-                                                        <TextBlock Text="{Binding Back}" FontFamily="{StaticResource Print}" FontSize="13"
+                                                        <TextBlock Text="{Binding Card.Front}" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Text="{Binding Card.Back}" FontFamily="{StaticResource Print}" FontSize="13"
                                                                    Foreground="{StaticResource InkSoft}" TextTrimming="CharacterEllipsis" />
                                                     </StackPanel>
                                                 </DockPanel>
@@ -997,60 +1093,98 @@
                     </Border>
 
                     <!-- Review card -->
-                    <Grid Grid.Column="1" Background="{StaticResource Paper}">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="520"
-                                    Visibility="{Binding NoCard, Converter={StaticResource Shown}}">
-                            <TextBlock Style="{StaticResource EmptyIcon}" Text="&#xE73E;" />
-                            <TextBlock Text="今天的格子空了" FontFamily="{StaticResource Hand}" FontSize="34" HorizontalAlignment="Center" />
-                            <Path Style="{StaticResource Squiggle}" Margin="0,2,0,0" />
-                            <TextBlock Text="{Binding DoneNote}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" TextAlignment="Center"
-                                       Margin="0,14,0,0" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="520"
-                                    Visibility="{Binding HasCard, Converter={StaticResource Shown}}">
-                            <!-- An index card taped to the page at its two top corners. -->
+                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                  Background="{StaticResource Paper}">
+                        <Border Padding="20,24" MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
                             <Grid>
-                                <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" MinHeight="300" Padding="34,28">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="14" ShadowDepth="4" Direction="270" Opacity="0.15" Color="#3C280A" />
-                                    </Border.Effect>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="520"
+                                            Visibility="{Binding ShowDone, Converter={StaticResource Shown}}">
+                                    <TextBlock Style="{StaticResource EmptyIcon}" Text="&#xE73E;" />
+                                    <TextBlock Text="今天的格子空了" FontFamily="{StaticResource Hand}" FontSize="34" HorizontalAlignment="Center" />
+                                    <Path Style="{StaticResource Squiggle}" Margin="0,2,0,0" />
+                                    <TextBlock Text="{Binding DoneNote}" Foreground="{StaticResource Muted}" TextWrapping="Wrap" TextAlignment="Center"
+                                               Margin="0,14,0,0" />
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="520"
+                                            Visibility="{Binding ShowReview, Converter={StaticResource Shown}}">
+                                    <!-- An index card taped to the page at its two top corners. -->
+                                    <Grid>
+                                        <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" MinHeight="300" Padding="34,28">
+                                            <Border.Effect>
+                                                <DropShadowEffect BlurRadius="14" ShadowDepth="4" Direction="270" Opacity="0.15" Color="#3C280A" />
+                                            </Border.Effect>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding BoxText}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" />
+                                                <Rectangle Height="1.5" Fill="{StaticResource MarginLine}" Margin="-34,10,-34,0" />
+                                                <TextBlock Text="{Binding Current.Front}" FontFamily="{StaticResource Print}" FontSize="28" TextWrapping="Wrap"
+                                                           TextAlignment="Center" Margin="0,30,0,0" />
+                                                <StackPanel Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}" Margin="0,24,0,0">
+                                                    <Rectangle Height="1" Fill="#E9C7C1" Margin="40,0,40,20" />
+                                                    <TextBlock Text="{Binding Current.Back}" FontFamily="{StaticResource Hand}" FontSize="26"
+                                                               Foreground="{StaticResource RedPen}" TextWrapping="Wrap" TextAlignment="Center" />
+                                                    <TextBlock Text="{Binding Current.Note}" FontFamily="{StaticResource Hand}" FontSize="16"
+                                                               Foreground="{StaticResource Pencil}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource Tape}" Width="76" HorizontalAlignment="Left" Margin="-28,-2,0,0">
+                                            <Border.RenderTransform>
+                                                <RotateTransform Angle="-40" />
+                                            </Border.RenderTransform>
+                                        </Border>
+                                        <Border Style="{StaticResource Tape}" Width="76" HorizontalAlignment="Right" Margin="0,-2,-28,0" Background="#A6A9C4C9">
+                                            <Border.RenderTransform>
+                                                <RotateTransform Angle="40" />
+                                            </Border.RenderTransform>
+                                        </Border>
+                                    </Grid>
+                                    <Button Style="{StaticResource InkButton}" Content="翻过来" HorizontalAlignment="Center" Margin="0,22,0,0"
+                                            Command="{Binding FlipCommand}"
+                                            Visibility="{Binding IsFlipped, Converter={StaticResource Hidden}}" />
+                                    <UniformGrid Columns="3" Margin="0,22,0,0" Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}">
+                                        <Button Style="{StaticResource LineButton}" Content="忘了" Margin="0,0,6,0" Command="{Binding ForgotCommand}" />
+                                        <Button Style="{StaticResource LineButton}" Content="模糊" Margin="3,0,3,0" Command="{Binding FuzzyCommand}" />
+                                        <Button Style="{StaticResource InkButton}" Content="记得" Margin="6,0,0,0" Command="{Binding RememberedCommand}" />
+                                    </UniformGrid>
+                                    <Button Style="{StaticResource Plain}" Content="把这条划掉" FontSize="11" Foreground="{StaticResource Muted}"
+                                            HorizontalAlignment="Center" Margin="0,16,0,0" Command="{Binding RemoveCurrentCommand}" />
+                                </StackPanel>
+
+                                <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28"
+                                        Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1"
+                                        Visibility="{Binding IsEditing, Converter={StaticResource Shown}}">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding BoxText}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" />
-                                        <Rectangle Height="1.5" Fill="{StaticResource MarginLine}" Margin="-34,10,-34,0" />
-                                        <TextBlock Text="{Binding Current.Front}" FontFamily="{StaticResource Print}" FontSize="28" TextWrapping="Wrap"
-                                                   TextAlignment="Center" Margin="0,30,0,0" />
-                                        <StackPanel Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}" Margin="0,24,0,0">
-                                            <Rectangle Height="1" Fill="#E9C7C1" Margin="40,0,40,20" />
-                                            <TextBlock Text="{Binding Current.Back}" FontFamily="{StaticResource Hand}" FontSize="26"
-                                                       Foreground="{StaticResource RedPen}" TextWrapping="Wrap" TextAlignment="Center" />
-                                            <TextBlock Text="{Binding Current.Note}" FontFamily="{StaticResource Hand}" FontSize="16"
-                                                       Foreground="{StaticResource Pencil}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0" />
+                                        <TextBlock Text="编辑词条" FontSize="22" FontWeight="Bold" Margin="0,0,0,16" />
+
+                                        <TextBlock Text="正面" FontSize="13" Foreground="{StaticResource InkSoft}" />
+                                        <Border BorderBrush="#A8977A" BorderThickness="0,0,0,1" Padding="0,4" Margin="0,2,0,12">
+                                            <TextBox Style="{StaticResource Bare}" MaxLength="300"
+                                                     Text="{Binding EditFront, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="编辑正面" />
+                                        </Border>
+
+                                        <TextBlock Text="背面" FontSize="13" Foreground="{StaticResource InkSoft}" />
+                                        <Border BorderBrush="#A8977A" BorderThickness="0,0,0,1" Padding="0,4" Margin="0,2,0,12">
+                                            <TextBox Style="{StaticResource Bare}" MaxLength="300"
+                                                     Text="{Binding EditBack, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="编辑背面" />
+                                        </Border>
+
+                                        <TextBlock Text="备注" FontSize="13" Foreground="{StaticResource InkSoft}" />
+                                        <Border BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="8,5" Margin="0,6,0,0">
+                                            <TextBox Style="{StaticResource Writing}" MaxLength="500" MinHeight="58" MaxHeight="96"
+                                                     VerticalScrollBarVisibility="Auto" Text="{Binding EditNote, UpdateSourceTrigger=PropertyChanged}"
+                                                     AutomationProperties.Name="编辑备注" />
+                                        </Border>
+
+                                        <TextBlock Text="{Binding EditError}" Style="{StaticResource WordStatus}" Foreground="{StaticResource RedPen}" Margin="0,10,0,0" />
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                                            <Button Style="{StaticResource LineButton}" Content="取消" Margin="0,0,10,0" Command="{Binding CancelEditCommand}" />
+                                            <Button Style="{StaticResource InkButton}" Content="保存修改" Command="{Binding SaveEditCommand}" />
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
-                                <Border Style="{StaticResource Tape}" Width="76" HorizontalAlignment="Left" Margin="-28,-2,0,0">
-                                    <Border.RenderTransform>
-                                        <RotateTransform Angle="-40" />
-                                    </Border.RenderTransform>
-                                </Border>
-                                <Border Style="{StaticResource Tape}" Width="76" HorizontalAlignment="Right" Margin="0,-2,-28,0" Background="#A6A9C4C9">
-                                    <Border.RenderTransform>
-                                        <RotateTransform Angle="40" />
-                                    </Border.RenderTransform>
-                                </Border>
                             </Grid>
-                            <Button Style="{StaticResource InkButton}" Content="翻过来" HorizontalAlignment="Center" Margin="0,22,0,0"
-                                    Command="{Binding FlipCommand}"
-                                    Visibility="{Binding IsFlipped, Converter={StaticResource Hidden}}" />
-                            <UniformGrid Columns="3" Margin="0,22,0,0" Visibility="{Binding IsFlipped, Converter={StaticResource Shown}}">
-                                <Button Style="{StaticResource LineButton}" Content="忘了" Margin="0,0,6,0" Command="{Binding ForgotCommand}" />
-                                <Button Style="{StaticResource LineButton}" Content="模糊" Margin="3,0,3,0" Command="{Binding FuzzyCommand}" />
-                                <Button Style="{StaticResource InkButton}" Content="记得" Margin="6,0,0,0" Command="{Binding RememberedCommand}" />
-                            </UniformGrid>
-                            <Button Style="{StaticResource Plain}" Content="把这条划掉" FontSize="11" Foreground="{StaticResource Muted}"
-                                    HorizontalAlignment="Center" Margin="0,16,0,0" Command="{Binding RemoveCurrentCommand}" />
-                        </StackPanel>
-                    </Grid>
+                        </Border>
+                    </ScrollViewer>
                 </Grid>
 
                 <!-- Settings: the notebook's title page -->
@@ -1066,7 +1200,18 @@
                         </Image>
                         <StackPanel Margin="56,40" MaxWidth="980" HorizontalAlignment="Left">
                             <TextBlock Text="本子扉页" FontSize="24" FontWeight="Bold" />
-                            <Path Style="{StaticResource Squiggle}" Width="110" HorizontalAlignment="Left" Margin="0,4,0,28" />
+                            <Path Style="{StaticResource Squiggle}" Width="110" HorizontalAlignment="Left" Margin="0,4,0,20" />
+                            <TextBlock Text="{Binding Message}" FontSize="12" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,0,0,16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
                             <Border Background="White" BorderBrush="{StaticResource PaperEdge}" BorderThickness="1" Padding="26,22" Margin="0,0,0,20">
                                 <StackPanel>
@@ -1088,6 +1233,8 @@
                                         <TextBlock Text="搬旧本子" FontSize="16" FontWeight="Bold" Margin="0,0,0,12" />
                                         <Button Style="{StaticResource LineButton}" Content="选择旧数据文件…" Click="ChooseOldFile"
                                                 IsEnabled="{Binding CanImport}" HorizontalAlignment="Left" />
+                                        <Button Style="{StaticResource LineButton}" Content="取消导入" Command="{Binding CancelOldImportCommand}"
+                                                Visibility="{Binding IsImportingOld, Converter={StaticResource Shown}}" HorizontalAlignment="Left" Margin="0,8,0,0" />
                                         <TextBlock Text="{Binding ImportNote}" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="{StaticResource InkSoft}" />
                                     </StackPanel>
                                 </Border>
@@ -1103,18 +1250,18 @@
                                 <StackPanel>
                                     <TextBlock Text="请老师" FontSize="18" FontWeight="Bold" Margin="0,0,0,16" />
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
-                                        <RadioButton Style="{StaticResource Choice}" Content="DeepSeek" GroupName="Service" IsChecked="{Binding IsDeepSeek}" Margin="0,0,24,0"
-                                                     VerticalContentAlignment="Center" />
-                                        <RadioButton Style="{StaticResource Choice}" Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}" Margin="0,0,24,0"
-                                                     VerticalContentAlignment="Center" />
+                                        <RadioButton Style="{StaticResource Choice}" Content="DeepSeek" GroupName="Service" IsChecked="{Binding IsDeepSeek}"
+                                                     IsEnabled="{Binding Idle}" Margin="0,0,24,0" VerticalContentAlignment="Center" />
+                                        <RadioButton Style="{StaticResource Choice}" Content="兼容 OpenAI 的接口" GroupName="Service" IsChecked="{Binding IsCompatible}"
+                                                     IsEnabled="{Binding Idle}" Margin="0,0,24,0" VerticalContentAlignment="Center" />
                                         <RadioButton Style="{StaticResource Choice}" Content="ChatGPT 账号（用套餐额度）" GroupName="Service" IsChecked="{Binding IsChatGpt}"
-                                                     VerticalContentAlignment="Center" />
+                                                     IsEnabled="{Binding Idle}" VerticalContentAlignment="Center" />
                                     </StackPanel>
                                     <!-- ChatGPT: sign in through the browser; no password or key is typed here -->
                                     <Border Background="{StaticResource PaperLeft}" Padding="16,14" Margin="0,0,0,14"
                                             Visibility="{Binding IsChatGpt, Converter={StaticResource Shown}}">
                                         <StackPanel>
-                                            <TextBlock Text="{Binding Account}" FontWeight="Bold" Margin="0,0,0,12" />
+                                            <TextBlock Text="{Binding Account}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,0,0,12" />
                                             <StackPanel Orientation="Horizontal">
                                                 <Button Style="{StaticResource InkButton}" Content="{Binding SignInLabel}" Command="{Binding SignInCommand}" />
                                                 <Button Style="{StaticResource LineButton}" Content="取消" Margin="10,0,0,0" Command="{Binding CancelSignInCommand}"
@@ -1140,22 +1287,22 @@
                                         <Border Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
                                                 Visibility="{Binding IsCompatible, Converter={StaticResource Shown}}">
                                             <TextBox Style="{StaticResource Bare}" Tag="https://…/v1" Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
-                                                     AutomationProperties.Name="接口地址" />
+                                                     IsEnabled="{Binding Idle}" AutomationProperties.Name="接口地址" />
                                         </Border>
                                         <TextBlock Grid.Row="1" Text="API Key" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}"
                                                    Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
                                         <Border Grid.Row="1" Grid.Column="1" BorderBrush="{StaticResource InkSoft}" BorderThickness="0,0,0,1.5" Margin="0,0,0,12" Padding="0,4"
                                                 Visibility="{Binding UsesKey, Converter={StaticResource Shown}}">
-                                            <PasswordBox x:Name="KeyBox" BorderThickness="0" Background="Transparent" AutomationProperties.Name="API Key"
-                                                         ToolTip="已保存过时留空即可保持不变" />
+                                            <PasswordBox x:Name="KeyBox" BorderThickness="0" Background="Transparent" IsEnabled="{Binding Idle}"
+                                                         AutomationProperties.Name="API Key" ToolTip="已保存过时留空即可保持不变" />
                                         </Border>
                                         <TextBlock Grid.Row="2" Text="模型" VerticalAlignment="Center" Foreground="{StaticResource InkSoft}" />
                                         <ComboBox Grid.Row="2" Grid.Column="1" Style="{StaticResource LineCombo}" IsEditable="True" ItemsSource="{Binding Models}"
-                                                  Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="模型" />
+                                                  Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Idle}" AutomationProperties.Name="模型" />
                                         <TextBlock Grid.Row="3" Text="批改深度" VerticalAlignment="Top" Margin="0,16,0,0" Foreground="{StaticResource InkSoft}" />
                                         <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,12,0,0">
                                             <ComboBox Style="{StaticResource LineCombo}" ItemsSource="{Binding Depths}" SelectedValuePath="Value" SelectedValue="{Binding Depth}"
-                                                      AutomationProperties.Name="批改深度">
+                                                      IsEnabled="{Binding Idle}" AutomationProperties.Name="批改深度">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate DataType="{x:Type vm:DepthChoice}">
                                                         <TextBlock Text="{Binding Name}" />
@@ -1165,11 +1312,11 @@
                                         </StackPanel>
                                     </Grid>
                                     <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                                        <Button Style="{StaticResource InkButton}" Content="保存" Click="SaveTeacher" />
+                                        <Button Style="{StaticResource InkButton}" Content="保存" Click="SaveTeacher" IsEnabled="{Binding Idle}" />
                                         <Button Style="{StaticResource LineButton}" Content="找可用的模型" Margin="10,0,0,0"
                                                 Command="{Binding RefreshModelsCommand}" ToolTip="先保存 Key；列模型不花额度" />
                                         <Button Style="{StaticResource LineButton}" Content="删除本机 Key" Margin="10,0,0,0"
-                                                Command="{Binding ForgetKeyCommand}" IsEnabled="{Binding HasKey}"
+                                                Command="{Binding ForgetKeyCommand}"
                                                 Visibility="{Binding UsesKey, Converter={StaticResource Shown}}" />
                                     </StackPanel>
                                     <TextBlock Text="{Binding Note}" Foreground="{StaticResource InkSoft}" TextWrapping="Wrap" Margin="0,12,0,0" />

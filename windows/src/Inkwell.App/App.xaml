@@ -1,8 +1,8 @@
-﻿<Application x:Class="Inkwell.App.App"
+<Application x:Class="Inkwell.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Inkwell.App"
-             ShutdownMode="OnMainWindowClose">
+             ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <!-- Notebook palette: kraft desk, cream paper, blue rules, red teacher's pen. -->
         <SolidColorBrush x:Key="Desk" Color="#D9C9A8" />
@@ -575,6 +575,21 @@
                     <Setter Property="FontWeight" Value="Bold" />
                     <Setter Property="FontSize" Value="15" />
                 </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.55" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SettingsDividerTab" TargetType="RadioButton" BasedOn="{StaticResource DividerTab}">
+            <Setter Property="Height" Value="48" />
+            <Setter Property="FontSize" Value="13" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Height" Value="58" />
+                    <Setter Property="Margin" Value="18,0,0,10" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="15" />
+                </Trigger>
             </Style.Triggers>
         </Style>
 
@@ -605,6 +620,11 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.55" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Writing" TargetType="TextBox" BasedOn="{StaticResource Bare}">
             <Setter Property="AcceptsReturn" Value="True" />
@@ -681,7 +701,7 @@
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="270" Opacity="0.18" Color="#3C280A" />
                                     </Border.Effect>
-                                    <ScrollViewer>
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </Border>
@@ -738,6 +758,11 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.55" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Table of contents rows. -->
@@ -770,8 +795,6 @@
 
         <!-- Thin pencil-like scroll bars. -->
         <Style TargetType="ScrollBar">
-            <Setter Property="Width" Value="10" />
-            <Setter Property="MinWidth" Value="10" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
@@ -786,9 +809,25 @@
                                 </Thumb>
                             </Track.Thumb>
                         </Track>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="False" />
+                                <Setter TargetName="PART_Track" Property="Margin" Value="6,3" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="10" />
+                    <Setter Property="MinWidth" Value="10" />
+                </Trigger>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Height" Value="10" />
+                    <Setter Property="MinHeight" Value="10" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Application.Resources>
 </Application>

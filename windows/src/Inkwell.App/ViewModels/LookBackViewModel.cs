@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Inkwell.Core;
+using Microsoft.Data.Sqlite;
 
 namespace Inkwell.App.ViewModels;
 
@@ -10,7 +11,7 @@ public sealed record BandBar(double Height, int Band, string Label, string Tip, 
 public sealed record HabitLine(string Kind, string Count, string Example);
 
 /// <summary>The 复盘 spread: how much was written, how the bands moved, which mistakes keep coming back.</summary>
-public sealed partial class LookBackViewModel(Notebook book) : ObservableObject
+public sealed partial class LookBackViewModel(Notebook book, Action<string>? say = null) : ObservableObject
 {
     private const double BarPerBand = 12;
 
@@ -35,7 +36,16 @@ public sealed partial class LookBackViewModel(Notebook book) : ObservableObject
 
     public void Refresh()
     {
-        var data = book.LookBack();
+        LookBack data;
+        try
+        {
+            data = book.LookBack();
+        }
+        catch (Exception e) when (e is NotebookException or SqliteException)
+        {
+            say?.Invoke(PageViewModel.DbError(e));
+            return;
+        }
         Bars.Clear();
         foreach (var b in data.Bands)
         {

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core;
 using Inkwell.Core.Teacher;
+using Microsoft.Data.Sqlite;
 
 namespace Inkwell.App.ViewModels;
 
@@ -19,6 +20,7 @@ public sealed partial class PageViewModel : ObservableObject
     private Piece _page;
     private bool _loading;
     private bool _closed;
+    private bool _abandoned;
     private CancellationTokenSource? _asking;
 
     public PageViewModel(Notebook book, Piece page, TeacherSettings teacher, Action<string> say, Func<string, bool> confirm)
@@ -42,6 +44,9 @@ public sealed partial class PageViewModel : ObservableObject
     /// <summary>Raised when hand-in or rewrite moved to another page.</summary>
     public event Action<Piece>? Turned;
 
+    /// <summary>Raised when AI marks, follow-ups, or hints are saved to the notebook (kept across Close).</summary>
+    public event Action? NotebookUpdated;
+
     [ObservableProperty]
     public partial string Title { get; set; }
 
@@ -54,21 +59,24 @@ public sealed partial class PageViewModel : ObservableObject
     [ObservableProperty]
     public partial string SaveNote { get; set; }
 
+    [ObservableProperty]
+    public partial bool HasSaveError { get; private set; }
+
     public ObservableCollection<CheckLine> Checks { get; } = [];
 
     public ObservableCollection<MarkCard> Marks { get; } = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasReview), nameof(NoReview), nameof(BandText), nameof(BandRange), nameof(Verdict),
-        nameof(DimensionsText), nameof(TakeLabel), nameof(ShowChecks), nameof(ShowMarks), nameof(TeacherNote))]
+        nameof(DimensionsText), nameof(TakeLabel), nameof(ShowChecks), nameof(ShowMarks), nameof(ShowThread), nameof(ShowDraftMargin), nameof(TeacherNote))]
     public partial StoredReview? Review { get; set; }
 
     [ObservableProperty]
     public partial IReadOnlyList<TextPiece> Pieces { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(NotAsking), nameof(ShowChecks))]
-    [NotifyCanExecuteChangedFor(nameof(AskTeacherCommand), nameof(TakeFixesCommand), nameof(HandInOrRewriteCommand), nameof(SendQuestionCommand))]
+    [NotifyPropertyChangedFor(nameof(NotAsking), nameof(ShowChecks), nameof(ShowMarks), nameof(ShowThread), nameof(ShowDraftMargin))]
+    [NotifyCanExecuteChangedFor(nameof(AskTeacherCommand), nameof(TakeFixesCommand), nameof(HandInOrRewriteCommand), nameof(SendQuestionCommand), nameof(OpenPageThreadCommand))]
     public partial bool IsAsking { get; set; }
 
     public bool NotAsking => !IsAsking;
@@ -76,6 +84,8 @@ public sealed partial class PageViewModel : ObservableObject
     public bool HasReview => Review is not null;
 
     public bool NoReview => Review is null;
+
+    public bool ShowDraftMargin => NoReview && NotAsking;
 
     /// <summary>Pencil checks belong to drafting; a reviewed page shows the teacher's notes instead.</summary>
     public bool ShowChecks => IsDraft;
@@ -140,29 +150,40 @@ public sealed partial class PageViewModel : ObservableObject
     public string WordNote => IsEssay ? $"目标 {Target.Min}–{Target.Max}" : "";
 
     [RelayCommand]
-    public void Save()
+    public void Save() => TrySave();
+
+    internal bool TrySave()
     {
         _pause.Stop();
-        if (_page.IsHandedIn) return;
-        try
+        if (_page.IsHandedIn) return true;
+        if (_page.Title != Title || _page.Task != Task || _page.Text != Text)
         {
-            var saved = _book.Write(_page.Id, Title, Task, Text);
-            if (saved.UpdatedAt != _page.UpdatedAt)
+            try
             {
-                _page = saved;
-                Saved?.Invoke();
+                _page = _book.Write(_page.Id, Title, Task, Text);
             }
-            SaveNote = $"已记在本子上 {_page.UpdatedAt.ToLocalTime():HH:mm}";
+            catch (Exception e) when (e is NotebookException or SqliteException)
+            {
+                HasSaveError = true;
+                SaveNote = "保存失败，草稿还在窗口里";
+                _say(e is SqliteException sqlite
+                    ? $"草稿写不进本子（SQLite {sqlite.SqliteErrorCode}），可按 Ctrl+S 重试。"
+                    : e.Message);
+                return false;
+            }
+
+            OnPropertyChanged(nameof(Header));
+            Saved?.Invoke();
         }
-        catch (NotebookException e)
-        {
-            SaveNote = "没记上，内容还在窗口里";
-            _say(e.Message);
-        }
+        HasSaveError = false;
+        SaveNote = $"已记在本子上 {_page.UpdatedAt.ToLocalTime():HH:mm}";
+        return true;
     }
 
     /// <summary>A request to the teacher is on its way; the page is kept alive until it settles.</summary>
     public bool IsBusy => IsAsking || IsAnswering || IsHinting;
+
+    public bool IsAbandoned => _abandoned;
 
     /// <summary>Raised when the last running request of this page has finished, been stopped or failed.</summary>
     public event Action? Settled;
@@ -186,6 +207,7 @@ public sealed partial class PageViewModel : ObservableObject
     /// <summary>The page is gone from the notebook, so nothing could be stored: stop whatever still runs.</summary>
     public void Abandon()
     {
+        _abandoned = true;
         Close();
         _asking?.Cancel();
         _answering?.Cancel();
@@ -200,34 +222,44 @@ public sealed partial class PageViewModel : ObservableObject
     private async Task AskTeacher()
     {
         if (!_page.IsHandedIn) return;
-        await UseTeacher(busy => IsAsking = busy, cancel => _asking = cancel, "已经叫停，这次没有保存", async (teacher, cancel) =>
+        await UseTeacher(busy => IsAsking = busy, cancel => _asking = cancel, "已经叫停，这次没有保存", async (teacher, label, _, cancel) =>
         {
             var reply = await teacher.AskAsync(
                 MarkingProtocol.Instruction(_page.Kind), MarkingProtocol.Material(_page.Kind, _page.Task, _page.Text), jsonReply: true,
                 cancel);
+            if (_abandoned) return;
+            cancel.ThrowIfCancellationRequested();
             var marking = MarkingProtocol.Read(reply);
-            var review = _book.SaveReview(_page.Id, marking, _teacher.Label);
+            var review = _book.SaveReview(_page.Id, marking, label);
             ShowReview(review);
             Say($"老师批完了：{review.Marks.Count} 处批注" + (marking.Dropped > 0 ? $"；另有 {marking.Dropped} 处写得不合格式，没有收" : ""));
             Saved?.Invoke();
+            NotebookUpdated?.Invoke();
         });
     }
 
     // While the learner is on another page, say which page a late answer belongs to.
     private void Say(string text) => _say(_closed ? $"No.{_page.Number:00} 那一页：{text}" : text);
 
+    internal static string DbError(Exception e) =>
+        e is SqliteException sqlite ? $"本子读写失败（SQLite {sqlite.SqliteErrorCode}），可再试一次。" : e.Message;
+
     /// <summary>
     /// One paid request to the configured teacher: <paramref name="work"/> runs once, only a stop cancels it,
     /// and failures become a message; whatever <paramref name="work"/> stores happens only after the full reply
     /// arrived.
     /// </summary>
-    private async Task UseTeacher(Action<bool> busy, Action<CancellationTokenSource?> keep, string stopped, Func<ITeacher, CancellationToken, Task> work)
+    private async Task UseTeacher(Action<bool> busy, Action<CancellationTokenSource?> keep, string stopped, Func<ITeacher, string, string, CancellationToken, Task> work)
     {
         using var http = ChatTeacher.NewHttpClient();
         ITeacher teacher;
+        string label;
+        string recipient;
         try
         {
             teacher = _teacher.CreateTeacher(http);
+            label = _teacher.Label;
+            recipient = _teacher.Recipient;
         }
         catch (TeacherException e)
         {
@@ -239,15 +271,15 @@ public sealed partial class PageViewModel : ObservableObject
         keep(cancel);
         try
         {
-            await work(teacher, cancel.Token);
+            await work(teacher, label, recipient, cancel.Token);
         }
         catch (OperationCanceledException)
         {
-            Say(stopped);
+            if (!_abandoned) Say(stopped);
         }
-        catch (Exception e) when (e is TeacherException or NotebookException or Inkwell.Core.ChatGpt.ChatGptException)
+        catch (Exception e) when (e is TeacherException or NotebookException or SqliteException or Inkwell.Core.ChatGpt.ChatGptException)
         {
-            Say(e.Message);
+            if (!_abandoned) Say(DbError(e));
         }
         finally
         {
@@ -269,27 +301,47 @@ public sealed partial class PageViewModel : ObservableObject
             _say($"按采纳的改法抄出了新的一页 No.{next.Number:00}，原稿和批改都留着");
             Turned?.Invoke(next);
         }
-        catch (NotebookException e)
+        catch (Exception e) when (e is NotebookException or SqliteException)
         {
-            _say(e.Message);
+            _say(DbError(e));
         }
     }
 
-    [RelayCommand(CanExecute = nameof(NotAsking))]
+    private bool CanHandInOrRewrite => NotAsking && NotHinting;
+
+    [RelayCommand(CanExecute = nameof(CanHandInOrRewrite))]
     private void HandInOrRewrite()
     {
-        Save();
+        if (!CanHandInOrRewrite || !TrySave()) return;
+        if (!_page.IsHandedIn)
+        {
+            if (string.IsNullOrWhiteSpace(Task))
+            {
+                _say(IsEssay ? "先写上题目再交。" : "先放入中文原文再交。");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Text))
+            {
+                _say("还没写正文，先写完再交。");
+                return;
+            }
+        }
         // Handing in cannot be undone, and its button sits where a double click on the previous page's buttons lands.
         if (!_page.IsHandedIn && !_confirm("交稿？交了之后这一页就不能再改，要改只能「重写一稿」。")) return;
+        if (!_page.IsHandedIn && IsTranslationDraft && IsEditingSource)
+        {
+            IsEditingSource = false;
+            RefreshSentences();
+        }
         try
         {
             var next = _page.IsHandedIn ? _book.Rewrite(_page.Id) : _book.HandIn(_page.Id);
             _say(_page.IsHandedIn ? $"从 No.{_page.Number:00} 抄出了新的一页，原稿留着" : "交了。这一页从现在起不能再改");
             Turned?.Invoke(next);
         }
-        catch (NotebookException e)
+        catch (Exception e) when (e is NotebookException or SqliteException)
         {
-            _say(e.Message);
+            _say(DbError(e));
         }
     }
 
@@ -306,7 +358,19 @@ public sealed partial class PageViewModel : ObservableObject
         LoadReference(page);
         IsEditingSource = false;
         RefreshSentences();
-        ShowReview(page.IsHandedIn ? _book.LatestReview(page.Id) : null);
+        StoredReview? review = null;
+        if (page.IsHandedIn)
+        {
+            try
+            {
+                review = _book.LatestReview(page.Id);
+            }
+            catch (Exception e) when (e is NotebookException or SqliteException)
+            {
+                _say(DbError(e));
+            }
+        }
+        ShowReview(review);
     }
 
     private void ShowReview(StoredReview? review)
@@ -331,9 +395,9 @@ public sealed partial class PageViewModel : ObservableObject
             _book.AddWord(mark.Quote, mark.Fix, mark.Why, _page.Id);
             _say($"「{mark.Fix}」收进单词本了");
         }
-        catch (NotebookException e)
+        catch (Exception e) when (e is NotebookException or SqliteException)
         {
-            _say(e.Message);
+            _say(DbError(e));
         }
     }
 
@@ -345,9 +409,9 @@ public sealed partial class PageViewModel : ObservableObject
         {
             _book.Decide(Review.Id, card.Number, decision);
         }
-        catch (NotebookException e)
+        catch (Exception e) when (e is NotebookException or SqliteException)
         {
-            _say(e.Message);
+            _say(DbError(e));
             return false;
         }
         card.Decision = decision;
@@ -357,16 +421,18 @@ public sealed partial class PageViewModel : ObservableObject
     }
 
     /// <summary>Cuts the text into plain runs and marked runs, in order; overlapping marks keep the first.</summary>
-    private static IReadOnlyList<TextPiece> Split(string text, IEnumerable<PlacedMark> marks)
+    internal static IReadOnlyList<TextPiece> Split(string text, IEnumerable<PlacedMark> marks)
     {
         var pieces = new List<TextPiece>();
         var at = 0;
         foreach (var m in marks.Where(m => m.IsPlaced).OrderBy(m => m.Start))
         {
-            if (m.Start!.Value < at) continue;
-            if (m.Start.Value > at) pieces.Add(new TextPiece(text[at..m.Start.Value], null));
-            pieces.Add(new TextPiece(text.Substring(m.Start.Value, m.Length), m));
-            at = m.Start.Value + m.Length;
+            if (m.Start is not { } start) continue;
+            var length = m.Length;
+            if (start < at || length <= 0 || start >= text.Length || length > text.Length - start) continue;
+            if (start > at) pieces.Add(new TextPiece(text[at..start], null));
+            pieces.Add(new TextPiece(text.Substring(start, length), m));
+            at = start + length;
         }
         if (at < text.Length) pieces.Add(new TextPiece(text[at..], null));
         return pieces;
@@ -381,6 +447,7 @@ public sealed partial class PageViewModel : ObservableObject
         OnPropertyChanged(nameof(TargetStartX));
         OnPropertyChanged(nameof(WordProgress));
         OnPropertyChanged(nameof(WordNote));
+        if (!_loading && !IsEssay && IsDraft && !IsHinting) RefreshSentences();
     }
 
     partial void OnTextChanged(string value)
@@ -396,6 +463,7 @@ public sealed partial class PageViewModel : ObservableObject
         if (_loading) return;
         RefreshChecks();
         if (_page.IsHandedIn) return;
+        HasSaveError = false;
         SaveNote = "正在记…";
         _pause.Stop();
         _pause.Start();

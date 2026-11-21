@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,6 +14,11 @@ public sealed class ChatGptVault(string directory) : ISessionVault
 {
     // Keeps the program's former name on purpose: changing it would make every saved secret unreadable.
     private static readonly byte[] Entropy = "Zhupi ChatGPT session v1"u8.ToArray();
+    private static readonly ConcurrentDictionary<string, Lock> Gates = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Lock _gate = Gates.GetOrAdd(NormalizeDirectory(directory), static _ => new Lock());
+
+    private static string NormalizeDirectory(string path) =>
+        Path.TrimEndingDirectorySeparator(Path.GetFullPath(path));
 
     private string SessionFile => Path.Combine(directory, "chatgpt.session");
 
@@ -27,33 +33,76 @@ public sealed class ChatGptVault(string directory) : ISessionVault
     {
         get
         {
-            if (File.Exists(HostFile)) return File.ReadAllText(HostFile).Trim();
-            Directory.CreateDirectory(directory);
-            var id = ChatGptAuth.NewHostId();
-            File.WriteAllText(HostFile, id);
-            return id;
+            lock (_gate)
+            {
+                try
+                {
+                    if (File.Exists(HostFile))
+                    {
+                        var existing = File.ReadAllText(HostFile).Trim();
+                        if (existing.Length > 0) return existing;
+                    }
+                }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+                {
+                }
+                var id = ChatGptAuth.NewHostId();
+                try
+                {
+                    AtomicWrite(HostFile, Encoding.UTF8.GetBytes(id));
+                }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+                {
+                }
+                return id;
+            }
         }
     }
 
     public string? RememberedClientId
     {
-        get => File.Exists(ClientFile) ? File.ReadAllText(ClientFile).Trim() : null;
-        set => Write(ClientFile, value, encrypt: false);
+        get
+        {
+            lock (_gate)
+            {
+                try
+                {
+                    return File.Exists(ClientFile) ? File.ReadAllText(ClientFile).Trim() : null;
+                }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+                {
+                    return null;
+                }
+            }
+        }
+        set
+        {
+            lock (_gate) Write(ClientFile, value, encrypt: false);
+        }
     }
 
     public string? RememberedIdToken
     {
-        get => Read(HintFile);
-        set => Write(HintFile, value, encrypt: true);
+        get { lock (_gate) return Read(HintFile); }
+        set { lock (_gate) Write(HintFile, value, encrypt: true); }
     }
 
-    public ChatGptSession? Load() => Read(SessionFile) is { } json ? ChatGptSession.FromJson(json) : null;
+    public ChatGptSession? Load()
+    {
+        lock (_gate) return Read(SessionFile) is { } json ? ChatGptSession.FromJson(json) : null;
+    }
 
-    public void Save(ChatGptSession session) => Write(SessionFile, session.ToJson(), encrypt: true);
+    public void Save(ChatGptSession session)
+    {
+        lock (_gate) Write(SessionFile, session.ToJson(), encrypt: true);
+    }
 
     public void Clear()
     {
-        if (File.Exists(SessionFile)) File.Delete(SessionFile);
+        lock (_gate)
+        {
+            if (File.Exists(SessionFile)) File.Delete(SessionFile);
+        }
     }
 
     private static string? Read(string file)
@@ -63,14 +112,14 @@ public sealed class ChatGptVault(string directory) : ISessionVault
         {
             return Encoding.UTF8.GetString(ProtectedData.Unprotect(File.ReadAllBytes(file), Entropy, DataProtectionScope.CurrentUser));
         }
-        catch (CryptographicException)
+        catch (Exception e) when (e is CryptographicException or IOException or UnauthorizedAccessException)
         {
-            // Encrypted for another Windows account or damaged: behave as signed out instead of failing.
+            // Encrypted for another Windows account, damaged, or unreadable: behave as signed out instead of failing.
             return null;
         }
     }
 
-    // Written to a temporary file first so a crash never leaves half a credential behind.
+    // Written to a unique temporary file first so a crash or concurrent reader never sees half a file.
     private void Write(string file, string? value, bool encrypt)
     {
         if (value is null)
@@ -78,11 +127,29 @@ public sealed class ChatGptVault(string directory) : ISessionVault
             if (File.Exists(file)) File.Delete(file);
             return;
         }
-        Directory.CreateDirectory(directory);
         var bytes = Encoding.UTF8.GetBytes(value);
         if (encrypt) bytes = ProtectedData.Protect(bytes, Entropy, DataProtectionScope.CurrentUser);
-        var temp = file + ".tmp";
-        File.WriteAllBytes(temp, bytes);
-        File.Move(temp, file, overwrite: true);
+        AtomicWrite(file, bytes);
+    }
+
+    private void AtomicWrite(string file, byte[] bytes)
+    {
+        Directory.CreateDirectory(directory);
+        var temp = $"{file}.{Guid.NewGuid():N}.tmp";
+        try
+        {
+            File.WriteAllBytes(temp, bytes);
+            File.Move(temp, file, overwrite: true);
+        }
+        finally
+        {
+            try
+            {
+                if (File.Exists(temp)) File.Delete(temp);
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+            }
+        }
     }
 }

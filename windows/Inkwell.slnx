@@ -4,6 +4,7 @@
     <Project Path="src/Inkwell.Core/Inkwell.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Inkwell.App.Tests/Inkwell.App.Tests.csproj" />
     <Project Path="tests/Inkwell.Core.Tests/Inkwell.Core.Tests.csproj" />
   </Folder>
 </Solution>

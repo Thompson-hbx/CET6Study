@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core;
 using Inkwell.Core.Teacher;
+using Microsoft.Data.Sqlite;
 
 namespace Inkwell.App.ViewModels;
 
@@ -33,6 +34,7 @@ public sealed partial class PageViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowSentences))]
+    [NotifyCanExecuteChangedFor(nameof(AskWordsCommand), nameof(AskFrameCommand))]
     public partial bool IsEditingSource { get; set; }
 
     public bool ShowSentences => !IsEditingSource && Sentences.Count > 0;
@@ -48,7 +50,7 @@ public sealed partial class PageViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(NotHinting))]
-    [NotifyCanExecuteChangedFor(nameof(AskWordsCommand), nameof(AskFrameCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AskWordsCommand), nameof(AskFrameCommand), nameof(HandInOrRewriteCommand), nameof(ToggleSourceEditingCommand))]
     public partial bool IsHinting { get; set; }
 
     public bool NotHinting => !IsHinting;
@@ -66,14 +68,15 @@ public sealed partial class PageViewModel
         LoadHints();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(NotHinting))]
     private void ToggleSourceEditing()
     {
+        if (IsHinting) return;
         IsEditingSource = !IsEditingSource;
         if (!IsEditingSource) RefreshSentences();
     }
 
-    private bool CanHint() => SelectedSentence is not null && !IsHinting && IsDraft;
+    private bool CanHint() => SelectedSentence is not null && !IsHinting && !IsEditingSource && IsDraft;
 
     [RelayCommand(CanExecute = nameof(CanHint))]
     private Task AskWords() => AskHint(HintKind.Words);
@@ -106,6 +109,11 @@ public sealed partial class PageViewModel
             {
                 // Already in the book or too long: keep going with the rest.
             }
+            catch (SqliteException e)
+            {
+                _say($"收进单词本失败（SQLite {e.SqliteErrorCode}），已保存 {added} 条。");
+                return;
+            }
         }
         _say(added == pairs.Count ? $"收进单词本 {added} 条" : $"收进单词本 {added} 条，另外 {pairs.Count - added} 条已经有了或太长");
     }
@@ -113,38 +121,51 @@ public sealed partial class PageViewModel
     /// <summary>Rebuilds the numbered sentences from the source, keeping the selection on the same number when it still exists.</summary>
     private void RefreshSentences()
     {
-        var selected = SelectedSentence?.Number;
-        Sentences.Clear();
-        var number = 0;
-        foreach (var text in SourceText.Sentences(Task)) Sentences.Add(new SourceSentence(++number, text));
-        SelectedSentence = Sentences.FirstOrDefault(s => s.Number == selected);
-        if (SelectedSentence is { } s) s.IsSelected = true;
+        var next = SourceText.Sentences(Task);
+        if (!Sentences.Select(s => s.Text).SequenceEqual(next))
+        {
+            var selected = SelectedSentence?.Number;
+            Sentences.Clear();
+            var number = 0;
+            foreach (var text in next) Sentences.Add(new SourceSentence(++number, text));
+            SelectedSentence = Sentences.FirstOrDefault(s => s.Number == selected);
+            if (SelectedSentence is { } s) s.IsSelected = true;
+            LoadHints();
+        }
         if (Sentences.Count == 0) IsEditingSource = IsTranslationDraft;
         OnPropertyChanged(nameof(ShowSentences));
         OnPropertyChanged(nameof(TranslatedCount));
-        LoadHints();
     }
 
     private void LoadHints()
     {
         SentenceHints.Clear();
         if (SelectedSentence is not { } s) return;
-        foreach (var hint in _book.Hints(_page.Id, s.Number, s.Text)) SentenceHints.Add(hint);
+        try
+        {
+            foreach (var hint in _book.Hints(_page.Id, s.Number, s.Text)) SentenceHints.Add(hint);
+        }
+        catch (Exception e) when (e is NotebookException or SqliteException)
+        {
+            _say(DbError(e));
+        }
     }
 
     /// <summary>One hint for the selected sentence; stored only when the full reply arrives.</summary>
     private async Task AskHint(HintKind kind)
     {
-        if (SelectedSentence is not { } sentence) return;
-        Save();
+        if (SelectedSentence is not { } sentence || !TrySave()) return;
         var sentences = Sentences.Select(s => s.Text).ToList();
-        await UseTeacher(busy => IsHinting = busy, cancel => _hinting = cancel, "已经叫停，这次提示没有记下", async (teacher, cancel) =>
+        await UseTeacher(busy => IsHinting = busy, cancel => _hinting = cancel, "已经叫停，这次提示没有记下", async (teacher, label, _, cancel) =>
         {
             var text = await teacher.AskAsync(HintProtocol.Instruction(kind), HintProtocol.Material(sentences, sentence.Number),
                 jsonReply: false, cancel);
-            _book.SaveHint(_page.Id, sentence.Number, sentence.Text, kind, text, _teacher.Label);
+            if (_abandoned) return;
+            cancel.ThrowIfCancellationRequested();
+            _book.SaveHint(_page.Id, sentence.Number, sentence.Text, kind, text, label);
             if (SelectedSentence == sentence) LoadHints();
-            if (_closed) Say($"第 {sentence.Number} 句的提示回来了，已经记下");
+            if (_closed || SelectedSentence != sentence) Say($"第 {sentence.Number} 句的提示回来了，已经记下");
+            NotebookUpdated?.Invoke();
         });
     }
 }

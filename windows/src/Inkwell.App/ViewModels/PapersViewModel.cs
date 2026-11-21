@@ -3,6 +3,7 @@ using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core;
+using Microsoft.Data.Sqlite;
 
 namespace Inkwell.App.ViewModels;
 
@@ -76,7 +77,15 @@ public sealed partial class PapersViewModel : ObservableObject
     public void Refresh()
     {
         var keep = Selected?.Id;
-        _shelf = _book.Shelf();
+        try
+        {
+            _shelf = _book.Shelf();
+        }
+        catch (Exception e) when (e is NotebookException or SqliteException)
+        {
+            _say(PageViewModel.DbError(e));
+            return;
+        }
         _syncing = true;
         try
         {
@@ -115,9 +124,11 @@ public sealed partial class PapersViewModel : ObservableObject
             _say(report);
             Refresh();
         }
-        catch (Exception e) when (e is NotebookException or IOException or UnauthorizedAccessException)
+        catch (Exception e) when (e is NotebookException or SqliteException or IOException or UnauthorizedAccessException)
         {
-            _say(e is NotebookException ? e.Message : "内容包文件读不了，没有导入");
+            _say(e is NotebookException ? e.Message
+                : e is SqliteException sqlite ? $"本子读写失败（SQLite {sqlite.SqliteErrorCode}），没有导入。"
+                : "内容包文件读不了，没有导入");
         }
     }
 
@@ -140,9 +151,9 @@ public sealed partial class PapersViewModel : ObservableObject
         {
             _open(_book.StartFromPaper(Current.Paper.Id, kind));
         }
-        catch (NotebookException e)
+        catch (Exception e) when (e is NotebookException or SqliteException)
         {
-            _say(e.Message);
+            _say(PageViewModel.DbError(e));
         }
     }
 

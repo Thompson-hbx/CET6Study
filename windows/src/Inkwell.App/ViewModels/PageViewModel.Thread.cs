@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Inkwell.Core;
 using Inkwell.Core.Teacher;
+using Microsoft.Data.Sqlite;
 
 namespace Inkwell.App.ViewModels;
 
@@ -17,7 +18,7 @@ public sealed partial class PageViewModel
     public ObservableCollection<string> Starters { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ShowMarks))]
+    [NotifyPropertyChangedFor(nameof(ShowMarks), nameof(ShowThread))]
     public partial bool IsThreadOpen { get; set; }
 
     [ObservableProperty]
@@ -40,18 +41,30 @@ public sealed partial class PageViewModel
 
     public bool NotAnswering => !IsAnswering;
 
-    public bool ShowMarks => HasReview && !IsThreadOpen;
+    public bool ShowMarks => HasReview && !IsThreadOpen && !IsAsking;
+
+    public bool ShowThread => HasReview && IsThreadOpen && !IsAsking;
 
     public bool ThreadIsEmpty => Thread.Count == 0;
 
     private void OpenMarkThread(int number) => OpenThread(number);
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(NotAsking))]
     private void OpenPageThread() => OpenThread(null);
 
     private void OpenThread(int? mark)
     {
-        if (Review is null) return;
+        if (Review is null || IsAsking) return;
+        IReadOnlyList<Talk> talks;
+        try
+        {
+            talks = _book.Talks(Review.Id, mark);
+        }
+        catch (Exception e) when (e is NotebookException or SqliteException)
+        {
+            _say(DbError(e));
+            return;
+        }
         ThreadMark = mark;
         var placed = mark is { } n ? Review.Marks.FirstOrDefault(m => m.Mark.Number == n) : null;
         ThreadTitle = placed is null ? "问老师 · 整篇" : $"问老师 · {MarkCard.Circle(placed.Mark.Number)}";
@@ -62,7 +75,7 @@ public sealed partial class PageViewModel
             Starters.Add(s);
         }
         Thread.Clear();
-        foreach (var talk in _book.Talks(Review.Id, mark)) Thread.Add(talk);
+        foreach (var talk in talks) Thread.Add(talk);
         OnPropertyChanged(nameof(ThreadIsEmpty));
         Question = "";
         IsThreadOpen = true;
@@ -93,16 +106,24 @@ public sealed partial class PageViewModel
             return;
         }
         var mark = ThreadMark;
-        await UseTeacher(busy => IsAnswering = busy, cancel => _answering = cancel, "已经叫停，这个问题没有记下，可以再问一次", async (teacher, cancel) =>
+        var earlier = Thread.ToList();
+        await UseTeacher(busy => IsAnswering = busy, cancel => _answering = cancel, "已经叫停，这个问题没有记下，可以再问一次",
+            async (teacher, label, recipient, cancel) =>
         {
+            var history = earlier.Count > 0 ? "和相关历史问答" : "";
+            if (!_confirm($"把这页的题目、作答、批改{history}发给 {recipient}，并提交这次追问？")) return;
+            cancel.ThrowIfCancellationRequested();
             var answer = await teacher.AskAsync(FollowUpProtocol.Instruction(_page.Kind),
-                FollowUpProtocol.Material(_page, review, mark, Thread.ToList(), question), jsonReply: false, cancel);
-            var talk = _book.SaveTalk(review.Id, mark, question, answer, _teacher.Label);
+                FollowUpProtocol.Material(_page, review, mark, earlier, question), jsonReply: false, cancel);
+            if (_abandoned) return;
+            cancel.ThrowIfCancellationRequested();
+            var talk = _book.SaveTalk(review.Id, mark, question, answer, label);
             if (IsThreadOpen && ThreadMark == mark) Thread.Add(talk);
             OnPropertyChanged(nameof(ThreadIsEmpty));
             // Keep a next question the learner started typing while waiting.
             if (Question == sent) Question = "";
             if (_closed) Say("老师回答了你的问题，已经记下");
+            NotebookUpdated?.Invoke();
         });
     }
 
