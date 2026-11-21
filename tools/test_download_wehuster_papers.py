@@ -65,7 +65,11 @@ class DownloadAuditTests(unittest.TestCase):
                 "\ufeff<html><body><pre>User-agent: *\nDisallow: /static/\n</pre></body></html>",
                 encoding="utf-8",
             )
+            self.assertIsNotNone(dwp.parse_robots_policy(robots_html))
             self.assertFalse(dwp.check_robots_policy(robots_html, "CET6Study-personal-study", f"{dwp.BASE_URL}/x.pdf"))
+            self.assertTrue(
+                dwp.check_robots_policy(robots_html, "CET6Study-personal-study", "https://www.wehuster.com/index.html")
+            )
 
             robots_allow = root / "robots_allow.txt"
             robots_allow.write_text("\ufeffUser-agent: *\nAllow: /\n", encoding="utf-8")

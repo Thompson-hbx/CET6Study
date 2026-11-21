@@ -120,7 +120,12 @@ def parse_robots_policy(policy_path):
         return None
     policy = RobotFileParser()
     policy.parse(lines)
-    if not policy.entries and not policy.disallow_all and not policy.allow_all:
+    if (
+        not policy.entries
+        and getattr(policy, "default_entry", None) is None
+        and not policy.disallow_all
+        and not policy.allow_all
+    ):
         return None
     return policy
 
