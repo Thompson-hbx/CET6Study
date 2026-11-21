@@ -4,77 +4,120 @@ Extracts reading passages (Section C), questions 46-55 with ABCD options,
 writing prompts, translation source text, and third-party reference answers from downloaded raw-papers/ PDFs,
 and bundles them into standard CET6ExamPack JSON format.
 """
-import json
-import re
-from pathlib import Path
-
-from pypdf import PdfReader
 import hashlib
+import json
+from pathlib import Path
+import re
+
+PdfReader = None
+
+SESSION_MAPPING = {
+    "2023_03": "2023-03-12",
+    "2023_06": "2023-06-17",
+    "2023_12": "2023-12-16",
+    "2024_06": "2024-06-15",
+    "2024_12": "2024-12-14",
+    "2025_06": "2025-06-14",
+    "2025_12": "2025-12-13",
+    "2026_06": "2026-06-13",
+}
+
+
+def _sha256_file(path):
+    with open(path, "rb") as handle:
+        return hashlib.file_digest(handle, "sha256").hexdigest()
 
 
 def extract_writing(text):
-    m = re.search(r"Part I\s+Writing\s*(?:\(\s*30\s*minutes\s*\))?\s*Directions:\s*(.*?)(?=Part II|\n\s*Listening|\Z)", text, re.S | re.I)
+    m = re.search(
+        r"(?mis)^\s*Part\s+I\s+Writing\b(?:\s*\(\s*30\s*minutes\s*\))?\s*Directions:\s*(.*?)(?=^\s*Part\s+II\b|^\s*Listening\b|\Z)",
+        text,
+    )
     if not m:
         return "", ""
     content = m.group(1).strip()
-    # Normalize spaces
     content = re.sub(r"[ \t]+", " ", content)
     content = re.sub(r"\n\s*\n+", "\n\n", content)
-    # Split prompt and instructions if possible
     return content, "原卷限时 30 分钟；字数与具体要求以原始题干为准。"
+
+
+def _split_question_options(q_block):
+    opt_matches = list(re.finditer(r"(?:^|(?<=\s))([ABCDO])[.)]\s+", q_block))
+    if not opt_matches:
+        return re.sub(r"\s+", " ", q_block).strip(), []
+
+    # If the stem contains an inline initial like "A. Einstein" or "O. Henry" before the
+    # real option block starting with A, anchor on the last A that precedes further options.
+    chosen = None
+    for idx in range(len(opt_matches) - 2, -1, -1):
+        if opt_matches[idx].group(1) == "A":
+            chosen = opt_matches[idx:]
+            break
+    if chosen is None:
+        chosen = opt_matches if len(opt_matches) >= 2 else []
+
+    if not chosen:
+        return re.sub(r"\s+", " ", q_block).strip(), []
+
+    stem = re.sub(r"\s+", " ", q_block[:chosen[0].start()]).strip()
+    options = []
+    for i, om in enumerate(chosen):
+        end = chosen[i + 1].start() if i + 1 < len(chosen) else len(q_block)
+        options.append({
+            "label": om.group(1),
+            "text": re.sub(r"\s+", " ", q_block[om.end():end]).strip(),
+        })
+    options.sort(key=lambda o: o["label"])
+    return stem, options
 
 
 def parse_passages_and_questions(sec_c_text):
     passages = []
 
-    # Split by Passage One / Passage Two
-    p1_match = re.search(r"Passage\s+(?:One|1)\s*(.*?)(?=Passage\s+(?:Two|2)|\Z)", sec_c_text, re.S | re.I)
-    p2_match = re.search(r"Passage\s+(?:Two|2)\s*(.*?)(?=Part IV|\n\s*Translation|\n\s*KEYS|\Z)", sec_c_text, re.S | re.I)
+    p1_match = re.search(
+        r"(?mis)^\s*Passage\s+(?:One|1)\b\s*(.*?)(?=^\s*Passage\s+(?:Two|2)\b|\Z)",
+        sec_c_text,
+    )
+    p2_match = re.search(
+        r"(?mis)^\s*Passage\s+(?:Two|2)\b\s*(.*?)(?=^\s*Part\s+IV\b|^\s*Translation\b|^\s*KEYS\b|\Z)",
+        sec_c_text,
+    )
 
     for code, p_match in [("1", p1_match), ("2", p2_match)]:
         if not p_match:
             continue
         raw_passage = p_match.group(1).strip()
-        # Find where questions start
-        # Usually: "Questions 46 to 50 are based on..." or "46. ..."
         q_start = 46 if code == "1" else 51
         q_end = 50 if code == "1" else 55
 
-        q_split = re.search(rf"\n\s*{q_start}\s*[.)]", raw_passage)
+        q_split = re.search(rf"(?m)^\s*{q_start}\s*[.)]\s+", raw_passage)
         if not q_split:
             continue
 
         article_part = raw_passage[:q_split.start()].strip()
-        # Remove "Questions X to Y are based on the following passage." from article header
-        article_part = re.sub(r"^Questions\s+\d+\s+to\s+\d+\s+are\s+based\s+on\s+.*?\.\s*", "", article_part, flags=re.S | re.I).strip()
-        # Clean up linebreaks in article
-        article_lines = [l.strip() for l in article_part.splitlines() if l.strip()]
+        article_part = re.sub(
+            r"(?i)^Questions\s+\d+\s+to\s+\d+\s+are\s+based\s+on\s+[^\n]*?passage\.?\s*",
+            "",
+            article_part,
+        ).strip()
+        article_lines = [line.strip() for line in article_part.splitlines() if line.strip()]
         clean_article = "\n\n".join(article_lines)
 
         questions_part = raw_passage[q_split.start():].strip()
 
-        # Parse individual questions
         questions = []
         for q_num in range(q_start, q_end + 1):
             next_q = q_num + 1
             if next_q <= q_end:
-                pattern = rf"(?ms)^\s*{q_num}\s*[.)]\s*(.*?)(?=^\s*{next_q}\s*[.)]|\Z)"
+                pattern = rf"(?ms)^\s*{q_num}\s*[.)]\s+(.*?)(?=^\s*{next_q}\s*[.)]\s+|\Z)"
             else:
-                pattern = rf"(?ms)^\s*{q_num}\s*[.)]\s*(.*?)(?=\Z)"
+                pattern = rf"(?ms)^\s*{q_num}\s*[.)]\s+(.*?)(?=\Z)"
 
             q_match = re.search(pattern, questions_part)
             if not q_match:
                 continue
             q_block = q_match.group(1).strip()
-
-            # PDF columns can yield A/C/B/D. Preserve labels; never infer O) as C).
-            opt_matches = list(re.finditer(r"(?<![A-Za-z])([ABCDO])[.)]\s*", q_block))
-            stem = re.sub(r"\s+", " ", q_block[:opt_matches[0].start()] if opt_matches else q_block).strip()
-            options = []
-            for i, om in enumerate(opt_matches):
-                end = opt_matches[i+1].start() if i+1 < len(opt_matches) else len(q_block)
-                options.append({"label": om.group(1), "text": re.sub(r"\s+", " ", q_block[om.end():end]).strip()})
-            options.sort(key=lambda o: o["label"])
+            stem, options = _split_question_options(q_block)
 
             questions.append({
                 "number": q_num,
@@ -82,14 +125,14 @@ def parse_passages_and_questions(sec_c_text):
                 "options": options,
                 "referenceAnswer": "",
                 "answerSource": "",
-                "evidence": ""
+                "evidence": "",
             })
 
         passages.append({
             "code": code,
             "title": f"Passage {code}",
             "content": clean_article,
-            "questions": questions
+            "questions": questions,
         })
 
     return passages
@@ -97,40 +140,60 @@ def parse_passages_and_questions(sec_c_text):
 
 def extract_keys(text):
     keys = {}
-    # Search for Reading Comprehension Keys (36-45, 46-55)
-    m = re.search(r"KEYS.*?(?:Reading Comprehension|\n\s*46\s+47)(.*?)(?:\n\s*\n\s*\n|\Z)", text, re.S | re.I)
-    block = m.group(0) if m else text
+    m = re.search(
+        r"(?mis)^\s*KEYS\b.*?(?:Reading\s+Comprehension|^\s*46\s+47\b)(.*?)(?:\n\s*\n\s*\n|\Z)",
+        text,
+    )
+    if not m:
+        return keys
 
-    # Try table lookup: 46 47 48 49 50 51 52 53 54 55 followed by letters
-    table_m = re.search(r"46\s+47\s+48\s+49\s+50\s+51\s+52\s+53\s+54\s+55\s+([A-D\s]+)", block)
+    table_m = re.search(
+        r"\b46\s+47\s+48\s+49\s+50\s+51\s+52\s+53\s+54\s+55\b\s+([A-D](?:\s+[A-D]){9})(?!\S)",
+        m.group(0),
+    )
     if table_m:
         letters = table_m.group(1).split()
-        if len(letters) >= 10:
+        if len(letters) == 10 and all(len(ch) == 1 and ch in {"A", "B", "C", "D"} for ch in letters):
             for idx, num in enumerate(range(46, 56)):
                 keys[num] = letters[idx]
     return keys
 
 
+def _get_pdf_reader():
+    if PdfReader is not None:
+        return PdfReader
+    try:
+        from pypdf import PdfReader as pypdf_reader
+        return pypdf_reader
+    except ImportError as exc:
+        raise RuntimeError("pypdf is required to parse PDF files; install pypdf first") from exc
+
+
 def parse_pdf(pdf_path):
-    doc = PdfReader(pdf_path, strict=True)
+    reader_cls = _get_pdf_reader()
+    doc = reader_cls(pdf_path, strict=True)
     full_text = "\n".join(page.extract_text() or "" for page in doc.pages)
 
     writing_prompt, writing_instructions = extract_writing(full_text)
 
-    sec_c_m = re.search(r"Section C\s+Directions:.*?(Passage\s+(?:One|1).*?)(?=Part IV|\n\s*Translation|\n\s*KEYS|\Z)", full_text, re.S | re.I)
+    sec_c_m = re.search(
+        r"(?mis)^\s*Section\s+C\s+Directions:.*?(^\s*Passage\s+(?:One|1)\b.*?)(?=^\s*Part\s+IV\b|^\s*Translation\b|^\s*KEYS\b|\Z)",
+        full_text,
+    )
     sec_c_text = sec_c_m.group(1) if sec_c_m else ""
 
     passages = parse_passages_and_questions(sec_c_text)
     keys = extract_keys(full_text)
 
+    pdf_sha256 = _sha256_file(pdf_path)
     for p in passages:
         for q in p["questions"]:
             if q["number"] in keys:
                 q["referenceAnswer"] = keys[q["number"]]
-                q["answerSource"] = f"https://www.wehuster.com/static/cet6/{pdf_path.name}#embedded-KEYS; SHA256={hashlib.sha256(pdf_path.read_bytes()).hexdigest()} (third-party reference)"
+                q["answerSource"] = f"https://www.wehuster.com/static/cet6/{pdf_path.name}#embedded-KEYS; SHA256={pdf_sha256} (third-party reference)"
 
     translation = ""
-    tail = re.search(r"Part IV\s+Translation(.*?)(?=\n\s*KEYS|\Z)", full_text, re.S | re.I)
+    tail = re.search(r"(?mis)^\s*Part\s+IV\s+Translation\b(.*?)(?=^\s*KEYS\b|\Z)", full_text)
     if tail:
         chinese = re.search(r"[\u4e00-\u9fff]", tail.group(1))
         if chinese:
@@ -139,26 +202,15 @@ def parse_pdf(pdf_path):
         "chineseText": translation,
         "writingPrompt": writing_prompt,
         "writingInstructions": writing_instructions,
-        "passages": passages
+        "passages": passages,
     }
 
 
-def main():
-    root = Path(__file__).resolve().parent.parent
-    raw_dir = root / "raw-papers"
-    out_dir = root / ".tools" / "private-exams" / "agent-extracted"
-    out_dir.mkdir(parents=True, exist_ok=True)
-
-    session_mapping = {
-        "2023_03": "2023-03-12",
-        "2023_06": "2023-06-17",
-        "2023_12": "2023-12-16",
-        "2024_06": "2024-06-15",
-        "2024_12": "2024-12-14",
-        "2025_06": "2025-06-14",
-        "2025_12": "2025-12-13",
-        "2026_06": "2026-06-13",
-    }
+def extract_directory(raw_dir, out_file):
+    if not raw_dir.is_dir():
+        raise FileNotFoundError(f"Input directory not found: {raw_dir}")
+    if out_file.exists():
+        raise FileExistsError(f"Keep previous output; choose a new output file: {out_file}")
 
     all_papers = []
     pdf_files = sorted(raw_dir.glob("cet6_*.pdf"))
@@ -172,14 +224,14 @@ def main():
         if not m:
             continue
         session_str, set_code = m.group(1), m.group(2)
-        if session_str not in session_mapping:
+        if session_str not in SESSION_MAPPING:
             continue
 
-        exam_date = session_mapping[session_str]
+        exam_date = SESSION_MAPPING[session_str]
         stable_id = f"cet6-{exam_date}-{set_code}"
 
         parsed = parse_pdf(pdf_path)
-        if not parsed["passages"]:
+        if not parsed["passages"] and not parsed["writingPrompt"].strip() and not parsed["chineseText"].strip():
             continue
 
         paper = {
@@ -197,7 +249,9 @@ def main():
             "writingInstructions": parsed["writingInstructions"],
             "chineseText": parsed["chineseText"],
             "referenceTranslation": "",
-            "referenceSource": ""
+            "referenceSource": "",
+            "referenceWriting": "",
+            "referenceWritingSource": "",
         }
         all_papers.append(paper)
         print(f"Extracted: {name} -> {stable_id} (passages={len(parsed['passages'])})")
@@ -205,14 +259,21 @@ def main():
     pack = {
         "format": "CET6ExamPack",
         "version": 1,
-        "papers": all_papers
+        "papers": all_papers,
     }
 
-    out_file = out_dir / "cet6-recent-years.json"
-    if out_file.exists():
-        raise FileExistsError(f"Keep previous output; choose a new output directory: {out_file}")
-    out_file.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_file, "x", encoding="utf-8") as handle:
+        handle.write(json.dumps(pack, ensure_ascii=False, indent=2))
     print(f"\nSaved pack with {len(all_papers)} papers to {out_file}")
+    return pack
+
+
+def main():
+    root = Path(__file__).resolve().parent.parent
+    raw_dir = root / "raw-papers"
+    out_file = root / ".tools" / "private-exams" / "agent-extracted" / "cet6-recent-years.json"
+    extract_directory(raw_dir, out_file)
 
 
 if __name__ == "__main__":

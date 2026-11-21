@@ -1,18 +1,21 @@
 """Audit cached CET-6 PDFs for personal study; automated network retrieval disabled.
 
-Saves files to raw-papers/ in the repository root. Does not modify any project
-source or commit anything. Files are copyrighted exam materials and should NOT
-be committed to version control.
+Audits raw-papers/ (or --out-dir) without modifying repository source or making
+network requests. Files are copyrighted exam materials and should NOT be
+committed to version control.
 
 Usage:
-    python tools/download_wehuster_papers.py [--dry-run]
+    python tools/download_wehuster_papers.py [--dry-run] [--out-dir DIR] [--manifest FILE] [--robots-file FILE]
 """
 import argparse
 import hashlib
+from html.parser import HTMLParser
 import json
+from pathlib import Path
+import re
+import sys
 import time
 from urllib.robotparser import RobotFileParser
-from pathlib import Path
 
 BASE_URL = "https://www.wehuster.com/static/cet6"
 
@@ -63,6 +66,73 @@ EXAM_PAGES = [
 ]
 
 
+class _PreTextExtractor(HTMLParser):
+    """Extract text inside <pre> if present, otherwise collect all visible text."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self._in_pre = False
+        self._pre_chunks = []
+        self._all_chunks = []
+        self._saw_pre = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag.lower() == "pre":
+            self._in_pre = True
+            self._saw_pre = True
+
+    def handle_endtag(self, tag):
+        if tag.lower() == "pre":
+            self._in_pre = False
+
+    def handle_data(self, data):
+        if self._in_pre:
+            self._pre_chunks.append(data)
+        self._all_chunks.append(data)
+
+    def extracted_text(self):
+        chunks = self._pre_chunks if self._saw_pre else self._all_chunks
+        return "".join(chunks)
+
+
+def _sha256_file(path):
+    with open(path, "rb") as handle:
+        return hashlib.file_digest(handle, "sha256").hexdigest()
+
+
+def _unwrap_robots_text(raw_text):
+    if "<" in raw_text and ">" in raw_text:
+        extractor = _PreTextExtractor()
+        extractor.feed(raw_text)
+        extractor.close()
+        return extractor.extracted_text()
+    return raw_text
+
+
+def parse_robots_policy(policy_path):
+    """Parse robots.txt (or HTML-wrapped <pre> robots cache). Returns None on fail-closed."""
+    if policy_path is None or not policy_path.is_file():
+        return None
+    raw_text = policy_path.read_text(encoding="utf-8-sig")
+    cleaned = _unwrap_robots_text(raw_text)
+    lines = [line.strip() for line in cleaned.splitlines() if line.strip()]
+    if not any(re.match(r"(?i)^user-agent\s*:", line) for line in lines):
+        return None
+    policy = RobotFileParser()
+    policy.parse(lines)
+    if not policy.entries and not policy.disallow_all and not policy.allow_all:
+        return None
+    return policy
+
+
+def check_robots_policy(policy_path, user_agent, url):
+    """Fail-closed robots.txt check when a policy file is supplied."""
+    policy = parse_robots_policy(policy_path)
+    if policy is None:
+        return False
+    return bool(policy.can_fetch(user_agent, url))
+
+
 def build_urls():
     """Build the list of (url, local_filename) tuples to download."""
     urls = []
@@ -76,56 +146,52 @@ def build_urls():
     return urls
 
 
-def download_file(url, dest, dry_run=False):
+def download_file(url, dest, dry_run=False, robots_file=None):
     """Use local cache; refuse automated retrieval under the reviewed site policy."""
-    if dest.exists():
+    if dest.is_file():
         print(f"  SKIP (exists): {dest.name}")
         return "skip"
+    if dest.exists():
+        print(f"  FAIL (not a regular file): {dest}")
+        return "fail"
     if dry_run:
         print(f"  DRY-RUN: {url} -> {dest.name}")
         return "dry"
 
-    # Cached policy from the reviewed source; do not automate disallowed /static paths.
-    policy_path = Path(__file__).resolve().parent.parent / ".tools/private-exams/source-pages/wehuster-robots.html"
-    if not policy_path.exists():
-        raise RuntimeError("No reviewed site policy cache; network retrieval disabled")
-    policy = RobotFileParser()
-    policy.parse(policy_path.read_text(encoding="utf-8").splitlines())
-    if not policy.can_fetch("CET6Study-personal-study", url):
-        raise RuntimeError("Source robots policy disallows this path; use local files or permitted manual download")
-    raise RuntimeError("Automatic network retrieval disabled for this source; existing files can be audited locally")
+    if robots_file is not None and not check_robots_policy(robots_file, "CET6Study-personal-study", url):
+        print(f"  FAIL (robots policy disallows or invalid): {dest.name}")
+        return "fail"
+
+    print(f"  FAIL (missing local file; network retrieval disabled): {dest.name}")
+    return "fail"
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true",
-                        help="List files without downloading")
-    args = parser.parse_args()
+                        help="List files without creating directories or writing manifests")
+    parser.add_argument("--out-dir", type=Path, default=None,
+                        help="Directory containing local raw-papers PDFs (default: repo raw-papers/)")
+    parser.add_argument("--manifest", type=Path, default=None,
+                        help="Optional path to write audit manifest JSON (ignored in --dry-run)")
+    parser.add_argument("--robots-file", type=Path, default=None,
+                        help="Optional path to a local robots.txt (or <pre> HTML cache) to check")
+    args = parser.parse_args(argv)
 
-    # Determine output directory
     script_dir = Path(__file__).resolve().parent.parent  # CET6Study/
-    out_dir = script_dir / "raw-papers"
-    out_dir.mkdir(exist_ok=True)
-
+    out_dir = args.out_dir if args.out_dir is not None else script_dir / "raw-papers"
 
     urls = build_urls()
-    print(f"\nTotal files to download: {len(urls)}")
+    print(f"\nTotal files to audit: {len(urls)}")
     print(f"Output directory: {out_dir}\n")
 
     stats = {"ok": 0, "skip": 0, "404": 0, "fail": 0, "dry": 0}
     for i, (url, filename) in enumerate(urls, 1):
         print(f"[{i}/{len(urls)}] {filename}")
-        try:
-            result = download_file(url, out_dir / filename, args.dry_run)
-        except RuntimeError as e:
-            print(f"PAUSED: {e}")
-            return
+        result = download_file(url, out_dir / filename, dry_run=args.dry_run, robots_file=args.robots_file)
         stats[result] += 1
-        # Be polite: brief pause between requests
-        if result == "ok":
-            time.sleep(3)
 
-    print(f"\n--- Summary ---")
+    print("\n--- Summary ---")
     print(f"Downloaded: {stats['ok']}")
     print(f"Skipped (existing): {stats['skip']}")
     print(f"Not found (404): {stats['404']}")
@@ -133,20 +199,31 @@ def main():
     if args.dry_run:
         print(f"Dry-run: {stats['dry']}")
 
-    # Write manifest
-    manifest = script_dir / ".tools" / "private-exams" / "agent-download-audit.json"
-    manifest.parent.mkdir(parents=True, exist_ok=True)
-    manifest_data = {
-        "source": "https://www.wehuster.com/cet6",
-        "downloadedAt": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-        "licenseStatus": "personal-use",
-        "note": "Copyrighted exam materials for personal study only. Do not redistribute.",
-        "files": [{"file": f, "url": u, "exists": (out_dir/f).exists(), "sha256": hashlib.sha256((out_dir/f).read_bytes()).hexdigest() if (out_dir/f).exists() else None} for u, f in urls],
-        "stats": stats,
-    }
-    manifest.write_text(json.dumps(manifest_data, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"\nManifest written to {manifest}")
+    if not args.dry_run and args.manifest is not None:
+        args.manifest.parent.mkdir(parents=True, exist_ok=True)
+        manifest_data = {
+            "source": "https://www.wehuster.com/cet6",
+            "downloadedAt": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "licenseStatus": "personal-use",
+            "note": "Copyrighted exam materials for personal study only. Do not redistribute.",
+            "files": [
+                {
+                    "file": f,
+                    "url": u,
+                    "exists": (out_dir / f).is_file(),
+                    "sha256": _sha256_file(out_dir / f) if (out_dir / f).is_file() else None,
+                }
+                for u, f in urls
+            ],
+            "stats": stats,
+        }
+        args.manifest.write_text(json.dumps(manifest_data, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"\nManifest written to {args.manifest}")
+
+    if args.dry_run:
+        return 0
+    return 0 if stats["fail"] == 0 and stats["404"] == 0 else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
