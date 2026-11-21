@@ -144,11 +144,123 @@ function Write-JsonAtomic {
     $TempOut.Value = $null
 }
 
+if (-not ('InkwellShellLink' -as [type])) {
+    # Use IShellLinkW + IPersistFile directly: WScript.Shell encodes shortcut paths via the legacy ANSI codepage
+    # (CP_ACP), which corrupts "墨水瓶.lnk" to "???.lnk" and fails on non-Chinese Windows locales (e.g. en-US).
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+
+public sealed class InkwellShellLinkInfo
+{
+    public string TargetPath { get; }
+    public string WorkingDirectory { get; }
+
+    public InkwellShellLinkInfo(string targetPath, string workingDirectory)
+    {
+        TargetPath = targetPath;
+        WorkingDirectory = workingDirectory;
+    }
+}
+
+public static class InkwellShellLink
+{
+    private const int BufferLength = 4096;
+
+    [ComImport]
+    [Guid("00021401-0000-0000-C000-000000000046")]
+    private class ShellLinkComObject { }
+
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("000214F9-0000-0000-C000-000000000046")]
+    private interface IShellLinkW
+    {
+        void GetPath([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile, int cch, IntPtr pfd, uint fFlags);
+        void GetIDList(out IntPtr ppidl);
+        void SetIDList(IntPtr pidl);
+        void GetDescription([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, int cch);
+        void SetDescription([MarshalAs(UnmanagedType.LPWStr)] string pszName);
+        void GetWorkingDirectory([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir, int cch);
+        void SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+        void GetArguments([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs, int cch);
+        void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
+        void GetHotkey(out ushort pwHotkey);
+        void SetHotkey(ushort wHotkey);
+        void GetShowCmd(out int piShowCmd);
+        void SetShowCmd(int iShowCmd);
+        void GetIconLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, int cch, out int piIcon);
+        void SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string pszIconPath, int iIcon);
+        void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, uint dwReserved);
+        void Resolve(IntPtr hwnd, uint fFlags);
+        void SetPath([MarshalAs(UnmanagedType.LPWStr)] string pszFile);
+    }
+
+    public static InkwellShellLinkInfo Read(string linkPath)
+    {
+        var link = (IShellLinkW)new ShellLinkComObject();
+        try
+        {
+            ((IPersistFile)link).Load(linkPath, 0);
+            var target = new StringBuilder(BufferLength);
+            link.GetPath(target, target.Capacity, IntPtr.Zero, 0);
+            var workingDir = new StringBuilder(BufferLength);
+            link.GetWorkingDirectory(workingDir, workingDir.Capacity);
+            return new InkwellShellLinkInfo(target.ToString(), workingDir.ToString());
+        }
+        finally
+        {
+            Marshal.FinalReleaseComObject(link);
+        }
+    }
+
+    public static void Save(string linkPath, string targetPath, string workingDirectory, string iconPath, int iconIndex, string description)
+    {
+        var link = (IShellLinkW)new ShellLinkComObject();
+        try
+        {
+            link.SetPath(targetPath);
+            link.SetWorkingDirectory(workingDirectory);
+            link.SetIconLocation(iconPath, iconIndex);
+            link.SetDescription(description);
+            ((IPersistFile)link).Save(linkPath, true);
+        }
+        finally
+        {
+            Marshal.FinalReleaseComObject(link);
+        }
+    }
+}
+'@
+}
+
+function Read-ProgramShortcut([string] $LinkPath) {
+    try {
+        return [InkwellShellLink]::Read($LinkPath)
+    }
+    catch [Runtime.InteropServices.COMException] {
+        Write-Warning "无法读取快捷方式，已跳过：$LinkPath"
+        return $null
+    }
+}
+
+function Write-ProgramShortcut {
+    param(
+        [Parameter(Mandatory)] [string] $LinkPath,
+        [Parameter(Mandatory)] [string] $TargetPath,
+        [Parameter(Mandatory)] [string] $WorkingDirectory,
+        [Parameter(Mandatory)] [string] $Description
+    )
+    [InkwellShellLink]::Save($LinkPath, $TargetPath, $WorkingDirectory, $TargetPath, 0, $Description)
+}
+
 function Remove-ProgramShortcut([string] $LinkPath, [string] $ProgramName) {
     if (Test-Path -LiteralPath $LinkPath -PathType Leaf) {
         Assert-PlainPath $LinkPath -ExpectedType File
-        $currentLink = (New-Object -ComObject WScript.Shell).CreateShortcut($LinkPath)
-        if ([string]::IsNullOrWhiteSpace($currentLink.TargetPath)) { return }
+        $currentLink = Read-ProgramShortcut $LinkPath
+        if ($null -eq $currentLink -or [string]::IsNullOrWhiteSpace($currentLink.TargetPath)) { return }
         $currentTarget = [IO.Path]::GetFullPath($currentLink.TargetPath)
         $target = [IO.Path]::GetFullPath([IO.Path]::Combine($Destination, $ProgramName))
         if ([string]::Equals($currentTarget, $target, [StringComparison]::OrdinalIgnoreCase)) {
@@ -165,10 +277,10 @@ Assert-PlainPath $formerShortcut -ExpectedType File
 
 if (-not $PSBoundParameters.ContainsKey('Destination')) {
     $installed = $null
-    $shell = New-Object -ComObject WScript.Shell
     foreach ($candidate in @($shortcut, $formerShortcut)) {
         if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) { continue }
-        $existingLink = $shell.CreateShortcut($candidate)
+        $existingLink = Read-ProgramShortcut $candidate
+        if ($null -eq $existingLink) { continue }
         if (-not [string]::IsNullOrWhiteSpace($existingLink.TargetPath)) {
             $derived = [IO.Path]::GetDirectoryName($existingLink.TargetPath)
             if (-not [string]::IsNullOrWhiteSpace($derived)) {
@@ -433,21 +545,17 @@ finally {
 # Remove stale 朱批.lnk even when upgrading to a new -Destination, while preserving unrelated shortcuts.
 if (Test-Path -LiteralPath $formerShortcut -PathType Leaf) {
     Assert-PlainPath $formerShortcut -ExpectedType File
-    $formerLink = (New-Object -ComObject WScript.Shell).CreateShortcut($formerShortcut)
-    if (-not [string]::IsNullOrWhiteSpace($formerLink.TargetPath) -and
+    $formerLink = Read-ProgramShortcut $formerShortcut
+    if ($null -ne $formerLink -and
+        -not [string]::IsNullOrWhiteSpace($formerLink.TargetPath) -and
         [string]::Equals([IO.Path]::GetFileName($formerLink.TargetPath), 'Zhupi.App.exe', [StringComparison]::OrdinalIgnoreCase)) {
         Remove-Item -LiteralPath $formerShortcut
     }
 }
 
 [void][IO.Directory]::CreateDirectory($ShortcutFolder)
-$shell = New-Object -ComObject WScript.Shell
-$link = $shell.CreateShortcut($shortcut)
-$link.TargetPath = $exe
-$link.WorkingDirectory = $Destination
-$link.IconLocation = "$exe,0"
-$link.Description = '墨水瓶：六级作文与翻译练习本'
-$link.Save()
+Assert-PlainPath $shortcut -ExpectedType File
+Write-ProgramShortcut -LinkPath $shortcut -TargetPath $exe -WorkingDirectory $Destination -Description '墨水瓶：六级作文与翻译练习本'
 
 if (Test-Path -LiteralPath $Pack -PathType Leaf) {
     Assert-PlainPath $Pack -ExpectedType File
