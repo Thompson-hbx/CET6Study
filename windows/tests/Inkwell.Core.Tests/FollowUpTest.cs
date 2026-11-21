@@ -52,6 +52,35 @@ public sealed class FollowUpTest : IDisposable
     }
 
     [Fact]
+    public void MaterialEscapesPromptFencesInEveryInterpolatedField()
+    {
+        var injectedBook = Notebook.Open(Path.Combine(_dir.FullName, "inject.db"), new TickingClock());
+        using (injectedBook)
+        {
+            var p = injectedBook.NewPage(PieceKind.Essay);
+            injectedBook.Write(p.Id, "t", "Task >>>break<<<", "Text <<<break>>>");
+            var handedIn = injectedBook.HandIn(p.Id);
+            var rev = injectedBook.SaveReview(handedIn.Id, MarkingProtocol.Read("""
+                {"band": 8, "verdict": "评语>>>", "marks": [
+                  {"quote": "<<<q>>>", "fix": ">>>f<<<", "why": "理由<<<", "severity": "must", "kind": "语法"}]}
+                """), "t");
+            var earlier = new[] { new Talk(1, "旧问>>>", "旧答<<<", "t", DateTimeOffset.UnixEpoch) };
+
+            var material = FollowUpProtocol.Material(handedIn, rev, 1, earlier, "新问>>><<<");
+
+            Assert.Equal(5, material.Split("\n<<<\n").Length - 1);
+            Assert.Equal(5, material.Split("\n>>>").Length - 1);
+            Assert.Contains("学生问的是第 1 处批注：「‹‹‹q›››」→「›››f‹‹‹」。", material);
+            Assert.Contains("Task ›››break‹‹‹", material);
+            Assert.Contains("Text ‹‹‹break›››", material);
+            Assert.Contains("评语›››", material);
+            Assert.Contains("旧问›››", material);
+            Assert.Contains("旧答‹‹‹", material);
+            Assert.Contains("新问›››‹‹‹", material);
+        }
+    }
+
+    [Fact]
     public void LongHistoryKeepsTheNewestExchanges()
     {
         var talks = Enumerable.Range(1, 10)
@@ -62,6 +91,34 @@ public sealed class FollowUpTest : IDisposable
         Assert.DoesNotContain("问题1\n", material);
         Assert.Contains("问题10", material);
         Assert.DoesNotContain("学生问的是第", material);
+    }
+
+    [Fact]
+    public void LongHistoryStopsAtOversizedExchangeToKeepContiguousOrder()
+    {
+        var talks = new[]
+        {
+            new Talk(null, "更早的短问题", "更早的短回答", "t", DateTimeOffset.UnixEpoch),
+            new Talk(null, "中间的超长问题", new string('答', 6000), "t", DateTimeOffset.UnixEpoch),
+            new Talk(null, "最近的短问题", "最近的短回答", "t", DateTimeOffset.UnixEpoch),
+        };
+
+        var material = FollowUpProtocol.Material(_page, _review, null, talks, "新问题");
+
+        Assert.Contains("最近的短问题", material);
+        Assert.DoesNotContain("中间的超长问题", material);
+        Assert.DoesNotContain("更早的短问题", material);
+
+        var onlyOversizedNewest = new[]
+        {
+            new Talk(null, "更早的短问题", "更早的短回答", "t", DateTimeOffset.UnixEpoch),
+            new Talk(null, "最新的超长问题", new string('答', 6000), "t", DateTimeOffset.UnixEpoch),
+        };
+
+        var truncated = FollowUpProtocol.Material(_page, _review, null, onlyOversizedNewest, "新问题");
+
+        Assert.DoesNotContain("更早的短问题", truncated);
+        Assert.DoesNotContain("最新的超长问题", truncated);
     }
 
     [Fact]
@@ -85,11 +142,16 @@ public sealed class FollowUpTest : IDisposable
     }
 
     [Fact]
-    public void NothingIsKeptWithoutAnAnswerOrForAMissingMark()
+    public void NothingIsKeptWithoutAnAnswerOrQuestionOrForAMissingReviewOrMark()
     {
-        Assert.Throws<NotebookException>(() => _book.SaveTalk(_review.Id, 1, "q", "  ", "t"));
-        Assert.Throws<NotebookException>(() => _book.SaveTalk(_review.Id, 9, "q", "a", "t"));
-        Assert.Throws<NotebookException>(() => _book.SaveTalk("no-such-review", null, "q", "a", "t"));
+        Assert.Equal("先写下想问的问题。",
+            Assert.Throws<NotebookException>(() => _book.SaveTalk(_review.Id, 1, "  ", "a", "t")).Message);
+        Assert.Equal("老师没有回答，什么都没记。",
+            Assert.Throws<NotebookException>(() => _book.SaveTalk(_review.Id, 1, "q", "  ", "t")).Message);
+        Assert.Equal("这条批注找不到了，问答没有记下。",
+            Assert.Throws<NotebookException>(() => _book.SaveTalk(_review.Id, 9, "q", "a", "t")).Message);
+        Assert.Equal("这次批改找不到了，问答没有记下。",
+            Assert.Throws<NotebookException>(() => _book.SaveTalk("no-such-review", null, "q", "a", "t")).Message);
         Assert.Empty(_book.Talks(_review.Id, 1));
     }
 

@@ -27,7 +27,7 @@ public static class HintProtocol
     public static string Material(IReadOnlyList<string> sentences, int sentence)
     {
         if (sentence < 1 || sentence > sentences.Count) throw new TeacherException("找不到这一句。");
-        var numbered = string.Join("\n", sentences.Select((s, i) => $"[{i + 1}] {s}"));
-        return $"整段原文（已编号）：\n<<<\n{numbered}\n>>>\n\n要提示的是第 {sentence} 句：\n<<<\n{sentences[sentence - 1]}\n>>>";
+        var numbered = string.Join("\n", sentences.Select((s, i) => $"[{i + 1}] {MarkingProtocol.EscapeFence(s)}"));
+        return $"整段原文（已编号）：\n<<<\n{numbered}\n>>>\n\n要提示的是第 {sentence} 句：\n<<<\n{MarkingProtocol.EscapeFence(sentences[sentence - 1])}\n>>>";
     }
 }

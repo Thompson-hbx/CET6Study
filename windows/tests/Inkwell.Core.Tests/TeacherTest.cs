@@ -93,6 +93,67 @@ public sealed class TeacherTest
         Assert.Equal(["a", "b"], await teacher.ModelsAsync(CancellationToken.None));
     }
 
+    [Fact]
+    public async Task LargeResponsesAreRejectedBeforeParsing()
+    {
+        using var http = new HttpClient(new FakeServer(_ => Ok(new string(' ', 2 * 1024 * 1024 + 1))));
+        var teacher = new ChatTeacher(http, Connection);
+
+        var error = await Assert.ThrowsAsync<TeacherException>(() => teacher.ModelsAsync(CancellationToken.None));
+
+        Assert.Contains("超过大小限制", error.Message);
+    }
+
+    [Fact]
+    public async Task UnregisteredCharsetStillParsesInModelsAndAsk()
+    {
+        var handler = new FakeServer(req => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(Encoding.UTF8.GetBytes(
+                req.RequestUri!.AbsolutePath.EndsWith("/models", StringComparison.Ordinal)
+                    ? """{"data":[{"id":"gpt-ok"}]}"""
+                    : Completion("{\"band\":11}")))
+            {
+                Headers = { { "Content-Type", "application/json; charset=bogus-charset" } },
+            },
+        });
+        var teacher = new ChatTeacher(new HttpClient(handler), Connection);
+
+        Assert.Equal(["gpt-ok"], await teacher.ModelsAsync(CancellationToken.None));
+        Assert.Equal("{\"band\":11}", await teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task OperationCanceledWithoutCallerCancellationIsTimeoutAndCallerCancelPropagates()
+    {
+        var timeoutTeacher = new ChatTeacher(
+            new HttpClient(new FakeServer(_ => throw new OperationCanceledException())),
+            Connection);
+        var timeoutError = await Assert.ThrowsAsync<TeacherException>(() =>
+            timeoutTeacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+        Assert.Contains("太久没回应", timeoutError.Message);
+
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            timeoutTeacher.AskAsync("i", "m", jsonReply: true, cts.Token));
+    }
+
+    [Fact]
+    public async Task MidBodyIoExceptionTurnsIntoNetworkTeacherException()
+    {
+        var handler = new FakeServer(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StreamContent(new BrokenReadStream()),
+        });
+        var teacher = new ChatTeacher(new HttpClient(handler), Connection);
+
+        var error = await Assert.ThrowsAsync<TeacherException>(() =>
+            teacher.AskAsync("i", "m", jsonReply: true, CancellationToken.None));
+
+        Assert.Equal("连不上老师：请检查网络和地址。", error.Message);
+    }
+
     [Theory]
     [InlineData("http://api.example.test")]
     [InlineData("https://user:pw@api.example.test")]
@@ -118,6 +179,24 @@ public sealed class TeacherTest
     };
 
     private sealed record SentRequest(string Url, string? Authorization, string Body);
+
+    private sealed class BrokenReadStream : Stream
+    {
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => throw new NotSupportedException();
+        public override long Position { get => 0; set => throw new NotSupportedException(); }
+        public override void Flush() => throw new NotSupportedException();
+        public override int Read(byte[] buffer, int offset, int count) => throw new IOException("reset");
+        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) =>
+            throw new IOException("reset");
+        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
+            throw new IOException("reset");
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+        public override void SetLength(long value) => throw new NotSupportedException();
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+    }
 
     private sealed class FakeServer(Func<HttpRequestMessage, HttpResponseMessage> answer) : HttpMessageHandler
     {

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Nodes;
 
@@ -55,6 +56,18 @@ public sealed class ExamPackTest : IDisposable
         Assert.Equal("Write an essay on keeping a paper notebook.\n\nYou should write at least 150 words but no more than 200 words.",
             paper.Task(PieceKind.Essay));
         Assert.Equal("纸质笔记本仍有人用。它让人慢下来。", paper.Task(PieceKind.Translation));
+    }
+
+    [Fact]
+    public void ALocallyFormattedSetNumberDoesNotRejectAnotherPaper()
+    {
+        var invalid = Paper(set: 2);
+        invalid["stableId"] = "cet6-2030-06-15-٢";
+
+        var pack = ExamPackFile.Parse(Pack(invalid, Paper()));
+
+        Assert.Single(pack.Skipped);
+        Assert.Equal(1, Assert.Single(pack.Papers).Set);
     }
 
     [Fact]
@@ -206,5 +219,159 @@ public sealed class ExamPackTest : IDisposable
         Assert.False(ExamPackFolder.ImportAll(_book, Path.Combine(_dir.FullName, "missing")).ChangedAnything);
     }
 
+    [Fact]
+    public void ReadsUtf8BomPackAndRejectsBomOnly()
+    {
+        var payload = Pack(Paper());
+        var withBom = new byte[] { 0xEF, 0xBB, 0xBF }.Concat(payload).ToArray();
+
+        var pack = ExamPackFile.Parse(withBom);
+
+        Assert.Equal("cet6-2030-06-15-1", Assert.Single(pack.Papers).Id);
+        Assert.Throws<NotebookException>(() => ExamPackFile.Parse([0xEF, 0xBB, 0xBF]));
+    }
+
+    [Fact]
+    public void BoundedStreamReadWorksWithoutLengthAndRejectsOverflow()
+    {
+        var valid = Pack(Paper());
+        using var okStream = new NonSeekableStream(valid);
+        Assert.Equal(valid, ExamPackFile.ReadBounded(okStream));
+
+        var tooLarge = new byte[ExamPackFile.MaxBytes + 1];
+        using var bigStream = new NonSeekableStream(tooLarge);
+        Assert.Throws<NotebookException>(() => ExamPackFile.ReadBounded(bigStream));
+    }
+
+    [Fact]
+    public void RejectsLeadingZeroStableIdDuplicatesBothInPackAndAcrossImports()
+    {
+        var zeroId = Paper("2030-06-15", 1);
+        zeroId["stableId"] = "cet6-2030-06-15-01";
+        var normal = Paper("2030-06-15", 1);
+
+        var firstOrder = ExamPackFile.Parse(Pack(normal, zeroId));
+        Assert.Equal("cet6-2030-06-15-1", Assert.Single(firstOrder.Papers).Id);
+        Assert.Equal("cet6-2030-06-15-01", Assert.Single(firstOrder.Skipped).Id);
+
+        var zeroId2 = Paper("2030-06-15", 1);
+        zeroId2["stableId"] = "cet6-2030-06-15-01";
+        var normal2 = Paper("2030-06-15", 1);
+        var reverseOrder = ExamPackFile.Parse(Pack(zeroId2, normal2));
+        Assert.Equal("cet6-2030-06-15-1", Assert.Single(reverseOrder.Papers).Id);
+        Assert.Equal("cet6-2030-06-15-01", Assert.Single(reverseOrder.Skipped).Id);
+
+        // Even if an ExamPack object is constructed directly with two different IDs for the same date+set,
+        // Notebook.ImportPapers refuses creating duplicate (exam_date, set_code) rows.
+        var synthetic = new ExamPack(
+            [
+                firstOrder.Papers.Single(),
+                firstOrder.Papers.Single() with { Id = "cet6-2030-06-15-01" },
+            ],
+            []);
+        var import = _book.ImportPapers(synthetic);
+        Assert.Equal(1, import.Added);
+        Assert.Single(import.Skipped);
+        Assert.Single(_book.Shelf());
+    }
+
+    [Fact]
+    public void LocalSourceUrlIsAccepted()
+    {
+        var p = Paper();
+        p["sourceUrl"] = "local:tools/exam-sample.json";
+
+        var pack = ExamPackFile.Parse(Pack(p));
+
+        Assert.Equal("local:tools/exam-sample.json", Assert.Single(pack.Papers).SourceUrl);
+    }
+
+    [Fact]
+    public void BlankWritingPromptWithInstructionsMeansNoEssay()
+    {
+        var p = Paper();
+        p["writingPrompt"] = "  ";
+        p["writingInstructions"] = "You should write at least 150 words.";
+        var paper = Assert.Single(ExamPackFile.Parse(Pack(p)).Papers);
+
+        Assert.False(paper.HasEssay);
+        Assert.Equal("", paper.EssayTask);
+        Assert.True(paper.HasTranslation);
+
+        _book.ImportPapers(new ExamPack([paper], []));
+        var ex = Assert.Throws<NotebookException>(() => _book.StartFromPaper(paper.Id, PieceKind.Essay));
+        Assert.Equal("这套卷子没有作文题。", ex.Message);
+    }
+
+    [Fact]
+    public void UnreadableFolderWithTrailingSeparatorReportsFolderName()
+    {
+        var target = Directory.CreateDirectory(Path.Combine(_dir.FullName, "gone"));
+        var broken = Path.Combine(_dir.FullName, "broken-packs");
+        using var mklink = Process.Start(new ProcessStartInfo("cmd.exe", $"/c mklink /J \"{broken}\" \"{target.FullName}\"")
+        {
+            CreateNoWindow = true,
+            UseShellExecute = false,
+        });
+        mklink!.WaitForExit();
+        Assert.Equal(0, mklink.ExitCode);
+        target.Delete();
+
+        try
+        {
+            var result = ExamPackFolder.ImportAll(_book, broken + Path.DirectorySeparatorChar);
+            var doubleBackslash = ExamPackFolder.ImportAll(_book, broken + "\\\\");
+            var doubleSlash = ExamPackFolder.ImportAll(_book, broken + "//");
+
+            Assert.Equal(["broken-packs"], result.Unreadable);
+            Assert.Equal(["broken-packs"], doubleBackslash.Unreadable);
+            Assert.Equal(["broken-packs"], doubleSlash.Unreadable);
+        }
+        finally
+        {
+            if (Directory.Exists(broken)) Directory.Delete(broken, recursive: false);
+        }
+    }
+
+    [Fact]
+    public void ShelfReportsMultiPaperProgressExcludingDiscardedPages()
+    {
+        _book.ImportPapers(ExamPackFile.Parse(Pack(Paper("2030-06-15", 1), Paper("2030-12-14", 2))));
+        var e1 = _book.StartFromPaper("cet6-2030-12-14-2", PieceKind.Essay);
+        _book.Write(e1.Id, e1.Title, e1.Task, "First attempt");
+        _book.HandIn(e1.Id);
+        var e2 = _book.StartFromPaper("cet6-2030-12-14-2", PieceKind.Essay);
+        var discarded = _book.StartFromPaper("cet6-2030-06-15-1", PieceKind.Translation);
+        _book.Discard(discarded.Id);
+
+        var shelf = _book.Shelf();
+
+        Assert.Equal(["cet6-2030-12-14-2", "cet6-2030-06-15-1"], shelf.Select(s => s.Paper.Id));
+        Assert.Equal(new PartProgress(2, 1, e2.Id, e2.Number, true), shelf[0].Essay);
+        Assert.Equal(new PartProgress(0, 0, null, null, false), shelf[1].Translation);
+    }
+
     private static (int, int, int) Counts(PackImport import) => (import.Added, import.Updated, import.Unchanged);
+
+    private sealed class NonSeekableStream(byte[] data) : Stream
+    {
+        private int _offset;
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => throw new NotSupportedException();
+        public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+        public override void Flush() { }
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            var available = Math.Min(count, data.Length - _offset);
+            if (available <= 0) return 0;
+            Array.Copy(data, _offset, buffer, offset, available);
+            _offset += available;
+            return available;
+        }
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+        public override void SetLength(long value) => throw new NotSupportedException();
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+    }
 }

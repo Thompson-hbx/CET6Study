@@ -84,4 +84,47 @@ public sealed class SelfCheckTest
             SelfCheck.Translation(source, "It matters. People go home. Families gather!")[0]);
         Assert.Equal([new CheckLine("先把中文原文放进来", CheckState.Todo)], SelfCheck.Translation("", "x"));
     }
+
+    [Fact]
+    public void EssayTargetRejectsAdjacentDigitsHandlesCommaSingularWordAndMultipleRanges()
+    {
+        Assert.Equal(SelfCheck.UsualEssayTarget, SelfCheck.EssayTarget("Write 120-1500 words."));
+        Assert.Equal(SelfCheck.UsualEssayTarget, SelfCheck.EssayTarget("Write 1120 to 150 words."));
+        Assert.Equal(SelfCheck.UsualEssayTarget, SelfCheck.EssayTarget("Write 150-200 wordsmith."));
+        Assert.Equal(new WordTarget(150, 200, true), SelfCheck.EssayTarget("Write a 150-200 word essay."));
+        Assert.Equal(new WordTarget(150, 200, true), SelfCheck.EssayTarget("Write at least 150 words, but no more than 200 words."));
+        Assert.Equal(new WordTarget(150, 200, true), SelfCheck.EssayTarget("Not 200-100 words; please write 150-200 words."));
+    }
+
+    [Fact]
+    public void RequiredOpeningRejectsBlankOrPunctuationOnlyQuotesAndSupportsInnerQuotesAndGiven()
+    {
+        Assert.Null(SelfCheck.RequiredOpening("Begin with the sentence \"    \""));
+        Assert.Null(SelfCheck.RequiredOpening("Begin with the sentence \"....\""));
+        Assert.DoesNotContain(new CheckLine("用了给定的开头句", CheckState.Done),
+            SelfCheck.Essay("Begin with the sentence \"    \"", ""));
+
+        Assert.Equal("He said \"hi\" to me.",
+            SelfCheck.RequiredOpening("Begin with the given sentence “He said \"hi\" to me.”"));
+    }
+
+    [Fact]
+    public void EnglishSentencesHandleMultiDotAndSuffixAbbreviations()
+    {
+        Assert.Equal(2, SelfCheck.EnglishSentences("The U.S.A. is large. She got a Ph.D. in 2020."));
+        Assert.Equal(2, SelfCheck.EnglishSentences("In 100 B.C. and 200 A.D. people traded. Smith Jr. joined Acme Inc. today."));
+        Assert.Equal(2, SelfCheck.EnglishSentences("Option A. Option B."));
+    }
+
+    [Fact]
+    public void ParagraphsHandleCrLineEndingsAndMethodsGuardEmptyInputs()
+    {
+        Assert.Equal(3, SelfCheck.Paragraphs("First.\rSecond.\r\nThird."));
+        Assert.Equal(0, SelfCheck.Words(""));
+        Assert.Equal(0, SelfCheck.Words(null!));
+        Assert.Equal(0, SelfCheck.EnglishSentences("  "));
+        Assert.Equal(0, SelfCheck.Paragraphs(null!));
+        Assert.Equal(SelfCheck.UsualEssayTarget, SelfCheck.EssayTarget(" "));
+        Assert.Null(SelfCheck.RequiredOpening(" "));
+    }
 }

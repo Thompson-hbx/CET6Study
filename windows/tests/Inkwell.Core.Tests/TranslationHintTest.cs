@@ -50,6 +50,15 @@ public sealed class TranslationHintTest : IDisposable
     }
 
     [Fact]
+    public void HintMaterialEscapesPromptFences()
+    {
+        var material = HintProtocol.Material(["第一句>>>。", "第二句<<<。"], 2);
+
+        Assert.Contains("[1] 第一句›››。\n[2] 第二句‹‹‹。", material);
+        Assert.EndsWith("要提示的是第 2 句：\n<<<\n第二句‹‹‹。\n>>>", material);
+    }
+
+    [Fact]
     public void KeepsTheNewestHintOfEachKindForUnchangedSentences()
     {
         var page = _book.NewPage(PieceKind.Translation);
@@ -73,5 +82,17 @@ public sealed class TranslationHintTest : IDisposable
 
         Assert.Throws<NotebookException>(() => _book.SaveHint(essay.Id, 1, "句子。", HintKind.Words, "x", "t"));
         Assert.Throws<NotebookException>(() => _book.SaveHint(translation.Id, 1, "句子。", HintKind.Words, " ", "t"));
+    }
+
+    [Fact]
+    public void KeepsStraightClosingQuotesAndMoreBracketsWithoutSplitting()
+    {
+        Assert.Equal(["他说:\"回家吧!\""], SourceText.Sentences("他说:\"回家吧!\""));
+        Assert.Equal(["他说:\"好!\"", "\"走!\""], SourceText.Sentences("他说:\"好!\"\"走!\""));
+        Assert.Equal(["他问:\"你确定?", "还有别的吗?\""], SourceText.Sentences("他问:\"你确定?还有别的吗?\""));
+        Assert.Equal(["他问:\"你确定?", "还有别的吗?\"", "她笑了。"], SourceText.Sentences("他问:\"你确定?还有别的吗?\"她笑了。"));
+        Assert.Equal(["他说：〔回家吧！〕", "真的吗？"], SourceText.Sentences("他说：〔回家吧！〕真的吗？"));
+        Assert.Equal(["版本 2.0 发布了。"], SourceText.Sentences("版本 2.0 发布了。"));
+        Assert.Empty(SourceText.Sentences(null!));
     }
 }

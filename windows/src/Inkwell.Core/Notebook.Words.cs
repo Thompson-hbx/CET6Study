@@ -4,17 +4,15 @@ namespace Inkwell.Core;
 
 public sealed partial class Notebook
 {
+    private const int UniqueConstraintError = 2067;
     private const string WordColumns = "id, front, back, note, source_piece_id, box, due_at, created_at, reviews";
 
     /// <summary>Adds a card that is due right away. The same front and back cannot be added twice.</summary>
     public WordCard AddWord(string front, string back, string note, string? sourcePieceId)
     {
-        front = front.Trim();
-        back = back.Trim();
-        if (front.Length == 0 || back.Length == 0) throw new NotebookException("正面和背面都要写上。");
-        if (front.Length > 300 || back.Length > 300 || note.Length > 500) throw new NotebookException("这一条太长了，单词本里写短一点。");
+        (front, back, note) = WordFields(front, back, note);
         var now = Now();
-        var card = new WordCard(Guid.NewGuid().ToString("N"), front, back, note.Trim(), sourcePieceId, WordSchedule.FirstBox, now, now, 0);
+        var card = new WordCard(Guid.NewGuid().ToString("N"), front, back, note, sourcePieceId, WordSchedule.FirstBox, now, now, 0);
         try
         {
             Exec(_db, $"""
@@ -23,11 +21,38 @@ public sealed partial class Notebook
                 ("$id", card.Id), ("$front", front), ("$back", back), ("$note", card.Note), ("$source", sourcePieceId),
                 ("$box", card.Box), ("$due", now.ToUnixTimeMilliseconds()), ("$created", now.ToUnixTimeMilliseconds()));
         }
-        catch (SqliteException e) when (e.SqliteErrorCode == 19)
+        catch (SqliteException e) when (e.SqliteExtendedErrorCode == UniqueConstraintError)
         {
             throw new NotebookException("单词本里已经有这一条了。");
         }
         return card;
+    }
+
+    /// <summary>Edits a card's wording and returns it with its existing review progress.</summary>
+    public WordCard UpdateWord(string id, string front, string back, string note)
+    {
+        (front, back, note) = WordFields(front, back, note);
+        try
+        {
+            return QueryWords($"""
+                UPDATE words SET front = $front, back = $back, note = $note WHERE id = $id
+                RETURNING {WordColumns};
+                """, ("$front", front), ("$back", back), ("$note", note), ("$id", id)).SingleOrDefault()
+                ?? throw new NotebookException("这张卡片找不到了。");
+        }
+        catch (SqliteException e) when (e.SqliteExtendedErrorCode == UniqueConstraintError)
+        {
+            throw new NotebookException("单词本里已经有这一条了。");
+        }
+    }
+
+    private static (string Front, string Back, string Note) WordFields(string front, string back, string note)
+    {
+        front = front.Trim();
+        back = back.Trim();
+        if (front.Length == 0 || back.Length == 0) throw new NotebookException("正面和背面都要写上。");
+        if (front.Length > 300 || back.Length > 300 || note.Length > 500) throw new NotebookException("这一条太长了，单词本里写短一点。");
+        return (front, back, note.Trim());
     }
 
     /// <summary>All cards, the ones due soonest first; <paramref name="search"/> matches front, back or note.</summary>

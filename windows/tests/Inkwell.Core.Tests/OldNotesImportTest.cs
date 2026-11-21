@@ -38,6 +38,30 @@ public sealed class OldNotesImportTest : IDisposable
     private Notebook NewBook() => Notebook.Open(Path.Combine(_dir.FullName, "book", "study.db"), new TickingClock());
 
     [Fact]
+    public void CancelledImportLeavesAnEmptyBook()
+    {
+        var old = OldFile();
+        using var book = NewBook();
+        using var cancel = new CancellationTokenSource();
+        cancel.Cancel();
+
+        Assert.Throws<OperationCanceledException>(() => OldNotesImport.Run(old, book, cancel.Token));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
+    public async Task CancelledAsyncImportThrowsOperationCanceledException()
+    {
+        var old = OldFile();
+        using var book = NewBook();
+        using var cancel = new CancellationTokenSource();
+        cancel.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => OldNotesImport.RunAsync(old, book, cancel.Token));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
     public void MovesEssaysAndTranslationsAndSkipsTheRest()
     {
         var old = OldFile();
@@ -99,6 +123,149 @@ public sealed class OldNotesImportTest : IDisposable
     {
         var old = OldFile(format: 7);
         using var book = NewBook();
+
+        Assert.Throws<NotebookException>(() => OldNotesImport.Run(old, book));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
+    public void RefusesNonSqliteFilesWithNotebookException()
+    {
+        var bad = Path.Combine(_dir.FullName, "not-sqlite.db");
+        File.WriteAllText(bad, "this is plain text, not sqlite");
+        using var book = NewBook();
+
+        Assert.Throws<NotebookException>(() => OldNotesImport.Run(bad, book));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
+    public void RefusesDuplicateIdsWhenBackupTableHasNoPrimaryKey()
+    {
+        var path = Path.Combine(_dir.FullName, "dup-id.db");
+        using (var db = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            db.Open();
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = """
+                CREATE TABLE coach_practices (id TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL,
+                    material TEXT NOT NULL, answer TEXT NOT NULL, submittedAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL,
+                    sourcePracticeId TEXT NOT NULL DEFAULT '');
+                INSERT INTO coach_practices VALUES
+                  ('dup', 'WRITING', 't1', 'm1', 'a1', 0, 1700000000000, ''),
+                  ('dup', 'WRITING', 't2', 'm2', 'a2', 0, 1700000001000, '');
+                PRAGMA user_version = 8;
+                """;
+            cmd.ExecuteNonQuery();
+        }
+        using var book = NewBook();
+
+        Assert.Throws<NotebookException>(() => OldNotesImport.Run(path, book));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
+    public void IgnoresCheckConstraintsDuringQuickCheck()
+    {
+        var path = Path.Combine(_dir.FullName, "check-constraints.db");
+        using (var db = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            db.Open();
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = """
+                PRAGMA ignore_check_constraints = ON;
+                CREATE TABLE coach_practices (id TEXT PRIMARY KEY NOT NULL, kind TEXT NOT NULL,
+                    title TEXT NOT NULL CHECK (length(title) < 0),
+                    material TEXT NOT NULL, answer TEXT NOT NULL, submittedAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL,
+                    sourcePracticeId TEXT NOT NULL DEFAULT '');
+                INSERT INTO coach_practices VALUES ('ok1', 'WRITING', '夜市', 'Night markets', 'Text', 0, 1700000000000, '');
+                PRAGMA user_version = 8;
+                """;
+            cmd.ExecuteNonQuery();
+        }
+        using var book = NewBook();
+
+        var summary = OldNotesImport.Run(path, book);
+
+        Assert.Equal(new ImportSummary(Essays: 1, Translations: 0, HandedIn: 0, SkippedOther: 0), summary);
+        Assert.Equal("夜市", book.Get("ok1").Title);
+    }
+
+    [Theory]
+    [InlineData("('e1', 'WRITING', 't', 'm', 'a', NULL, 1700000000000, '')")]
+    [InlineData("('e1', 'WRITING', 't', 'm', 'a', 'bad', 1700000000000, '')")]
+    [InlineData("('e1', 'WRITING', 't', 'm', 'a', 1.5, 1700000000000, '')")]
+    [InlineData("('e1', 'WRITING', 't', 'm', 'a', 0, NULL, '')")]
+    [InlineData("('e1', 'WRITING', 't', 'm', 'a', 0, 'bad', '')")]
+    [InlineData("('e1', 'WRITING', NULL, 'm', 'a', 0, 1700000000000, '')")]
+    [InlineData("('e1', 'WRITING', 123, 'm', 'a', 0, 1700000000000, '')")]
+    [InlineData("('e1', 'WRITING', X'0102', 'm', 'a', 0, 1700000000000, '')")]
+    [InlineData("('   ', 'WRITING', 't', 'm', 'a', 0, 1700000000000, '')")]
+    [InlineData("('e1', 'WRITING', 't', 'm', 'a', -1, 1700000000000, '')")]
+    public void RefusesNullWrongTypeBlankIdAndNegativeSubmittedAt(string valuesSql)
+    {
+        var path = Path.Combine(_dir.FullName, "bad-types.db");
+        using (var db = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            db.Open();
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = $"""
+                CREATE TABLE coach_practices (id, kind, title, material, answer, submittedAt, updatedAt, sourcePracticeId);
+                INSERT INTO coach_practices VALUES {valuesSql};
+                PRAGMA user_version = 8;
+                """;
+            cmd.ExecuteNonQuery();
+        }
+        using var book = NewBook();
+
+        Assert.Throws<NotebookException>(() => OldNotesImport.Run(path, book));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
+    public void CrossKindSourcePracticeIdDoesNotLinkRevises()
+    {
+        var old = OldFile(extraRows: """
+            , ('es_bad', 'WRITING', 't', 'm', '', 'a', '', '', '', 0, 1700001000000, '', 'tr', '')
+            , ('tr_bad', 'TRANSLATION', 't', 'm', '', 'a', '', '', '', 0, 1700001100000, '', 'orig', '')
+            """);
+        using var book = NewBook();
+
+        var summary = OldNotesImport.Run(old, book);
+
+        Assert.Equal(new ImportSummary(Essays: 3, Translations: 2, HandedIn: 2, SkippedOther: 1), summary);
+        Assert.Null(book.Get("es_bad").Revises);
+        Assert.Null(book.Get("tr_bad").Revises);
+    }
+
+    [Fact]
+    public void EmptyBackupTableImportsZeroRowsCleanly()
+    {
+        var path = Path.Combine(_dir.FullName, "empty.db");
+        using (var db = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            db.Open();
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = """
+                CREATE TABLE coach_practices (id TEXT PRIMARY KEY NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL,
+                    material TEXT NOT NULL, answer TEXT NOT NULL, submittedAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL,
+                    sourcePracticeId TEXT NOT NULL DEFAULT '');
+                PRAGMA user_version = 8;
+                """;
+            cmd.ExecuteNonQuery();
+        }
+        using var book = NewBook();
+
+        Assert.Equal(new ImportSummary(0, 0, 0, 0), OldNotesImport.Run(path, book));
+        Assert.True(book.IsEmpty);
+    }
+
+    [Fact]
+    public void RefusesInUseBackupFileWithNotebookException()
+    {
+        var old = OldFile();
+        using var book = NewBook();
+        using var holder = new FileStream(old, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 
         Assert.Throws<NotebookException>(() => OldNotesImport.Run(old, book));
         Assert.True(book.IsEmpty);

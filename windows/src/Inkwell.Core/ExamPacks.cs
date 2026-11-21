@@ -40,6 +40,7 @@ public sealed record ExamPaper(
         get
         {
             var prompt = WritingPrompt.Trim();
+            if (prompt.Length == 0) return "";
             var instructions = WritingInstructions.Trim();
             return instructions.Length == 0 || prompt.Contains(instructions, StringComparison.Ordinal)
                 ? prompt
@@ -70,52 +71,77 @@ public static partial class ExamPackFile
 
     public static ExamPack Read(string path)
     {
-        var info = new FileInfo(path);
-        if (!info.Exists) throw new NotebookException("找不到这个内容包文件。");
-        if (info.Length > MaxBytes) throw new NotebookException("内容包超过 4 MB，不像是作文和翻译的内容包，没有导入。");
-        return Parse(File.ReadAllBytes(path));
+        if (!File.Exists(path)) throw new NotebookException("找不到这个内容包文件。");
+        using var input = File.OpenRead(path);
+        return Parse(ReadBounded(input));
+    }
+
+    internal static byte[] ReadBounded(Stream input)
+    {
+        using var buffer = new MemoryStream();
+        var chunk = new byte[64 * 1024];
+        long total = 0;
+        while (true)
+        {
+            var remaining = MaxBytes - total;
+            var toRead = (int)Math.Min(chunk.Length, remaining + 1);
+            var read = input.Read(chunk, 0, toRead);
+            if (read == 0) break;
+            total += read;
+            if (total > MaxBytes) throw new NotebookException("内容包超过 4 MB，不像是作文和翻译的内容包，没有导入。");
+            buffer.Write(chunk, 0, read);
+        }
+        return buffer.ToArray();
     }
 
     public static ExamPack Parse(byte[] json)
     {
         if (json.LongLength > MaxBytes) throw new NotebookException("内容包超过 4 MB，不像是作文和翻译的内容包，没有导入。");
-        JsonDocument document;
+        ReadOnlyMemory<byte> payload = json;
+        if (payload.Length >= 3 && payload.Span[0] == 0xEF && payload.Span[1] == 0xBB && payload.Span[2] == 0xBF)
+        {
+            payload = payload[3..];
+        }
         try
         {
-            document = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 16 });
+            using var document = JsonDocument.Parse(payload, new JsonDocumentOptions { MaxDepth = 16 });
+            return ReadDocument(document.RootElement);
         }
-        catch (JsonException)
+        catch (Exception e) when (e is JsonException or InvalidOperationException)
         {
+            // String decoding can be deferred until a field is read from the parsed document.
             throw new NotebookException("这个文件不是有效的 JSON，没有导入。");
         }
-        using (document)
-        {
-            var root = document.RootElement;
-            if (root.ValueKind != JsonValueKind.Object || Text(root, "format") != "CET6ExamPack")
-                throw new NotebookException("这不是墨水瓶认识的内容包（format 应为 CET6ExamPack）。");
-            if (!root.TryGetProperty("version", out var version) || version.ValueKind != JsonValueKind.Number
-                || !version.TryGetInt32(out var v) || v != 1)
-                throw new NotebookException("内容包版本不是 1，这个版本的墨水瓶读不了。");
-            if (!root.TryGetProperty("papers", out var papers) || papers.ValueKind != JsonValueKind.Array)
-                throw new NotebookException("内容包里没有 papers 列表。");
-            if (papers.GetArrayLength() > MaxPapers) throw new NotebookException($"内容包超过 {MaxPapers} 套，请拆开导入。");
+    }
 
-            var read = new List<ExamPaper>();
-            var skipped = new List<PackSkip>();
-            var seen = new HashSet<string>(StringComparer.Ordinal);
-            var index = 0;
-            foreach (var element in papers.EnumerateArray())
-            {
-                index++;
-                var id = element.ValueKind == JsonValueKind.Object ? Text(element, "stableId") : "";
-                var name = id.Length > 0 ? id : $"第 {index} 项";
-                var reason = Check(element, out var paper);
-                if (reason is null && !seen.Add(paper!.Id)) reason = "同一个包里重复出现，只用第一次的";
-                if (reason is null) read.Add(paper!);
-                else skipped.Add(new PackSkip(name, reason));
-            }
-            return new ExamPack(read, skipped);
+    private static ExamPack ReadDocument(JsonElement root)
+    {
+        if (root.ValueKind != JsonValueKind.Object || Text(root, "format") != "CET6ExamPack")
+            throw new NotebookException("这不是墨水瓶认识的内容包（format 应为 CET6ExamPack）。");
+        if (!root.TryGetProperty("version", out var version) || version.ValueKind != JsonValueKind.Number
+            || !version.TryGetInt32(out var v) || v != 1)
+            throw new NotebookException("内容包版本不是 1，这个版本的墨水瓶读不了。");
+        if (!root.TryGetProperty("papers", out var papers) || papers.ValueKind != JsonValueKind.Array)
+            throw new NotebookException("内容包里没有 papers 列表。");
+        if (papers.GetArrayLength() > MaxPapers) throw new NotebookException($"内容包超过 {MaxPapers} 套，请拆开导入。");
+
+        var read = new List<ExamPaper>();
+        var skipped = new List<PackSkip>();
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        var seenSets = new HashSet<(DateOnly, int)>();
+        var index = 0;
+        foreach (var element in papers.EnumerateArray())
+        {
+            index++;
+            var id = element.ValueKind == JsonValueKind.Object ? Text(element, "stableId") : "";
+            var name = id.Length > 0 ? id : $"第 {index} 项";
+            var reason = Check(element, out var paper);
+            if (reason is null && (!seen.Add(paper!.Id) || !seenSets.Add((paper.ExamDate, paper.Set))))
+                reason = "同一个包里重复出现，只用第一次的";
+            if (reason is null) read.Add(paper!);
+            else skipped.Add(new PackSkip(name, reason));
         }
+        return new ExamPack(read, skipped);
     }
 
     private static string? Check(JsonElement element, out ExamPaper? paper)
@@ -132,7 +158,8 @@ public static partial class ExamPackFile
         if (!int.TryParse(Text(element, "setCode"), NumberStyles.None, CultureInfo.InvariantCulture, out var set) || set < 1)
             return "setCode 不是套次数字";
         if (match.Groups["date"].Value != date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-            || int.Parse(match.Groups["set"].Value, CultureInfo.InvariantCulture) != set)
+            || !int.TryParse(match.Groups["set"].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var idSet)
+            || idSet != set)
             return "stableId 和考试日期、套次对不上";
         if (!element.TryGetProperty("revision", out var revisionElement) || revisionElement.ValueKind != JsonValueKind.Number
             || !revisionElement.TryGetInt32(out var revision) || revision < 1)
@@ -169,6 +196,6 @@ public static partial class ExamPackFile
     private static string Text(JsonElement element, string name) =>
         element.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.String ? value.GetString()!.Trim() : "";
 
-    [GeneratedRegex(@"^cet6-(?<date>\d{4}-\d{2}-\d{2})-(?<set>\d{1,2})$", RegexOptions.CultureInvariant)]
+    [GeneratedRegex(@"^cet6-(?<date>[0-9]{4}-[0-9]{2}-[0-9]{2})-(?<set>[1-9][0-9]?)$", RegexOptions.CultureInvariant)]
     private static partial Regex IdPattern();
 }

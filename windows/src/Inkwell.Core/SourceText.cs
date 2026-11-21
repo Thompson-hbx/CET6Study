@@ -6,7 +6,7 @@ namespace Inkwell.Core;
 public static class SourceText
 {
     private const string Enders = "。！？!?";
-    private const string Closers = "”’」』）)》】";
+    private const string Closers = "”’」』）)》】〉〕］]";
 
     /// <summary>
     /// Sentences in order. A sentence ends at 。！？ and keeps any closing quotes or brackets right after it;
@@ -15,15 +15,37 @@ public static class SourceText
     /// </summary>
     public static IReadOnlyList<string> Sentences(string passage)
     {
+        if (string.IsNullOrWhiteSpace(passage)) return [];
         var flat = Flatten(passage);
         var sentences = new List<string>();
         var current = new StringBuilder();
+        var straightQuotes = 0;
         for (var i = 0; i < flat.Length; i++)
         {
-            current.Append(flat[i]);
-            if (!Enders.Contains(flat[i])) continue;
+            var ch = flat[i];
+            current.Append(ch);
+            if (ch == '"') straightQuotes++;
+            if (!Enders.Contains(ch)) continue;
             // "？！" and "……。" end one sentence, not two.
-            while (i + 1 < flat.Length && (Closers.Contains(flat[i + 1]) || Enders.Contains(flat[i + 1]))) current.Append(flat[++i]);
+            while (i + 1 < flat.Length)
+            {
+                var next = flat[i + 1];
+                if (Closers.Contains(next) || Enders.Contains(next))
+                {
+                    current.Append(next);
+                    i++;
+                }
+                else if (next == '"' && (straightQuotes & 1) == 1)
+                {
+                    current.Append(next);
+                    straightQuotes++;
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
             Add(sentences, current);
         }
         Add(sentences, current);

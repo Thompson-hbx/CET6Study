@@ -59,6 +59,9 @@ public sealed class TeacherConnection
 /// </summary>
 public sealed class ChatTeacher(HttpClient http, TeacherConnection connection, Depth depth = Depth.Default) : ITeacher
 {
+    private const int MaxResponseBytes = 2 * 1024 * 1024;
+    private static readonly TimeSpan RequestLimit = TimeSpan.FromMinutes(10);
+
     /// <summary>Redirects are off so the key can never follow a redirect to another host.</summary>
     public static HttpClient NewHttpClient() => new(new SocketsHttpHandler
     {
@@ -67,7 +70,7 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection, D
     })
     {
         // Deep thinking can take several minutes before the first word of a long marking.
-        Timeout = TimeSpan.FromMinutes(10),
+        Timeout = RequestLimit,
     };
 
     public async Task<IReadOnlyList<string>> ModelsAsync(CancellationToken cancel)
@@ -76,7 +79,7 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection, D
         using var response = await Send(request, cancel);
         try
         {
-            using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancel));
+            using var json = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(cancel));
             return json.RootElement.GetProperty("data").EnumerateArray()
                 .Select(m => m.TryGetProperty("id", out var id) && id.ValueKind == JsonValueKind.String ? id.GetString()! : "")
                 .Where(id => id.Length > 0).Distinct().Order(StringComparer.Ordinal).ToList();
@@ -105,7 +108,7 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection, D
         using var response = await Send(request, cancel);
         try
         {
-            using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancel));
+            using var json = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(cancel));
             var choice = json.RootElement.GetProperty("choices")[0];
             var finish = choice.TryGetProperty("finish_reason", out var f) && f.ValueKind == JsonValueKind.String ? f.GetString() : null;
             if (finish == "length") throw new TeacherException("老师写到一半被截断了，没有保存；可以换个模型或缩短文字再请一次。");
@@ -130,20 +133,38 @@ public sealed class ChatTeacher(HttpClient http, TeacherConnection connection, D
 
     private async Task<HttpResponseMessage> Send(HttpRequestMessage request, CancellationToken cancel)
     {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        deadline.CancelAfter(RequestLimit);
         HttpResponseMessage response;
         try
         {
-            response = await http.SendAsync(request, cancel);
+            response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token);
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    await response.Content.LoadIntoBufferAsync(MaxResponseBytes, deadline.Token);
+                }
+                catch
+                {
+                    response.Dispose();
+                    throw;
+                }
+                return response;
+            }
         }
-        catch (HttpRequestException)
+        catch (HttpRequestException e) when (e.HttpRequestError == HttpRequestError.ConfigurationLimitExceeded)
+        {
+            throw new TeacherException("老师的回复超过大小限制，没有保存。");
+        }
+        catch (Exception e) when (e is HttpRequestException or IOException)
         {
             throw new TeacherException("连不上老师：请检查网络和地址。");
         }
-        catch (TaskCanceledException) when (!cancel.IsCancellationRequested)
+        catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
         {
             throw new TeacherException("老师太久没回应，已经停下，没有保存。");
         }
-        if (response.IsSuccessStatusCode) return response;
         var code = (int)response.StatusCode;
         response.Dispose();
         throw new TeacherException(code switch

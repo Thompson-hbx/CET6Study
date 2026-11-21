@@ -53,6 +53,30 @@ public sealed class TrashTest : IDisposable
     }
 
     [Fact]
+    public void TrashSearchMatchesTitleTaskAndTextInDiscardOrder()
+    {
+        var title = _book.Write(_book.NewPage(PieceKind.Essay).Id, "Campus life", "", "");
+        var task = _book.Write(_book.NewPage(PieceKind.Essay).Id, "", "Discuss campus activities.", "");
+        var text = _book.Write(_book.NewPage(PieceKind.Essay).Id, "", "", "The campus is quiet.");
+        var other = _book.NewPage(PieceKind.Essay);
+        var active = _book.Write(_book.NewPage(PieceKind.Essay).Id, "Campus notes", "", "");
+        var translation = _book.Write(_book.NewPage(PieceKind.Translation).Id, "Campus", "", "");
+
+        foreach (var page in new[] { text, title, other, task, translation }) _book.Discard(page.Id);
+
+        Assert.Equal([task.Id, title.Id, text.Id], _book.Trash(PieceKind.Essay, "  CAMPUS  ").Select(p => p.Id));
+        Assert.Equal([translation.Id], _book.Trash(PieceKind.Translation, "campus").Select(p => p.Id));
+        Assert.Equal([active.Id], _book.Contents(PieceKind.Essay, "campus").Select(p => p.Id));
+        Assert.Equal(_book.Trash(PieceKind.Essay).Select(p => p.Id), _book.Trash(PieceKind.Essay, " ").Select(p => p.Id));
+        Assert.Empty(_book.Trash(PieceKind.Essay, "missing"));
+        Assert.Equal(4, _book.CountTrash(PieceKind.Essay));
+
+        _book.Restore(title.Id);
+        Assert.Equal([task.Id, text.Id], _book.Trash(PieceKind.Essay, "campus").Select(p => p.Id));
+        Assert.Equal(3, _book.CountTrash(PieceKind.Essay));
+    }
+
+    [Fact]
     public void OnlyPagesInTheTrashCanBePurged()
     {
         var page = Reviewed("还在目录里");

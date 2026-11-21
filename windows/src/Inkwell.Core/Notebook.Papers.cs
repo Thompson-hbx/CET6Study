@@ -25,12 +25,24 @@ public sealed partial class Notebook
     {
         int added = 0, updated = 0, unchanged = 0;
         var skipped = new List<PackSkip>(pack.Skipped);
+        var seenSets = new HashSet<(DateOnly, int)>();
         using var tx = _db.BeginTransaction();
         foreach (var paper in pack.Papers)
         {
+            if (!seenSets.Add((paper.ExamDate, paper.Set)))
+            {
+                skipped.Add(new PackSkip(paper.Id, "同一个包里重复出现，只用第一次的"));
+                continue;
+            }
             var stored = FindPaper(paper.Id, tx);
             if (stored is null)
             {
+                var sameSet = FindPaperByDateSet(paper.ExamDate, paper.Set, tx);
+                if (sameSet is not null)
+                {
+                    skipped.Add(new PackSkip(paper.Id, $"已有同一天第 {paper.Set} 套试卷（{sameSet.Id}），没有重复导入"));
+                    continue;
+                }
                 WritePaper(paper, tx);
                 added++;
             }
@@ -63,25 +75,34 @@ public sealed partial class Notebook
         {
             // Pages per paper and kind, plus the newest page so the shelf can open it.
             command.CommandText = """
-                SELECT pp.paper_id, p.kind, COUNT(*), SUM(p.handed_in_at IS NOT NULL),
-                       (SELECT p2.id FROM paper_pages pp2 JOIN pieces p2 ON p2.id = pp2.piece_id
-                        WHERE pp2.paper_id = pp.paper_id AND p2.kind = p.kind AND p2.discarded_at IS NULL ORDER BY p2.number DESC LIMIT 1)
-                FROM paper_pages pp JOIN pieces p ON p.id = pp.piece_id
-                WHERE p.discarded_at IS NULL
-                GROUP BY pp.paper_id, p.kind;
+                WITH ranked AS (
+                    SELECT pp.paper_id,
+                           p.kind,
+                           p.id,
+                           p.number,
+                           p.handed_in_at IS NULL AS is_draft,
+                           COUNT(*) OVER (PARTITION BY pp.paper_id, p.kind) AS pages,
+                           SUM(CASE WHEN p.handed_in_at IS NOT NULL THEN 1 ELSE 0 END) OVER (PARTITION BY pp.paper_id, p.kind) AS handed_in,
+                           ROW_NUMBER() OVER (PARTITION BY pp.paper_id, p.kind ORDER BY p.number DESC, p.rowid DESC) AS rn
+                    FROM paper_pages pp
+                    JOIN pieces p ON p.id = pp.piece_id
+                    WHERE p.discarded_at IS NULL
+                )
+                SELECT paper_id, kind, pages, handed_in, id, number, is_draft
+                FROM ranked
+                WHERE rn = 1;
                 """;
             using var reader = command.ExecuteReader();
-            var rows = new List<(string Paper, PieceKind Kind, int Pages, int HandedIn, string Latest)>();
             while (reader.Read())
             {
-                rows.Add((reader.GetString(0), reader.GetString(1) == "essay" ? PieceKind.Essay : PieceKind.Translation,
-                    reader.GetInt32(2), reader.GetInt32(3), reader.GetString(4)));
-            }
-            reader.Close();
-            foreach (var row in rows)
-            {
-                var latest = Get(row.Latest);
-                progress[(row.Paper, row.Kind)] = new PartProgress(row.Pages, row.HandedIn, latest.Id, latest.Number, !latest.IsHandedIn);
+                var paperId = reader.GetString(0);
+                var kind = reader.GetString(1) == "essay" ? PieceKind.Essay : PieceKind.Translation;
+                progress[(paperId, kind)] = new PartProgress(
+                    reader.GetInt32(2),
+                    reader.GetInt32(3),
+                    reader.GetString(4),
+                    reader.GetInt32(5),
+                    reader.GetInt32(6) != 0);
             }
         }
         var none = new PartProgress(0, 0, null, null, false);
@@ -104,12 +125,13 @@ public sealed partial class Notebook
     public Piece StartFromPaper(string paperId, PieceKind kind)
     {
         var paper = Paper(paperId);
+        var hasPart = kind == PieceKind.Essay ? paper.HasEssay : paper.HasTranslation;
         var task = paper.Task(kind);
-        if (task.Length == 0) throw new NotebookException(kind == PieceKind.Essay ? "这套卷子没有作文题。" : "这套卷子没有翻译原文。");
+        if (!hasPart || task.Length == 0) throw new NotebookException(kind == PieceKind.Essay ? "这套卷子没有作文题。" : "这套卷子没有翻译原文。");
         var draft = Scalar(_db, """
             SELECT p.id FROM paper_pages pp JOIN pieces p ON p.id = pp.piece_id
             WHERE pp.paper_id = $paper AND p.kind = $kind AND p.handed_in_at IS NULL AND p.discarded_at IS NULL
-            ORDER BY p.number DESC LIMIT 1;
+            ORDER BY p.number DESC, p.rowid DESC LIMIT 1;
             """, null, ("$paper", paperId), ("$kind", Stored(kind)));
         if (draft is string id)
         {
@@ -130,6 +152,10 @@ public sealed partial class Notebook
 
     private ExamPaper? FindPaper(string id, SqliteTransaction? tx) =>
         QueryPapers($"SELECT {PaperColumns} FROM papers WHERE id = $id;", tx, ("$id", id)).SingleOrDefault();
+
+    private ExamPaper? FindPaperByDateSet(DateOnly examDate, int set, SqliteTransaction? tx) =>
+        QueryPapers($"SELECT {PaperColumns} FROM papers WHERE exam_date = $date AND set_code = $set LIMIT 1;",
+            tx, ("$date", examDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)), ("$set", set)).SingleOrDefault();
 
     // An upsert rather than REPLACE: REPLACE deletes the row first, which pages linked to the paper forbid.
     private void WritePaper(ExamPaper paper, SqliteTransaction tx) =>

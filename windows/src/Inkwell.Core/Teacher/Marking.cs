@@ -58,10 +58,13 @@ public static class MarkingProtocol
             """;
     }
 
+    internal static string EscapeFence(string text) =>
+        text.Replace("<<<", "‹‹‹", StringComparison.Ordinal).Replace(">>>", "›››", StringComparison.Ordinal);
+
     public static string Material(PieceKind kind, string task, string text) =>
         kind == PieceKind.Essay
-            ? $"题目：\n<<<\n{task.Trim()}\n>>>\n\n学生作文：\n<<<\n{text.Trim()}\n>>>"
-            : $"中文原文：\n<<<\n{task.Trim()}\n>>>\n\n学生译文：\n<<<\n{text.Trim()}\n>>>";
+            ? $"题目：\n<<<\n{EscapeFence(task.Trim())}\n>>>\n\n学生作文：\n<<<\n{EscapeFence(text.Trim())}\n>>>"
+            : $"中文原文：\n<<<\n{EscapeFence(task.Trim())}\n>>>\n\n学生译文：\n<<<\n{EscapeFence(text.Trim())}\n>>>";
 
     /// <summary>Checks the reply strictly; a reply that does not follow the shape is rejected rather than guessed at.</summary>
     public static Marking Read(string json)

@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using Microsoft.Data.Sqlite;
+
 namespace Inkwell.Core.Tests;
 
 public sealed class NotebookTest : IDisposable
@@ -43,6 +46,33 @@ public sealed class NotebookTest : IDisposable
         var page = _book.Write(_book.NewPage(PieceKind.Essay).Id, "", "task", "text");
 
         Assert.Equal(page.UpdatedAt, _book.Write(page.Id, "", "task", "text").UpdatedAt);
+    }
+
+    [Fact]
+    public void AWriteLockDoesNotStallDraftSaving()
+    {
+        const int sqliteBusy = 5;
+        var page = _book.Write(_book.NewPage(PieceKind.Essay).Id, "", "task", "original text");
+        using var writer = new SqliteConnection(new SqliteConnectionStringBuilder
+        {
+            DataSource = Path.Combine(_dir.FullName, "study.db"),
+            Pooling = false,
+        }.ToString());
+        writer.Open();
+        using var transaction = writer.BeginTransaction(deferred: false);
+
+        var wait = Stopwatch.StartNew();
+        var failure = Assert.Throws<SqliteException>(() => _book.Write(page.Id, page.Title, page.Task, "next text"));
+        wait.Stop();
+
+        Assert.Equal(sqliteBusy, failure.SqliteErrorCode);
+        Assert.True(wait.Elapsed < TimeSpan.FromSeconds(5), $"Draft save waited {wait.Elapsed} on a write lock.");
+        Assert.Equal(page, _book.Get(page.Id));
+        transaction.Rollback();
+
+        var saved = _book.Write(page.Id, page.Title, page.Task, "next text");
+        Assert.Equal("next text", saved.Text);
+        Assert.Equal(saved, _book.Get(page.Id));
     }
 
     [Fact]
@@ -115,6 +145,75 @@ public sealed class NotebookTest : IDisposable
             command.ExecuteNonQuery();
         }
         Assert.Throws<NotebookException>(() => Notebook.Open(path, _clock).Dispose());
+    }
+
+    [Theory]
+    [InlineData(9)]
+    [InlineData(-1)]
+    public void OpenRejectsFutureAndNegativeUserVersionsWithoutMutatingJournalMode(int badVersion)
+    {
+        var path = Path.Combine(_dir.FullName, $"bad-v{badVersion}.db");
+        using (var raw = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            raw.Open();
+            using var command = raw.CreateCommand();
+            command.CommandText = $"""
+                PRAGMA journal_mode = DELETE;
+                CREATE TABLE dummy (x INTEGER);
+                PRAGMA user_version = {badVersion};
+                """;
+            command.ExecuteNonQuery();
+        }
+
+        Assert.Throws<NotebookException>(() => Notebook.Open(path, _clock).Dispose());
+        Assert.False(File.Exists(path + "-wal"));
+        Assert.False(File.Exists(path + "-shm"));
+        using (var check = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            check.Open();
+            using var cmd = check.CreateCommand();
+            cmd.CommandText = "PRAGMA journal_mode;";
+            Assert.Equal("delete", Convert.ToString(cmd.ExecuteScalar()));
+        }
+    }
+
+    [Fact]
+    public void MigratesToSchemaVersion8WithIndexesAndPreservesTrashRewrite()
+    {
+        Assert.Equal(8, Notebook.SchemaVersion);
+
+        var path = Path.Combine(_dir.FullName, "v7.db");
+        using (var v7 = Notebook.Open(path, _clock))
+        {
+            var page = v7.NewPage(PieceKind.Essay);
+            v7.Write(page.Id, "夜市", "Night markets", "People enjoy night markets.");
+            v7.HandIn(page.Id);
+            v7.Discard(page.Id);
+        }
+
+        using (var raw = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            raw.Open();
+            using var cmd = raw.CreateCommand();
+            cmd.CommandText = "PRAGMA user_version = 7; DROP INDEX IF EXISTS reviews_created;";
+            cmd.ExecuteNonQuery();
+        }
+
+        using var migrated = Notebook.Open(path, _clock);
+        using (var verify = new SqliteConnection($"Data Source={path};Pooling=False"))
+        {
+            verify.Open();
+            using var cmd = verify.CreateCommand();
+            cmd.CommandText = "PRAGMA user_version;";
+            Assert.Equal(8L, Convert.ToInt64(cmd.ExecuteScalar()));
+            cmd.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'index' AND name IN ('pieces_active_kind_number', 'reviews_created', 'papers_exam_date');";
+            Assert.Equal(3L, Convert.ToInt64(cmd.ExecuteScalar()));
+        }
+
+        // Red line: rewriting a discarded handed-in page from trash remains allowed.
+        var trashed = Assert.Single(migrated.Trash(PieceKind.Essay));
+        var rewritten = migrated.Rewrite(trashed.Id);
+        Assert.Equal(trashed.Id, rewritten.Revises);
     }
 }
 

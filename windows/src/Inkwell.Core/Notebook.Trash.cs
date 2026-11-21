@@ -20,9 +20,13 @@ public sealed partial class Notebook
     }
 
     /// <summary>Pages in the trash for one book, most recently discarded first.</summary>
-    public IReadOnlyList<Piece> Trash(PieceKind kind) =>
-        Query($"SELECT {Columns} FROM pieces WHERE kind = $kind AND discarded_at IS NOT NULL ORDER BY discarded_at DESC, number DESC;",
-            ("$kind", Stored(kind)));
+    public IReadOnlyList<Piece> Trash(PieceKind kind) => Trash(kind, "");
+
+    /// <summary>Trash filtered by title, task or text, most recently discarded first.</summary>
+    public IReadOnlyList<Piece> Trash(PieceKind kind, string search) => FindPages(kind, search, discarded: true);
+
+    public int CountTrash(PieceKind kind) =>
+        Convert.ToInt32(Scalar(_db, "SELECT COUNT(*) FROM pieces WHERE kind = $kind AND discarded_at IS NOT NULL;", null, ("$kind", Stored(kind))));
 
     /// <summary>
     /// Deletes a page from the trash for good, with its reviews, marks, questions, hints and paper link.
@@ -31,12 +35,11 @@ public sealed partial class Notebook
     /// </summary>
     public void Purge(string id)
     {
-        Get(id);
-        if (Scalar(_db, "SELECT discarded_at FROM pieces WHERE id = $id;", null, ("$id", id)) is DBNull)
+        using var tx = _db.BeginTransaction();
+        if (Scalar(_db, "SELECT discarded_at FROM pieces WHERE id = $id;", tx, ("$id", id)) is null or DBNull)
         {
             throw new NotebookException("只有废纸篓里的页才能彻底删除。");
         }
-        using var tx = _db.BeginTransaction();
         foreach (var sql in new[]
         {
             "DELETE FROM talks WHERE review_id IN (SELECT id FROM reviews WHERE piece_id = $id);",

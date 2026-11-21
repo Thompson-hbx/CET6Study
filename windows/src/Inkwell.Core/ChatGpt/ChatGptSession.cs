@@ -19,6 +19,11 @@ public sealed record ChatGptSession(
 {
     public const string PlanScope = "chatgpt.tokens.use.direct";
 
+    public Guid GrantId { get; init; }
+
+    internal bool SameGrant(ChatGptSession other) =>
+        GrantId == other.GrantId && ClientId == other.ClientId && Subject == other.Subject;
+
     /// <summary>Signed in is not enough: the plan can only be used when this scope was granted.</summary>
     public bool CanUsePlan => Scopes.Contains(PlanScope);
 
@@ -28,7 +33,20 @@ public sealed record ChatGptSession(
     {
         try
         {
-            return JsonSerializer.Deserialize<ChatGptSession>(json);
+            var session = JsonSerializer.Deserialize<ChatGptSession>(json);
+            if (session is null ||
+                session.ClientId is null ||
+                session.Subject is null ||
+                session.Email is null ||
+                session.IdToken is null ||
+                session.AccessToken is null ||
+                session.RefreshToken is null ||
+                session.Scopes is null ||
+                session.Scopes.Any(s => s is null))
+            {
+                return null;
+            }
+            return session;
         }
         catch (JsonException)
         {
@@ -51,13 +69,16 @@ public interface ISessionVault
     /// <summary>The issued client id survives sign-out so the next sign-in reuses the registration.</summary>
     string? RememberedClientId { get; set; }
 
-    /// <summary>The ID token of the last successful sign-in, kept after sign-out only as a re-sign-in hint.</summary>
+    /// <summary>The ID token of the last successful sign-in, erased on explicit sign-out.</summary>
     string? RememberedIdToken { get; set; }
 }
 
 /// <summary>A sign-in or call that failed in a way the learner can act on. Messages never contain tokens.</summary>
-public sealed class ChatGptException(string message, bool signInAgain = false) : Exception(message)
+public sealed class ChatGptException(string message, bool signInAgain = false, bool forgetClient = false) : Exception(message)
 {
     /// <summary>True when the stored tokens are no longer usable and the learner must sign in again.</summary>
     public bool SignInAgain { get; } = signInAgain;
+
+    /// <summary>True when the remembered dynamic client registration was rejected and should be forgotten.</summary>
+    public bool ForgetClient { get; } = forgetClient;
 }

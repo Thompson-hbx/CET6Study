@@ -8,7 +8,10 @@ namespace Inkwell.Core;
 /// </summary>
 public sealed partial class Notebook : IDisposable
 {
-    public const int SchemaVersion = 7;
+    public const int SchemaVersion = 8;
+
+    // Draft saves run on the UI thread, including during Windows session ending.
+    private const int DraftSaveBusyTimeoutSeconds = 1;
 
     private const string Columns = "id, kind, number, title, task, text, revises, created_at, updated_at, handed_in_at, origin";
 
@@ -34,8 +37,11 @@ public sealed partial class Notebook : IDisposable
         db.Open();
         try
         {
+            var version = Convert.ToInt32(Scalar(db, "PRAGMA user_version;"));
+            if (version < 0) throw new NotebookException("这个本子的版本标记不对，打不开。");
+            if (version > SchemaVersion) throw new NotebookException("这个本子由更新版本的墨水瓶写过，请升级后再打开。");
             Exec(db, "PRAGMA journal_mode = WAL;");
-            Migrate(db);
+            Migrate(db, version);
             return new Notebook(db, clock);
         }
         catch
@@ -45,10 +51,8 @@ public sealed partial class Notebook : IDisposable
         }
     }
 
-    private static void Migrate(SqliteConnection db)
+    private static void Migrate(SqliteConnection db, int version)
     {
-        var version = Convert.ToInt32(Scalar(db, "PRAGMA user_version;"));
-        if (version > SchemaVersion) throw new NotebookException("这个本子由更新版本的墨水瓶写过，请升级后再打开。");
         if (version == SchemaVersion) return;
         using var tx = db.BeginTransaction();
         if (version < 1) Exec(db, """
@@ -168,29 +172,51 @@ public sealed partial class Notebook : IDisposable
             """, tx);
         // A page in the trash keeps every row it had; only discarded_at marks it, so restoring loses nothing.
         if (version < 7) Exec(db, "ALTER TABLE pieces ADD COLUMN discarded_at INTEGER;", tx);
+        if (version < 8) Exec(db, """
+            CREATE INDEX IF NOT EXISTS pieces_active_kind_number ON pieces (kind, number DESC) WHERE discarded_at IS NULL;
+            CREATE INDEX IF NOT EXISTS pieces_discarded_kind ON pieces (kind, discarded_at DESC, number DESC) WHERE discarded_at IS NOT NULL;
+            CREATE INDEX IF NOT EXISTS pieces_active_handed ON pieces (kind, handed_in_at) WHERE discarded_at IS NULL AND handed_in_at IS NOT NULL;
+            CREATE INDEX IF NOT EXISTS pieces_active_created ON pieces (created_at) WHERE discarded_at IS NULL;
+            CREATE INDEX IF NOT EXISTS pieces_active_updated ON pieces (updated_at) WHERE discarded_at IS NULL;
+            CREATE INDEX IF NOT EXISTS reviews_created ON reviews (created_at, piece_id);
+            CREATE INDEX IF NOT EXISTS talks_asked ON talks (asked_at, review_id);
+            CREATE INDEX IF NOT EXISTS hints_given ON hints (given_at, piece_id);
+            CREATE INDEX IF NOT EXISTS word_reviews_time_recall ON word_reviews (reviewed_at, recall);
+            CREATE INDEX IF NOT EXISTS papers_exam_date ON papers (exam_date DESC, set_code);
+            CREATE INDEX IF NOT EXISTS paper_pages_paper_piece ON paper_pages (paper_id, piece_id);
+            """, tx);
         Exec(db, $"PRAGMA user_version = {SchemaVersion};", tx);
         tx.Commit();
     }
 
     public void Dispose() => _db.Dispose();
 
-    public bool IsEmpty => Convert.ToInt64(Scalar(_db, "SELECT COUNT(*) FROM pieces;")) == 0;
+    public bool IsEmpty => IsEmptyIn(null);
+
+    internal bool IsEmptyIn(SqliteTransaction? tx) =>
+        Convert.ToInt64(Scalar(_db, "SELECT COUNT(*) FROM pieces;", tx)) == 0;
 
     public int Count(PieceKind kind) =>
         Convert.ToInt32(Scalar(_db, "SELECT COUNT(*) FROM pieces WHERE kind = $kind AND discarded_at IS NULL;", null, ("$kind", Stored(kind))));
 
     /// <summary>Table of contents for one book, latest page first; <paramref name="search"/> matches title, task or text.</summary>
-    public IReadOnlyList<Piece> Contents(PieceKind kind, string search = "")
+    public IReadOnlyList<Piece> Contents(PieceKind kind, string search = "") => FindPages(kind, search, discarded: false);
+
+    private IReadOnlyList<Piece> FindPages(PieceKind kind, string search, bool discarded)
     {
         var filter = string.IsNullOrWhiteSpace(search)
             ? ""
             : " AND (instr(lower(title), lower($q)) > 0 OR instr(lower(task), lower($q)) > 0 OR instr(lower(text), lower($q)) > 0)";
-        return Query($"SELECT {Columns} FROM pieces WHERE kind = $kind AND discarded_at IS NULL{filter} ORDER BY number DESC;",
+        var scope = discarded ? "discarded_at IS NOT NULL" : "discarded_at IS NULL";
+        var order = discarded ? "discarded_at DESC, number DESC" : "number DESC";
+        return Query($"SELECT {Columns} FROM pieces WHERE kind = $kind AND {scope}{filter} ORDER BY {order};",
             ("$kind", Stored(kind)), ("$q", search.Trim()));
     }
 
-    public Piece Get(string id) =>
-        Query($"SELECT {Columns} FROM pieces WHERE id = $id;", ("$id", id)).SingleOrDefault()
+    public Piece Get(string id) => Get(id, _db.DefaultTimeout);
+
+    private Piece Get(string id, int commandTimeout) =>
+        Query($"SELECT {Columns} FROM pieces WHERE id = $id;", commandTimeout, ("$id", id)).SingleOrDefault()
         ?? throw new NotebookException("找不到这一页。");
 
     /// <summary>Turns to a fresh page at the end of the book.</summary>
@@ -199,12 +225,12 @@ public sealed partial class Notebook : IDisposable
     /// <summary>Saves the editable text of a draft. Unchanged text keeps its timestamp.</summary>
     public Piece Write(string id, string title, string task, string text)
     {
-        var page = Get(id);
+        var page = Get(id, DraftSaveBusyTimeoutSeconds);
         if (page.IsHandedIn) throw new NotebookException("这一页已经交了，不能再改；可以「重写一稿」。");
         if (page.Title == title && page.Task == task && page.Text == text) return page;
         var now = Now();
         Exec(_db, "UPDATE pieces SET title = $title, task = $task, text = $text, updated_at = $now WHERE id = $id AND handed_in_at IS NULL;",
-            null, ("$title", title), ("$task", task), ("$text", text), ("$now", now.ToUnixTimeMilliseconds()), ("$id", id));
+            null, DraftSaveBusyTimeoutSeconds, ("$title", title), ("$task", task), ("$text", text), ("$now", now.ToUnixTimeMilliseconds()), ("$id", id));
         return page with { Title = title, Task = task, Text = text, UpdatedAt = now };
     }
 
@@ -263,10 +289,14 @@ public sealed partial class Notebook : IDisposable
 
     private static string Stored(PieceKind kind) => kind == PieceKind.Essay ? "essay" : "translation";
 
-    private List<Piece> Query(string sql, params (string Name, object? Value)[] parameters)
+    private List<Piece> Query(string sql, params (string Name, object? Value)[] parameters) =>
+        Query(sql, _db.DefaultTimeout, parameters);
+
+    private List<Piece> Query(string sql, int commandTimeout, params (string Name, object? Value)[] parameters)
     {
         using var command = _db.CreateCommand();
         command.CommandText = sql;
+        command.CommandTimeout = commandTimeout;
         foreach (var (name, value) in parameters) command.Parameters.AddWithValue(name, value ?? DBNull.Value);
         using var reader = command.ExecuteReader();
         var pages = new List<Piece>();
@@ -297,10 +327,14 @@ public sealed partial class Notebook : IDisposable
         return command.ExecuteScalar();
     }
 
-    private static void Exec(SqliteConnection db, string sql, SqliteTransaction? tx = null, params (string Name, object? Value)[] parameters)
+    private static void Exec(SqliteConnection db, string sql, SqliteTransaction? tx = null, params (string Name, object? Value)[] parameters) =>
+        Exec(db, sql, tx, db.DefaultTimeout, parameters);
+
+    private static void Exec(SqliteConnection db, string sql, SqliteTransaction? tx, int commandTimeout, params (string Name, object? Value)[] parameters)
     {
         using var command = db.CreateCommand();
         command.CommandText = sql;
+        command.CommandTimeout = commandTimeout;
         command.Transaction = tx;
         foreach (var (name, value) in parameters) command.Parameters.AddWithValue(name, value ?? DBNull.Value);
         command.ExecuteNonQuery();

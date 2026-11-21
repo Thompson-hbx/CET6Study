@@ -26,6 +26,7 @@ public sealed partial class Notebook
     /// <summary>Keeps a question together with its complete answer; nothing is written for an unanswered question.</summary>
     public Talk SaveTalk(string reviewId, int? markNumber, string question, string answer, string teacher)
     {
+        if (string.IsNullOrWhiteSpace(question)) throw new NotebookException("先写下想问的问题。");
         if (string.IsNullOrWhiteSpace(answer)) throw new NotebookException("老师没有回答，什么都没记。");
         using (var check = _db.CreateCommand())
         {
@@ -34,7 +35,10 @@ public sealed partial class Notebook
                 : "SELECT COUNT(*) FROM marks WHERE review_id = $review AND number = $mark;";
             check.Parameters.AddWithValue("$review", reviewId);
             if (markNumber is { } n) check.Parameters.AddWithValue("$mark", n);
-            if (Convert.ToInt64(check.ExecuteScalar()) == 0) throw new NotebookException("这条批注找不到了，问答没有记下。");
+            if (Convert.ToInt64(check.ExecuteScalar()) == 0)
+            {
+                throw new NotebookException(markNumber is null ? "这次批改找不到了，问答没有记下。" : "这条批注找不到了，问答没有记下。");
+            }
         }
         var talk = new Talk(markNumber, question.Trim(), answer.Trim(), teacher, Now());
         Exec(_db, """

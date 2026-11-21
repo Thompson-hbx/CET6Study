@@ -35,15 +35,15 @@ public static class Placement
         {
             var plainQuote = Straighten(mark.Quote);
             var start = Find(text, mark.Quote, cursor, taken, StringComparison.Ordinal)
-                ?? Find(text, mark.Quote, 0, taken, StringComparison.Ordinal)
                 ?? Find(plainText, plainQuote, cursor, taken, StringComparison.Ordinal)
-                ?? Find(plainText, plainQuote, 0, taken, StringComparison.Ordinal)
                 ?? Find(plainText, plainQuote, cursor, taken, StringComparison.OrdinalIgnoreCase)
+                ?? Find(text, mark.Quote, 0, taken, StringComparison.Ordinal)
+                ?? Find(plainText, plainQuote, 0, taken, StringComparison.Ordinal)
                 ?? Find(plainText, plainQuote, 0, taken, StringComparison.OrdinalIgnoreCase);
             if (start is { } s)
             {
                 taken.Add((s, s + mark.Quote.Length));
-                cursor = s + mark.Quote.Length;
+                cursor = Math.Max(cursor, s + mark.Quote.Length);
             }
             result.Add(start);
         }

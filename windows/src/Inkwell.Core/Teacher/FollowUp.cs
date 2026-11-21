@@ -33,7 +33,7 @@ public static class FollowUpProtocol
         Fence(text, "这次批改", $"档位 {review.Band}。{review.Verdict}\n{marks}");
         if (markNumber is { } n && review.Marks.FirstOrDefault(m => m.Mark.Number == n) is { } asked)
         {
-            text.Append($"学生问的是第 {n} 处批注：「{asked.Mark.Quote}」→「{asked.Mark.Fix}」。\n\n");
+            text.Append($"学生问的是第 {n} 处批注：「{MarkingProtocol.EscapeFence(asked.Mark.Quote)}」→「{MarkingProtocol.EscapeFence(asked.Mark.Fix)}」。\n\n");
         }
         if (Recent(earlier) is { Length: > 0 } history) Fence(text, "之前的问答（较早的可能省略）", history);
         Fence(text, "学生的新问题", question.Trim());
@@ -55,8 +55,8 @@ public static class FollowUpProtocol
         foreach (var talk in earlier.Reverse())
         {
             var exchange = $"学生：{talk.Question}\n老师：{talk.Answer}";
-            // One very long exchange should not push out the shorter ones before it.
-            if (used + exchange.Length > HistoryBudget) continue;
+            // Stop at the first exchange that exceeds the budget so earlier talks do not appear out of contiguous order.
+            if (used + exchange.Length > HistoryBudget) break;
             kept.Insert(0, exchange);
             used += exchange.Length;
         }
@@ -64,5 +64,5 @@ public static class FollowUpProtocol
     }
 
     private static void Fence(StringBuilder text, string label, string content) =>
-        text.Append(label).Append("：\n<<<\n").Append(content.Trim()).Append("\n>>>\n\n");
+        text.Append(label).Append("：\n<<<\n").Append(MarkingProtocol.EscapeFence(content.Trim())).Append("\n>>>\n\n");
 }

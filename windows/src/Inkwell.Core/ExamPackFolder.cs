@@ -18,7 +18,26 @@ public static class ExamPackFolder
         var skipped = new List<PackSkip>();
         var unreadable = new List<string>();
         if (!Directory.Exists(folder)) return new FolderImport(0, 0, 0, skipped, unreadable);
-        foreach (var file in Directory.EnumerateFiles(folder, "*.json").Order(StringComparer.OrdinalIgnoreCase))
+        string[] files;
+        try
+        {
+            files = Directory.GetFiles(folder, "*.json");
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            var trimmed = folder;
+            while (true)
+            {
+                var next = Path.TrimEndingDirectorySeparator(trimmed);
+                if (next.Length == trimmed.Length) break;
+                trimmed = next;
+            }
+            var name = Path.GetFileName(trimmed);
+            unreadable.Add(string.IsNullOrEmpty(name) ? trimmed : name);
+            return new FolderImport(0, 0, 0, skipped, unreadable);
+        }
+
+        foreach (var file in files.Order(StringComparer.OrdinalIgnoreCase))
         {
             try
             {
@@ -26,7 +45,7 @@ public static class ExamPackFolder
                 (added, updated, unchanged) = (added + result.Added, updated + result.Updated, unchanged + result.Unchanged);
                 skipped.AddRange(result.Skipped);
             }
-            catch (Exception e) when (e is NotebookException or IOException or UnauthorizedAccessException)
+            catch (Exception e) when (e is NotebookException or IOException or UnauthorizedAccessException or Microsoft.Data.Sqlite.SqliteException)
             {
                 // One bad file must not stop the others or the app from opening.
                 unreadable.Add(Path.GetFileName(file));

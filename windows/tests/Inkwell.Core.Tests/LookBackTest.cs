@@ -108,6 +108,73 @@ public sealed class LookBackTest : IDisposable
         }
     }
 
+    [Fact]
+    public void SameMillisecondReviewsBreakTiesByRowIdAndCleanTitles()
+    {
+        var clock = new FixedClock(new DateTimeOffset(2026, 11, 10, 12, 0, 0, TimeSpan.FromHours(8)));
+        var dir = Directory.CreateTempSubdirectory("inkwell-lookback-ties-");
+        try
+        {
+            using var book = Notebook.Open(Path.Combine(dir.FullName, "study.db"), clock);
+            var p1 = book.NewPage(PieceKind.Essay);
+            book.Write(p1.Id, "", "First line\r\nSecond line", "People enjoys it.");
+            book.HandIn(p1.Id);
+            var p2 = book.NewPage(PieceKind.Essay);
+            book.Write(p2.Id, "", "1234567890123456789😀tail", "It bring joy.");
+            book.HandIn(p2.Id);
+
+            // Same-millisecond reviews on p1 and p2: newer rowid wins for p1 and for habit example & band order.
+            book.SaveReview(p1.Id, Marks(5, ("People enjoys", "Old fix", "must", "语法")), "t");
+            book.SaveReview(p1.Id, Marks(11, ("People enjoys", "New p1 fix", "must", "语法")), "t");
+            book.SaveReview(p2.Id, Marks(14, ("It bring", "Latest p2 fix", "must", "语法")), "t");
+
+            var look = book.LookBack();
+
+            Assert.Equal([(11, "First line"), (14, "1234567890123456789…")],
+                look.Bands.Select(b => (b.Band, b.Title)));
+            var habit = Assert.Single(look.Habits);
+            Assert.Equal(("语法", 2, "It bring", "Latest p2 fix"), (habit.Kind, habit.Count, habit.Quote, habit.Fix));
+        }
+        finally
+        {
+            dir.Delete(recursive: true);
+        }
+    }
+
+    [Fact]
+    public void HandlesInvalidDstMidnightAtStartOfActiveDayWindow()
+    {
+        var midnightDst = TimeZoneInfo.CreateCustomTimeZone(
+            "MidnightDST",
+            TimeSpan.Zero,
+            "MidnightDST",
+            "MidnightDST",
+            "MidnightDST",
+            [
+                TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(
+                    DateTime.MinValue.Date,
+                    DateTime.MaxValue.Date,
+                    TimeSpan.FromHours(1),
+                    TimeZoneInfo.TransitionTime.CreateFixedDateRule(new DateTime(1, 1, 1, 0, 0, 0), 3, 1),
+                    TimeZoneInfo.TransitionTime.CreateFixedDateRule(new DateTime(1, 1, 1, 1, 0, 0), 11, 1)),
+            ]);
+        // Window of 4 days ending March 4 starts on March 1 (which has invalid 00:00..01:00).
+        var clock = new FixedClock(new DateTimeOffset(2026, 3, 1, 1, 30, 0, TimeSpan.FromHours(1)), midnightDst);
+        var dir = Directory.CreateTempSubdirectory("inkwell-lookback-dst-");
+        try
+        {
+            using var book = Notebook.Open(Path.Combine(dir.FullName, "study.db"), clock);
+            book.NewPage(PieceKind.Essay);
+            clock.Now = new DateTimeOffset(2026, 3, 4, 12, 0, 0, TimeSpan.FromHours(1));
+
+            Assert.Equal(1, book.LookBack(activeDayWindow: 4).ActiveDays);
+        }
+        finally
+        {
+            dir.Delete(recursive: true);
+        }
+    }
+
     private sealed class DayClock(DateTimeOffset now) : TimeProvider
     {
         public DateTimeOffset Now { get; set; } = now;
@@ -115,5 +182,14 @@ public sealed class LookBackTest : IDisposable
         public override DateTimeOffset GetUtcNow() => Now.ToUniversalTime();
 
         public override TimeZoneInfo LocalTimeZone { get; } = TimeZoneInfo.CreateCustomTimeZone("UTC+8", TimeSpan.FromHours(8), "UTC+8", "UTC+8");
+    }
+
+    private sealed class FixedClock(DateTimeOffset now, TimeZoneInfo? zone = null) : TimeProvider
+    {
+        public DateTimeOffset Now { get; set; } = now;
+
+        public override DateTimeOffset GetUtcNow() => Now.ToUniversalTime();
+
+        public override TimeZoneInfo LocalTimeZone { get; } = zone ?? TimeZoneInfo.CreateCustomTimeZone("UTC+8", TimeSpan.FromHours(8), "UTC+8", "UTC+8");
     }
 }

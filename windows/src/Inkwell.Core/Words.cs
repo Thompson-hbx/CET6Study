@@ -76,10 +76,31 @@ public static class WordSchedule
         _ => (FirstBox, now + RetryAfterForgetting),
     };
 
+    internal static DateTimeOffset StartOfDay(DateOnly day, TimeZoneInfo zone)
+    {
+        var local = day.ToDateTime(TimeOnly.MinValue);
+        if (zone.IsInvalidTime(local))
+        {
+            for (var m = 1; m < 24 * 60; m++)
+            {
+                var candidate = local.AddMinutes(m);
+                if (!zone.IsInvalidTime(candidate))
+                {
+                    local = candidate;
+                    break;
+                }
+            }
+        }
+        var offset = zone.IsAmbiguousTime(local)
+            ? zone.GetAmbiguousTimeOffsets(local).Max()
+            : zone.GetUtcOffset(local);
+        return new DateTimeOffset(local, offset);
+    }
+
     private static DateTimeOffset After(DateTimeOffset now, TimeSpan gap, TimeZoneInfo zone)
     {
         if (gap < TimeSpan.FromDays(1)) return now + gap;
-        var day = TimeZoneInfo.ConvertTime(now + gap, zone).Date;
-        return new DateTimeOffset(day, zone.GetUtcOffset(day));
+        var today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now, zone).Date);
+        return StartOfDay(today.AddDays(gap.Days), zone);
     }
 }

@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -15,25 +16,59 @@ public sealed record PlanModel(string Slug, string Name);
 /// </summary>
 public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVault vault, TimeProvider clock, string model, Depth depth = Depth.Default) : ITeacher
 {
+    private const int MaxModelsBytes = 2 * 1024 * 1024;
+    private const int MaxErrorBytes = 64 * 1024;
+    private const int MaxStreamBytes = 8 * 1024 * 1024;
+    private const int MaxStreamChars = 4 * 1024 * 1024;
+
     private static readonly Uri Api = new("https://api.openai.com/v1/");
-    private static readonly SemaphoreSlim Refreshing = new(1, 1);
+    private static readonly ConditionalWeakTable<ISessionVault, SemaphoreSlim> RefreshingByVault = new();
+    private static readonly ConditionalWeakTable<ISessionVault, ChatGptSession> SigningOut = new();
+    private readonly ChatGptSession? _authorizedGrant;
+
+    public ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVault vault, TimeProvider clock, string model, Depth depth,
+        ChatGptSession authorizedGrant) : this(http, auth, vault, clock, model, depth)
+    {
+        _authorizedGrant = authorizedGrant;
+    }
 
     // Generous, because deep reasoning can pause between events; a silence this long means the stream is stuck.
     private static readonly TimeSpan StreamIdleLimit = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan StreamTotalLimit = TimeSpan.FromMinutes(15);
+
+    internal TimeSpan RefreshLimit { get; init; } = TimeSpan.FromSeconds(30);
+
+    internal TimeSpan ModelsReadLimit { get; init; } = TimeSpan.FromSeconds(30);
+
+    internal TimeSpan ErrorBodyLimit { get; init; } = TimeSpan.FromSeconds(5);
+
+    private static SemaphoreSlim RefreshLock(ISessionVault vault) =>
+        RefreshingByVault.GetValue(vault, static _ => new SemaphoreSlim(1, 1));
 
     public async Task<IReadOnlyList<PlanModel>> ModelsAsync(CancellationToken cancel)
     {
         var session = await FreshSession(cancel);
         using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(Api, "models"));
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
-        using var response = await Send(request, HttpCompletionOption.ResponseContentRead, cancel);
+        using var response = await SendForGrant(request, session, HttpCompletionOption.ResponseHeadersRead, cancel);
+        using var readTimeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        readTimeout.CancelAfter(ModelsReadLimit);
         try
         {
-            using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancel));
+            var bytes = await ReadBoundedBytesAsync(response.Content, MaxModelsBytes, readTimeout.Token)
+                ?? throw new ChatGptException("ChatGPT 返回的模型列表太大，请稍后再试。");
+            using var json = JsonDocument.Parse(bytes);
             return json.RootElement.GetProperty("models").EnumerateArray()
                 .Where(m => Text(m, "visibility") == "list" && Text(m, "slug").Length > 0)
                 .Select(m => new PlanModel(Text(m, "slug"), Text(m, "display_name") is { Length: > 0 } name ? name : Text(m, "slug")))
                 .ToList();
+        }
+        catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
+        {
+            throw new ChatGptException("ChatGPT 太久没回应，已经停下，没有保存。");
+        }
+        catch (Exception e) when (e is IOException or HttpRequestException)
+        {
+            throw new ChatGptException("连不上 ChatGPT，请检查网络。");
         }
         catch (Exception e) when (e is JsonException or KeyNotFoundException or InvalidOperationException)
         {
@@ -64,13 +99,17 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
         };
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", session.AccessToken);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
-        using var response = await Send(request, HttpCompletionOption.ResponseHeadersRead, cancel);
+        using var response = await SendForGrant(request, session, HttpCompletionOption.ResponseHeadersRead, cancel);
         try
         {
-            using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(cancel), Encoding.UTF8);
-            return await ReadStream(reader, cancel, StreamIdleLimit);
+            await using var bounded = new BoundedReadStream(await response.Content.ReadAsStreamAsync(cancel), MaxStreamBytes);
+            using var reader = new StreamReader(bounded, Encoding.UTF8);
+            return await ReadStream(reader, cancel, StreamIdleLimit, StreamTotalLimit, MaxStreamChars);
+        }
+        catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
+        {
+            throw new ChatGptException("ChatGPT 太久没回应，已经停下，没有保存。");
         }
         catch (Exception e) when (e is IOException or HttpRequestException)
         {
@@ -80,12 +119,17 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
     }
 
     /// <summary>Collects output text until <c>response.completed</c>; anything else ends without an answer.</summary>
-    internal static async Task<string> ReadStream(TextReader reader, CancellationToken cancel, TimeSpan? idle = null)
+    internal static async Task<string> ReadStream(
+        TextReader reader, CancellationToken cancel, TimeSpan? idle = null, TimeSpan? total = null, int maxChars = MaxStreamChars)
     {
         var text = new StringBuilder();
         var data = new StringBuilder();
+        var totalChars = 0;
+        var sawRefusal = false;
+        using var totalCts = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        if (total is { } totalLimit) totalCts.CancelAfter(totalLimit);
         // HttpClient.Timeout stops at the response headers, so a stream that goes silent afterwards needs its own limit.
-        using var quiet = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        using var quiet = CancellationTokenSource.CreateLinkedTokenSource(totalCts.Token);
         while (true)
         {
             quiet.CancelAfter(idle ?? Timeout.InfiniteTimeSpan);
@@ -96,9 +140,13 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
             }
             catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
             {
-                throw new ChatGptException("ChatGPT 太久没有动静，已经停下，没有保存；可以稍后再请一次。");
+                throw totalCts.IsCancellationRequested
+                    ? new ChatGptException("ChatGPT 批改时间太长，已经停下，没有保存；可以缩短文字或换个模型再试。")
+                    : new ChatGptException("ChatGPT 太久没有动静，已经停下，没有保存；可以稍后再请一次。");
             }
             if (line is null) break;
+            totalChars += line.Length + 1;
+            if (totalChars > maxChars) throw new ChatGptException("ChatGPT 的回复超过大小限制，没有保存。");
             if (line.StartsWith("data:", StringComparison.Ordinal))
             {
                 data.Append(line.AsSpan(5).TrimStart(' '));
@@ -125,8 +173,17 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
                     case "response.output_text.delta":
                         text.Append(Text(root, "delta"));
                         break;
+                    case "response.refusal.delta":
+                        sawRefusal = true;
+                        break;
+                    case "response.refusal.done":
+                        sawRefusal = true;
+                        if (text.Length == 0) throw new ChatGptException("ChatGPT 拒绝回答这个请求，没有保存。");
+                        break;
                     case "response.completed":
-                        return text.Length > 0 ? text.ToString() : throw new ChatGptException("ChatGPT 交了白卷，没有保存。");
+                        if (text.Length == 0) AppendCompletedOutput(root, text, ref sawRefusal);
+                        if (text.Length > 0) return text.ToString();
+                        throw new ChatGptException(sawRefusal ? "ChatGPT 拒绝回答这个请求，没有保存。" : "ChatGPT 交了白卷，没有保存。");
                     case "response.incomplete":
                         throw new ChatGptException("ChatGPT 没写完就停了（回复不完整），没有保存；可以换个模型或缩短文字再请一次。");
                     case "response.failed":
@@ -140,46 +197,192 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         throw new ChatGptException("和 ChatGPT 的连接中途断了，没有收到完整批改，没有保存。");
     }
 
-    private async Task<ChatGptSession> FreshSession(CancellationToken cancel)
+    private static void AppendCompletedOutput(JsonElement root, StringBuilder text, ref bool sawRefusal)
     {
-        var session = vault.Load() ?? throw new ChatGptException("还没登录 ChatGPT：到「设置 → 请老师」登录。", signInAgain: true);
-        if (!session.CanUsePlan)
+        if (!root.TryGetProperty("response", out var response) || response.ValueKind != JsonValueKind.Object ||
+            !response.TryGetProperty("output", out var output) || output.ValueKind != JsonValueKind.Array)
         {
-            throw new ChatGptException("这个 ChatGPT 账号没有授权墨水瓶使用套餐额度，请在设置里重新登录并同意授权。", signInAgain: true);
+            return;
         }
-        if (session.ExpiresAt - clock.GetUtcNow() > TimeSpan.FromMinutes(5)) return session;
-        // One refresh at a time: the refresh token rotates, so a second concurrent refresh would reuse a spent token.
-        await Refreshing.WaitAsync(cancel);
+        foreach (var item in output.EnumerateArray())
+        {
+            if (item.ValueKind != JsonValueKind.Object) continue;
+            switch (Text(item, "type"))
+            {
+                case "output_text":
+                    text.Append(Text(item, "text"));
+                    break;
+                case "refusal":
+                    sawRefusal = true;
+                    break;
+            }
+            if (!item.TryGetProperty("content", out var content) || content.ValueKind != JsonValueKind.Array) continue;
+            foreach (var part in content.EnumerateArray())
+            {
+                if (part.ValueKind != JsonValueKind.Object) continue;
+                switch (Text(part, "type"))
+                {
+                    case "output_text":
+                        text.Append(Text(part, "text"));
+                        break;
+                    case "refusal":
+                        sawRefusal = true;
+                        break;
+                }
+            }
+        }
+    }
+
+    public static async Task<ChatGptSession?> EndSessionAsync(ISessionVault vault, CancellationToken cancel)
+    {
+        ChatGptSession expected;
+        lock (vault)
+        {
+            if (vault.Load() is not { } current || SigningOut.TryGetValue(vault, out _)) return null;
+            expected = current;
+            SigningOut.Add(vault, expected);
+        }
+
         try
         {
-            var latest = vault.Load() ?? throw new ChatGptException("ChatGPT 登录已经退出，请重新登录。", signInAgain: true);
-            if (latest.ExpiresAt - clock.GetUtcNow() > TimeSpan.FromMinutes(5)) return latest;
+            var refreshing = RefreshLock(vault);
+            // Let an in-flight rotation hand off the latest token, but block new calls immediately.
+            await refreshing.WaitAsync(cancel);
             try
             {
-                // Not cancelled by the learner's stop: the server may already have rotated the refresh token,
-                // and dropping its answer would leave only a spent token and force a new sign-in.
-                var renewed = await auth.RefreshAsync(latest, CancellationToken.None);
+                lock (vault)
+                {
+                    var current = vault.Load();
+                    if (current is not null && !expected.SameGrant(current)) return null;
+                    vault.RememberedIdToken = null;
+                    vault.Clear();
+                    return current ?? expected;
+                }
+            }
+            finally
+            {
+                refreshing.Release();
+            }
+        }
+        finally
+        {
+            lock (vault) SigningOut.Remove(vault);
+        }
+    }
+
+    private async Task<ChatGptSession> FreshSession(CancellationToken cancel)
+    {
+        ChatGptSession session;
+        lock (vault)
+        {
+            var current = vault.Load() ?? throw new ChatGptException("还没登录 ChatGPT：到「设置 → 请老师」登录。", signInAgain: true);
+            session = CheckGrant(current, _authorizedGrant ?? current);
+        }
+        if (session.ExpiresAt - clock.GetUtcNow() > TimeSpan.FromMinutes(5)) return session;
+
+        var refreshing = RefreshLock(vault);
+        // Rotating refresh tokens must never be reused by concurrent requests.
+        await refreshing.WaitAsync(cancel);
+        try
+        {
+            ChatGptSession latest;
+            lock (vault) latest = CurrentGrant(session);
+            if (latest.ExpiresAt - clock.GetUtcNow() > TimeSpan.FromMinutes(5)) return latest;
+
+            using var refreshTimeout = new CancellationTokenSource(RefreshLimit, clock);
+            ChatGptSession renewed;
+            try
+            {
+                // Do NOT link caller cancel: the server may already have rotated this grant.
+                renewed = (await auth.RefreshAsync(latest, refreshTimeout.Token)) with { GrantId = latest.GrantId };
+            }
+            catch (OperationCanceledException) when (refreshTimeout.IsCancellationRequested)
+            {
+                throw new ChatGptException("ChatGPT 登录续期太久没回应，请稍后再试；已保存的登录没有被清除。");
+            }
+            catch (ChatGptException e) when (e.SignInAgain)
+            {
+                lock (vault)
+                {
+                    if (vault.Load() is { } current && latest.SameGrant(current) && latest.RefreshToken == current.RefreshToken)
+                    {
+                        if (e.ForgetClient)
+                        {
+                            if (vault.RememberedClientId == current.ClientId) vault.RememberedClientId = null;
+                            vault.RememberedIdToken = null;
+                        }
+                        vault.Clear();
+                    }
+                }
+                throw;
+            }
+
+            lock (vault)
+            {
+                if (CurrentGrant(latest, allowSigningOut: true).RefreshToken != latest.RefreshToken)
+                {
+                    throw GrantChanged();
+                }
+                if (!renewed.CanUsePlan)
+                {
+                    vault.Clear();
+                    RequirePlanScope(renewed);
+                }
                 try
                 {
                     vault.Save(renewed);
                 }
                 catch (Exception e) when (e is IOException or UnauthorizedAccessException)
                 {
-                    // The old refresh token is spent now, so the learner has to know the renewal was not kept.
                     throw new ChatGptException("ChatGPT 登录续期了，但没能存到这台电脑上，这次没有发请求；请在设置里重新登录。");
                 }
-                return renewed;
             }
-            catch (ChatGptException e) when (e.SignInAgain)
-            {
-                vault.Clear();
-                throw;
-            }
+            cancel.ThrowIfCancellationRequested();
+            return renewed;
         }
         finally
         {
-            Refreshing.Release();
+            refreshing.Release();
         }
+    }
+
+    private ChatGptSession CurrentGrant(ChatGptSession expected, bool allowSigningOut = false) =>
+        CheckGrant(vault.Load(), expected, allowSigningOut);
+
+    private ChatGptSession CheckGrant(ChatGptSession? current, ChatGptSession expected, bool allowSigningOut = false)
+    {
+        if (current is null)
+        {
+            throw new ChatGptException("ChatGPT 登录已经退出，请重新登录。", signInAgain: true);
+        }
+        if (!expected.SameGrant(current) ||
+            (!allowSigningOut && SigningOut.TryGetValue(vault, out var ending) && expected.SameGrant(ending)))
+        {
+            throw GrantChanged();
+        }
+        RequirePlanScope(current);
+        return current;
+    }
+
+    private static ChatGptException GrantChanged() => new("ChatGPT 登录状态已经变化，这次没有发请求。");
+
+    private static void RequirePlanScope(ChatGptSession session)
+    {
+        if (!session.CanUsePlan)
+        {
+            throw new ChatGptException("这个 ChatGPT 账号没有授权墨水瓶使用套餐额度，请在设置里重新登录并同意授权。", signInAgain: true);
+        }
+    }
+
+    private async Task<HttpResponseMessage> SendForGrant(
+        HttpRequestMessage request, ChatGptSession expected, HttpCompletionOption option, CancellationToken cancel)
+    {
+        lock (vault)
+        {
+            var current = CurrentGrant(expected);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", current.AccessToken);
+        }
+        return await Send(request, option, cancel);
     }
 
     private async Task<HttpResponseMessage> Send(HttpRequestMessage request, HttpCompletionOption option, CancellationToken cancel)
@@ -193,7 +396,7 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         {
             throw new ChatGptException("连不上 ChatGPT，请检查网络。");
         }
-        catch (TaskCanceledException) when (!cancel.IsCancellationRequested)
+        catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
         {
             throw new ChatGptException("ChatGPT 太久没回应，已经停下，没有保存。");
         }
@@ -202,19 +405,109 @@ public sealed class ChatGptTeacher(HttpClient http, ChatGptAuth auth, ISessionVa
         {
             var status = (int)response.StatusCode;
             string? code = null;
+            using var errorTimeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+            errorTimeout.CancelAfter(ErrorBodyLimit);
             try
             {
-                using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancel));
-                if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e))
+                if (await ReadBoundedBytesAsync(response.Content, MaxErrorBytes, errorTimeout.Token) is { } bytes)
                 {
-                    code = e.ValueKind == JsonValueKind.Object ? Text(e, "code") : null;
+                    using var json = JsonDocument.Parse(bytes);
+                    if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e))
+                    {
+                        code = e.ValueKind == JsonValueKind.Object ? Text(e, "code") : null;
+                    }
                 }
+            }
+            catch (OperationCanceledException) when (!cancel.IsCancellationRequested)
+            {
+                // Timed out reading the error body; fall back to status code.
             }
             catch (Exception e) when (e is JsonException or IOException or HttpRequestException)
             {
                 // The status alone still explains the failure when the error body is unreadable.
             }
             throw Explain(code, status);
+        }
+    }
+
+    private static async Task<byte[]?> ReadBoundedBytesAsync(HttpContent content, int maxBytes, CancellationToken cancel)
+    {
+        if (content.Headers.ContentLength > maxBytes) return null;
+        await using var stream = await content.ReadAsStreamAsync(cancel);
+        using var memory = new MemoryStream();
+        var buffer = new byte[Math.Min(16 * 1024, maxBytes)];
+        while (true)
+        {
+            var read = await stream.ReadAsync(buffer, cancel);
+            if (read == 0) return memory.ToArray();
+            if (memory.Length + read > maxBytes) return null;
+            memory.Write(buffer, 0, read);
+        }
+    }
+
+    private sealed class BoundedReadStream(Stream inner, int maxBytes) : Stream
+    {
+        private long _read;
+
+        public override bool CanRead => true;
+
+        public override bool CanSeek => false;
+
+        public override bool CanWrite => false;
+
+        public override long Length => throw new NotSupportedException();
+
+        public override long Position
+        {
+            get => _read;
+            set => throw new NotSupportedException();
+        }
+
+        public override void Flush() => throw new NotSupportedException();
+
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+
+        public override void SetLength(long value) => throw new NotSupportedException();
+
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            var n = inner.Read(buffer, offset, count);
+            Count(n);
+            return n;
+        }
+
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            var n = await inner.ReadAsync(buffer, cancellationToken);
+            Count(n);
+            return n;
+        }
+
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        {
+            var n = await inner.ReadAsync(buffer.AsMemory(offset, count), cancellationToken);
+            Count(n);
+            return n;
+        }
+
+        private void Count(int n)
+        {
+            _read += n;
+            if (_read > maxBytes) throw new ChatGptException("ChatGPT 的回复超过大小限制，没有保存。");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) inner.Dispose();
+            base.Dispose(disposing);
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            await inner.DisposeAsync();
+            await base.DisposeAsync();
         }
     }
 
